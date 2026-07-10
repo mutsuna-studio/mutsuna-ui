@@ -196,6 +196,6 @@
   "devDependencies": {
     "svelte": "^5.55.2",
     "svelte-check": "^4.4.6",
-    "typescript": "^6.0.2"
+    "typescript": "npm:@typescript/typescript6@6.0.2"
   }
 }
