@@ -159,6 +159,16 @@
       "svelte": "./src/lib/separator/*",
       "default": "./src/lib/separator/*"
     },
+    "./sortable-list": {
+      "types": "./src/lib/sortable-list/index.ts",
+      "svelte": "./src/lib/sortable-list/index.ts",
+      "default": "./src/lib/sortable-list/index.ts"
+    },
+    "./sortable-list/*": {
+      "types": "./src/lib/sortable-list/*",
+      "svelte": "./src/lib/sortable-list/*",
+      "default": "./src/lib/sortable-list/*"
+    },
     "./table": {
       "types": "./src/lib/table/index.ts",
       "svelte": "./src/lib/table/index.ts",

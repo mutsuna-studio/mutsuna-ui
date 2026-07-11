@@ -91,6 +91,7 @@ export {
   SelectTrigger,
 } from "./select/index.js";
 export { Separator } from "./separator/index.js";
+export { SortableList, type SortableListControls, type SortableListDragHandleProps } from "./sortable-list/index.js";
 export {
   Table,
   TableBody,
