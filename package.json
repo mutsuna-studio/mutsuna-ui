@@ -39,6 +39,16 @@
       "svelte": "./src/lib/button/*",
       "default": "./src/lib/button/*"
     },
+    "./button-group": {
+      "types": "./src/lib/button-group/index.ts",
+      "svelte": "./src/lib/button-group/index.ts",
+      "default": "./src/lib/button-group/index.ts"
+    },
+    "./button-group/*": {
+      "types": "./src/lib/button-group/*",
+      "svelte": "./src/lib/button-group/*",
+      "default": "./src/lib/button-group/*"
+    },
     "./card": {
       "types": "./src/lib/card/index.ts",
       "svelte": "./src/lib/card/index.ts",
@@ -204,8 +214,10 @@
     "tailwind-variants": "^3.2.2"
   },
   "devDependencies": {
+    "@internationalized/date": "^3.12.1",
     "svelte": "^5.55.2",
     "svelte-check": "^4.4.6",
+    "tailwindcss": "^4.3.0",
     "typescript": "npm:@typescript/typescript6@6.0.2"
   }
 }

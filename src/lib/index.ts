@@ -2,6 +2,13 @@ export { Alert, AlertAction, AlertDescription, AlertTitle, type AlertVariant, al
 export { Badge, type BadgeVariant, badgeVariants } from "./badge/index.js";
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant, buttonVariants } from "./button/index.js";
 export {
+  ButtonGroup,
+  type ButtonGroupOrientation,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+  buttonGroupVariants,
+} from "./button-group/index.js";
+export {
   Card,
   CardAction,
   CardContent,
