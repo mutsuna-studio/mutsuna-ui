@@ -110,3 +110,4 @@ export {
   TableRow,
 } from "./table/index.js";
 export { Tabs, TabsContent, TabsList, type TabsListVariant, TabsTrigger, tabsListVariants } from "./tabs/index.js";
+export { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from "./tooltip/index.js";

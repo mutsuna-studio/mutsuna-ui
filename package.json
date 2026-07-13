@@ -129,6 +129,16 @@
       "svelte": "./src/lib/label/*",
       "default": "./src/lib/label/*"
     },
+    "./oklch-color-picker": {
+      "types": "./src/lib/oklch-color-picker/index.ts",
+      "svelte": "./src/lib/oklch-color-picker/index.ts",
+      "default": "./src/lib/oklch-color-picker/index.ts"
+    },
+    "./oklch-color-picker/*": {
+      "types": "./src/lib/oklch-color-picker/*",
+      "svelte": "./src/lib/oklch-color-picker/*",
+      "default": "./src/lib/oklch-color-picker/*"
+    },
     "./markdown": {
       "types": "./src/lib/markdown/index.ts",
       "svelte": "./src/lib/markdown/index.ts",
@@ -148,6 +158,16 @@
       "types": "./src/lib/popover/*",
       "svelte": "./src/lib/popover/*",
       "default": "./src/lib/popover/*"
+    },
+    "./tooltip": {
+      "types": "./src/lib/tooltip/index.ts",
+      "svelte": "./src/lib/tooltip/index.ts",
+      "default": "./src/lib/tooltip/index.ts"
+    },
+    "./tooltip/*": {
+      "types": "./src/lib/tooltip/*",
+      "svelte": "./src/lib/tooltip/*",
+      "default": "./src/lib/tooltip/*"
     },
     "./select": {
       "types": "./src/lib/select/index.ts",
