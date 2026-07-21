@@ -28,7 +28,7 @@ let {
 		bind:ref
 		data-slot="dialog-content"
 		class={cn(
-			"bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 fixed top-1/2 left-1/2 z-50 flex w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-0 rounded-xl p-4 text-sm ring-1 duration-100 max-h-[90vh] overflow-hidden outline-none sm:max-w-sm",
+			"bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 fixed top-1/2 left-1/2 z-50 flex w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-0 rounded-xl p-4 text-sm ring-1 duration-100 max-h-[90vh] overflow-hidden outline-none md:w-auto md:min-w-[50vw]",
 			className
 		)}
 		{...restProps}
@@ -48,6 +48,13 @@ let {
 </DialogPortal>
 
 <style>
+	@media (max-width: 47.999rem) {
+		:global([data-slot="dialog-content"]) {
+			width: calc(100% - 1rem) !important;
+			max-height: calc(100dvh - 1rem) !important;
+		}
+	}
+
 	:global([data-slot="dialog-content"] .overflow-y-auto) {
 		min-height: 0;
 	}

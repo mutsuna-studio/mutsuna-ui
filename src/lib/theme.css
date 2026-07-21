@@ -157,6 +157,11 @@
 }
 
 @layer base {
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
@@ -173,7 +178,7 @@
     @apply fixed inset-0 z-[100] flex justify-center px-4 pt-3;
     pointer-events: auto;
     animation: admin-route-loader-reveal 0.16s ease-out 0.12s both;
-    background: radial-gradient(circle at 50% 0%, oklch(0.987 0.022 95.277 / 0.22), transparent 28rem), oklch(1 0 0 / 0.18);
+    background: radial-gradient(circle at 50% 0%, color-mix(in oklch, var(--primary) 8%, transparent), transparent 28rem), oklch(1 0 0 / 0.18);
     backdrop-filter: blur(1.5px);
   }
 
@@ -185,8 +190,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at 18% 30%, oklch(0.987 0.022 95.277 / 0.9), transparent 34%),
-      linear-gradient(120deg, transparent 0%, oklch(0.666 0.179 58.318 / 0.2) 42%, transparent 68%);
+      radial-gradient(circle at 18% 30%, color-mix(in oklch, var(--primary) 6%, white), transparent 34%),
+      linear-gradient(120deg, transparent 0%, color-mix(in oklch, var(--primary) 10%, transparent) 42%, transparent 68%);
     content: "";
     opacity: 0.9;
   }
@@ -203,7 +208,7 @@
     height: 2px;
     width: 38%;
     border-radius: 999px;
-    background: linear-gradient(90deg, transparent, var(--primary), oklch(0.871 0.006 286.286));
+    background: linear-gradient(90deg, transparent, var(--primary), color-mix(in oklch, var(--primary) 56%, white));
     animation: admin-route-loader-slide 0.86s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
 

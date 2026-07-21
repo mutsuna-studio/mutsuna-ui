@@ -1,5 +1,5 @@
 export { Alert, AlertAction, AlertDescription, AlertTitle, type AlertVariant, alertVariants } from "./alert/index.js";
-export { Badge, type BadgeVariant, badgeVariants } from "./badge/index.js";
+export { Badge, type BadgeShape, type BadgeVariant, badgeVariants } from "./badge/index.js";
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant, buttonVariants } from "./button/index.js";
 export {
   ButtonGroup,

@@ -8,7 +8,7 @@ let { ref = $bindable(null), class: className, children, ...restProps }: WithEle
 <div
 	bind:this={ref}
 	data-slot="dialog-header"
-	class={cn("gap-2 flex flex-col", className)}
+	class={cn("shrink-0 gap-2 flex flex-col", className)}
 	{...restProps}
 >
 	{@render children?.()}
