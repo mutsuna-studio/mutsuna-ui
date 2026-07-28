@@ -186,6 +186,10 @@
     @apply relative h-9 w-80 max-w-full overflow-hidden rounded-3xl border border-border/70 bg-background/80 shadow-[0_18px_60px_oklch(0.141_0.005_285.823/0.16)] backdrop-blur-xl;
   }
 
+  .admin-route-loader__panel--recovery {
+    @apply flex h-auto min-h-9 items-center justify-between gap-2 px-3 py-1.5;
+  }
+
   .admin-route-loader__panel::before {
     position: absolute;
     inset: 0;
@@ -198,6 +202,14 @@
 
   .admin-route-loader__label {
     @apply absolute inset-0 z-10 flex items-center justify-center px-5 text-center text-[0.68rem] font-semibold tracking-[0.08em] text-muted-foreground uppercase;
+  }
+
+  .admin-route-loader__label--recovery {
+    @apply static flex-1 justify-start px-1 text-start normal-case;
+  }
+
+  .admin-route-loader__recovery {
+    @apply relative z-10 shrink-0;
   }
 
   .admin-route-loader__bar {
