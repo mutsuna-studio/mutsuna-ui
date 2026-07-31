@@ -335,7 +335,7 @@ export function insertMarkdown(text: string): void {
   }
 
   :global(.milkdown-markdown-editor .ProseMirror em) {
-    font-style: oblique 10deg;
+    font-style: oblique;
   }
 
   :global(.milkdown-markdown-editor .ProseMirror ul),
