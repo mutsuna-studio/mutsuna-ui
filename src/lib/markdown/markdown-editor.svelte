@@ -312,6 +312,7 @@ export function insertMarkdown(text: string): void {
 <style>
   :global(.milkdown-markdown-editor .ProseMirror) {
     min-height: 12rem;
+    font-synthesis: weight style;
     outline: none;
   }
 
@@ -321,12 +322,20 @@ export function insertMarkdown(text: string): void {
 
   :global(.milkdown-markdown-editor .ProseMirror h2) {
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   :global(.milkdown-markdown-editor .ProseMirror h3) {
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
+  }
+
+  :global(.milkdown-markdown-editor .ProseMirror strong) {
+    font-weight: 800;
+  }
+
+  :global(.milkdown-markdown-editor .ProseMirror em) {
+    font-style: oblique 10deg;
   }
 
   :global(.milkdown-markdown-editor .ProseMirror ul),
