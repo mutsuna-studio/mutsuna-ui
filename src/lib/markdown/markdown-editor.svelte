@@ -35,16 +35,23 @@ type ToolbarAction =
 
 <script lang="ts">
 import { Editor, defaultValueCtx, editorViewCtx, rootCtx } from "@milkdown/kit/core";
+import type { Ctx } from "@milkdown/kit/ctx";
 import { history } from "@milkdown/kit/plugin/history";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
 import {
+  blockquoteSchema,
+  bulletListSchema,
   commonmark,
+  emphasisSchema,
+  headingSchema,
+  orderedListSchema,
+  strongSchema,
   toggleEmphasisCommand,
   toggleStrongCommand,
   wrapInBlockquoteCommand,
   wrapInHeadingCommand,
 } from "@milkdown/kit/preset/commonmark";
-import { addColAfterCommand, addRowAfterCommand, gfm, insertTableCommand } from "@milkdown/kit/preset/gfm";
+import { addColAfterCommand, addRowAfterCommand, gfm, insertTableCommand, tableSchema } from "@milkdown/kit/preset/gfm";
 import "@milkdown/kit/prose/view/style/prosemirror.css";
 import { callCommand, replaceAll } from "@milkdown/kit/utils";
 import BoldIcon from "@lucide/svelte/icons/bold";
@@ -77,6 +84,7 @@ let rootElement = $state<HTMLDivElement | null>(null);
 let editor = $state<Editor | null>(null);
 let editorMarkdown = $state<string | null>(null);
 let lastAppliedValue = $state<string | null>(null);
+let activeToolbarStyles = $state<readonly string[]>([]);
 let applyingExternalValue = false;
 const markdown = $derived(editorMarkdown ?? value);
 
@@ -102,20 +110,24 @@ onMount(() => {
   if (rootElement === null) {
     return;
   }
+  const editorRoot = rootElement;
 
   const instance = Editor.make()
     .config((ctx) => {
-      ctx.set(rootCtx, rootElement);
+      ctx.set(rootCtx, editorRoot);
       ctx.set(defaultValueCtx, markdown);
-      ctx.get(listenerCtx).markdownUpdated((_ctx, serializedMarkdown) => {
-        const nextMarkdown = normalizeMarkdown(serializedMarkdown);
-        editorMarkdown = nextMarkdown;
-        value = nextMarkdown;
-        lastAppliedValue = nextMarkdown;
-        if (!applyingExternalValue) {
-          onMarkdownChange?.(nextMarkdown);
-        }
-      });
+      ctx
+        .get(listenerCtx)
+        .markdownUpdated((listenerContext, serializedMarkdown) => {
+          const nextMarkdown = normalizeMarkdown(serializedMarkdown);
+          editorMarkdown = nextMarkdown;
+          value = nextMarkdown;
+          lastAppliedValue = nextMarkdown;
+          syncToolbarStyles(listenerContext);
+          if (!applyingExternalValue) {
+            onMarkdownChange?.(nextMarkdown);
+          }
+        });
     })
     .use(commonmark)
     .use(gfm)
@@ -124,9 +136,37 @@ onMount(() => {
 
   void instance.create().then(() => {
     editor = instance;
+    syncToolbarStyles(instance.ctx);
   });
 
+  let toolbarSyncFrame: number | null = null;
+  const scheduleToolbarSync = () => {
+    if (toolbarSyncFrame !== null) {
+      cancelAnimationFrame(toolbarSyncFrame);
+    }
+    toolbarSyncFrame = requestAnimationFrame(() => {
+      toolbarSyncFrame = null;
+      syncToolbarStyles(instance.ctx);
+    });
+  };
+  const handleSelectionChange = () => {
+    const selection = document.getSelection();
+    const anchorNode = selection?.anchorNode;
+    if (anchorNode !== null && anchorNode !== undefined && editorRoot.contains(anchorNode)) {
+      scheduleToolbarSync();
+    }
+  };
+  document.addEventListener("selectionchange", handleSelectionChange);
+  editorRoot.addEventListener("pointerup", scheduleToolbarSync);
+  editorRoot.addEventListener("keyup", scheduleToolbarSync);
+
   return () => {
+    if (toolbarSyncFrame !== null) {
+      cancelAnimationFrame(toolbarSyncFrame);
+    }
+    document.removeEventListener("selectionchange", handleSelectionChange);
+    editorRoot.removeEventListener("pointerup", scheduleToolbarSync);
+    editorRoot.removeEventListener("keyup", scheduleToolbarSync);
     editor = null;
     void instance.destroy();
   };
@@ -147,46 +187,62 @@ $effect(() => {
 });
 
 function runToolbarAction(action: ToolbarAction): void {
-  if (editor === null) {
+  const currentEditor = editor;
+  if (currentEditor === null) {
     return;
   }
 
   if (action.kind === "heading") {
-    editor.action(callCommand(wrapInHeadingCommand.key, action.level));
-    return;
+    currentEditor.action(callCommand(wrapInHeadingCommand.key, action.level));
+  } else if (action.kind === "strong") {
+    currentEditor.action(callCommand(toggleStrongCommand.key));
+  } else if (action.kind === "emphasis") {
+    currentEditor.action(callCommand(toggleEmphasisCommand.key));
+  } else if (action.kind === "bulletList" || action.kind === "orderedList") {
+    toggleList(currentEditor, action.kind);
+  } else if (action.kind === "table") {
+    currentEditor.action(callCommand(insertTableCommand.key, { row: 3, col: 3 }));
+  } else if (action.kind === "addTableRow") {
+    currentEditor.action(callCommand(addRowAfterCommand.key));
+  } else if (action.kind === "addTableColumn") {
+    currentEditor.action(callCommand(addColAfterCommand.key));
+  } else {
+    currentEditor.action(callCommand(wrapInBlockquoteCommand.key));
   }
 
-  if (action.kind === "strong") {
-    editor.action(callCommand(toggleStrongCommand.key));
+  queueMicrotask(() => syncToolbarStyles(currentEditor.ctx));
+}
+
+function syncToolbarStyles(ctx: Ctx): void {
+  const state = ctx.get(editorViewCtx)?.state;
+  if (state === undefined) {
     return;
   }
+  const styles: string[] = [];
+  const marks = state.storedMarks ?? state.selection.$from.marks();
+  const hasMark = (markType: ReturnType<typeof strongSchema.type>) =>
+    state.selection.empty ? marks.some((mark) => mark.type === markType) : state.doc.rangeHasMark(state.selection.from, state.selection.to, markType);
 
-  if (action.kind === "emphasis") {
-    editor.action(callCommand(toggleEmphasisCommand.key));
-    return;
+  if (hasMark(strongSchema.type(ctx))) styles.push("strong");
+  if (hasMark(emphasisSchema.type(ctx))) styles.push("emphasis");
+
+  for (let depth = state.selection.$from.depth; depth > 0; depth -= 1) {
+    const node = state.selection.$from.node(depth);
+    if (node.type === headingSchema.type(ctx)) styles.push(`heading:${node.attrs.level}`);
+    if (node.type === bulletListSchema.type(ctx)) styles.push("bulletList");
+    if (node.type === orderedListSchema.type(ctx)) styles.push("orderedList");
+    if (node.type === blockquoteSchema.type(ctx)) styles.push("blockquote");
+    if (node.type === tableSchema.type(ctx)) styles.push("table");
   }
 
-  if (action.kind === "bulletList" || action.kind === "orderedList") {
-    toggleList(editor, action.kind);
-    return;
-  }
+  activeToolbarStyles = styles;
+}
 
-  if (action.kind === "table") {
-    editor.action(callCommand(insertTableCommand.key, { row: 3, col: 3 }));
-    return;
+function isToolbarActionActive(action: ToolbarAction): boolean {
+  if (action.kind === "heading") {
+    return activeToolbarStyles.includes(`heading:${action.level}`);
   }
-
-  if (action.kind === "addTableRow") {
-    editor.action(callCommand(addRowAfterCommand.key));
-    return;
-  }
-
-  if (action.kind === "addTableColumn") {
-    editor.action(callCommand(addColAfterCommand.key));
-    return;
-  }
-
-  editor.action(callCommand(wrapInBlockquoteCommand.key));
+  return activeToolbarStyles.includes(action.kind);
 }
 
 export function insertMarkdown(text: string): void {
@@ -212,10 +268,12 @@ export function insertMarkdown(text: string): void {
       {#each toolbarActions as action (action.title)}
         <Button
           type="button"
-          variant="ghost"
+          variant={isToolbarActionActive(action) ? "secondary" : "ghost"}
           size={toolbarMode === "icon" ? "icon-sm" : "sm"}
+          class={isToolbarActionActive(action) ? "ring-1 ring-border shadow-xs" : undefined}
           title={action.title}
           aria-label={action.title}
+          aria-pressed={isToolbarActionActive(action)}
           onmousedown={(event) => event.preventDefault()}
           onclick={() => runToolbarAction(action)}
         >
