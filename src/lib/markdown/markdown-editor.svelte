@@ -38,16 +38,11 @@ import { Editor, defaultValueCtx, editorViewCtx, rootCtx } from "@milkdown/kit/c
 import { history } from "@milkdown/kit/plugin/history";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
 import {
-  bulletListSchema,
   commonmark,
-  liftListItemCommand,
-  orderedListSchema,
   toggleEmphasisCommand,
   toggleStrongCommand,
   wrapInBlockquoteCommand,
-  wrapInBulletListCommand,
   wrapInHeadingCommand,
-  wrapInOrderedListCommand,
 } from "@milkdown/kit/preset/commonmark";
 import { addColAfterCommand, addRowAfterCommand, gfm, insertTableCommand } from "@milkdown/kit/preset/gfm";
 import "@milkdown/kit/prose/view/style/prosemirror.css";
@@ -63,6 +58,7 @@ import PlusIcon from "@lucide/svelte/icons/plus";
 import Table2Icon from "@lucide/svelte/icons/table-2";
 import { onMount } from "svelte";
 import { Button } from "../button/index.js";
+import { toggleList } from "./markdown-list-commands.js";
 
 let {
   id,
@@ -83,7 +79,6 @@ let editorMarkdown = $state<string | null>(null);
 let lastAppliedValue = $state<string | null>(null);
 let applyingExternalValue = false;
 const markdown = $derived(editorMarkdown ?? value);
-type ListKind = "bulletList" | "orderedList";
 
 const allToolbarActions: readonly ToolbarAction[] = [
   { iconLabel: "H2", textLabel: "H2", title: "見出し2", kind: "heading", level: 2 },
@@ -172,7 +167,7 @@ function runToolbarAction(action: ToolbarAction): void {
   }
 
   if (action.kind === "bulletList" || action.kind === "orderedList") {
-    toggleList(action.kind);
+    toggleList(editor, action.kind);
     return;
   }
 
@@ -192,45 +187,6 @@ function runToolbarAction(action: ToolbarAction): void {
   }
 
   editor.action(callCommand(wrapInBlockquoteCommand.key));
-}
-
-function getActiveListKind(): ListKind | null {
-  if (editor === null) {
-    return null;
-  }
-
-  const view = editor.ctx.get(editorViewCtx);
-  const bulletListType = bulletListSchema.type(editor.ctx);
-  const orderedListType = orderedListSchema.type(editor.ctx);
-
-  for (let depth = view.state.selection.$from.depth; depth > 0; depth -= 1) {
-    const nodeType = view.state.selection.$from.node(depth).type;
-    if (nodeType === bulletListType) {
-      return "bulletList";
-    }
-    if (nodeType === orderedListType) {
-      return "orderedList";
-    }
-  }
-
-  return null;
-}
-
-function toggleList(kind: ListKind): void {
-  if (editor === null) {
-    return;
-  }
-
-  const activeListKind = getActiveListKind();
-  if (activeListKind !== null) {
-    editor.action(callCommand(liftListItemCommand.key));
-  }
-  if (activeListKind === kind) {
-    return;
-  }
-
-  const command = kind === "bulletList" ? wrapInBulletListCommand : wrapInOrderedListCommand;
-  editor.action(callCommand(command.key));
 }
 
 export function insertMarkdown(text: string): void {
