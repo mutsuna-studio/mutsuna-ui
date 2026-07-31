@@ -1,14 +1,19 @@
 <script lang="ts" module>
+import type { Snippet } from "svelte";
+
 export type MarkdownEditorToolbarMode = "icon" | "text";
+export type MarkdownEditorToolbarPreset = "full" | "email";
 
 export type MarkdownEditorProps = {
   readonly id: string;
   readonly label: string;
+  readonly headerActions?: Snippet;
   readonly name?: string;
   value?: string;
   readonly minHeightClass?: string;
   readonly normalizeMarkdown?: (value: string) => string;
   readonly toolbarMode?: MarkdownEditorToolbarMode;
+  readonly toolbarPreset?: MarkdownEditorToolbarPreset;
   readonly onMarkdownChange?: (value: string) => void;
 };
 
@@ -58,11 +63,13 @@ import { Button } from "../button/index.js";
 let {
   id,
   label,
+  headerActions,
   name,
   value = $bindable(""),
   minHeightClass = "min-h-56",
   normalizeMarkdown = (nextValue) => nextValue,
   toolbarMode = "icon",
+  toolbarPreset = "full",
   onMarkdownChange,
 }: MarkdownEditorProps = $props();
 
@@ -73,7 +80,7 @@ let lastAppliedValue = $state<string | null>(null);
 let applyingExternalValue = false;
 const markdown = $derived(editorMarkdown ?? value);
 
-const toolbarActions: readonly ToolbarAction[] = [
+const allToolbarActions: readonly ToolbarAction[] = [
   { iconLabel: "H2", textLabel: "H2", title: "見出し2", kind: "heading", level: 2 },
   { iconLabel: "H3", textLabel: "H3", title: "見出し3", kind: "heading", level: 3 },
   { iconLabel: "B", textLabel: "B", title: "太字", kind: "strong" },
@@ -85,6 +92,11 @@ const toolbarActions: readonly ToolbarAction[] = [
   { iconLabel: "Add table row", textLabel: "行を追加", title: "選択中の行の下に行を追加", kind: "addTableRow" },
   { iconLabel: "Add table column", textLabel: "列を追加", title: "選択中の列の右に列を追加", kind: "addTableColumn" },
 ];
+const toolbarActions = $derived(
+  toolbarPreset === "email"
+    ? allToolbarActions.filter((action) => action.kind !== "table" && action.kind !== "addTableRow" && action.kind !== "addTableColumn")
+    : allToolbarActions,
+);
 
 onMount(() => {
   if (rootElement === null) {
@@ -95,13 +107,13 @@ onMount(() => {
     .config((ctx) => {
       ctx.set(rootCtx, rootElement);
       ctx.set(defaultValueCtx, markdown);
-      ctx.get(listenerCtx).markdownUpdated((_ctx, nextMarkdown) => {
-        const normalizedMarkdown = normalizeMarkdown(nextMarkdown);
-        editorMarkdown = normalizedMarkdown;
-        value = normalizedMarkdown;
-        lastAppliedValue = normalizedMarkdown;
+      ctx.get(listenerCtx).markdownUpdated((_ctx, serializedMarkdown) => {
+        const nextMarkdown = normalizeMarkdown(serializedMarkdown);
+        editorMarkdown = nextMarkdown;
+        value = nextMarkdown;
+        lastAppliedValue = nextMarkdown;
         if (!applyingExternalValue) {
-          onMarkdownChange?.(normalizedMarkdown);
+          onMarkdownChange?.(nextMarkdown);
         }
       });
     })
@@ -195,7 +207,10 @@ export function insertMarkdown(text: string): void {
   {#if name !== undefined}
     <input type="hidden" {name} {value} />
   {/if}
-  <p id={`${id}-label`} class="text-sm font-medium">{label}</p>
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <p id={`${id}-label`} class="text-sm font-medium">{label}</p>
+    {@render headerActions?.()}
+  </div>
   <div class="overflow-hidden rounded-lg border border-input bg-background">
     <div class="flex flex-wrap gap-1 border-b bg-muted/40 p-2">
       {#each toolbarActions as action (action.title)}
