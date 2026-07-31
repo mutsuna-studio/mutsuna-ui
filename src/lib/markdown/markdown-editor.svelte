@@ -38,7 +38,10 @@ import { Editor, defaultValueCtx, editorViewCtx, rootCtx } from "@milkdown/kit/c
 import { history } from "@milkdown/kit/plugin/history";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
 import {
+  bulletListSchema,
   commonmark,
+  liftListItemCommand,
+  orderedListSchema,
   toggleEmphasisCommand,
   toggleStrongCommand,
   wrapInBlockquoteCommand,
@@ -80,6 +83,7 @@ let editorMarkdown = $state<string | null>(null);
 let lastAppliedValue = $state<string | null>(null);
 let applyingExternalValue = false;
 const markdown = $derived(editorMarkdown ?? value);
+type ListKind = "bulletList" | "orderedList";
 
 const allToolbarActions: readonly ToolbarAction[] = [
   { iconLabel: "H2", textLabel: "H2", title: "見出し2", kind: "heading", level: 2 },
@@ -167,13 +171,8 @@ function runToolbarAction(action: ToolbarAction): void {
     return;
   }
 
-  if (action.kind === "bulletList") {
-    editor.action(callCommand(wrapInBulletListCommand.key));
-    return;
-  }
-
-  if (action.kind === "orderedList") {
-    editor.action(callCommand(wrapInOrderedListCommand.key));
+  if (action.kind === "bulletList" || action.kind === "orderedList") {
+    toggleList(action.kind);
     return;
   }
 
@@ -193,6 +192,45 @@ function runToolbarAction(action: ToolbarAction): void {
   }
 
   editor.action(callCommand(wrapInBlockquoteCommand.key));
+}
+
+function getActiveListKind(): ListKind | null {
+  if (editor === null) {
+    return null;
+  }
+
+  const view = editor.ctx.get(editorViewCtx);
+  const bulletListType = bulletListSchema.type(editor.ctx);
+  const orderedListType = orderedListSchema.type(editor.ctx);
+
+  for (let depth = view.state.selection.$from.depth; depth > 0; depth -= 1) {
+    const nodeType = view.state.selection.$from.node(depth).type;
+    if (nodeType === bulletListType) {
+      return "bulletList";
+    }
+    if (nodeType === orderedListType) {
+      return "orderedList";
+    }
+  }
+
+  return null;
+}
+
+function toggleList(kind: ListKind): void {
+  if (editor === null) {
+    return;
+  }
+
+  const activeListKind = getActiveListKind();
+  if (activeListKind !== null) {
+    editor.action(callCommand(liftListItemCommand.key));
+  }
+  if (activeListKind === kind) {
+    return;
+  }
+
+  const command = kind === "bulletList" ? wrapInBulletListCommand : wrapInOrderedListCommand;
+  editor.action(callCommand(command.key));
 }
 
 export function insertMarkdown(text: string): void {
@@ -222,6 +260,7 @@ export function insertMarkdown(text: string): void {
           size={toolbarMode === "icon" ? "icon-sm" : "sm"}
           title={action.title}
           aria-label={action.title}
+          onmousedown={(event) => event.preventDefault()}
           onclick={() => runToolbarAction(action)}
         >
           {#if toolbarMode === "icon"}
