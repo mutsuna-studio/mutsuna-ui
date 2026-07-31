@@ -35,6 +35,7 @@ type ToolbarAction =
 
 <script lang="ts">
 import { Editor, defaultValueCtx, editorViewCtx, rootCtx } from "@milkdown/kit/core";
+import { history } from "@milkdown/kit/plugin/history";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
 import {
   commonmark,
@@ -119,6 +120,7 @@ onMount(() => {
     })
     .use(commonmark)
     .use(gfm)
+    .use(history)
     .use(listener);
 
   void instance.create().then(() => {
