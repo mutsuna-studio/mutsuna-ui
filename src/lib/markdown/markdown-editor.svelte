@@ -7,6 +7,7 @@ export type MarkdownEditorProps = {
   readonly name?: string;
   value?: string;
   readonly minHeightClass?: string;
+  readonly normalizeMarkdown?: (value: string) => string;
   readonly toolbarMode?: MarkdownEditorToolbarMode;
   readonly onMarkdownChange?: (value: string) => void;
 };
@@ -60,6 +61,7 @@ let {
   name,
   value = $bindable(""),
   minHeightClass = "min-h-56",
+  normalizeMarkdown = (nextValue) => nextValue,
   toolbarMode = "icon",
   onMarkdownChange,
 }: MarkdownEditorProps = $props();
@@ -94,11 +96,12 @@ onMount(() => {
       ctx.set(rootCtx, rootElement);
       ctx.set(defaultValueCtx, markdown);
       ctx.get(listenerCtx).markdownUpdated((_ctx, nextMarkdown) => {
-        editorMarkdown = nextMarkdown;
-        value = nextMarkdown;
-        lastAppliedValue = nextMarkdown;
+        const normalizedMarkdown = normalizeMarkdown(nextMarkdown);
+        editorMarkdown = normalizedMarkdown;
+        value = normalizedMarkdown;
+        lastAppliedValue = normalizedMarkdown;
         if (!applyingExternalValue) {
-          onMarkdownChange?.(nextMarkdown);
+          onMarkdownChange?.(normalizedMarkdown);
         }
       });
     })
