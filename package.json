@@ -2,19 +2,25 @@
   "name": "@mutsuna/ui",
   "version": "0.1.0",
   "description": "Reusable Svelte 5 UI components and design tokens for Mutsuna products.",
+  "license": "MIT",
   "private": false,
   "type": "module",
   "svelte": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mutsuna-studio/mutsuna-reserve.git",
+    "directory": "packages/ui"
+  },
   "files": [
     "dist",
+    "LICENSE",
     "README.md"
   ],
   "sideEffects": [
     "**/*.css"
   ],
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "exports": {
     ".": {
@@ -240,7 +246,8 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "prepack": "pnpm run build",
     "storybook": "STORYBOOK_DISABLE_TELEMETRY=1 WATCHPACK_POLLING=true storybook dev -p 6206",
-    "test": "pnpm run check && pnpm run build && node --test test/*.test.mjs"
+    "test": "pnpm run check && pnpm run build && node --test test/*.test.mjs",
+    "test:consumer": "node test/consumer-smoke.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

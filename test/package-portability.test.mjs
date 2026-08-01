@@ -76,3 +76,17 @@ test("theme imports are declared by the package", async () => {
     [],
   );
 });
+
+test("package metadata stays ready for public npm releases", async () => {
+  const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
+
+  assert.equal(packageJson.private, false);
+  assert.equal(packageJson.license, "MIT");
+  assert.deepEqual(packageJson.publishConfig, { access: "public" });
+  assert.deepEqual(packageJson.repository, {
+    type: "git",
+    url: "git+https://github.com/mutsuna-studio/mutsuna-reserve.git",
+    directory: "packages/ui",
+  });
+  await assert.doesNotReject(access(join(packageRoot, "LICENSE")));
+});
