@@ -169,7 +169,7 @@ function applyFreeTextBeforeBlur(event: PointerEvent): void {
 }
 
 function applyFreeTextOnEnter(event: KeyboardEvent): void {
-  if (!freeText || event.key !== "Enter") {
+  if (!freeText || event.key !== "Enter" || event.isComposing || event.keyCode === 229) {
     return;
   }
 
