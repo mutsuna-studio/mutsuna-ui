@@ -79,6 +79,8 @@ test("theme imports are declared by the package", async () => {
 
 test("package metadata stays ready for public npm releases", async () => {
   const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
+  const license = await readFile(join(packageRoot, "LICENSE"), "utf8");
+  const readme = await readFile(join(packageRoot, "README.md"), "utf8");
 
   assert.equal(packageJson.private, false);
   assert.equal(packageJson.license, "MIT");
@@ -88,5 +90,10 @@ test("package metadata stays ready for public npm releases", async () => {
     url: "git+https://github.com/mutsuna-studio/mutsuna-reserve.git",
     directory: "packages/ui",
   });
-  await assert.doesNotReject(access(join(packageRoot, "LICENSE")));
+  assert.match(license, /Copyright \(c\) 2026 むつな工房 \/ Mutsuna/);
+  assert.match(license, /Copyright \(c\) 2023 Hunter Johnston <https:\/\/github\.com\/huntabyte>/);
+  assert.match(license, /Copyright \(c\) 2023 CokaKoala <https:\/\/github\.com\/adriangonz97>/);
+  assert.match(license, /Copyright \(c\) 2023 shadcn/);
+  assert.match(readme, /components adapted from\s+\[shadcn-svelte\]/);
+  assert.match(readme, /not affiliated with or endorsed by shadcn-svelte/);
 });

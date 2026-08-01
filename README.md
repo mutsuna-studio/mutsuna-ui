@@ -52,3 +52,14 @@ pnpm dev:ui:storybook
 ## Scope
 
 汎用primitive、状態表現、form部品、design tokenのみを公開対象とする。予約・組織・店舗など特定productの業務語彙を持つcomponentは各appに置く。
+
+## Acknowledgements
+
+This package includes components adapted from
+[shadcn-svelte](https://www.shadcn-svelte.com/), licensed under the MIT License.
+
+shadcn-svelte is a Svelte/SvelteKit port of shadcn/ui. Components in this
+package have been modified for Japanese applications and the Mutsuna design
+system.
+
+This project is not affiliated with or endorsed by shadcn-svelte.

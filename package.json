@@ -1,6 +1,6 @@
 {
   "name": "@mutsuna/ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reusable Svelte 5 UI components and design tokens for Mutsuna products.",
   "license": "MIT",
   "private": false,
