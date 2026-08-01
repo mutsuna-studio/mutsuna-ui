@@ -29,6 +29,7 @@ type SelectRootProps = Omit<SelectPrimitive.RootProps, "onValueChange" | "type" 
   size?: "sm" | "default";
   class?: string;
   ariaLabel?: string;
+  maxLength?: number;
   leading?: Snippet;
 };
 
@@ -49,6 +50,7 @@ let {
   size = "default",
   class: className,
   ariaLabel,
+  maxLength,
   leading,
   onValueChange,
   ...restProps
@@ -267,6 +269,7 @@ function updateSearchableListPosition(): void {
         aria-label={ariaLabel}
         aria-expanded={open}
         aria-controls={open ? "select-searchable-listbox" : undefined}
+        maxlength={maxLength}
         {disabled}
         onfocus={focusSearchInput}
         oninput={updateSearchText}
