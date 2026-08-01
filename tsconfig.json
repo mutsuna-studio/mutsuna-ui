@@ -5,6 +5,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
+    "paths": {
+      "@mutsuna/ui": ["./src/lib/index.ts"],
+      "@mutsuna/ui/*": ["./src/lib/*"]
+    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -12,6 +16,6 @@
     "target": "ES2022",
     "types": ["svelte"]
   },
-  "include": ["src/**/*.ts", "src/**/*.svelte"],
+  "include": [".storybook/**/*.ts", "src/**/*.ts", "src/**/*.svelte", "stories/**/*.svelte", "vite.config.ts"],
   "exclude": ["dist", "node_modules"]
 }

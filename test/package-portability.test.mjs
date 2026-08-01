@@ -5,6 +5,7 @@ import test from "node:test";
 
 const packageRoot = join(import.meta.dirname, "..");
 const sourceRoot = join(packageRoot, "src");
+const storiesRoot = join(packageRoot, "stories");
 
 async function listSourceFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -22,8 +23,8 @@ async function listSourceFiles(directory) {
   return files.flat();
 }
 
-test("published UI source remains independent from mutsuna-reserve internals", async () => {
-  const sourceFiles = await listSourceFiles(sourceRoot);
+test("published UI source and catalog remain independent from mutsuna-reserve internals", async () => {
+  const sourceFiles = [...(await listSourceFiles(sourceRoot)), ...(await listSourceFiles(storiesRoot))];
   const violations = [];
 
   for (const filePath of sourceFiles) {
@@ -46,4 +47,32 @@ test("package exports resolve to generated dist files", async () => {
       await assert.doesNotReject(access(join(packageRoot, target)), `${subpath} should resolve to ${target}`);
     }
   }
+});
+
+test("every public component has a package-owned story", async () => {
+  const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
+  const exportedComponents = Object.keys(packageJson.exports)
+    .filter((subpath) => /^\.\/[^/*]+$/.test(subpath) && subpath !== "./theme.css")
+    .map((subpath) => subpath.slice(2))
+    .sort();
+  const storyComponents = (await readdir(storiesRoot))
+    .filter((fileName) => fileName.endsWith(".stories.svelte"))
+    .map((fileName) => fileName.replace(".stories.svelte", ""))
+    .sort();
+
+  assert.deepEqual(storyComponents, exportedComponents);
+});
+
+test("theme imports are declared by the package", async () => {
+  const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
+  const theme = await readFile(join(sourceRoot, "lib/theme.css"), "utf8");
+  const declaredPackages = new Set([...Object.keys(packageJson.dependencies ?? {}), ...Object.keys(packageJson.peerDependencies ?? {})]);
+  const importedPackages = [...theme.matchAll(/@import\s+"([^".][^"]*)"/g)].map(([, specifier]) =>
+    specifier.startsWith("@") ? specifier.split("/").slice(0, 2).join("/") : specifier.split("/")[0],
+  );
+
+  assert.deepEqual(
+    importedPackages.filter((dependency) => !declaredPackages.has(dependency)),
+    [],
+  );
 });

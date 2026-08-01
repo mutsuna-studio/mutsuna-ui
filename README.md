@@ -39,6 +39,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 
 packageには`@sveltejs/package`で生成したJavaScript、Svelte component、型定義を収録する。
 
+## Storybook
+
+共通UIのcatalogはpackage単独で起動する。
+
+```sh
+pnpm dev:ui:storybook
+```
+
+`http://localhost:6206`で確認可能。storyとStorybook設定はnpm packageへ含めない。
+
 ## Scope
 
 汎用primitive、状態表現、form部品、design tokenのみを公開対象とする。予約・組織・店舗など特定productの業務語彙を持つcomponentは各appに置く。
