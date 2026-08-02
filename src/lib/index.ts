@@ -140,6 +140,7 @@ export {
   PopoverTitle,
   PopoverTrigger,
 } from "./popover/index.js";
+export { ScrollbarArea, type ScrollbarVisibilityOptions, scrollbarVisibility } from "./scrollbar/index.js";
 export {
   Select,
   SelectContent,

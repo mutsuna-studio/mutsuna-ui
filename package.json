@@ -364,6 +364,16 @@
       "svelte": "./dist/sheet/*",
       "default": "./dist/sheet/*"
     },
+    "./scrollbar": {
+      "types": "./dist/scrollbar/index.d.ts",
+      "svelte": "./dist/scrollbar/index.js",
+      "default": "./dist/scrollbar/index.js"
+    },
+    "./scrollbar/*": {
+      "types": "./dist/scrollbar/*",
+      "svelte": "./dist/scrollbar/*",
+      "default": "./dist/scrollbar/*"
+    },
     "./sonner": {
       "types": "./dist/sonner/index.d.ts",
       "svelte": "./dist/sonner/index.js",

@@ -47,6 +47,18 @@ const theme = createTheme("custom", "oklch(0.546 0.175 252.58)");
 </ThemeProvider>
 ```
 
+theme colorに追従するscrollbarは`ScrollbarArea`を使う。
+
+```svelte
+<script lang="ts">
+import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
+</script>
+
+<ScrollbarArea class="max-h-80 overflow-y-auto">
+  <!-- scrollable content -->
+</ScrollbarArea>
+```
+
 ## Requirements
 
 - Svelte 5

@@ -72,6 +72,7 @@ try {
 import { Button } from "@mutsuna/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
+import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 import { ThemeProvider, themeTemplates } from "@mutsuna/ui/theme";
 </script>
 
@@ -85,6 +86,9 @@ import { ThemeProvider, themeTemplates } from "@mutsuna/ui/theme";
         </DialogTrigger>
         <DialogContent><DialogTitle>Installed from tarball</DialogTitle></DialogContent>
       </Dialog>
+      <ScrollbarArea class="mt-4 h-20 overflow-y-auto">
+        <div class="h-40">Themed scrollbar</div>
+      </ScrollbarArea>
     </CardContent>
   </Card>
 </ThemeProvider>
