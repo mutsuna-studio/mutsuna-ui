@@ -33,6 +33,15 @@ export {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./breadcrumb/index.js";
+export {
+  type BusinessHourDraft,
+  BusinessHoursFields,
+  type BusinessHoursFieldsProps,
+  type HolidayHoursDraft,
+  type Weekday,
+  weekdayLabels,
+  weekdays,
+} from "./business-hours-fields/index.js";
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant, buttonVariants } from "./button/index.js";
 export {
   ButtonGroup,

@@ -89,6 +89,16 @@
       "svelte": "./dist/button/*",
       "default": "./dist/button/*"
     },
+    "./business-hours-fields": {
+      "types": "./dist/business-hours-fields/index.d.ts",
+      "svelte": "./dist/business-hours-fields/index.js",
+      "default": "./dist/business-hours-fields/index.js"
+    },
+    "./business-hours-fields/*": {
+      "types": "./dist/business-hours-fields/*",
+      "svelte": "./dist/business-hours-fields/*",
+      "default": "./dist/business-hours-fields/*"
+    },
     "./button-group": {
       "types": "./dist/button-group/index.d.ts",
       "svelte": "./dist/button-group/index.js",
