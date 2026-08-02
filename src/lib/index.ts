@@ -121,6 +121,13 @@ export {
   FormLabel,
   FormLegend,
 } from "./form/index.js";
+export {
+  type EditorField,
+  type EditorOption,
+  type EditorVisibilityOption,
+  FormTemplateEditor,
+  type FormTemplateEditorProps,
+} from "./form-template-editor/index.js";
 export { Input } from "./input/index.js";
 export {
   InputGroup,

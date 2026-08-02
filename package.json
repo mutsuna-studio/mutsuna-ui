@@ -213,6 +213,16 @@
       "svelte": "./dist/markdown/*",
       "default": "./dist/markdown/*"
     },
+    "./form-template-editor": {
+      "types": "./dist/form-template-editor/index.d.ts",
+      "svelte": "./dist/form-template-editor/index.js",
+      "default": "./dist/form-template-editor/index.js"
+    },
+    "./form-template-editor/*": {
+      "types": "./dist/form-template-editor/*",
+      "svelte": "./dist/form-template-editor/*",
+      "default": "./dist/form-template-editor/*"
+    },
     "./popover": {
       "types": "./dist/popover/index.d.ts",
       "svelte": "./dist/popover/index.js",
