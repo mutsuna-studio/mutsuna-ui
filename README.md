@@ -59,6 +59,19 @@ import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 </ScrollbarArea>
 ```
 
+管理画面向けの複合componentもsubpath単位で利用可能。
+
+```svelte
+<script lang="ts">
+import { BusinessHoursFields } from "@mutsuna/ui/business-hours-fields";
+import { FormTemplateEditor } from "@mutsuna/ui/form-template-editor";
+import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
+import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
+</script>
+```
+
+`FormTemplateEditor`の表示条件と`TemplateInsertMenu`のpayload/categoryは利用側が型と選択肢を定義する。永続化、業務validation、API変換は利用側の責務。
+
 ## Requirements
 
 - Svelte 5
@@ -78,7 +91,7 @@ pnpm dev:ui:storybook
 
 ## Scope
 
-汎用primitive、状態表現、form部品、design tokenのみを公開対象とする。予約・組織・店舗など特定productの業務語彙を持つcomponentは各appに置く。
+汎用primitive、状態表現、form部品、管理画面向けの再利用可能な複合component、design tokenを公開対象とする。特定productのruntime型、永続化、業務actionは各appに置く。
 
 ## Acknowledgements
 

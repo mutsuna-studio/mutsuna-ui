@@ -72,11 +72,27 @@ try {
 import { Button } from "@mutsuna/ui/button";
 import { CustomerAvatar } from "@mutsuna/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
+import { BusinessHoursFields, type BusinessHourDraft, weekdayLabels, weekdays } from "@mutsuna/ui/business-hours-fields";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
+import { FormTemplateEditor, type EditorField } from "@mutsuna/ui/form-template-editor";
+import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 import { showSuccessToast } from "@mutsuna/ui/sonner";
+import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
 import { ThemeProvider, themeTemplates } from "@mutsuna/ui/theme";
 import { cn } from "@mutsuna/ui/utils";
+
+let fields = $state<EditorField[]>([
+  { kind: "fixed", key: "name", label: "Name", type: "text", required: true, enabled: true, options: [] },
+]);
+let businessHours = $state<BusinessHourDraft[]>(
+  weekdays.map((weekday) => ({ weekday, label: weekdayLabels[weekday], isOpen: false, opensAt: "09:00", closesAt: "18:00" })),
+);
+let holidayDates = $state("");
+let holidayIsOpen = $state(false);
+let holidayOpensAt = $state("09:00");
+let holidayClosesAt = $state("18:00");
+let holidayPriority = $state(true);
 </script>
 
 <ThemeProvider theme={themeTemplates[1]}>
@@ -94,6 +110,24 @@ import { cn } from "@mutsuna/ui/utils";
       <ScrollbarArea class="mt-4 h-20 overflow-y-auto">
         <div class="h-40">Themed scrollbar</div>
       </ScrollbarArea>
+      <MarkdownTextEditor id="external-markdown" label="Markdown" value="## External" />
+      <FormTemplateEditor bind:fields />
+      <BusinessHoursFields
+        title="Business hours"
+        description="External consumer"
+        presentation="section"
+        bind:businessHours
+        bind:holidayDates
+        bind:holidayIsOpen
+        bind:holidayOpensAt
+        bind:holidayClosesAt
+        bind:holidayPriority
+      />
+      <TemplateInsertMenu
+        templates={[{ id: "profile", name: "Profile", category: "profile", payload: { title: "External" } }]}
+        category="profile"
+        onApply={() => undefined}
+      />
     </CardContent>
   </Card>
 </ThemeProvider>
