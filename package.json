@@ -149,6 +149,16 @@
       "svelte": "./dist/dialog/*",
       "default": "./dist/dialog/*"
     },
+    "./date-time-range-fields": {
+      "types": "./dist/date-time-range-fields/index.d.ts",
+      "svelte": "./dist/date-time-range-fields/index.js",
+      "default": "./dist/date-time-range-fields/index.js"
+    },
+    "./date-time-range-fields/*": {
+      "types": "./dist/date-time-range-fields/*",
+      "svelte": "./dist/date-time-range-fields/*",
+      "default": "./dist/date-time-range-fields/*"
+    },
     "./dropdown-menu": {
       "types": "./dist/dropdown-menu/index.d.ts",
       "svelte": "./dist/dropdown-menu/index.js",

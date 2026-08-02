@@ -64,6 +64,7 @@ import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 ```svelte
 <script lang="ts">
 import { BusinessHoursFields } from "@mutsuna/ui/business-hours-fields";
+import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 import { FormTemplateEditor } from "@mutsuna/ui/form-template-editor";
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
@@ -71,6 +72,14 @@ import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
 ```
 
 `FormTemplateEditor`の表示条件と`TemplateInsertMenu`のpayload/categoryは利用側が型と選択肢を定義する。永続化、業務validation、API変換は利用側の責務。
+
+SvelteKit form actionの通知、redirect、pending管理は専用subpathから利用する。
+
+```ts
+import { createFormActionToastEnhancer } from "@mutsuna/ui/sveltekit-form";
+```
+
+`@mutsuna/ui/sveltekit-form`を利用するprojectだけ`@sveltejs/kit`が必要。
 
 ## Requirements
 
