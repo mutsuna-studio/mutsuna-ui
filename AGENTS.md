@@ -80,9 +80,10 @@ release手順の正本は`RELEASING.md`。
 - `minor`: 新しい公開API、重要な機能追加、破壊的変更。破壊的変更はconsumer移行を同じタスクで行う。
 - `major`: `1.0.0`として公開contractの安定運用を開始するとき。
 
-- `package.json`のversionを手動変更しない。Release workflowがnpm registryの公開済みversionから次versionを計算する。
+- 公開packageへ影響するPRでは`pnpm changeset`でrelease種別と変更概要を追加する。docs、Storybook、CIだけの変更はchangeset不要。
+- `package.json`のversionを手動変更しない。Release workflowがchangesetからversionとCHANGELOGを更新する。
 - 長期npm tokenを追加しない。Trusted Publisherとprovenanceを維持する。
-- publish後はnpm registryの公開versionを確認してからconsumerを更新する。
+- changesetを含む変更PRのmain merge後にTrusted Publisherで自動publishする。publish後はnpm registryの公開versionを確認してからconsumerを更新する。
 - release失敗時に同じversionを再利用しない。registry状態を確認して次の操作を決める。
 
 ## Consumer integration
