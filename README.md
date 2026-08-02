@@ -68,6 +68,7 @@ import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 import { FormTemplateEditor } from "@mutsuna/ui/form-template-editor";
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
+import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
 </script>
 ```
 

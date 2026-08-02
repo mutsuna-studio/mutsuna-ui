@@ -28,6 +28,16 @@
       "svelte": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./admin-shell-frame": {
+      "types": "./dist/admin-shell-frame/index.d.ts",
+      "svelte": "./dist/admin-shell-frame/index.js",
+      "default": "./dist/admin-shell-frame/index.js"
+    },
+    "./admin-shell-frame/*": {
+      "types": "./dist/admin-shell-frame/*",
+      "svelte": "./dist/admin-shell-frame/*",
+      "default": "./dist/admin-shell-frame/*"
+    },
     "./theme.css": "./dist/theme.css",
     "./alert": {
       "types": "./dist/alert/index.d.ts",
