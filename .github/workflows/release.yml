@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: SemVer increment
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: npm install --global npm@^11.5.1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build-storybook
+      - run: pnpm test:consumer
+      - name: Set next package version
+        env:
+          INCREMENT: ${{ inputs.increment }}
+        run: |
+          CURRENT_VERSION="$(npm view @mutsuna/ui version)"
+          NEXT_VERSION="$(node -e 'const [major, minor, patch] = process.argv[1].split(".").map(Number); const increment = process.argv[2]; const next = increment === "major" ? [major + 1, 0, 0] : increment === "minor" ? [major, minor + 1, 0] : [major, minor, patch + 1]; process.stdout.write(next.join("."));' "$CURRENT_VERSION" "$INCREMENT")"
+          npm pkg set version="$NEXT_VERSION"
+      - run: npm publish --access public --provenance

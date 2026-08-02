@@ -95,7 +95,7 @@ packageには`@sveltejs/package`で生成したJavaScript、Svelte component、�
 共通UIのcatalogはpackage単独で起動する。
 
 ```sh
-pnpm dev:ui:storybook
+pnpm storybook
 ```
 
 `http://localhost:6206`で確認可能。storyとStorybook設定はnpm packageへ含めない。

@@ -88,8 +88,7 @@ test("package metadata stays ready for public npm releases", async () => {
   assert.deepEqual(packageJson.publishConfig, { access: "public" });
   assert.deepEqual(packageJson.repository, {
     type: "git",
-    url: "git+https://github.com/mutsuna-studio/mutsuna-reserve.git",
-    directory: "packages/ui",
+    url: "git+https://github.com/mutsuna-studio/mutsuna-ui.git",
   });
   assert.match(license, /Copyright \(c\) 2026 むつな工房 \/ Mutsuna/);
   assert.match(license, /Copyright \(c\) 2023 Hunter Johnston <https:\/\/github\.com\/huntabyte>/);

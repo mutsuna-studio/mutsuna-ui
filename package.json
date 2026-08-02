@@ -8,8 +8,15 @@
   "svelte": "./dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mutsuna-studio/mutsuna-reserve.git",
-    "directory": "packages/ui"
+    "url": "git+https://github.com/mutsuna-studio/mutsuna-ui.git"
+  },
+  "homepage": "https://github.com/mutsuna-studio/mutsuna-ui#readme",
+  "bugs": {
+    "url": "https://github.com/mutsuna-studio/mutsuna-ui/issues"
+  },
+  "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": ">=22.14.0"
   },
   "files": [
     "dist",
@@ -575,6 +582,7 @@
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tailwindcss/vite": "^4.3.0",
     "@types/japanese-holidays": "^1.0.3",
+    "@types/node": "^24.12.4",
     "storybook": "^10.4.6",
     "svelte": "^5.55.2",
     "svelte-check": "^4.4.6",
