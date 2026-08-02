@@ -91,7 +91,7 @@ release手順の正本は`RELEASING.md`。
 - local alias、local path、git dependency、`workspace:`依存をcommitしない。
 - consumerのmanifestとlockfileを同じ変更で更新する。
 - `^0.x.y`は次のminorを自動採用しない。minor releaseではconsumer manifestを明示更新する。
-- 公開直後のversionをconsumerのrelease-age policyから除外する場合、正確な`@mutsuna/ui@x.y.z`だけを対象にする。
+- consumerは自社管理・Trusted Publisher・provenance付きの`@mutsuna/ui`だけをrelease-age policyからpackage単位で除外できる。推移依存関係と他packageの検査は維持する。
 
 ## License
 
