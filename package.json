@@ -323,6 +323,16 @@
       "svelte": "./dist/tabs/*",
       "default": "./dist/tabs/*"
     },
+    "./template-insert-menu": {
+      "types": "./dist/template-insert-menu/index.d.ts",
+      "svelte": "./dist/template-insert-menu/index.js",
+      "default": "./dist/template-insert-menu/index.js"
+    },
+    "./template-insert-menu/*": {
+      "types": "./dist/template-insert-menu/*",
+      "svelte": "./dist/template-insert-menu/*",
+      "default": "./dist/template-insert-menu/*"
+    },
     "./textarea": {
       "types": "./dist/textarea/index.d.ts",
       "svelte": "./dist/textarea/index.js",

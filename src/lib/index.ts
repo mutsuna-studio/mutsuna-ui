@@ -234,6 +234,13 @@ export {
   TableRow,
 } from "./table/index.js";
 export { Tabs, TabsContent, TabsList, type TabsListVariant, TabsTrigger, tabsListVariants } from "./tabs/index.js";
+export {
+  type TemplateInsertExistingOption,
+  TemplateInsertMenu,
+  type TemplateInsertMenuProps,
+  type TemplateInsertOption,
+  type TemplateInsertTemplate,
+} from "./template-insert-menu/index.js";
 export { Textarea } from "./textarea/index.js";
 export {
   createTheme,
