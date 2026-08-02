@@ -38,6 +38,16 @@
       "svelte": "./dist/admin-shell-frame/*",
       "default": "./dist/admin-shell-frame/*"
     },
+    "./admin-layout": {
+      "types": "./dist/admin-layout/index.d.ts",
+      "svelte": "./dist/admin-layout/index.js",
+      "default": "./dist/admin-layout/index.js"
+    },
+    "./admin-layout/*": {
+      "types": "./dist/admin-layout/*",
+      "svelte": "./dist/admin-layout/*",
+      "default": "./dist/admin-layout/*"
+    },
     "./theme.css": "./dist/theme.css",
     "./alert": {
       "types": "./dist/alert/index.d.ts",
