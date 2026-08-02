@@ -1,5 +1,36 @@
 export { Alert, AlertAction, AlertDescription, AlertTitle, type AlertVariant, alertVariants } from "./alert/index.js";
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogOverlay,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./alert-dialog/index.js";
+export {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "./avatar/index.js";
 export { Badge, type BadgeShape, type BadgeVariant, badgeVariants } from "./badge/index.js";
+export {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./breadcrumb/index.js";
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant, buttonVariants } from "./button/index.js";
 export {
   ButtonGroup,
@@ -18,6 +49,7 @@ export {
   CardTitle,
 } from "./card/index.js";
 export { Checkbox } from "./checkbox/index.js";
+export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible/index.js";
 export {
   Dialog,
   DialogBody,
@@ -98,7 +130,9 @@ export {
   SelectTrigger,
 } from "./select/index.js";
 export { Separator } from "./separator/index.js";
+export { Skeleton } from "./skeleton/index.js";
 export { SortableList, type SortableListControls, type SortableListDragHandleProps } from "./sortable-list/index.js";
+export { Switch } from "./switch/index.js";
 export {
   Table,
   TableBody,
@@ -110,4 +144,5 @@ export {
   TableRow,
 } from "./table/index.js";
 export { Tabs, TabsContent, TabsList, type TabsListVariant, TabsTrigger, tabsListVariants } from "./tabs/index.js";
+export { Textarea } from "./textarea/index.js";
 export { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from "./tooltip/index.js";
