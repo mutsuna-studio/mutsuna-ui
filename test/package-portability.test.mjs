@@ -51,8 +51,9 @@ test("package exports resolve to generated dist files", async () => {
 
 test("every public component has a package-owned story", async () => {
   const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
+  const nonComponentExports = new Set(["./theme.css", "./utils"]);
   const exportedComponents = Object.keys(packageJson.exports)
-    .filter((subpath) => /^\.\/[^/*]+$/.test(subpath) && subpath !== "./theme.css")
+    .filter((subpath) => /^\.\/[^/*]+$/.test(subpath) && !nonComponentExports.has(subpath))
     .map((subpath) => subpath.slice(2))
     .sort();
   const storyComponents = (await readdir(storiesRoot))

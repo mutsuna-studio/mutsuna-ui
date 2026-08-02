@@ -70,16 +70,21 @@ try {
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
 import { Button } from "@mutsuna/ui/button";
+import { CustomerAvatar } from "@mutsuna/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
 import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
+import { showSuccessToast } from "@mutsuna/ui/sonner";
 import { ThemeProvider, themeTemplates } from "@mutsuna/ui/theme";
+import { cn } from "@mutsuna/ui/utils";
 </script>
 
 <ThemeProvider theme={themeTemplates[1]}>
   <Card class="m-8 max-w-md">
     <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
-    <CardContent>
+    <CardContent class={cn("grid", "gap-4")}>
+      <CustomerAvatar id="external-customer" name="External customer" />
+      <Button type="button" onclick={() => showSuccessToast("Shared toast")}>Toast</Button>
       <Dialog>
         <DialogTrigger>
           {#snippet child({ props })}<Button {...props}>Open</Button>{/snippet}

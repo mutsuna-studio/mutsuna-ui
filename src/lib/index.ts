@@ -13,6 +13,7 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog/index.js";
+export type { CustomerAvatarProps } from "./avatar/index.js";
 export {
   Avatar,
   AvatarBadge,
@@ -20,6 +21,7 @@ export {
   AvatarGroup,
   AvatarGroupCount,
   AvatarImage,
+  CustomerAvatar,
 } from "./avatar/index.js";
 export { Badge, type BadgeShape, type BadgeVariant, badgeVariants } from "./badge/index.js";
 export {
@@ -195,7 +197,7 @@ export {
   useSidebar,
 } from "./sidebar/index.js";
 export { Skeleton } from "./skeleton/index.js";
-export { Toaster } from "./sonner/index.js";
+export { showErrorToast, showInfoToast, showSuccessToast, showToast, showWarningToast, Toaster } from "./sonner/index.js";
 export { SortableList, type SortableListControls, type SortableListDragHandleProps } from "./sortable-list/index.js";
 export { Switch } from "./switch/index.js";
 export {
@@ -230,3 +232,4 @@ export {
 export { TimePicker } from "./time-picker/index.js";
 export { TimeSelect } from "./time-select/index.js";
 export { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from "./tooltip/index.js";
+export { cn, type WithElementRef, type WithoutChild, type WithoutChildren, type WithoutChildrenOrChild } from "./utils.js";

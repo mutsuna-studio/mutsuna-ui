@@ -194,6 +194,10 @@
       "svelte": "./dist/oklch-color-picker/index.js",
       "default": "./dist/oklch-color-picker/index.js"
     },
+    "./oklch-color-picker/oklch-color": {
+      "types": "./dist/oklch-color-picker/oklch-color.d.ts",
+      "default": "./dist/oklch-color-picker/oklch-color.js"
+    },
     "./oklch-color-picker/*": {
       "types": "./dist/oklch-color-picker/*",
       "svelte": "./dist/oklch-color-picker/*",
@@ -454,10 +458,18 @@
       "svelte": "./dist/theme/index.js",
       "default": "./dist/theme/index.js"
     },
+    "./theme/core": {
+      "types": "./dist/theme/theme.d.ts",
+      "default": "./dist/theme/theme.js"
+    },
     "./theme/*": {
       "types": "./dist/theme/*",
       "svelte": "./dist/theme/*",
       "default": "./dist/theme/*"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "default": "./dist/utils.js"
     }
   },
   "scripts": {
