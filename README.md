@@ -32,6 +32,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 </Card>
 ```
 
+theme colorは`ThemeProvider`でCSS変数へ反映する。永続化先は利用側が管理する。
+
+```svelte
+<script lang="ts">
+import { Button } from "@mutsuna/ui/button";
+import { ThemeProvider, createTheme } from "@mutsuna/ui/theme";
+
+const theme = createTheme("custom", "oklch(0.546 0.175 252.58)");
+</script>
+
+<ThemeProvider {theme}>
+  <Button>保存</Button>
+</ThemeProvider>
+```
+
 ## Requirements
 
 - Svelte 5

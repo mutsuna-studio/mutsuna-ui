@@ -438,6 +438,16 @@
       "types": "./dist/sidebar/*",
       "svelte": "./dist/sidebar/*",
       "default": "./dist/sidebar/*"
+    },
+    "./theme": {
+      "types": "./dist/theme/index.d.ts",
+      "svelte": "./dist/theme/index.js",
+      "default": "./dist/theme/index.js"
+    },
+    "./theme/*": {
+      "types": "./dist/theme/*",
+      "svelte": "./dist/theme/*",
+      "default": "./dist/theme/*"
     }
   },
   "scripts": {

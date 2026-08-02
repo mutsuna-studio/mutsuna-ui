@@ -209,6 +209,23 @@ export {
 } from "./table/index.js";
 export { Tabs, TabsContent, TabsList, type TabsListVariant, TabsTrigger, tabsListVariants } from "./tabs/index.js";
 export { Textarea } from "./textarea/index.js";
+export {
+  createTheme,
+  defaultTheme,
+  findThemeTemplate,
+  hexToOklch,
+  isValidOklchColor,
+  oklchToHex,
+  type Theme,
+  type ThemeCssVariable,
+  type ThemeCssVariableName,
+  ThemeProvider,
+  type ThemeSource,
+  type ThemeTemplate,
+  type ThemeTemplateKey,
+  themeTemplates,
+  themeToCssVariables,
+} from "./theme/index.js";
 export { TimePicker } from "./time-picker/index.js";
 export { TimeSelect } from "./time-select/index.js";
 export { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from "./tooltip/index.js";

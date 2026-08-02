@@ -72,19 +72,22 @@ try {
 import { Button } from "@mutsuna/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
+import { ThemeProvider, themeTemplates } from "@mutsuna/ui/theme";
 </script>
 
-<Card class="m-8 max-w-md">
-  <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
-  <CardContent>
-    <Dialog>
-      <DialogTrigger>
-        {#snippet child({ props })}<Button {...props}>Open</Button>{/snippet}
-      </DialogTrigger>
-      <DialogContent><DialogTitle>Installed from tarball</DialogTitle></DialogContent>
-    </Dialog>
-  </CardContent>
-</Card>
+<ThemeProvider theme={themeTemplates[1]}>
+  <Card class="m-8 max-w-md">
+    <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
+    <CardContent>
+      <Dialog>
+        <DialogTrigger>
+          {#snippet child({ props })}<Button {...props}>Open</Button>{/snippet}
+        </DialogTrigger>
+        <DialogContent><DialogTitle>Installed from tarball</DialogTitle></DialogContent>
+      </Dialog>
+    </CardContent>
+  </Card>
+</ThemeProvider>
 `,
   );
 
