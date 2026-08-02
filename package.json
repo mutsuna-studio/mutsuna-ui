@@ -41,7 +41,7 @@
       "default": "./dist/admin-shell-frame/index.js"
     },
     "./admin-shell-frame/*": {
-      "types": "./dist/admin-shell-frame/*",
+      "types": "./dist/admin-shell-frame/*.d.ts",
       "svelte": "./dist/admin-shell-frame/*",
       "default": "./dist/admin-shell-frame/*"
     },
@@ -51,7 +51,7 @@
       "default": "./dist/admin-layout/index.js"
     },
     "./admin-layout/*": {
-      "types": "./dist/admin-layout/*",
+      "types": "./dist/admin-layout/*.d.ts",
       "svelte": "./dist/admin-layout/*",
       "default": "./dist/admin-layout/*"
     },
@@ -62,7 +62,7 @@
       "default": "./dist/alert/index.js"
     },
     "./alert/*": {
-      "types": "./dist/alert/*",
+      "types": "./dist/alert/*.d.ts",
       "svelte": "./dist/alert/*",
       "default": "./dist/alert/*"
     },
@@ -72,7 +72,7 @@
       "default": "./dist/alert-dialog/index.js"
     },
     "./alert-dialog/*": {
-      "types": "./dist/alert-dialog/*",
+      "types": "./dist/alert-dialog/*.d.ts",
       "svelte": "./dist/alert-dialog/*",
       "default": "./dist/alert-dialog/*"
     },
@@ -82,7 +82,7 @@
       "default": "./dist/avatar/index.js"
     },
     "./avatar/*": {
-      "types": "./dist/avatar/*",
+      "types": "./dist/avatar/*.d.ts",
       "svelte": "./dist/avatar/*",
       "default": "./dist/avatar/*"
     },
@@ -92,7 +92,7 @@
       "default": "./dist/badge/index.js"
     },
     "./badge/*": {
-      "types": "./dist/badge/*",
+      "types": "./dist/badge/*.d.ts",
       "svelte": "./dist/badge/*",
       "default": "./dist/badge/*"
     },
@@ -102,7 +102,7 @@
       "default": "./dist/breadcrumb/index.js"
     },
     "./breadcrumb/*": {
-      "types": "./dist/breadcrumb/*",
+      "types": "./dist/breadcrumb/*.d.ts",
       "svelte": "./dist/breadcrumb/*",
       "default": "./dist/breadcrumb/*"
     },
@@ -112,7 +112,7 @@
       "default": "./dist/button/index.js"
     },
     "./button/*": {
-      "types": "./dist/button/*",
+      "types": "./dist/button/*.d.ts",
       "svelte": "./dist/button/*",
       "default": "./dist/button/*"
     },
@@ -122,7 +122,7 @@
       "default": "./dist/business-hours-fields/index.js"
     },
     "./business-hours-fields/*": {
-      "types": "./dist/business-hours-fields/*",
+      "types": "./dist/business-hours-fields/*.d.ts",
       "svelte": "./dist/business-hours-fields/*",
       "default": "./dist/business-hours-fields/*"
     },
@@ -132,7 +132,7 @@
       "default": "./dist/button-group/index.js"
     },
     "./button-group/*": {
-      "types": "./dist/button-group/*",
+      "types": "./dist/button-group/*.d.ts",
       "svelte": "./dist/button-group/*",
       "default": "./dist/button-group/*"
     },
@@ -142,7 +142,7 @@
       "default": "./dist/card/index.js"
     },
     "./card/*": {
-      "types": "./dist/card/*",
+      "types": "./dist/card/*.d.ts",
       "svelte": "./dist/card/*",
       "default": "./dist/card/*"
     },
@@ -152,7 +152,7 @@
       "default": "./dist/checkbox/index.js"
     },
     "./checkbox/*": {
-      "types": "./dist/checkbox/*",
+      "types": "./dist/checkbox/*.d.ts",
       "svelte": "./dist/checkbox/*",
       "default": "./dist/checkbox/*"
     },
@@ -162,7 +162,7 @@
       "default": "./dist/collapsible/index.js"
     },
     "./collapsible/*": {
-      "types": "./dist/collapsible/*",
+      "types": "./dist/collapsible/*.d.ts",
       "svelte": "./dist/collapsible/*",
       "default": "./dist/collapsible/*"
     },
@@ -172,7 +172,7 @@
       "default": "./dist/dialog/index.js"
     },
     "./dialog/*": {
-      "types": "./dist/dialog/*",
+      "types": "./dist/dialog/*.d.ts",
       "svelte": "./dist/dialog/*",
       "default": "./dist/dialog/*"
     },
@@ -182,7 +182,7 @@
       "default": "./dist/date-time-range-fields/index.js"
     },
     "./date-time-range-fields/*": {
-      "types": "./dist/date-time-range-fields/*",
+      "types": "./dist/date-time-range-fields/*.d.ts",
       "svelte": "./dist/date-time-range-fields/*",
       "default": "./dist/date-time-range-fields/*"
     },
@@ -192,7 +192,7 @@
       "default": "./dist/dropdown-menu/index.js"
     },
     "./dropdown-menu/*": {
-      "types": "./dist/dropdown-menu/*",
+      "types": "./dist/dropdown-menu/*.d.ts",
       "svelte": "./dist/dropdown-menu/*",
       "default": "./dist/dropdown-menu/*"
     },
@@ -202,7 +202,7 @@
       "default": "./dist/empty/index.js"
     },
     "./empty/*": {
-      "types": "./dist/empty/*",
+      "types": "./dist/empty/*.d.ts",
       "svelte": "./dist/empty/*",
       "default": "./dist/empty/*"
     },
@@ -212,7 +212,7 @@
       "default": "./dist/field/index.js"
     },
     "./field/*": {
-      "types": "./dist/field/*",
+      "types": "./dist/field/*.d.ts",
       "svelte": "./dist/field/*",
       "default": "./dist/field/*"
     },
@@ -222,7 +222,7 @@
       "default": "./dist/input/index.js"
     },
     "./input/*": {
-      "types": "./dist/input/*",
+      "types": "./dist/input/*.d.ts",
       "svelte": "./dist/input/*",
       "default": "./dist/input/*"
     },
@@ -232,7 +232,7 @@
       "default": "./dist/label/index.js"
     },
     "./label/*": {
-      "types": "./dist/label/*",
+      "types": "./dist/label/*.d.ts",
       "svelte": "./dist/label/*",
       "default": "./dist/label/*"
     },
@@ -246,7 +246,7 @@
       "default": "./dist/oklch-color-picker/oklch-color.js"
     },
     "./oklch-color-picker/*": {
-      "types": "./dist/oklch-color-picker/*",
+      "types": "./dist/oklch-color-picker/*.d.ts",
       "svelte": "./dist/oklch-color-picker/*",
       "default": "./dist/oklch-color-picker/*"
     },
@@ -256,7 +256,7 @@
       "default": "./dist/markdown/index.js"
     },
     "./markdown/*": {
-      "types": "./dist/markdown/*",
+      "types": "./dist/markdown/*.d.ts",
       "svelte": "./dist/markdown/*",
       "default": "./dist/markdown/*"
     },
@@ -266,7 +266,7 @@
       "default": "./dist/form-template-editor/index.js"
     },
     "./form-template-editor/*": {
-      "types": "./dist/form-template-editor/*",
+      "types": "./dist/form-template-editor/*.d.ts",
       "svelte": "./dist/form-template-editor/*",
       "default": "./dist/form-template-editor/*"
     },
@@ -276,7 +276,7 @@
       "default": "./dist/popover/index.js"
     },
     "./popover/*": {
-      "types": "./dist/popover/*",
+      "types": "./dist/popover/*.d.ts",
       "svelte": "./dist/popover/*",
       "default": "./dist/popover/*"
     },
@@ -286,7 +286,7 @@
       "default": "./dist/tooltip/index.js"
     },
     "./tooltip/*": {
-      "types": "./dist/tooltip/*",
+      "types": "./dist/tooltip/*.d.ts",
       "svelte": "./dist/tooltip/*",
       "default": "./dist/tooltip/*"
     },
@@ -296,7 +296,7 @@
       "default": "./dist/select/index.js"
     },
     "./select/*": {
-      "types": "./dist/select/*",
+      "types": "./dist/select/*.d.ts",
       "svelte": "./dist/select/*",
       "default": "./dist/select/*"
     },
@@ -306,7 +306,7 @@
       "default": "./dist/separator/index.js"
     },
     "./separator/*": {
-      "types": "./dist/separator/*",
+      "types": "./dist/separator/*.d.ts",
       "svelte": "./dist/separator/*",
       "default": "./dist/separator/*"
     },
@@ -316,7 +316,7 @@
       "default": "./dist/skeleton/index.js"
     },
     "./skeleton/*": {
-      "types": "./dist/skeleton/*",
+      "types": "./dist/skeleton/*.d.ts",
       "svelte": "./dist/skeleton/*",
       "default": "./dist/skeleton/*"
     },
@@ -326,7 +326,7 @@
       "default": "./dist/sortable-list/index.js"
     },
     "./sortable-list/*": {
-      "types": "./dist/sortable-list/*",
+      "types": "./dist/sortable-list/*.d.ts",
       "svelte": "./dist/sortable-list/*",
       "default": "./dist/sortable-list/*"
     },
@@ -336,7 +336,7 @@
       "default": "./dist/switch/index.js"
     },
     "./switch/*": {
-      "types": "./dist/switch/*",
+      "types": "./dist/switch/*.d.ts",
       "svelte": "./dist/switch/*",
       "default": "./dist/switch/*"
     },
@@ -346,7 +346,7 @@
       "default": "./dist/table/index.js"
     },
     "./table/*": {
-      "types": "./dist/table/*",
+      "types": "./dist/table/*.d.ts",
       "svelte": "./dist/table/*",
       "default": "./dist/table/*"
     },
@@ -356,7 +356,7 @@
       "default": "./dist/tabs/index.js"
     },
     "./tabs/*": {
-      "types": "./dist/tabs/*",
+      "types": "./dist/tabs/*.d.ts",
       "svelte": "./dist/tabs/*",
       "default": "./dist/tabs/*"
     },
@@ -366,7 +366,7 @@
       "default": "./dist/template-insert-menu/index.js"
     },
     "./template-insert-menu/*": {
-      "types": "./dist/template-insert-menu/*",
+      "types": "./dist/template-insert-menu/*.d.ts",
       "svelte": "./dist/template-insert-menu/*",
       "default": "./dist/template-insert-menu/*"
     },
@@ -376,7 +376,7 @@
       "default": "./dist/textarea/index.js"
     },
     "./textarea/*": {
-      "types": "./dist/textarea/*",
+      "types": "./dist/textarea/*.d.ts",
       "svelte": "./dist/textarea/*",
       "default": "./dist/textarea/*"
     },
@@ -391,7 +391,7 @@
       "default": "./dist/duration-select/index.js"
     },
     "./duration-select/*": {
-      "types": "./dist/duration-select/*",
+      "types": "./dist/duration-select/*.d.ts",
       "svelte": "./dist/duration-select/*",
       "default": "./dist/duration-select/*"
     },
@@ -401,7 +401,7 @@
       "default": "./dist/editable-text/index.js"
     },
     "./editable-text/*": {
-      "types": "./dist/editable-text/*",
+      "types": "./dist/editable-text/*.d.ts",
       "svelte": "./dist/editable-text/*",
       "default": "./dist/editable-text/*"
     },
@@ -411,7 +411,7 @@
       "default": "./dist/filter-select/index.js"
     },
     "./filter-select/*": {
-      "types": "./dist/filter-select/*",
+      "types": "./dist/filter-select/*.d.ts",
       "svelte": "./dist/filter-select/*",
       "default": "./dist/filter-select/*"
     },
@@ -421,7 +421,7 @@
       "default": "./dist/input-group/index.js"
     },
     "./input-group/*": {
-      "types": "./dist/input-group/*",
+      "types": "./dist/input-group/*.d.ts",
       "svelte": "./dist/input-group/*",
       "default": "./dist/input-group/*"
     },
@@ -431,7 +431,7 @@
       "default": "./dist/sheet/index.js"
     },
     "./sheet/*": {
-      "types": "./dist/sheet/*",
+      "types": "./dist/sheet/*.d.ts",
       "svelte": "./dist/sheet/*",
       "default": "./dist/sheet/*"
     },
@@ -441,7 +441,7 @@
       "default": "./dist/scrollbar/index.js"
     },
     "./scrollbar/*": {
-      "types": "./dist/scrollbar/*",
+      "types": "./dist/scrollbar/*.d.ts",
       "svelte": "./dist/scrollbar/*",
       "default": "./dist/scrollbar/*"
     },
@@ -451,7 +451,7 @@
       "default": "./dist/sonner/index.js"
     },
     "./sonner/*": {
-      "types": "./dist/sonner/*",
+      "types": "./dist/sonner/*.d.ts",
       "svelte": "./dist/sonner/*",
       "default": "./dist/sonner/*"
     },
@@ -461,7 +461,7 @@
       "default": "./dist/time-picker/index.js"
     },
     "./time-picker/*": {
-      "types": "./dist/time-picker/*",
+      "types": "./dist/time-picker/*.d.ts",
       "svelte": "./dist/time-picker/*",
       "default": "./dist/time-picker/*"
     },
@@ -471,12 +471,12 @@
       "default": "./dist/time-select/index.js"
     },
     "./time-select/*": {
-      "types": "./dist/time-select/*",
+      "types": "./dist/time-select/*.d.ts",
       "svelte": "./dist/time-select/*",
       "default": "./dist/time-select/*"
     },
     "./client-ready/*": {
-      "types": "./dist/client-ready/*",
+      "types": "./dist/client-ready/*.d.ts",
       "svelte": "./dist/client-ready/*",
       "default": "./dist/client-ready/*"
     },
@@ -486,7 +486,7 @@
       "default": "./dist/calendar/index.js"
     },
     "./calendar/*": {
-      "types": "./dist/calendar/*",
+      "types": "./dist/calendar/*.d.ts",
       "svelte": "./dist/calendar/*",
       "default": "./dist/calendar/*"
     },
@@ -496,7 +496,7 @@
       "default": "./dist/data-table/index.js"
     },
     "./data-table/*": {
-      "types": "./dist/data-table/*",
+      "types": "./dist/data-table/*.d.ts",
       "svelte": "./dist/data-table/*",
       "default": "./dist/data-table/*"
     },
@@ -506,7 +506,7 @@
       "default": "./dist/form/index.js"
     },
     "./form/*": {
-      "types": "./dist/form/*",
+      "types": "./dist/form/*.d.ts",
       "svelte": "./dist/form/*",
       "default": "./dist/form/*"
     },
@@ -516,7 +516,7 @@
       "default": "./dist/sidebar/index.js"
     },
     "./sidebar/*": {
-      "types": "./dist/sidebar/*",
+      "types": "./dist/sidebar/*.d.ts",
       "svelte": "./dist/sidebar/*",
       "default": "./dist/sidebar/*"
     },
@@ -525,7 +525,7 @@
       "default": "./dist/sveltekit-form/index.js"
     },
     "./sveltekit-form/*": {
-      "types": "./dist/sveltekit-form/*",
+      "types": "./dist/sveltekit-form/*.d.ts",
       "default": "./dist/sveltekit-form/*"
     },
     "./theme": {
@@ -538,7 +538,7 @@
       "default": "./dist/theme/core.js"
     },
     "./theme/*": {
-      "types": "./dist/theme/*",
+      "types": "./dist/theme/*.d.ts",
       "svelte": "./dist/theme/*",
       "default": "./dist/theme/*"
     },

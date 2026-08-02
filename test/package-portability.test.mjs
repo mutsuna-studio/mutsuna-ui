@@ -49,6 +49,15 @@ test("package exports resolve to generated dist files", async () => {
   }
 });
 
+test("deep component exports point TypeScript to generated declaration files", async () => {
+  const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
+  const wildcardExports = Object.entries(packageJson.exports).filter(([subpath]) => subpath.includes("*"));
+
+  for (const [subpath, exportTarget] of wildcardExports) {
+    assert.match(exportTarget.types, /\/\*\.d\.ts$/, `${subpath} should resolve TypeScript through declaration files`);
+  }
+});
+
 test("every public component has a package-owned story", async () => {
   const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
   const nonComponentExports = new Set(["./theme.css", "./utils"]);
