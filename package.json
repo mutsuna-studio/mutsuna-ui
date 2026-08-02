@@ -489,8 +489,8 @@
       "default": "./dist/theme/index.js"
     },
     "./theme/core": {
-      "types": "./dist/theme/theme.d.ts",
-      "default": "./dist/theme/theme.js"
+      "types": "./dist/theme/core.d.ts",
+      "default": "./dist/theme/core.js"
     },
     "./theme/*": {
       "types": "./dist/theme/*",
