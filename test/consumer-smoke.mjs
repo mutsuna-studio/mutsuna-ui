@@ -44,6 +44,7 @@ try {
         },
         dependencies: {
           "@mutsuna/ui": `file:${tarballPath}`,
+          "@internationalized/date": packageJson.dependencies["@internationalized/date"],
         },
         devDependencies: {
           "@sveltejs/vite-plugin-svelte": packageJson.devDependencies["@sveltejs/vite-plugin-svelte"],
@@ -70,17 +71,23 @@ try {
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
 import { Button } from "@mutsuna/ui/button";
+import { AdminPage, AdminPageHeader, AdminPanel } from "@mutsuna/ui/admin-layout";
+import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
 import { CustomerAvatar } from "@mutsuna/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 import { BusinessHoursFields, type BusinessHourDraft, weekdayLabels, weekdays } from "@mutsuna/ui/business-hours-fields";
+import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
 import { FormTemplateEditor, type EditorField } from "@mutsuna/ui/form-template-editor";
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
+import { Sidebar, SidebarContent } from "@mutsuna/ui/sidebar";
 import { showSuccessToast } from "@mutsuna/ui/sonner";
+import { readFormActionToast } from "@mutsuna/ui/sveltekit-form";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
 import { ThemeProvider, themeTemplates } from "@mutsuna/ui/theme";
 import { cn } from "@mutsuna/ui/utils";
+import { CalendarDate } from "@internationalized/date";
 
 let fields = $state<EditorField[]>([
   { kind: "fixed", key: "name", label: "Name", type: "text", required: true, enabled: true, options: [] },
@@ -93,12 +100,24 @@ let holidayIsOpen = $state(false);
 let holidayOpensAt = $state("09:00");
 let holidayClosesAt = $state("18:00");
 let holidayPriority = $state(true);
+let startDateValue = $state(new CalendarDate(2026, 1, 1));
+let endDateValue = $state(new CalendarDate(2026, 1, 1));
+let startDate = $state("2026-01-01");
+let startTime = $state("09:00");
+let endDate = $state("2026-01-01");
+let endTime = $state("10:00");
+const actionToast = readFormActionToast({ status: "success", message: "Shared form action" });
 </script>
 
 <ThemeProvider theme={themeTemplates[1]}>
-  <Card class="m-8 max-w-md">
-    <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
-    <CardContent class={cn("grid", "gap-4")}>
+  <AdminShellFrame pageTitle="External consumer">
+    {#snippet sidebar()}<Sidebar><SidebarContent class="p-4">External navigation</SidebarContent></Sidebar>{/snippet}
+    <AdminPage class="max-w-3xl">
+      <AdminPageHeader description="Installed from the published tarball" />
+      <AdminPanel title="Shared admin layout" description={actionToast?.message}>
+      <Card class="max-w-md">
+        <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
+        <CardContent class={cn("grid", "gap-4")}>
       <CustomerAvatar id="external-customer" name="External customer" />
       <Button type="button" onclick={() => showSuccessToast("Shared toast")}>Toast</Button>
       <Dialog>
@@ -111,6 +130,16 @@ let holidayPriority = $state(true);
         <div class="h-40">Themed scrollbar</div>
       </ScrollbarArea>
       <MarkdownTextEditor id="external-markdown" label="Markdown" value="## External" />
+      <DateTimeRangeFields
+        bind:startDateValue
+        bind:endDateValue
+        bind:startDate
+        bind:startTime
+        bind:endDate
+        bind:endTime
+        minimumStartDateValue={startDateValue}
+        minimumEndDateValue={startDateValue}
+      />
       <FormTemplateEditor bind:fields />
       <BusinessHoursFields
         title="Business hours"
@@ -128,8 +157,11 @@ let holidayPriority = $state(true);
         category="profile"
         onApply={() => undefined}
       />
-    </CardContent>
-  </Card>
+        </CardContent>
+      </Card>
+      </AdminPanel>
+    </AdminPage>
+  </AdminShellFrame>
 </ThemeProvider>
 `,
   );
