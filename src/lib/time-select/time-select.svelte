@@ -1,5 +1,5 @@
 <script lang="ts">
-import TimePicker from "../time-picker/time-picker.svelte";
+import TimePicker from "@mutsuna/ui/time-picker/time-picker.svelte";
 
 interface Props {
   value?: string;
