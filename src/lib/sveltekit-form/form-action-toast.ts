@@ -1,5 +1,4 @@
 import type { ActionResult, SubmitFunction } from "@sveltejs/kit";
-import { applyAction } from "$app/forms";
 import { showErrorToast, showSuccessToast } from "../sonner/toast.js";
 import { type FormActionToastStatus, readFormActionToast } from "./form-action-toast-state.js";
 
@@ -44,7 +43,7 @@ export function createFormActionToastEnhancer<
     return async ({ result, update }) => {
       try {
         if (result.type === "redirect" && options.applyRedirect !== false) {
-          await applyAction(result);
+          window.location.assign(result.location);
           return;
         }
 
