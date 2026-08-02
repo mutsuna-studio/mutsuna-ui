@@ -19,8 +19,8 @@ const { Story } = defineMeta({
 	<div class="grid max-w-xl gap-4">
 		<Alert>
 			<InfoIcon class="size-4" />
-			<AlertTitle>予約受付の確認</AlertTitle>
-			<AlertDescription>営業時間と受付締切を確認してから公開してください。</AlertDescription>
+			<AlertTitle>公開前の確認</AlertTitle>
+			<AlertDescription>必要な設定を確認してから公開してください。</AlertDescription>
 		</Alert>
 		<Alert>
 			<AlertTitle>現在のパスワードが不明な場合</AlertTitle>
@@ -36,6 +36,6 @@ const { Story } = defineMeta({
 	<Alert variant="destructive" class="max-w-xl">
 		<AlertCircleIcon class="size-4" />
 		<AlertTitle>契約が必要</AlertTitle>
-		<AlertDescription>この組織はまだ契約前です。利用を始めるにはプランを選択してください。</AlertDescription>
+		<AlertDescription>このワークスペースはまだ有効化されていません。利用を始めるには設定を完了してください。</AlertDescription>
 	</Alert>
 </Story>

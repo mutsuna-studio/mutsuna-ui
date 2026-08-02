@@ -16,8 +16,8 @@ const { Story } = defineMeta({
 <Story name="Default" asChild>
 	<FieldGroup class="max-w-md">
 		<Field>
-			<FieldLabel>店舗名</FieldLabel>
-			<EditableText value="六名スタジオ" aria-label="店舗名を編集" />
+			<FieldLabel>表示名</FieldLabel>
+			<EditableText value="サンプルプロジェクト" aria-label="表示名を編集" />
 			<FieldDescription>クリックすると入力欄に切り替わります。</FieldDescription>
 		</Field>
 	</FieldGroup>
@@ -37,7 +37,7 @@ const { Story } = defineMeta({
 	<div class="grid max-w-xl divide-y rounded-md border">
 		<div class="grid grid-cols-[9rem_1fr] items-center gap-3 px-3 py-2">
 			<span class="text-sm text-muted-foreground">表示名</span>
-			<EditableText value="朝のレンタルプラン" aria-label="表示名を編集" />
+			<EditableText value="新しいお知らせ" aria-label="表示名を編集" />
 		</div>
 		<div class="grid grid-cols-[9rem_1fr] items-center gap-3 px-3 py-2">
 			<span class="text-sm text-muted-foreground">管理用メモ</span>
@@ -45,7 +45,7 @@ const { Story } = defineMeta({
 		</div>
 		<div class="grid grid-cols-[9rem_1fr] items-center gap-3 px-3 py-2">
 			<span class="text-sm text-muted-foreground">固定項目</span>
-			<EditableText value="契約プランで固定" aria-label="固定項目" disabled />
+			<EditableText value="変更できない項目" aria-label="固定項目" disabled />
 		</div>
 	</div>
 </Story>

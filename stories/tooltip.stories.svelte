@@ -26,7 +26,7 @@ const tooltipSides = ["top", "right", "bottom", "left"] as const;
 					</Button>
 				{/snippet}
 			</TooltipTrigger>
-			<TooltipContent sideOffset={6}>予約者に表示される公開説明です。</TooltipContent>
+			<TooltipContent sideOffset={6}>利用者に表示される説明です。</TooltipContent>
 		</Tooltip>
 	</TooltipProvider>
 </Story>

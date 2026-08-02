@@ -13,12 +13,12 @@ const { Story } = defineMeta({
 <Story name="Default" asChild>
 	<div class="grid max-w-xl gap-4">
 		<Label class="grid gap-2">
-			予約メモ
-			<Textarea placeholder="受付時に確認することを入力" />
+			メモ
+			<Textarea placeholder="補足情報を入力" />
 		</Label>
 		<Label class="grid gap-2">
 			説明文
-			<Textarea value="会員向けに公開するプラン説明を入力します。受付条件や注意事項もここで確認できます。" />
+			<Textarea value="利用者に表示する説明を入力します。必要な注意事項もここで確認できます。" />
 		</Label>
 	</div>
 </Story>
@@ -30,7 +30,7 @@ const { Story } = defineMeta({
 		</Label>
 		<Label class="grid gap-2">
 			無効
-			<Textarea value="契約プランで固定されています。" disabled />
+			<Textarea value="この項目は変更できません。" disabled />
 		</Label>
 		<Label class="grid gap-2">
 			エラー

@@ -17,10 +17,10 @@ const { Story } = defineMeta({
 	</div>
 </Story>
 
-<Story name="Seeded Customer Avatar" asChild>
+<Story name="Seeded Avatar" asChild>
 	<div class="flex items-center gap-4">
-		<CustomerAvatar id="customer-a" name="画像なしの顧客" />
-		<CustomerAvatar id="customer-b" name="別の顧客" size="lg" />
+		<CustomerAvatar id="user-a" name="画像なしのユーザー" />
+		<CustomerAvatar id="user-b" name="別のユーザー" size="lg" />
 	</div>
 </Story>
 

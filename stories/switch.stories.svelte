@@ -12,7 +12,7 @@ const { Story } = defineMeta({
 <Story name="States" asChild>
 	<div class="grid max-w-sm gap-4">
 		<label class="flex items-center justify-between gap-4 text-sm">
-			<span>予約受付を有効にする</span>
+			<span>機能を有効にする</span>
 			<Switch checked />
 		</label>
 		<label class="flex items-center justify-between gap-4 text-sm">
@@ -20,7 +20,7 @@ const { Story } = defineMeta({
 			<Switch />
 		</label>
 		<label class="text-muted-foreground flex items-center justify-between gap-4 text-sm">
-			<span>契約プランで固定</span>
+			<span>変更を許可しない</span>
 			<Switch disabled />
 		</label>
 		<label class="flex items-center justify-between gap-4 text-sm">

@@ -21,14 +21,14 @@ const { Story } = defineMeta({
 <Story name="Default" asChild>
 	<FieldGroup class="max-w-xl">
 		<Field>
-			<FieldLabel>店舗名</FieldLabel>
+			<FieldLabel>表示名</FieldLabel>
 			<Input value="六名工房 岡崎店" />
-			<FieldDescription>予約者向けページと管理画面に表示されます。</FieldDescription>
+			<FieldDescription>利用者向けページと管理画面に表示されます。</FieldDescription>
 		</Field>
 		<Field data-invalid="true">
-			<FieldLabel>店舗コード</FieldLabel>
+			<FieldLabel>識別コード</FieldLabel>
 			<Input aria-invalid="true" value="" placeholder="例: okazaki" />
-			<FieldError errors={[{ message: "店舗コードを入力してください。" }]} />
+			<FieldError errors={[{ message: "識別コードを入力してください。" }]} />
 		</Field>
 	</FieldGroup>
 </Story>
@@ -39,7 +39,7 @@ const { Story } = defineMeta({
 			<FieldLabel>公開状態</FieldLabel>
 			<Checkbox checked />
 			<FieldContent>
-				<FieldDescription>公開すると予約者がこの利用プランを確認できます。</FieldDescription>
+				<FieldDescription>公開すると利用者がこの項目を確認できます。</FieldDescription>
 			</FieldContent>
 		</Field>
 	</FieldGroup>
@@ -48,15 +48,15 @@ const { Story } = defineMeta({
 <Story name="Field Set" asChild>
 	<FieldSet class="max-w-xl">
 		<FieldLegend>通知設定</FieldLegend>
-		<FieldDescription>予約の変更やキャンセル時に通知する対象を選びます。</FieldDescription>
+		<FieldDescription>変更時に通知する対象を選びます。</FieldDescription>
 		<FieldGroup>
 			<Field orientation="horizontal">
 				<Checkbox checked />
-				<FieldLabel>店舗スタッフへ通知</FieldLabel>
+				<FieldLabel>担当者へ通知</FieldLabel>
 			</Field>
 			<Field orientation="horizontal">
 				<Checkbox />
-				<FieldLabel>予約者へ控えを送信</FieldLabel>
+				<FieldLabel>利用者へ控えを送信</FieldLabel>
 			</Field>
 		</FieldGroup>
 	</FieldSet>

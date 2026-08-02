@@ -24,21 +24,21 @@ const popoverSides = ["top", "right", "bottom", "left"] as const;
 	<Popover>
 		<PopoverTrigger>
 			{#snippet child({ props })}
-				<Button {...props} variant="outline">受付条件</Button>
+				<Button {...props} variant="outline">表示条件</Button>
 			{/snippet}
 		</PopoverTrigger>
 		<PopoverContent align="start">
 			<PopoverHeader>
-				<PopoverTitle>受付条件</PopoverTitle>
-				<PopoverDescription>予約者が選択できる条件を調整します。</PopoverDescription>
+				<PopoverTitle>表示条件</PopoverTitle>
+				<PopoverDescription>利用者に表示する条件を調整します。</PopoverDescription>
 			</PopoverHeader>
 			<div class="grid gap-3">
 				<Label class="grid gap-2">
-					最短受付
+					最小値
 					<Input value="60分前" />
 				</Label>
 				<Label class="grid gap-2">
-					最長受付
+					最大値
 					<Input value="30日前" />
 				</Label>
 			</div>

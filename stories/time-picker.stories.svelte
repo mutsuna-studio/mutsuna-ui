@@ -16,7 +16,7 @@ let endTime = $state("10:00");
 let customTime = $state("13:05");
 </script>
 
-<Story name="Booking Time" asChild>
+<Story name="Time Range" asChild>
 	<div class="grid max-w-sm gap-4">
 		<div class="grid grid-cols-2 gap-3">
 			<Label class="grid gap-2">

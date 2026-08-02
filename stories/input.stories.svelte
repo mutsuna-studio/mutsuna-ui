@@ -13,8 +13,8 @@ const { Story } = defineMeta({
 <Story name="Text Inputs" asChild>
 	<div class="grid max-w-md gap-4">
 		<Label class="grid gap-2">
-			店舗名
-			<Input placeholder="例: Mutsuna Studio" />
+			表示名
+			<Input placeholder="例: サンプルプロジェクト" />
 		</Label>
 		<Label class="grid gap-2">
 			メールアドレス
@@ -22,16 +22,16 @@ const { Story } = defineMeta({
 		</Label>
 		<Label class="grid gap-2">
 			無効状態
-			<Input value="契約プランで固定されています" disabled />
+			<Input value="この項目は変更できません" disabled />
 		</Label>
 	</div>
 </Story>
 
 <Story name="Validation State" asChild>
 	<div class="grid max-w-md gap-2">
-		<Label for="invalid-location-name">店舗名</Label>
-		<Input id="invalid-location-name" value="" aria-invalid="true" placeholder="店舗名を入力" />
-		<p class="text-sm text-destructive">店舗名を入力してください。</p>
+		<Label for="invalid-location-name">表示名</Label>
+		<Input id="invalid-location-name" value="" aria-invalid="true" placeholder="表示名を入力" />
+		<p class="text-sm text-destructive">表示名を入力してください。</p>
 	</div>
 </Story>
 

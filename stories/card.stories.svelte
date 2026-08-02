@@ -13,8 +13,8 @@ const { Story } = defineMeta({
 <Story name="Default" asChild>
 	<Card class="max-w-xl">
 		<CardHeader>
-			<CardTitle>営業時間</CardTitle>
-			<CardDescription>予約受付に使う標準の営業時間設定</CardDescription>
+			<CardTitle>基本設定</CardTitle>
+			<CardDescription>アプリケーション全体に適用する設定</CardDescription>
 			<CardAction>
 				<Button size="sm" variant="outline">編集</Button>
 			</CardAction>
@@ -40,12 +40,12 @@ const { Story } = defineMeta({
 <Story name="Dense Summary" asChild>
 	<Card class="max-w-xl">
 		<CardHeader>
-			<CardTitle>予約サマリー</CardTitle>
-			<CardDescription>本日の受付状況</CardDescription>
+			<CardTitle>プロジェクトサマリー</CardTitle>
+			<CardDescription>現在の進行状況</CardDescription>
 		</CardHeader>
 		<CardContent class="grid grid-cols-3 gap-3">
 			<div class="rounded-md border p-3">
-				<p class="text-xs text-muted-foreground">予約</p>
+				<p class="text-xs text-muted-foreground">項目</p>
 				<p class="text-2xl font-semibold">18</p>
 			</div>
 			<div class="rounded-md border p-3">

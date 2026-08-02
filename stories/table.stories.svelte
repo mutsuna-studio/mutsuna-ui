@@ -10,13 +10,13 @@ const { Story } = defineMeta({
 });
 </script>
 
-<Story name="Bookings" asChild>
+<Story name="Project List" asChild>
 	<Table>
-		<TableCaption>本日の予約一覧</TableCaption>
+		<TableCaption>プロジェクト一覧</TableCaption>
 		<TableHeader>
 			<TableRow>
 				<TableHead>時間</TableHead>
-				<TableHead>予約者</TableHead>
+				<TableHead>担当者</TableHead>
 				<TableHead>内容</TableHead>
 				<TableHead>状態</TableHead>
 			</TableRow>
@@ -49,13 +49,13 @@ const { Story } = defineMeta({
 		<TableHeader>
 			<TableRow>
 				<TableHead>時間</TableHead>
-				<TableHead>予約者</TableHead>
+				<TableHead>担当者</TableHead>
 				<TableHead>内容</TableHead>
 			</TableRow>
 		</TableHeader>
 		<TableBody>
 			<TableRow>
-				<TableCell colspan={3} class="h-24 text-center text-muted-foreground">表示できる予約はありません。</TableCell>
+				<TableCell colspan={3} class="h-24 text-center text-muted-foreground">表示できる項目はありません。</TableCell>
 			</TableRow>
 		</TableBody>
 	</Table>

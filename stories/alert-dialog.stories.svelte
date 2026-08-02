@@ -30,7 +30,7 @@ const { Story } = defineMeta({
 		<AlertDialogContent>
 			<AlertDialogHeader>
 				<AlertDialogTitle>公開状態を変更しますか</AlertDialogTitle>
-				<AlertDialogDescription>変更後、予約者向けページの表示に反映されます。</AlertDialogDescription>
+				<AlertDialogDescription>変更後、公開ページの表示に反映されます。</AlertDialogDescription>
 			</AlertDialogHeader>
 			<AlertDialogFooter>
 				<AlertDialogCancel>キャンセル</AlertDialogCancel>
@@ -51,7 +51,7 @@ const { Story } = defineMeta({
 				<TriangleAlertIcon aria-hidden="true" />
 			</AlertDialogMedia>
 			<AlertDialogHeader>
-				<AlertDialogTitle>利用プランを削除</AlertDialogTitle>
+				<AlertDialogTitle>項目を削除</AlertDialogTitle>
 				<AlertDialogDescription>削除すると復元できません。</AlertDialogDescription>
 			</AlertDialogHeader>
 			<AlertDialogFooter>

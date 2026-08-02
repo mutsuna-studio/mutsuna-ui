@@ -38,9 +38,9 @@ const { Story } = defineMeta({
 <Story name="Block Addon" asChild>
 	<InputGroup class="max-w-xl">
 		<InputGroupAddon align="block-start" class="border-b">
-			<InputGroupText>予約者に表示する説明</InputGroupText>
+			<InputGroupText>利用者に表示する説明</InputGroupText>
 		</InputGroupAddon>
-		<InputGroupTextarea value="会員向けに公開するプランです。対象店舗と受付条件を確認してください。" />
+		<InputGroupTextarea value="利用者に公開する項目です。表示条件を確認してください。" />
 		<InputGroupAddon align="block-end" class="border-t">
 			<Button type="button" size="sm" variant="outline">下書き保存</Button>
 		</InputGroupAddon>

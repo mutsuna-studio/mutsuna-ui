@@ -22,7 +22,7 @@ const { Story } = defineMeta({
 			{/snippet}
 		</CollapsibleTrigger>
 		<CollapsibleContent class="text-muted-foreground rounded-md border p-4 text-sm">
-			予約受付に関する追加条件を表示します。
+			追加の設定項目を表示します。
 		</CollapsibleContent>
 	</Collapsible>
 </Story>

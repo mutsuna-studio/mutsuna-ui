@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
 
 const { Story } = defineMeta({
-  title: "Patterns/Admin Shell Frame",
+  title: "Patterns/App Shell",
   component: AdminShellFrame,
   tags: ["autodocs"],
 });
@@ -17,17 +17,17 @@ let sidebarOpen = $state(true);
 </script>
 
 <Story name="Default" asChild parameters={{ layout: "fullscreen" }}>
-  <AdminShellFrame pageTitle="予約一覧" bind:sidebarOpen>
+  <AdminShellFrame pageTitle="プロジェクト一覧" bind:sidebarOpen>
     {#snippet sidebar()}
       <Sidebar.Root collapsible="icon">
-        <Sidebar.Header class="p-3 font-medium">Mutsuna Admin</Sidebar.Header>
+        <Sidebar.Header class="p-3 font-medium">Workspace</Sidebar.Header>
         <Sidebar.Content>
           <Sidebar.Group>
-            <Sidebar.GroupLabel>運営</Sidebar.GroupLabel>
+            <Sidebar.GroupLabel>ワークスペース</Sidebar.GroupLabel>
             <Sidebar.GroupContent>
               <Sidebar.Menu>
-                <Sidebar.MenuItem><Sidebar.MenuButton isActive>予約一覧</Sidebar.MenuButton></Sidebar.MenuItem>
-                <Sidebar.MenuItem><Sidebar.MenuButton>顧客一覧</Sidebar.MenuButton></Sidebar.MenuItem>
+                <Sidebar.MenuItem><Sidebar.MenuButton isActive>プロジェクト</Sidebar.MenuButton></Sidebar.MenuItem>
+                <Sidebar.MenuItem><Sidebar.MenuButton>メンバー</Sidebar.MenuButton></Sidebar.MenuItem>
               </Sidebar.Menu>
             </Sidebar.GroupContent>
           </Sidebar.Group>

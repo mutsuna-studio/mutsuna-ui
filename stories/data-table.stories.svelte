@@ -17,36 +17,36 @@ import TableHead from "@mutsuna/ui/table/table-head.svelte";
 import TableHeader from "@mutsuna/ui/table/table-header.svelte";
 import TableRow from "@mutsuna/ui/table/table-row.svelte";
 import { createSvelteTable, FlexRender } from "@mutsuna/ui/data-table";
-import { bookings, type BookingRow } from "./data-table-fixtures.js";
+import { projects, type ProjectRow } from "./data-table-fixtures.js";
 
 const { Story } = defineMeta({
-  title: "UI/Table/Data Table",
+  title: "Patterns/Data Table",
   component: Table,
   tags: ["autodocs"],
 });
 </script>
 
 <script lang="ts">
-const columns: ColumnDef<BookingRow>[] = [
+const columns: ColumnDef<ProjectRow>[] = [
   {
     accessorKey: "id",
-    header: "予約ID",
+    header: "ID",
     cell: ({ row }) => row.original.id,
   },
   {
-    accessorKey: "customer",
-    header: "予約者",
-    cell: ({ row }) => row.original.customer,
+    accessorKey: "project",
+    header: "プロジェクト",
+    cell: ({ row }) => row.original.project,
   },
   {
-    accessorKey: "offering",
-    header: "利用プラン",
-    cell: ({ row }) => row.original.offering,
+    accessorKey: "owner",
+    header: "担当者",
+    cell: ({ row }) => row.original.owner,
   },
   {
-    accessorKey: "date",
-    header: "日時",
-    cell: ({ row }) => row.original.date,
+    accessorKey: "updatedAt",
+    header: "更新日時",
+    cell: ({ row }) => row.original.updatedAt,
   },
   {
     accessorKey: "totalAmount",
@@ -61,13 +61,13 @@ const columns: ColumnDef<BookingRow>[] = [
 ];
 
 const table = createSvelteTable({
-  data: bookings,
+  data: projects,
   columns,
   getCoreRowModel: getCoreRowModel(),
 });
 
 const emptyTable = createSvelteTable({
-  data: [] as BookingRow[],
+  data: [] as ProjectRow[],
   columns,
   getCoreRowModel: getCoreRowModel(),
 });
@@ -124,13 +124,13 @@ const selectedRowCount = $derived(
 	Object.values(rowSelection).filter((selected) => selected).length
 );
 const allRowsSelected = $derived(
-	bookings.length > 0 && bookings.every((booking) => rowSelection[booking.id])
+	projects.length > 0 && projects.every((project) => rowSelection[project.id])
 );
 const someRowsSelected = $derived(selectedRowCount > 0 && !allRowsSelected);
 
 function setAllRowsSelected(checked: boolean): void {
 	rowSelection = checked
-		? Object.fromEntries(bookings.map((booking) => [booking.id, true]))
+		? Object.fromEntries(projects.map((project) => [project.id, true]))
 		: {};
 }
 
@@ -168,7 +168,7 @@ function handleRowSelectionKeydown(event: KeyboardEvent, rowId: string): void {
 }
 
 const advancedTable = createSvelteTable({
-  data: bookings,
+  data: projects,
   columns,
   enableRowSelection: true,
   getCoreRowModel: getCoreRowModel(),
@@ -247,7 +247,7 @@ const advancedRows = $derived.by(() => {
 								<div
 									role="button"
 									tabindex="0"
-									aria-label="すべての予約を選択"
+									aria-label="すべての項目を選択"
 									class="grid size-4 place-items-center"
 									onclick={() => setAllRowsSelected(!allRowsSelected)}
 									onkeydown={handleSelectAllKeydown}
@@ -341,8 +341,8 @@ const advancedRows = $derived.by(() => {
 					<TableCell colspan={columns.length}>
 						<Empty class="min-h-52 border-0 p-0">
 							<EmptyHeader>
-								<EmptyTitle>予約がありません</EmptyTitle>
-								<EmptyDescription>条件に一致する予約はまだありません。</EmptyDescription>
+								<EmptyTitle>項目がありません</EmptyTitle>
+								<EmptyDescription>条件に一致する項目はまだありません。</EmptyDescription>
 							</EmptyHeader>
 						</Empty>
 					</TableCell>

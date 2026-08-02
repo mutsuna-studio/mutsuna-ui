@@ -19,11 +19,11 @@ const { Story } = defineMeta({
     </SheetTrigger>
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>予約の詳細</SheetTitle>
-        <SheetDescription>予約者と利用時間を確認できます。</SheetDescription>
+        <SheetTitle>項目の詳細</SheetTitle>
+        <SheetDescription>関連情報を確認できます。</SheetDescription>
       </SheetHeader>
       <div class="grid gap-2 px-4 text-sm">
-        <p>予約者: 山田 花子</p>
+        <p>担当者: 山田 花子</p>
         <p>利用時間: 10:00–11:00</p>
       </div>
       <SheetFooter>

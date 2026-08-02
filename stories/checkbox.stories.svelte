@@ -59,7 +59,7 @@ function toggleAllWeekdays(checked: boolean): void {
 
 		<label class="flex items-center gap-3 text-sm">
 			<Checkbox checked />
-			<span>平日は予約を受け付ける</span>
+			<span>平日に通知を送信する</span>
 		</label>
 		<label class="flex items-start gap-3 text-sm">
 			<Checkbox />
@@ -74,7 +74,7 @@ function toggleAllWeekdays(checked: boolean): void {
 		</label>
 		<label class="flex items-center gap-3 text-sm text-muted-foreground">
 			<Checkbox disabled />
-			<span>契約プランで固定されています</span>
+			<span>この項目は固定されています</span>
 		</label>
 	</div>
 </Story>

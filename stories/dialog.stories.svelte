@@ -24,18 +24,18 @@ const { Story } = defineMeta({
 	<Dialog>
 		<DialogTrigger>
 			{#snippet child({ props })}
-				<Button {...props}>利用プランを作成</Button>
+				<Button {...props}>項目を作成</Button>
 			{/snippet}
 		</DialogTrigger>
 		<DialogContent>
 			<DialogHeader>
-				<DialogTitle>利用プランを作成</DialogTitle>
-				<DialogDescription>予約者に提示するメニュー、プラン、コースを追加します。</DialogDescription>
+				<DialogTitle>項目を作成</DialogTitle>
+				<DialogDescription>利用者に表示する項目を追加します。</DialogDescription>
 			</DialogHeader>
 			<DialogBody class="grid gap-4 py-4">
 				<Label class="grid gap-2">
 					名称
-					<Input value="会議室利用プラン" />
+					<Input value="サンプル項目" />
 				</Label>
 				<Label class="grid gap-2">
 					所要時間
@@ -63,14 +63,14 @@ const { Story } = defineMeta({
 		</DialogTrigger>
 		<DialogContent class="max-h-[90vh] max-w-3xl">
 			<DialogHeader>
-				<DialogTitle>会員プランを編集</DialogTitle>
-				<DialogDescription>使える店舗、料金、会員だけが予約できるプランを設定します。</DialogDescription>
+				<DialogTitle>項目を編集</DialogTitle>
+				<DialogDescription>公開状態や表示順などの設定を編集します。</DialogDescription>
 			</DialogHeader>
 			<DialogBody class="grid gap-4 py-4">
-			{#each ["プラン名", "月額料金", "年額料金", "対象店舗", "利用プラン", "公開状態", "受付条件", "備考", "表示順", "対象顧客", "予約単位", "最小利用時間", "最大利用時間", "キャンセル期限", "注意事項", "内部メモ"] as label (label)}
+			{#each ["名称", "カテゴリ", "公開状態", "表示順", "説明", "担当者", "開始日", "終了日", "通知設定", "タグ", "詳細設定", "注意事項", "内部メモ"] as label (label)}
 					<Label class="grid gap-2">
 						{label}
-						<Input value={label === "プラン名" ? "月額メンバー" : ""} placeholder={`${label}を入力`} />
+						<Input value={label === "名称" ? "サンプル項目" : ""} placeholder={`${label}を入力`} />
 					</Label>
 				{/each}
 			</DialogBody>
@@ -95,7 +95,7 @@ const { Story } = defineMeta({
 		</DialogTrigger>
 		<DialogContent showCloseButton={false}>
 			<DialogHeader>
-				<DialogTitle>利用プランを削除</DialogTitle>
+				<DialogTitle>項目を削除</DialogTitle>
 				<DialogDescription>削除すると復元できません。</DialogDescription>
 			</DialogHeader>
 			<DialogFooter class="mt-4">

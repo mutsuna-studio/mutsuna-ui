@@ -16,8 +16,8 @@ const { Story } = defineMeta({
 let open = $state(true);
 
 const navigation = [
-  { label: "予約", icon: CalendarDaysIcon, active: true },
-  { label: "顧客", icon: UsersIcon, active: false },
+  { label: "プロジェクト", icon: CalendarDaysIcon, active: true },
+  { label: "メンバー", icon: UsersIcon, active: false },
   { label: "設定", icon: SettingsIcon, active: false },
 ];
 </script>
@@ -49,7 +49,7 @@ const navigation = [
 		<Sidebar.Inset class="min-w-0">
 			<header class="flex h-14 items-center gap-3 border-b px-4">
 				<Sidebar.Trigger />
-				<span class="font-medium">予約管理</span>
+				<span class="font-medium">ワークスペース</span>
 			</header>
 			<div class="p-6 text-sm">サイドバーを開閉して表示を確認</div>
 		</Sidebar.Inset>

@@ -25,11 +25,11 @@ const { Story } = defineMeta({
 			<EmptyMedia variant="icon">
 				<InboxIcon aria-hidden="true" />
 			</EmptyMedia>
-			<EmptyTitle>利用プランがまだありません</EmptyTitle>
-			<EmptyDescription>予約者に提示するメニュー、プラン、コースを追加するとここに表示されます。</EmptyDescription>
+			<EmptyTitle>項目がまだありません</EmptyTitle>
+			<EmptyDescription>新しい項目を追加するとここに表示されます。</EmptyDescription>
 		</EmptyHeader>
 		<EmptyContent>
-			<Button type="button">利用プランを追加</Button>
+			<Button type="button">項目を追加</Button>
 		</EmptyContent>
 	</Empty>
 </Story>
@@ -42,11 +42,11 @@ const { Story } = defineMeta({
 					<EmptyMedia variant="icon">
 						<InboxIcon aria-hidden="true" />
 					</EmptyMedia>
-					<EmptyTitle>会員プランがまだありません</EmptyTitle>
-					<EmptyDescription>月額料金や対象店舗を設定した会員向けプランを作成します。</EmptyDescription>
+					<EmptyTitle>設定がまだありません</EmptyTitle>
+					<EmptyDescription>必要な設定を追加するとここに表示されます。</EmptyDescription>
 				</EmptyHeader>
 				<EmptyContent>
-					<Button type="button">会員プランを追加</Button>
+					<Button type="button">設定を追加</Button>
 				</EmptyContent>
 			</Empty>
 		</CardContent>
@@ -59,7 +59,7 @@ const { Story } = defineMeta({
 			<EmptyMedia variant="icon">
 				<SearchXIcon aria-hidden="true" />
 			</EmptyMedia>
-			<EmptyTitle>条件に一致する予約はありません</EmptyTitle>
+			<EmptyTitle>条件に一致する項目はありません</EmptyTitle>
 			<EmptyDescription>検索条件や期間を変更して、もう一度絞り込みを試してください。</EmptyDescription>
 		</EmptyHeader>
 		<EmptyContent>

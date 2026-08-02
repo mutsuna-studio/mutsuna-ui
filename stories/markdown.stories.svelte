@@ -24,7 +24,7 @@ const { Story } = defineMeta({
   args: {
     id: "markdown-editor-story",
     label: "本文",
-    value: "## 予約通知\n\n- 予約者名: {{customer.displayName}}\n- 日時: {{booking.startAt}}\n\n必要に応じて**管理者が確認**します。",
+    value: "## 更新通知\n\n- 担当者: {{user.displayName}}\n- 更新日時: {{item.updatedAt}}\n\n必要に応じて**管理者が確認**します。",
     minHeightClass: "min-h-56",
     toolbarPreset: "full",
   } satisfies MarkdownEditorStoryArgs,
