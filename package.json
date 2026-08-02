@@ -398,6 +398,26 @@
       "types": "./dist/client-ready/*",
       "svelte": "./dist/client-ready/*",
       "default": "./dist/client-ready/*"
+    },
+    "./calendar": {
+      "types": "./dist/calendar/index.d.ts",
+      "svelte": "./dist/calendar/index.js",
+      "default": "./dist/calendar/index.js"
+    },
+    "./calendar/*": {
+      "types": "./dist/calendar/*",
+      "svelte": "./dist/calendar/*",
+      "default": "./dist/calendar/*"
+    },
+    "./data-table": {
+      "types": "./dist/data-table/index.d.ts",
+      "svelte": "./dist/data-table/index.js",
+      "default": "./dist/data-table/index.js"
+    },
+    "./data-table/*": {
+      "types": "./dist/data-table/*",
+      "svelte": "./dist/data-table/*",
+      "default": "./dist/data-table/*"
     }
   },
   "scripts": {
@@ -420,7 +440,10 @@
     "tailwind-variants": "^3.2.2",
     "tw-animate-css": "^1.4.0",
     "mode-watcher": "^1.1.0",
-    "svelte-sonner": "^1.1.1"
+    "svelte-sonner": "^1.1.1",
+    "@internationalized/date": "^3.12.1",
+    "@tanstack/table-core": "^8.21.3",
+    "japanese-holidays": "^1.0.10"
   },
   "devDependencies": {
     "@storybook/addon-svelte-csf": "^5.1.2",
@@ -428,6 +451,7 @@
     "@sveltejs/package": "^2.5.8",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tailwindcss/vite": "^4.3.0",
+    "@types/japanese-holidays": "^1.0.3",
     "storybook": "^10.4.6",
     "svelte": "^5.55.2",
     "svelte-check": "^4.4.6",

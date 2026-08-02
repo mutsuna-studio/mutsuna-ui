@@ -39,6 +39,7 @@ export {
   ButtonGroupText,
   buttonGroupVariants,
 } from "./button-group/index.js";
+export { Calendar } from "./calendar/index.js";
 export {
   Card,
   CardAction,
@@ -51,6 +52,7 @@ export {
 export { Checkbox } from "./checkbox/index.js";
 export { default as ClientReady } from "./client-ready/index.js";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible/index.js";
+export { createSvelteTable, FlexRender, renderComponent, renderSnippet } from "./data-table/index.js";
 export {
   Dialog,
   DialogBody,
