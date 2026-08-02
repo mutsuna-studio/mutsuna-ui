@@ -108,6 +108,17 @@ export {
   FieldTitle,
 } from "./field/index.js";
 export { FilterSelect, type FilterSelectOption } from "./filter-select/index.js";
+export {
+  FormButton,
+  FormControl,
+  FormDescription,
+  FormElementField,
+  FormField,
+  FormFieldErrors,
+  FormFieldset,
+  FormLabel,
+  FormLegend,
+} from "./form/index.js";
 export { Input } from "./input/index.js";
 export {
   InputGroup,
@@ -156,6 +167,32 @@ export {
   SheetTitle,
   SheetTrigger,
 } from "./sheet/index.js";
+export {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarSeparator,
+  SidebarTrigger,
+  useSidebar,
+} from "./sidebar/index.js";
 export { Skeleton } from "./skeleton/index.js";
 export { Toaster } from "./sonner/index.js";
 export { SortableList, type SortableListControls, type SortableListDragHandleProps } from "./sortable-list/index.js";
