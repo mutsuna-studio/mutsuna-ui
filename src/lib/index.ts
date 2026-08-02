@@ -131,7 +131,14 @@ export {
   InputGroupTextarea,
 } from "./input-group/index.js";
 export { Label } from "./label/index.js";
-export { MarkdownEditor, type MarkdownEditorProps, type MarkdownEditorToolbarMode } from "./markdown/index.js";
+export {
+  MarkdownEditor,
+  type MarkdownEditorProps,
+  type MarkdownEditorToolbarMode,
+  type MarkdownEditorToolbarPreset,
+  MarkdownTextEditor,
+  type MarkdownTextEditorProps,
+} from "./markdown/index.js";
 export {
   Popover,
   PopoverClose,
