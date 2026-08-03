@@ -520,6 +520,16 @@
       "svelte": "./dist/sidebar/*",
       "default": "./dist/sidebar/*"
     },
+    "./sidebar-identity": {
+      "types": "./dist/sidebar-identity/index.d.ts",
+      "svelte": "./dist/sidebar-identity/index.js",
+      "default": "./dist/sidebar-identity/index.js"
+    },
+    "./sidebar-identity/*": {
+      "types": "./dist/sidebar-identity/*.d.ts",
+      "svelte": "./dist/sidebar-identity/*",
+      "default": "./dist/sidebar-identity/*"
+    },
     "./sveltekit-form": {
       "types": "./dist/sveltekit-form/index.d.ts",
       "default": "./dist/sveltekit-form/index.js"

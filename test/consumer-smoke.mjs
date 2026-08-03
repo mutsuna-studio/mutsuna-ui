@@ -82,6 +82,7 @@ import { FormTemplateEditor, type EditorField } from "@mutsuna/ui/form-template-
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 import { Sidebar, SidebarContent } from "@mutsuna/ui/sidebar";
+import { SidebarUserMenu, SidebarWorkspaceSwitcher } from "@mutsuna/ui/sidebar-identity";
 import { showSuccessToast } from "@mutsuna/ui/sonner";
 import { readFormActionToast } from "@mutsuna/ui/sveltekit-form";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
@@ -111,7 +112,17 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
 
 <ThemeProvider theme={themeTemplates[1]}>
   <AdminShellFrame pageTitle="External consumer">
-    {#snippet sidebar()}<Sidebar><SidebarContent class="p-4">External navigation</SidebarContent></Sidebar>{/snippet}
+    {#snippet sidebar()}
+      <Sidebar>
+        <SidebarWorkspaceSwitcher
+          workspaces={[{ id: "external", name: "External workspace", description: "Pro" }]}
+          activeWorkspaceId="external"
+          activeDescription="Pro"
+        />
+        <SidebarContent class="p-4">External navigation</SidebarContent>
+        <SidebarUserMenu user={{ name: "External user", email: "user@example.com" }} />
+      </Sidebar>
+    {/snippet}
     <AdminPage class="max-w-3xl">
       <AdminPageHeader description="Installed from the published tarball" />
       <AdminPanel title="Shared admin layout" description={actionToast?.message}>
