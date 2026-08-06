@@ -57,7 +57,7 @@ function selectWorkspace(workspaceId: string): void {
           data-size="lg"
           disabled={activeWorkspace === null}
         >
-          <div class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg">
+          <div class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg">
             {#if activeAvatarUrl}
               <img src={activeAvatarUrl} alt="" class="size-full object-cover" />
             {:else}
@@ -84,7 +84,7 @@ function selectWorkspace(workspaceId: string): void {
               size="lg"
               class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg">
+              <div class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg">
                 {#if activeAvatarUrl}
                   <img src={activeAvatarUrl} alt="" class="size-full object-cover" />
                 {:else}
