@@ -23,6 +23,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - if: github.event_name == 'pull_request' && github.actor != 'github-actions[bot]'
+        run: git branch --force main "${{ github.event.pull_request.base.sha }}"
+      - if: github.event_name == 'pull_request' && github.actor != 'github-actions[bot]'
         run: pnpm changeset status
       - run: pnpm test
       - run: pnpm build-storybook
