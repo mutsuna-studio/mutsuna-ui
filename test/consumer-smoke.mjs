@@ -130,7 +130,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
         <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
         <CardContent class={cn("grid", "gap-4")}>
       <CustomerAvatar id="external-customer" name="External customer" />
-      <Button type="button" onclick={() => showSuccessToast("Shared toast")}>Toast</Button>
+      <Button type="button" onclick={() => showSuccessToast("Shared toast", "Visible message", { detail: "Hidden detail" })}>Toast</Button>
       <Dialog>
         <DialogTrigger>
           {#snippet child({ props })}<Button {...props}>Open</Button>{/snippet}

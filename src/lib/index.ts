@@ -228,7 +228,15 @@ export {
   type SidebarWorkspaceManagementAction,
 } from "./sidebar-identity/index.js";
 export { Skeleton } from "./skeleton/index.js";
-export { showErrorToast, showInfoToast, showSuccessToast, showToast, showWarningToast, Toaster } from "./sonner/index.js";
+export {
+  type ToastCopyOptions,
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+  showToast,
+  showWarningToast,
+  Toaster,
+} from "./sonner/index.js";
 export { SortableList, type SortableListControls, type SortableListDragHandleProps } from "./sortable-list/index.js";
 export { Switch } from "./switch/index.js";
 export {

@@ -41,8 +41,15 @@ const { Story } = defineMeta({
 			<Button variant="outline" onclick={() => showInfoToast("同期を開始しました", "完了まで数分かかる場合があります。")}>Info</Button>
 			<Button variant="outline" onclick={() => showWarningToast("確認が必要です", "未設定のリソースがあります。")}>Warning</Button>
 			<Button variant="destructive" onclick={() => showErrorToast("保存に失敗しました", "時間をおいて再度お試しください。")}>Error</Button>
+			<Button
+				variant="destructive"
+				onclick={() =>
+					showErrorToast("予約を保存できませんでした", "入力内容を確認して、もう一度お試しください。", {
+						detail: new Error("Booking/create failed: booking_conflict"),
+					})}>Copyable Error</Button
+			>
 		</div>
-		<p class="text-sm text-muted-foreground">実アプリと同じ Toaster props で表示します。</p>
+		<p class="text-sm text-muted-foreground">すべてのトーストでタイトルとメッセージをコピーできます。詳細情報を渡した場合は、画面に出さずコピー内容だけに追加します。</p>
 	</div>
 {/snippet}
 
