@@ -21,6 +21,7 @@ let selectedDate = $state<DateValue | undefined>(parseDate("2026-08-02"));
     <p class="px-3 pb-3 text-sm text-muted-foreground">
       選択日: {selectedDate?.toString() ?? "未選択"}
     </p>
+    <p class="px-3 pb-3 text-sm text-muted-foreground">年月を開くと、年・月候補にテーマ連動スクロールバーを表示。</p>
   </div>
 </Story>
 

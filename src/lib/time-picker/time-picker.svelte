@@ -1,6 +1,7 @@
 <script lang="ts">
 import * as Popover from "@mutsuna/ui/popover";
 import Button from "@mutsuna/ui/button/button.svelte";
+import ScrollbarArea from "@mutsuna/ui/scrollbar/scrollbar-area.svelte";
 import { cn } from "../utils.js";
 import { tick } from "svelte";
 
@@ -26,8 +27,8 @@ let {
 
 let open = $state(false);
 let draftValue = $state("09:00");
-let hourListElement = $state<HTMLDivElement | undefined>();
-let minuteListElement = $state<HTMLDivElement | undefined>();
+let hourListElement = $state<HTMLDivElement | null>(null);
+let minuteListElement = $state<HTMLDivElement | null>(null);
 
 const hourOptions = Array.from({ length: 24 }, (_, hour) => String(hour).padStart(2, "0"));
 const minuteOptions = $derived.by(() => {
@@ -205,8 +206,8 @@ function normalizeMinute(input: string, fallback: string): string {
 
       <div class="grid grid-cols-2 gap-1.5">
         <div class="grid gap-1">
-          <div
-            bind:this={hourListElement}
+          <ScrollbarArea
+            bind:ref={hourListElement}
             class="h-36 overflow-y-auto rounded-md border bg-background p-1"
             role="group"
             aria-label="時候補"
@@ -229,12 +230,12 @@ function normalizeMinute(input: string, fallback: string): string {
                 {hour}
               </button>
             {/each}
-          </div>
+          </ScrollbarArea>
         </div>
 
         <div class="grid gap-1">
-          <div
-            bind:this={minuteListElement}
+          <ScrollbarArea
+            bind:ref={minuteListElement}
             class="h-36 overflow-y-auto rounded-md border bg-background p-1"
             role="group"
             aria-label="分候補"
@@ -257,7 +258,7 @@ function normalizeMinute(input: string, fallback: string): string {
                 {minute}
               </button>
             {/each}
-          </div>
+          </ScrollbarArea>
         </div>
       </div>
     </div>

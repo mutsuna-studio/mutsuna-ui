@@ -3,6 +3,7 @@ import { DateFormatter, getLocalTimeZone, type DateValue } from "@internationali
 import { tick, type ComponentProps } from "svelte";
 import Button from "@mutsuna/ui/button/button.svelte";
 import * as Popover from "@mutsuna/ui/popover";
+import ScrollbarArea from "@mutsuna/ui/scrollbar/scrollbar-area.svelte";
 import type Calendar from "./calendar.svelte";
 import { Select as SelectRoot, SelectContent, SelectItem, SelectTrigger } from "@mutsuna/ui/select";
 import { cn } from "../utils.js";
@@ -34,8 +35,8 @@ let {
 let monthYearOpen = $state(false);
 let draftYear = $state(calendarYearFloor);
 let draftMonth = $state(1);
-let yearListElement = $state<HTMLDivElement | undefined>();
-let monthListElement = $state<HTMLDivElement | undefined>();
+let yearListElement = $state<HTMLDivElement | null>(null);
+let monthListElement = $state<HTMLDivElement | null>(null);
 
 const monthOptions = $derived(
   (months ?? Array.from({ length: 12 }, (_, index) => index + 1)).map((value) => ({
@@ -168,8 +169,8 @@ function scrollElementIntoView(element: Element | null | undefined): void {
           </div>
 
           <div class="grid grid-cols-2 gap-1.5">
-            <div
-              bind:this={yearListElement}
+            <ScrollbarArea
+              bind:ref={yearListElement}
               class="h-36 overflow-y-auto rounded-md border bg-background p-1"
               role="group"
               aria-label="年候補"
@@ -191,10 +192,10 @@ function scrollElementIntoView(element: Element | null | undefined): void {
                   {option.label}
                 </button>
               {/each}
-            </div>
+            </ScrollbarArea>
 
-            <div
-              bind:this={monthListElement}
+            <ScrollbarArea
+              bind:ref={monthListElement}
               class="h-36 overflow-y-auto rounded-md border bg-background p-1"
               role="group"
               aria-label="月候補"
@@ -216,7 +217,7 @@ function scrollElementIntoView(element: Element | null | undefined): void {
                   {option.label}
                 </button>
               {/each}
-            </div>
+            </ScrollbarArea>
           </div>
         </div>
       </Popover.Content>
