@@ -100,6 +100,20 @@ pnpm storybook
 
 `http://localhost:6206`で確認可能。storyとStorybook設定はnpm packageへ含めない。
 
+## Local Git hooks
+
+開発用cloneでは、初回に次を実行してrepository管理のGit hooksを有効化する。
+
+```sh
+git config --local core.hooksPath .githooks
+```
+
+以後、`main`をpullしてPRのmergeを取り込むたびに、対応するlocal branchを自動削除する。削除対象は、GitHub上で`main`へmerge済みのPR headとlocal branchの現在のcommitが完全一致し、他のworktreeで使用されていないbranchだけ。手動確認は次で行える。
+
+```sh
+node scripts/cleanup-merged-branches.mjs --dry-run
+```
+
 ## Scope
 
 汎用primitive、状態表現、form部品、管理画面向けの再利用可能な複合component、design tokenを公開対象とする。特定productのruntime型、永続化、業務actionは各appに置く。

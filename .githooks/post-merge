@@ -1,0 +1,9 @@
+#!/bin/sh
+
+repository_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+if ! node "$repository_root/scripts/cleanup-merged-branches.mjs"; then
+  printf '%s\n' "warning: merged local branch cleanup failed; run the script manually for details" >&2
+fi
+
+exit 0
