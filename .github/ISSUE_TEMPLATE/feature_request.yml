@@ -1,0 +1,45 @@
+name: Feature request
+description: 再利用可能な公開APIやcomponentを提案する
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: product固有の実装ではなく、共有packageで解決すべき理由を記載してください。
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed public contract
+      description: 想定するsubpath、props、events、types、CSS variablesなどを記載してください。
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: true
+  - type: dropdown
+    id: compatibility
+    attributes:
+      label: Compatibility impact
+      options:
+        - Backward compatible
+        - Breaking change
+        - Unknown
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: 既存Issueと公開APIを確認しました。
+          required: true
+        - label: 特定productのAPI、権限、永続化、業務ルールを含みません。
+          required: true

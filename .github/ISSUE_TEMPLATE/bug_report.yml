@@ -1,0 +1,61 @@
+name: Bug report
+description: 再現可能な不具合を報告する
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        セキュリティ上の問題は公開Issueへ書かず、Security Policyから非公開で報告してください。
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: 0.4.2
+    validations:
+      required: true
+  - type: input
+    id: import-path
+    attributes:
+      label: Public import path
+      placeholder: "@mutsuna/ui/button"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Svelte、Tailwind CSS、Node.js、browserのversionを記載してください。
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: 最小の再現code、repository、または手順を記載してください。secretやproduction dataを含めないでください。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: 既存Issueを検索しました。
+          required: true
+        - label: consumer固有ではなく、`@mutsuna/ui`の公開contractで再現します。
+          required: true
+        - label: セキュリティ脆弱性の公開報告ではありません。
+          required: true
