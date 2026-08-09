@@ -18,7 +18,7 @@ Reusable Svelte 5 UI components and design tokens for Mutsuna products.
 
 ## Project status
 
-このpackageはpublicに利用できるが、現在は`1.0.0`未満。後方互換なfixはpatch、新しい公開APIと破壊的変更はminor releaseとして公開する。更新前に[CHANGELOG](./CHANGELOG.md)を確認する。
+このpackageはpublicに利用できるが、現在は`1.0.0`未満。後方互換なfixはpatch、新しい公開APIと破壊的変更はminor releaseとして公開する。更新前に[CHANGELOG](./CHANGELOG.md)を確認する。非推奨化と削除猶予は[Support policy](./SUPPORT.md#deprecation-policy)に従う。
 
 ## Install
 
