@@ -72,7 +72,8 @@ git diff --check
 
 ## GitHub PRとObsidianチケット
 
-- PR本文の`関連Issue`へ対応する`MUT-<番号>`を記載する。
+- Mutsuna内部Issueに対応するPRは、本文の`関連Issue`へ`MUT-<番号>`を記載する。
+- 外部contributorはGitHub Issueの`#<番号>`を使用できる。小さなdocs修正などIssueが不要な場合は`なし`と記載でき、MUT Issueは必須ではない。
 - PR作成、Draft解除、close、merge後は、次のコマンドでObsidianチケットを即時同期する。
 
 ```sh

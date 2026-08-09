@@ -1,11 +1,31 @@
 # @mutsuna/ui
 
+[![npm](https://img.shields.io/npm/v/%40mutsuna%2Fui)](https://www.npmjs.com/package/@mutsuna/ui)
+[![CI](https://github.com/mutsuna-studio/mutsuna-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/mutsuna-studio/mutsuna-ui/actions/workflows/ci.yml)
+[![Storybook](https://img.shields.io/badge/Storybook-open-ff4785)](https://mutsuna-studio.github.io/mutsuna-ui/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
 Mutsuna製品で共通利用するSvelte 5 UI componentとdesign token。
+
+Reusable Svelte 5 UI components and design tokens for Mutsuna products.
+
+- [Storybook component catalog](https://mutsuna-studio.github.io/mutsuna-ui/)
+- [npm package](https://www.npmjs.com/package/@mutsuna/ui)
+- [Changelog](./CHANGELOG.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Support](./SUPPORT.md)
+- [Security](./SECURITY.md)
+
+## Project status
+
+このpackageはpublicに利用できるが、現在は`1.0.0`未満。後方互換なfixはpatch、新しい公開APIと破壊的変更はminor releaseとして公開する。更新前に[CHANGELOG](./CHANGELOG.md)を確認する。
 
 ## Install
 
 ```sh
 pnpm add @mutsuna/ui
+# or
+npm install @mutsuna/ui
 ```
 
 利用側のglobal stylesheetでthemeを読み込む。
@@ -85,20 +105,48 @@ import { createFormActionToastEnhancer } from "@mutsuna/ui/sveltekit-form";
 
 ## Requirements
 
-- Svelte 5
+- Node.js 22.14以降
+- Svelte 5.55.2以降
 - Tailwind CSS 4
+- 開発時はpnpm 11.3
 
 packageには`@sveltejs/package`で生成したJavaScript、Svelte component、型定義を収録する。
 
+`@sveltejs/kit`は`@mutsuna/ui/sveltekit-form`を利用する場合だけ必要。
+
+## Public API
+
+公開APIは`package.json`の`exports`に宣言されたsubpath、公開型、component props、events、snippets、CSS変数、theme contract。未宣言のdeep importはサポートしない。
+
+componentと代表状態は[公開Storybook](https://mutsuna-studio.github.io/mutsuna-ui/)を正本として確認できる。主な分類:
+
+- primitive: button、input、dialog、popover、select、table、tabsなど
+- form: field、form、date/time、filter select、form template editorなど
+- admin UI: admin layout、admin shell、sidebar、data tableなど
+- visual system: theme、theme CSS、scrollbar、color picker
+- integration: SvelteKit form action helper
+
 ## Storybook
 
-共通UIのcatalogはpackage単独で起動する。
+共通UIのcatalogは[GitHub Pages](https://mutsuna-studio.github.io/mutsuna-ui/)で公開している。localではpackage単独で起動する。
 
 ```sh
 pnpm storybook
 ```
 
 `http://localhost:6206`で確認可能。storyとStorybook設定はnpm packageへ含めない。
+
+## Development
+
+```sh
+corepack enable
+pnpm install --frozen-lockfile
+pnpm test
+pnpm build-storybook
+pnpm test:consumer
+```
+
+変更のscope、changeset、pull request手順は[CONTRIBUTING.md](./CONTRIBUTING.md)を参照する。
 
 ## Local Git hooks
 
@@ -117,6 +165,18 @@ node scripts/cleanup-merged-branches.mjs --dry-run
 ## Scope
 
 汎用primitive、状態表現、form部品、管理画面向けの再利用可能な複合component、design tokenを公開対象とする。特定productのruntime型、永続化、業務actionは各appに置く。
+
+## Community and support
+
+- bugと機能提案: [GitHub Issues](https://github.com/mutsuna-studio/mutsuna-ui/issues/new/choose)
+- 貢献方法: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- 行動規範: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- サポート範囲: [SUPPORT.md](./SUPPORT.md)
+- 脆弱性報告: [SECURITY.md](./SECURITY.md)
+
+## License
+
+[MIT](./LICENSE)。upstreamの著作権表示とライセンスを含む。
 
 ## Acknowledgements
 
