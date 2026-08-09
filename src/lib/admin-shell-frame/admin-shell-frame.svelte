@@ -80,7 +80,7 @@ function handleSidebarOpenChange(open: boolean): void {
     </header>
     <ScrollbarArea
       class={cn(
-        "bg-background border-sidebar-border rounded-t-2xl sm:rounded-se-none flex min-h-0 min-w-0 flex-1 overflow-auto border-t border-s p-2 pt-0 sm:p-4 sm:pt-0",
+        "bg-background border-sidebar-border rounded-t-2xl sm:rounded-se-none min-h-0 min-w-0 flex-1 overflow-auto border-t border-s p-2 pt-0 sm:p-4 sm:pt-0",
         contentClass,
       )}
     >
