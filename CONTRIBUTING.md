@@ -68,8 +68,8 @@ pnpm changeset
 ## Pull requests
 
 - pull request templateをすべて記入する。
-- GitHub Issueがある場合は`#123`、Mutsuna内部Issueがある場合は`MUT-123`を`関連Issue`へ記載する。
-- 外部contributorにMUT Issueは不要。小さなdocs修正などIssueが不要な場合は`なし`と記載できる。
+- 対応するGitHub Issueがある場合は`#123`を`関連Issue`へ記載する。
+- 小さなdocs修正などIssueが不要な場合は`なし`と記載できる。
 - maintainerが内容と検証結果を確認できる大きさへ変更を分割する。
 
 Releaseとnpm publishはmaintainerがprotected workflowから実行する。
