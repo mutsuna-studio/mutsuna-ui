@@ -14,6 +14,7 @@ const { Story } = defineMeta({
 let startTime = $state("09:00");
 let endTime = $state("10:00");
 let customTime = $state("13:05");
+let scrollableTime = $state("12:30");
 </script>
 
 <Story name="Time Range" asChild>
@@ -28,6 +29,14 @@ let customTime = $state("13:05");
 				<TimePicker bind:value={endTime} />
 			</Label>
 		</div>
+	</div>
+</Story>
+
+<Story name="Scrollable Options" asChild>
+	<div class="grid max-w-[12rem] gap-2">
+		<Label>時刻</Label>
+		<TimePicker bind:value={scrollableTime} minuteStep={5} />
+		<p class="text-sm text-muted-foreground">時・分の候補リストにテーマ連動スクロールバーを表示。</p>
 	</div>
 </Story>
 
