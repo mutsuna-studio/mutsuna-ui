@@ -26,4 +26,4 @@
 
 ## 関連Issue
 
-<!-- GitHub Issueは #123、Mutsuna内部Issueは MUT-123、Issue不要なら「なし」。 -->
+<!-- GitHub Issueは #123、Issue不要なら「なし」。 -->

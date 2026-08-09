@@ -70,17 +70,10 @@ git diff --check
 - Storybookを変更した場合は`pnpm build-storybook`を必須にする。
 - consumerへ影響する変更は、consumer側のcheck、test、buildも完了条件に含める。
 
-## GitHub PRとObsidianチケット
+## GitHub PR
 
-- Mutsuna内部Issueに対応するPRは、本文の`関連Issue`へ`MUT-<番号>`を記載する。
-- 外部contributorはGitHub Issueの`#<番号>`を使用できる。小さなdocs修正などIssueが不要な場合は`なし`と記載でき、MUT Issueは必須ではない。
-- PR作成、Draft解除、close、merge後は、次のコマンドでObsidianチケットを即時同期する。
-
-```sh
-node /Users/okamoto/Documents/Mutsuna_Workspace/_quickadd/bin/obs-ticket.cjs github-sync \
-  --repo mutsuna-studio/mutsuna-ui \
-  --pr <PR番号>
-```
+- 対応するGitHub Issueがある場合は、PR本文の`関連Issue`へ`#<番号>`を記載する。
+- 小さなdocs修正などIssueが不要な場合は`なし`と記載できる。
 
 ## Version and release
 
