@@ -24,6 +24,17 @@ const { Story } = defineMeta({
 	</div>
 </Story>
 
+<Story name="Dense List" asChild>
+	<div class="grid max-w-md gap-2 rounded-xl border bg-background p-4">
+		{#each Array.from({ length: 24 }) as _, index (`customer-${index}`)}
+			<div class="flex items-center gap-3 rounded-lg border bg-background p-2">
+				<CustomerAvatar id={`customer-${index}`} name={`顧客 ${index + 1}`} />
+				<span class="text-sm">顧客 {index + 1}</span>
+			</div>
+		{/each}
+	</div>
+</Story>
+
 <Story name="Group" asChild>
 	<AvatarGroup>
 		<Avatar><AvatarFallback>岡</AvatarFallback></Avatar>
