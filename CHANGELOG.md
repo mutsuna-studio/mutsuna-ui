@@ -1,5 +1,11 @@
 # @mutsuna/ui
 
+## 0.4.3
+
+### Patch Changes
+
+- f3ff7c8: Avatar のブレンド描画をコンポーネント内へ隔離し、背後の UI が再合成される問題を防止。
+
 ## 0.4.2
 
 ### Patch Changes
