@@ -1,5 +1,11 @@
 # @mutsuna/ui
 
+## 0.5.0
+
+### Minor Changes
+
+- b7cd54a: `ScrollbarArea` に `gutter="auto"` を追加し、`AdminShellFrame` で外枠のスクロール gutter と padding を無効化できるようにしました。
+
 ## 0.4.3
 
 ### Patch Changes
