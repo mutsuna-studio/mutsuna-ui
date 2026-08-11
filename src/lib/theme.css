@@ -180,6 +180,10 @@
     scrollbar-width: thin;
   }
 
+  .mutsuna-scrollbar--auto {
+    scrollbar-gutter: auto;
+  }
+
   .mutsuna-scrollbar--both-edges {
     scrollbar-gutter: stable both-edges;
   }

@@ -22,6 +22,15 @@ test("admin shell content fills the inset instead of shrinking as a horizontal f
   assert.equal(contentClass.split(/\s+/).includes("flex-1"), true);
 });
 
+test("admin shell supports nested scrolling without a reserved outer gutter or padding", async () => {
+  const source = await readFile(componentUrl, "utf8");
+
+  assert.match(source, /contentGutter = "stable"/);
+  assert.match(source, /contentPadding = "default"/);
+  assert.match(source, /<ScrollbarArea\s+gutter=\{contentGutter\}/);
+  assert.match(source, /contentPadding === "default" && "p-2 pt-0 sm:p-4 sm:pt-0"/);
+});
+
 test("app shell story keeps sidebar identity and menu labels intact when collapsed", async () => {
   const source = await readFile(storyUrl, "utf8");
 

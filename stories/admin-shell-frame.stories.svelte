@@ -112,3 +112,23 @@ const userSecondaryItems = [{ id: "logout", label: "ログアウト", icon: LogO
     </section>
   </AdminShellFrame>
 </Story>
+
+<Story name="Nested Scroll Content" asChild parameters={{ layout: "fullscreen" }}>
+  <AdminShellFrame
+    pageTitle="会議一覧"
+    contentGutter="auto"
+    contentPadding="none"
+    contentClass="overflow-hidden"
+  >
+    {#snippet sidebar()}
+      <Sidebar.Root collapsible="icon">
+        <Sidebar.Content />
+      </Sidebar.Root>
+    {/snippet}
+    <div class="h-full overflow-y-auto p-4">
+      <div class="min-h-[120vh] rounded-xl border bg-card p-4 text-sm text-card-foreground">
+        内側の領域がスクロールを担当し、shell外枠にはgutterやpaddingを追加しません。
+      </div>
+    </div>
+  </AdminShellFrame>
+</Story>

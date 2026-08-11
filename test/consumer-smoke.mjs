@@ -111,7 +111,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
 </script>
 
 <ThemeProvider theme={themeTemplates[1]}>
-  <AdminShellFrame pageTitle="External consumer">
+  <AdminShellFrame pageTitle="External consumer" contentGutter="auto" contentPadding="none">
     {#snippet sidebar()}
       <Sidebar>
         <SidebarWorkspaceSwitcher
@@ -137,7 +137,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
         </DialogTrigger>
         <DialogContent><DialogTitle>Installed from tarball</DialogTitle></DialogContent>
       </Dialog>
-      <ScrollbarArea class="mt-4 h-20 overflow-y-auto">
+      <ScrollbarArea gutter="auto" class="mt-4 h-20 overflow-y-auto">
         <div class="h-40">Themed scrollbar</div>
       </ScrollbarArea>
       <MarkdownTextEditor id="external-markdown" label="Markdown" value="## External" />

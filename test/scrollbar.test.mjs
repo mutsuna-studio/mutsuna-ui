@@ -47,4 +47,15 @@ test("theme owns the cross-browser scrollbar appearance", async () => {
   assert.match(themeCss, /\.mutsuna-scrollbar::-webkit-scrollbar-button/);
   assert.match(themeCss, /scrollbar-color: transparent transparent/);
   assert.match(themeCss, /background-color: var\(--primary\)/);
+  assert.match(themeCss, /\.mutsuna-scrollbar--auto\s*{\s*scrollbar-gutter: auto;/);
+});
+
+test("scrollbar area exposes auto gutter without changing the stable default", async () => {
+  const source = await readFile(
+    join(packageRoot, "src", "lib", "scrollbar", "scrollbar-area.svelte"),
+    "utf8",
+  );
+
+  assert.match(source, /gutter = "stable"/);
+  assert.match(source, /gutter === "auto" && "mutsuna-scrollbar--auto"/);
 });
