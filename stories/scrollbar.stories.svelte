@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 
 type StoryArgs = {
-  gutter: "stable" | "both-edges";
+  gutter: "auto" | "stable" | "both-edges";
   state?: "visible" | "fading-out";
 };
 
@@ -35,4 +35,5 @@ const { Story } = defineMeta({
 <Story name="Default" />
 <Story name="Visible" args={{ state: "visible" }} />
 <Story name="Fading Out" args={{ state: "fading-out" }} />
+<Story name="Auto Gutter" args={{ gutter: "auto", state: "visible" }} />
 <Story name="Both Edges" args={{ gutter: "both-edges", state: "visible" }} />

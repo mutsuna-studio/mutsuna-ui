@@ -2,6 +2,7 @@
 import type { Snippet } from "svelte";
 import * as Breadcrumb from "../breadcrumb/index.js";
 import ScrollbarArea from "../scrollbar/scrollbar-area.svelte";
+import type { ScrollbarGutter } from "../scrollbar/types.js";
 import Separator from "../separator/separator.svelte";
 import * as Sidebar from "../sidebar/index.js";
 import { cn } from "../utils.js";
@@ -15,6 +16,8 @@ interface Props {
   parentPageTitle?: string | null;
   parentPageHref?: string | null;
   contentClass?: string;
+  contentGutter?: ScrollbarGutter;
+  contentPadding?: "default" | "none";
   insetClass?: string;
   headerClass?: string;
   sidebarOpen?: boolean;
@@ -30,6 +33,8 @@ let {
   parentPageTitle = null,
   parentPageHref = null,
   contentClass,
+  contentGutter = "stable",
+  contentPadding = "default",
   insetClass,
   headerClass,
   sidebarOpen = $bindable(true),
@@ -79,8 +84,10 @@ function handleSidebarOpenChange(open: boolean): void {
       {/if}
     </header>
     <ScrollbarArea
+      gutter={contentGutter}
       class={cn(
-        "bg-background border-sidebar-border rounded-t-2xl sm:rounded-se-none min-h-0 min-w-0 flex-1 overflow-auto border-t border-s p-2 pt-0 sm:p-4 sm:pt-0",
+        "bg-background border-sidebar-border rounded-t-2xl sm:rounded-se-none min-h-0 min-w-0 flex-1 overflow-auto border-t border-s",
+        contentPadding === "default" && "p-2 pt-0 sm:p-4 sm:pt-0",
         contentClass,
       )}
     >
