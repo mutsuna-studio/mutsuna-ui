@@ -96,8 +96,9 @@ jobs:
           なし
           EOF
           )
-          if gh pr view automation/loading-ui-css-patterns >/dev/null 2>&1; then
-            gh pr edit automation/loading-ui-css-patterns --title "chore: sync Loading UI CSS patterns" --body "$PR_BODY"
+          OPEN_PR_NUMBER="$(gh pr list --state open --base main --head automation/loading-ui-css-patterns --json number --jq '.[0].number // empty')"
+          if [[ -n "$OPEN_PR_NUMBER" ]]; then
+            gh pr edit "$OPEN_PR_NUMBER" --title "chore: sync Loading UI CSS patterns" --body "$PR_BODY"
           else
             gh pr create --base main --head automation/loading-ui-css-patterns --title "chore: sync Loading UI CSS patterns" --body "$PR_BODY"
           fi
