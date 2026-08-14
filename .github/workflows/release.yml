@@ -60,8 +60,9 @@ jobs:
           git add -A .changeset package.json CHANGELOG.md
           git commit -m "chore: version @mutsuna/ui"
           git push --force origin HEAD:changeset-release/main
-          if gh pr view changeset-release/main >/dev/null 2>&1; then
-            gh pr edit changeset-release/main \
+          OPEN_PR_NUMBER="$(gh pr list --state open --base main --head changeset-release/main --json number --jq '.[0].number // empty')"
+          if [[ -n "$OPEN_PR_NUMBER" ]]; then
+            gh pr edit "$OPEN_PR_NUMBER" \
               --title "chore: version @mutsuna/ui" \
               --body "Automated version update generated from pending changesets."
           else
