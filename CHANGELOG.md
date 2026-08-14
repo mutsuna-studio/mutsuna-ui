@@ -1,5 +1,16 @@
 # @mutsuna/ui
 
+## 0.6.0
+
+### Minor Changes
+
+- 91b6577: Loading UI 由来の 23 種類の自動同期 CSS-only loading indicator、手動移植した morphing-infinity、安全に同期候補を抽出して Svelte へ変換する仕組みを追加します。
+- 91b6577: Bits UI を基盤とする単一値・範囲選択対応の Slider コンポーネントを追加しました。
+
+### Patch Changes
+
+- 91b6577: トーストのコピー操作をアイコン表示にし、コピーと閉じる操作を右側へまとめました。
+
 ## 0.5.0
 
 ### Minor Changes
