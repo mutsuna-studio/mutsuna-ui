@@ -103,6 +103,8 @@ test("package metadata stays ready for public npm releases", async () => {
   assert.match(license, /Copyright \(c\) 2023 Hunter Johnston <https:\/\/github\.com\/huntabyte>/);
   assert.match(license, /Copyright \(c\) 2023 CokaKoala <https:\/\/github\.com\/adriangonz97>/);
   assert.match(license, /Copyright \(c\) 2023 shadcn/);
+  assert.match(license, /Copyright \(c\) 2026 Bartosz Zagrodzki/);
   assert.match(readme, /components adapted from\s+\[shadcn-svelte\]/);
   assert.match(readme, /not affiliated with or endorsed by shadcn-svelte/);
+  assert.match(readme, /CSS-only loading indicators are adapted from/);
 });

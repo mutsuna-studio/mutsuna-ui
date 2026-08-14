@@ -1,0 +1,103 @@
+name: Sync Loading UI CSS patterns
+
+on:
+  schedule:
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-loading-ui-css-patterns
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm sync:loading-ui -- --changeset
+      - name: Detect generated changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.changes.outputs.changed == 'true'
+        run: pnpm test
+      - if: steps.changes.outputs.changed == 'true'
+        run: pnpm build-storybook
+      - if: steps.changes.outputs.changed == 'true'
+        run: pnpm test:consumer
+      - name: Open synchronization pull request
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .changeset scripts/loading-ui-css-patterns.lock.json src/lib/loading
+          git commit -m "chore: sync Loading UI CSS patterns"
+          git push --force origin HEAD:automation/loading-ui-css-patterns
+          if git diff HEAD^ --quiet -- src/lib/loading; then
+            CONTRACT_CHECKS='- [x] 公開subpath、型、props、events、snippets、CSS変数、theme contractに変更なし
+          - [ ] 後方互換な公開contract変更'
+            RELEASE_CHECKS='- [ ] changesetを追加した
+          - [x] docs、Storybook、CI、repository toolingのみのためchangeset不要'
+          else
+            CONTRACT_CHECKS='- [ ] 公開subpath、型、props、events、snippets、CSS変数、theme contractに変更なし
+          - [x] 後方互換な公開contract変更'
+            RELEASE_CHECKS='- [x] changesetを追加した
+          - [ ] docs、Storybook、CI、repository toolingのみのためchangeset不要'
+          fi
+          PR_BODY=$(cat <<EOF
+          ## 概要
+
+          Loading UIのregistryから、依存のないCSS-only候補を同期しました。対応済みの限定構文だけをSvelteへ変換し、未知の構文はlock fileのskippedへ記録しています。
+
+          ## 変更理由
+
+          上流の更新を定期的に検出し、公開前に差分と生成結果をreviewできるようにするためです。
+
+          ## 公開contractへの影響
+
+          $CONTRACT_CHECKS
+          - [ ] 破壊的変更（consumer移行を同じscopeで実施）
+
+          ## 検証
+
+          - [x] `pnpm test`
+          - [x] `pnpm build-storybook`（Storybook変更時）
+          - [x] `pnpm test:consumer`（公開exportまたはconsumer影響時）
+          - [x] `git diff --check`
+
+          ## Release
+
+          $RELEASE_CHECKS
+
+          ## 関連Issue
+
+          なし
+          EOF
+          )
+          if gh pr view automation/loading-ui-css-patterns >/dev/null 2>&1; then
+            gh pr edit automation/loading-ui-css-patterns --title "chore: sync Loading UI CSS patterns" --body "$PR_BODY"
+          else
+            gh pr create --base main --head automation/loading-ui-css-patterns --title "chore: sync Loading UI CSS patterns" --body "$PR_BODY"
+          fi

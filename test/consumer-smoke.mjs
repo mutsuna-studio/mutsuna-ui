@@ -80,6 +80,7 @@ import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
 import { FormTemplateEditor, type EditorField } from "@mutsuna/ui/form-template-editor";
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
+import { Loading, LoadingMorphingInfinity } from "@mutsuna/ui/loading";
 import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 import { Sidebar, SidebarContent } from "@mutsuna/ui/sidebar";
 import { SidebarUserMenu, SidebarWorkspaceSwitcher } from "@mutsuna/ui/sidebar-identity";
@@ -132,6 +133,8 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
         <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
         <CardContent class={cn("grid", "gap-4")}>
       <CustomerAvatar id="external-customer" name="External customer" />
+      <Loading variant="dots" label="External consumer loading" />
+      <LoadingMorphingInfinity label="External consumer morphing loading" />
       <Slider type="single" bind:value={sliderValue} min={0} max={100} aria-label="External slider" />
       <Button type="button" onclick={() => showSuccessToast("Shared toast", "Visible message", { detail: "Hidden detail" })}>Toast</Button>
       <Dialog>

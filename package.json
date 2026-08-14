@@ -236,6 +236,16 @@
       "svelte": "./dist/label/*",
       "default": "./dist/label/*"
     },
+    "./loading": {
+      "types": "./dist/loading/index.d.ts",
+      "svelte": "./dist/loading/index.js",
+      "default": "./dist/loading/index.js"
+    },
+    "./loading/*": {
+      "types": "./dist/loading/*.d.ts",
+      "svelte": "./dist/loading/*",
+      "default": "./dist/loading/*"
+    },
     "./oklch-color-picker": {
       "types": "./dist/oklch-color-picker/index.d.ts",
       "svelte": "./dist/oklch-color-picker/index.js",
@@ -573,6 +583,7 @@
     "build-storybook": "STORYBOOK_DISABLE_TELEMETRY=1 storybook build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "prepack": "pnpm run build",
+    "sync:loading-ui": "node scripts/sync-loading-ui-css-patterns.mjs",
     "storybook": "STORYBOOK_DISABLE_TELEMETRY=1 WATCHPACK_POLLING=true storybook dev -p 6206",
     "test": "pnpm run check && pnpm run build && node --test test/*.test.mjs",
     "test:consumer": "node test/consumer-smoke.mjs",
