@@ -83,6 +83,7 @@ import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 import { Sidebar, SidebarContent } from "@mutsuna/ui/sidebar";
 import { SidebarUserMenu, SidebarWorkspaceSwitcher } from "@mutsuna/ui/sidebar-identity";
+import { Slider } from "@mutsuna/ui/slider";
 import { showSuccessToast } from "@mutsuna/ui/sonner";
 import { readFormActionToast } from "@mutsuna/ui/sveltekit-form";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
@@ -101,6 +102,7 @@ let holidayIsOpen = $state(false);
 let holidayOpensAt = $state("09:00");
 let holidayClosesAt = $state("18:00");
 let holidayPriority = $state(true);
+let sliderValue = $state(50);
 let startDateValue = $state(new CalendarDate(2026, 1, 1));
 let endDateValue = $state(new CalendarDate(2026, 1, 1));
 let startDate = $state("2026-01-01");
@@ -130,6 +132,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
         <CardHeader><CardTitle>External consumer</CardTitle></CardHeader>
         <CardContent class={cn("grid", "gap-4")}>
       <CustomerAvatar id="external-customer" name="External customer" />
+      <Slider type="single" bind:value={sliderValue} min={0} max={100} aria-label="External slider" />
       <Button type="button" onclick={() => showSuccessToast("Shared toast", "Visible message", { detail: "Hidden detail" })}>Toast</Button>
       <Dialog>
         <DialogTrigger>

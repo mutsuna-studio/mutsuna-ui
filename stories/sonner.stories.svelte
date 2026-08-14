@@ -24,7 +24,7 @@ const { Story } = defineMeta({
     },
   },
   args: {
-    closeButton: false,
+    closeButton: true,
     position: "bottom-right",
     richColors: true,
   } satisfies ToastStoryArgs,

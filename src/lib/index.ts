@@ -233,6 +233,7 @@ export {
   type SidebarWorkspaceManagementAction,
 } from "./sidebar-identity/index.js";
 export { Skeleton } from "./skeleton/index.js";
+export { Slider } from "./slider/index.js";
 export {
   type ToastCopyOptions,
   showErrorToast,

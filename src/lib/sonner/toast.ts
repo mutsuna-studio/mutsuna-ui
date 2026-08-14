@@ -6,9 +6,11 @@ export { formatToastCopyText } from "./toast-copy.js";
 export type ToastCopyOptions = Readonly<{
   /** コピー内容だけに含め、トースト画面には表示しない詳細情報。 */
   detail?: unknown;
-  /** コピーボタンのラベル。 */
+  /** アイコンのみで表示するコピーボタンの、スクリーンリーダー向けラベル。 */
   label?: string;
 }>;
+
+type ToastPublisher = (title: string, options: ExternalToast) => string | number;
 
 function normalizeDescription(description?: unknown): string | undefined {
   if (description == null) return undefined;
@@ -35,22 +37,44 @@ async function copyText(text: string): Promise<void> {
 function createToastOptions(
   title: string,
   message?: unknown,
-  copy?: ToastCopyOptions
+  copy?: ToastCopyOptions,
+  onCopied?: () => void
 ): ExternalToast {
   const copyTextValue = formatToastCopyText(title, message, copy?.detail);
   return {
     description: normalizeDescription(message),
     action: {
       label: copy?.label ?? "コピー",
-      onClick: () => {
-        void copyText(copyTextValue).catch(() => {
-          toast.error("コピーできませんでした", {
-            description: "ブラウザのクリップボード権限を確認してください。",
+      onClick: (event) => {
+        event.preventDefault();
+        void copyText(copyTextValue)
+          .then(() => {
+            onCopied?.();
+          })
+          .catch(() => {
+            toast.error("コピーできませんでした", {
+              description: "ブラウザのクリップボード権限を確認してください。",
+            });
           });
-        });
       },
     },
   };
+}
+
+function showCopyableToast(
+  publish: ToastPublisher,
+  title: string,
+  message?: unknown,
+  copy?: ToastCopyOptions
+): void {
+  let toastId: string | number | undefined;
+  toastId = publish(
+    title,
+    createToastOptions(title, message, copy, () => {
+      if (toastId === undefined) return;
+      publish(title, { id: toastId, description: "コピーしました" });
+    })
+  );
 }
 
 export function showToast(
@@ -58,7 +82,7 @@ export function showToast(
   message?: unknown,
   copy?: ToastCopyOptions
 ): void {
-  toast(title, createToastOptions(title, message, copy));
+  showCopyableToast(toast, title, message, copy);
 }
 
 export function showInfoToast(
@@ -66,7 +90,7 @@ export function showInfoToast(
   message?: unknown,
   copy?: ToastCopyOptions
 ): void {
-  toast.info(title, createToastOptions(title, message, copy));
+  showCopyableToast(toast.info, title, message, copy);
 }
 
 export function showSuccessToast(
@@ -74,7 +98,7 @@ export function showSuccessToast(
   message?: unknown,
   copy?: ToastCopyOptions
 ): void {
-  toast.success(title, createToastOptions(title, message, copy));
+  showCopyableToast(toast.success, title, message, copy);
 }
 
 export function showWarningToast(
@@ -82,7 +106,7 @@ export function showWarningToast(
   message?: unknown,
   copy?: ToastCopyOptions
 ): void {
-  toast.warning(title, createToastOptions(title, message, copy));
+  showCopyableToast(toast.warning, title, message, copy);
 }
 
 export function showErrorToast(
@@ -90,5 +114,5 @@ export function showErrorToast(
   message?: unknown,
   copy?: ToastCopyOptions
 ): void {
-  toast.error(title, createToastOptions(title, message, copy));
+  showCopyableToast(toast.error, title, message, copy);
 }
