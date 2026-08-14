@@ -79,6 +79,32 @@ import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 </ScrollbarArea>
 ```
 
+CSSだけで動くloading indicatorは`Loading`のvariantから選択する。色は`currentColor`でthemeへ追従し、OSの視差効果を減らす設定にも対応する。
+
+```svelte
+<script lang="ts">
+import { Loading } from "@mutsuna/ui/loading";
+</script>
+
+<Loading variant="dots" label="予約情報を読み込み中" />
+<Loading variant="bars" size="lg" />
+<Loading variant="morphing-infinity" label="回答を生成中" />
+```
+
+利用可能なvariant一覧は`loadingVariants`から取得できる。
+
+```ts
+import { loadingVariants } from "@mutsuna/ui/loading";
+```
+
+Loading UI由来のCSS-only patternは、対応可能な構文だけを同期する。
+
+```sh
+pnpm sync:loading-ui
+```
+
+同期処理は上流registryとsourceを検査し、Motion依存や未知の構文を自動生成対象から除外する。`morphing-infinity`は追加依存なしのCSSパス補間へ手動移植し、自動同期でも保持する。定期workflowは生成差分を直接releaseせず、review可能なpull requestとして作成する。
+
 管理画面向けの複合componentもsubpath単位で利用可能。
 
 ```svelte
@@ -188,3 +214,8 @@ package have been modified for Japanese applications and the Mutsuna design
 system.
 
 This project is not affiliated with or endorsed by shadcn-svelte.
+
+CSS-only loading indicators are adapted from
+[Loading UI](https://loading-ui.com/), licensed under the MIT License.
+
+This project is not affiliated with or endorsed by Loading UI.

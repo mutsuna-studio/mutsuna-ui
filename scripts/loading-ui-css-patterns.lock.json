@@ -1,0 +1,160 @@
+{
+  "repository": "turbostarter/loading-ui",
+  "ref": "main",
+  "adapter": "repeating-indicator-v1",
+  "cssOnlyCandidates": [
+    "accordion-loader",
+    "arc",
+    "bars",
+    "bouncing-dots",
+    "classic",
+    "clock-ring",
+    "comet-spinner",
+    "concentric-ring",
+    "conveyor-loop",
+    "diamond",
+    "dots",
+    "dots-ring",
+    "dual-arc",
+    "infinity",
+    "infinity-square-snake",
+    "infinity-track",
+    "orbit-ring",
+    "pulse",
+    "pulse-dot",
+    "quarter-ring",
+    "ring",
+    "satellite-ring",
+    "skeleton",
+    "spokes",
+    "square-accordion",
+    "square-grid",
+    "square-snake",
+    "swirling",
+    "symmetric-wave",
+    "terminal",
+    "text-blink",
+    "text-dots",
+    "triple-dot-spinner",
+    "twin-orbit",
+    "typing",
+    "wandering-eyes",
+    "wave"
+  ],
+  "generated": {
+    "arc": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "76279003620e0fe8b53fb09721354992a932be246474ee256147790d871aca53"
+    },
+    "bars": {
+      "adapter": "repeating-indicator-v1",
+      "sourceSha256": "c36848157163842c018e9ae59fe6a6bee584aed30cceb549993bf1596faa145e"
+    },
+    "bouncing-dots": {
+      "adapter": "repeating-indicator-v1",
+      "sourceSha256": "02f5b7f8f37e11fc565fa3170cffe765c64b98d61dac2b7251ddd4b45e2095e3"
+    },
+    "classic": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "7802eb11c8d86235527d2a4a7ced5b75c83c25d63da271f1ff3d40d400b4d57c"
+    },
+    "clock-ring": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "1db937f841c80a77ec416c217fe4f5139e71adb1802cb24c23db00e3f484113e"
+    },
+    "concentric-ring": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "c6fca1bc9f55c301c337574a2a42cec33963bbbc68561b42d9d35c17ff3a7c25"
+    },
+    "diamond": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "88f1d6f8ca9df24ef62728717220c56466dee2c9b2a530b85231416b8687c95f"
+    },
+    "dots": {
+      "adapter": "repeating-indicator-v1",
+      "sourceSha256": "d271ec185fa4f51fbb794db7ddffc194d2bf89dea683099a45002d1c08edaa72"
+    },
+    "dual-arc": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "f4088a8d9e4c0803fee1d92a0162b46e714b2bd7b52712c6d3bcab9bf37163da"
+    },
+    "infinity": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "d9fc0ba502d5bc7f26a54dc860260adbe8394c8ccc9f8b976eaa53d46c46fce2"
+    },
+    "orbit-ring": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "da6478ed898dba1b2336b7c9fd46e1cadc26b3e6e63517fb0203aaa73b9cde23"
+    },
+    "pulse": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "e934b25f2fdffdf08d46b1c328a5a26ed6043b39555c7e3af69ce141f83c770b"
+    },
+    "pulse-dot": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "1f9dcfb6b5d8eb705a8f147347f452464144043b578fc7271025d305d71731e2"
+    },
+    "quarter-ring": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "b2bc8b3aaece297c232ca078a4966b023772d0297b3870a54faa1994b4a3706b"
+    },
+    "ring": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "0233366bf89e307c40685db567dc0b20cfd7eb6d0bd9f05c7bf9e3eb19febfdd"
+    },
+    "satellite-ring": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "900d16962a53cfd77500d465bac03e4fe63b612b4a87b4113122e527a2f1d36f"
+    },
+    "spokes": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "45228e0fb3efad649ccf71afe206cb5b1c926243cbb24c48b67143b0fbe869bc"
+    },
+    "swirling": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "3b000fa7f4491fb3cf46e0980cfeced954ef24a486379ed0b8a4b47fa0da16ee"
+    },
+    "terminal": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "fe08dd08eb394b2c427f3f3a04bdeb8c2f9911cc4825476ba7100859dd7e4756"
+    },
+    "triple-dot-spinner": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "a03e3b683c6ff14a7e6095bf6cabfaffcc7d9b04e114d9d899c755dea023bcb3"
+    },
+    "twin-orbit": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "dff37b56f167d97a077e2bfa1f61cd2acdb70584201c515b185f7101048df467"
+    },
+    "typing": {
+      "adapter": "repeating-indicator-v1",
+      "sourceSha256": "3bf5ee87a6d1773fa35f2df284ac848609dfe4e137a0da4e2e99a41496bdd67e"
+    },
+    "wave": {
+      "adapter": "static-indicator-v1",
+      "sourceSha256": "1bb1d517209bcf5919c8a2c8370de75a57c6513c912919d2c7800ededda5f4b3"
+    }
+  },
+  "manual": {
+    "morphing-infinity": {
+      "adapter": "manual-svelte-v1",
+      "sourceSha256": "5a0d04935d327e20ad04c6fcbc78e0b39756d7ae2dd839c91667f14d48ab64d7"
+    }
+  },
+  "skipped": {
+    "accordion-loader": "unsupported-source-shape",
+    "comet-spinner": "unsupported-source-shape",
+    "conveyor-loop": "unsupported-source-shape",
+    "dots-ring": "unsupported-source-shape",
+    "infinity-square-snake": "unsupported-source-shape",
+    "infinity-track": "unsupported-source-shape",
+    "skeleton": "unsupported-source-shape",
+    "square-accordion": "unsupported-source-shape",
+    "square-grid": "unsupported-source-shape",
+    "square-snake": "unsupported-source-shape",
+    "symmetric-wave": "unsupported-source-shape",
+    "text-blink": "unsupported-source-shape",
+    "text-dots": "unsupported-source-shape",
+    "wandering-eyes": "unsupported-source-shape"
+  }
+}

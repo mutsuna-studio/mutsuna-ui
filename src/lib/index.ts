@@ -233,6 +233,14 @@ export {
   type SidebarWorkspaceManagementAction,
 } from "./sidebar-identity/index.js";
 export { Skeleton } from "./skeleton/index.js";
+export { Slider } from "./slider/index.js";
+export {
+  Loading,
+  loadingVariants,
+  type LoadingProps,
+  type LoadingSize,
+  type LoadingVariant,
+} from "./loading/index.js";
 export {
   type ToastCopyOptions,
   showErrorToast,
