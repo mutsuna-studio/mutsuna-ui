@@ -26,9 +26,15 @@ try {
     cwd: packageRoot,
     encoding: "utf8",
   });
-  const [{ filename }] = JSON.parse(packOutput);
+  const [{ filename, files }] = JSON.parse(packOutput);
   if (typeof filename !== "string") {
     throw new Error("npm pack did not return a tarball filename");
+  }
+  const leakedDevelopmentFiles = (files ?? [])
+    .map((file) => file.path)
+    .filter((path) => path.startsWith("upstream/") || path.startsWith("scripts/") || path.startsWith(".github/"));
+  if (leakedDevelopmentFiles.length > 0) {
+    throw new Error(`npm package contains upstream synchronization files: ${leakedDevelopmentFiles.join(", ")}`);
   }
   const tarballPath = join(packedDirectory, basename(filename));
 

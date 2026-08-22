@@ -1,0 +1,2040 @@
+{
+  "schemaVersion": 1,
+  "packageName": "shadcn-svelte",
+  "style": "nova",
+  "repository": "huntabyte/shadcn-svelte",
+  "version": "1.5.0",
+  "tag": "shadcn-svelte@1.5.0",
+  "commit": "5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50",
+  "npmIntegrity": "sha512-fcxTeUwEIvELkL/h0Vg2i/9Sf6exAmLG5u3GXc0aN8CA+3fNffKQnfrTdMgkjUEmx9XP619I+wcJOvlr5aDWYQ==",
+  "npmTarball": "https://registry.npmjs.org/shadcn-svelte/-/shadcn-svelte-1.5.0.tgz",
+  "items": [
+    {
+      "name": "alert",
+      "owner": "alert",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/alert",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/alert.json",
+      "registrySha256": "f95eb677a46ac6c5313af45803ece96288a1348dbe99ec6a4467c84adb6d488e",
+      "registryPath": "components/alert.json",
+      "storedRegistrySha256": "25fe5f704958a6c4852c6d50387af77967eaa50fa23b509b47ca43b79d44f28d",
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "alert/alert-action.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6cccfca256115554c0ba2e648cbd5300c9cb9a6d444657e6e73a4ec99121438f",
+          "upstreamSha256": "eabd5b08cb450d9c1afbc45b40a84b7930bf9c4e9883db328c143ffcca1872a0"
+        },
+        {
+          "target": "alert/alert-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "50c05805c58b61d0acf674890c9c3eacdbf00f9c38e7a4cc7d5a4014631f6a2a",
+          "upstreamSha256": "edb186d34ea271d57e9402238a0ec9d16e8148a16daed9b74bced7ecbcb31b27"
+        },
+        {
+          "target": "alert/alert-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "13138c02aad00ca6593d9aa4cb5cfd54a9011bbd1f5cdb1d31a21e3893fe76a1",
+          "upstreamSha256": "c0057f9ec6ddee54e9080d229980d1037d6dd820cbe76ff1c87a4d5cf06942c9"
+        },
+        {
+          "target": "alert/alert.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d3363b89e407530692e5933e5bc343a046020934970df7d5a23bda411d421646",
+          "upstreamSha256": "47a6476fcb3ebd42a229f307fe8c41621a412fb498ecaafbc5519c6dab23daf4"
+        },
+        {
+          "target": "alert/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "28eb51f1c28bc903091a8282b754448a7529ba4bd2894a520a85ec13e3895dc5",
+          "upstreamSha256": "28eb51f1c28bc903091a8282b754448a7529ba4bd2894a520a85ec13e3895dc5"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "owner": "alert-dialog",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/alert-dialog",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/alert-dialog.json",
+      "registrySha256": "35245169c7ecdc17daf56725f3366d73a9e09bf1ef2bac748aaeb36e73e21b86",
+      "registryPath": "components/alert-dialog.json",
+      "storedRegistrySha256": "669ec585d82b2e432186391da1d60f96c210f2e97bb0b5287fa35fa60f794a88",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "target": "alert-dialog/alert-dialog-action.svelte",
+          "type": "registry:file",
+          "sourceSha256": "b8e3847c48e96dec6f2e515cc14f2c96b5896b6279306c520c881b6462423d1e",
+          "upstreamSha256": "db209e5eb48f88fd73bdcb07edac3854a623775ccbb53230ca4ff9a4c764812f"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-cancel.svelte",
+          "type": "registry:file",
+          "sourceSha256": "108e7f8601fb181bddbca007972b33b5bd0e7e072965cfcdd6a9d98acf1fcb98",
+          "upstreamSha256": "16c893795c971bf938f20c30d0bf8bdac4f466f29a0004bdbd31659b960d3977"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f23551636ae788ab9df6a297c6d4712b7db21024d10528de518adeb28925010e",
+          "upstreamSha256": "7e03c3f143d82ac98cd78b3b289f01cf300d78d03e9fb3605cd3e925c1562922"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "4db0b63738696a753599ea7e59b75b95b5bafbeb9a82275e84fda98b7aa54375",
+          "upstreamSha256": "f0fc7a67aeb77c4f717d8efeb6a7c3787382cebc4b5a1bd49d20d55d17340711"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-footer.svelte",
+          "type": "registry:file",
+          "sourceSha256": "bf0cfaa27aa4c09a87965d5a02e04cbc765f28a0da8690407d740f039f093fb8",
+          "upstreamSha256": "cdd28f0e849920a1919a09a4a0ece5cab4752b22e3460156f50bf2b6bca0df80"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6ed8e10856dcfa3d98edb49cc1f28f9229d84dc9b67e02c21bfefe262366eb3d",
+          "upstreamSha256": "2bcd41c962b1b94fcf42d14e22e9c3f5c4094f4b14aba6fe59e896ba509bb716"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-media.svelte",
+          "type": "registry:file",
+          "sourceSha256": "608debdfdb10d222bd3b0a0ccf92c03f2b7a090f73005d0904be9473fbb49471",
+          "upstreamSha256": "20f2ca84e670aa6ba4c44e00d830638c4f7168ac9a5979a096d39281afa78c34"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-overlay.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5bcd005adc0f74a8408ad2ef2f1636708dbd77a6d73b2ad31d64d64546787aa0",
+          "upstreamSha256": "f1f557d376967b1b78f66c96dc829a8512075ae703bda6ee4ba51f7113e8a65f"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-portal.svelte",
+          "type": "registry:file",
+          "sourceSha256": "0979d2c7fb096434b1339c047f2d0c6bb8b5894e23cb82f3d304644c3c855f46",
+          "upstreamSha256": "0979d2c7fb096434b1339c047f2d0c6bb8b5894e23cb82f3d304644c3c855f46"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f14f4b5c74a0c3391f848cb3ff721a425174c617c32eecee4c0e097fbcd43f6c",
+          "upstreamSha256": "4741ab243469a79c86d1cc79215e1744e6e4086068004088917511f7afbace25"
+        },
+        {
+          "target": "alert-dialog/alert-dialog-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e752721879d70621d40095eff1758f843fc35444554c85d91d55c1f6413e115d",
+          "upstreamSha256": "e752721879d70621d40095eff1758f843fc35444554c85d91d55c1f6413e115d"
+        },
+        {
+          "target": "alert-dialog/alert-dialog.svelte",
+          "type": "registry:file",
+          "sourceSha256": "3c1fcf5e5ce4fe37c365f2bda61a9dd42c1f3aa5c97074908f661a5760f7191b",
+          "upstreamSha256": "3c1fcf5e5ce4fe37c365f2bda61a9dd42c1f3aa5c97074908f661a5760f7191b"
+        },
+        {
+          "target": "alert-dialog/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "94dc7681aa010d35916faa44b27eecba06cafe9a896e0904f129f2597dd61fe5",
+          "upstreamSha256": "94dc7681aa010d35916faa44b27eecba06cafe9a896e0904f129f2597dd61fe5"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "owner": "avatar",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/avatar",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/avatar.json",
+      "registrySha256": "df63999fc45999ac7876f2f26d4ae1985468d49571bdf27d6e22aa758a768ab8",
+      "registryPath": "components/avatar.json",
+      "storedRegistrySha256": "3db07c31a6c04879720223cf32da43b671db3d71bb73b7d6547dd5261adf9f51",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "avatar/avatar-badge.svelte",
+          "type": "registry:file",
+          "sourceSha256": "2b4c6355b6ce1e0075866b90c261ecdf0b56fe92b9ab4488308f94a0f250802b",
+          "upstreamSha256": "3694627b744d41a2494dc714c97ad569c2f7fee8abadc1c4463d39a5bae90dd6"
+        },
+        {
+          "target": "avatar/avatar-fallback.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e723ab60a44999e55fec550fd76bcfae493053873e4988f3b09192dac2dc3f05",
+          "upstreamSha256": "2a5c71134d06ad3a4ec525c917b96c8dadefb2f22af7dde35e1e1bd9044e30f8"
+        },
+        {
+          "target": "avatar/avatar-group-count.svelte",
+          "type": "registry:file",
+          "sourceSha256": "1af2b668d4b509297a008d211ca9e447d318ad329119481c835e3ca21e2b22e7",
+          "upstreamSha256": "0df8cd27015732f02e5ec47ad7dc152a3270333108504c64610409d8874661c5"
+        },
+        {
+          "target": "avatar/avatar-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "73b729270e2b4d37f83a5f3e0e04b91aece36e47212043bbf152280f7452e5ac",
+          "upstreamSha256": "91ba0c2e0cc713d789ccc5f82ed9c0f8347384f950f6635f1649633d083d5b7f"
+        },
+        {
+          "target": "avatar/avatar-image.svelte",
+          "type": "registry:file",
+          "sourceSha256": "c2db9714a00059553a57006c4c341f43c377f4378e0527c59d523f9ebba850fc",
+          "upstreamSha256": "98545f7fa89c2d81ee3ad24057e531d75914deda4aefdd0fb3393a82ae7fe312"
+        },
+        {
+          "target": "avatar/avatar.svelte",
+          "type": "registry:file",
+          "sourceSha256": "66e5115589c3ce75c7a34e8cad153ba8e8550a3a72b9921d7a96d8e5dfce1ab4",
+          "upstreamSha256": "ac7a7e76ba81f056332eec2f62d725e25d2358c906d4592b32dcf671e8430954"
+        },
+        {
+          "target": "avatar/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "cddb7340b5f1bc0904d2142e13aeb9b7197b327bcc08aab37cfd519c61165f2d",
+          "upstreamSha256": "cddb7340b5f1bc0904d2142e13aeb9b7197b327bcc08aab37cfd519c61165f2d"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "owner": "badge",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/badge",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/badge.json",
+      "registrySha256": "d84413f1d706e58ef80145938aa833f16b9bd65ec28ffd3467c19d0ad4519213",
+      "registryPath": "components/badge.json",
+      "storedRegistrySha256": "9189007961c33eaf39b9fe47923823d2260f4f38a6c82b087b61cdcc04eead6c",
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "badge/badge.svelte",
+          "type": "registry:file",
+          "sourceSha256": "05947851e528485761ce7f264b2be382f3056ff5841149a0c4ed784570718bfc",
+          "upstreamSha256": "7a6bbf4b6576d1773e41e17f87f1b97ddab43093b3a6d66aa0a5e0526c83183c"
+        },
+        {
+          "target": "badge/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "1dc9eba432869188db370b8e984ca8ff97430c609746a8274a0edecc0d55b765",
+          "upstreamSha256": "1dc9eba432869188db370b8e984ca8ff97430c609746a8274a0edecc0d55b765"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "owner": "breadcrumb",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/breadcrumb",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/breadcrumb.json",
+      "registrySha256": "8b5aa813f76bf76d55593eb7f445a9934e03e1aee75bdd5ce8ffc460f8f4a525",
+      "registryPath": "components/breadcrumb.json",
+      "storedRegistrySha256": "06c6e2ada735bec4b278be10b406ad0ccd85721d4b290ec8bfbf731ad3482b3f",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "breadcrumb/breadcrumb-ellipsis.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d204a3504bd4c49e0a036972a767c0e81ca0b5d1455469e366a0a7b9c6549c7f",
+          "upstreamSha256": "67c751557b7b335acf927fc7b8e1428f4adacf82045ee623fd4143083cc3c6e5"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-item.svelte",
+          "type": "registry:file",
+          "sourceSha256": "cc16d53b08f3a66755952329b0461137682fe8d24c9090b56d955c6c31187ab0",
+          "upstreamSha256": "ee28b394f601e70b35dcd8f5aa2df125a06beb28bae7261cc1d4cc0f628aceb1"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-link.svelte",
+          "type": "registry:file",
+          "sourceSha256": "ac2380b1188defd2a26a3110071d643cda6189741d41b77ae3292a6164e70389",
+          "upstreamSha256": "d2a788f987736fd587a120cbe3a48a5da1082116eef62ad19e6186adaccfcb9e"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-list.svelte",
+          "type": "registry:file",
+          "sourceSha256": "36d6487ed83a847d32c8e665bd35db59c8c52b98fc541d72acbd81111fbabb17",
+          "upstreamSha256": "9ffea98e8c5a4edabd9928541b413b2b6f2548a9380feeaf0d1432f0a053c25b"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-page.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e732ed26160462990ef354c3103be5e52eb0e0827a19d7b81defec28e42f0171",
+          "upstreamSha256": "2609abb443c833df1cb0ea0731a1d494ad340e877712ec5585d458db5c0aaf00"
+        },
+        {
+          "target": "breadcrumb/breadcrumb-separator.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d4ee07122337114af56bb148059a39be0d74de7682956f8b489e76c4c389a61a",
+          "upstreamSha256": "f611bac230c59a855afc4218ec9e38aef13f665550da8397ca51365afe5c5720"
+        },
+        {
+          "target": "breadcrumb/breadcrumb.svelte",
+          "type": "registry:file",
+          "sourceSha256": "24ac74a9ed60e0ccf00dd7ccaf9be798ef5f28f15fc6f4f6e48f5234e00b6e13",
+          "upstreamSha256": "33f21fcba4c6c14dcd5e8abd9b820a05db8befde3b8caedc2ec1cef2c79f23f1"
+        },
+        {
+          "target": "breadcrumb/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "ebd2367a93398b84fa8371d5b2655f784c4dfe76f08eff561fcd218c5b7229a5",
+          "upstreamSha256": "ebd2367a93398b84fa8371d5b2655f784c4dfe76f08eff561fcd218c5b7229a5"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "owner": "button",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/button",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/button.json",
+      "registrySha256": "2c2094050b20b4604ca279b79ee2fe83933edea34e7c43fecd95e79ae21e579d",
+      "registryPath": "components/button.json",
+      "storedRegistrySha256": "eee2127e07144f6f6246165b1640295b1d3bca9391c6672b910df053539cf685",
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "button/button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a06d08d44ced83f6ddaf52bb57cb4a70cda682840e861524818e099b3958c0ed",
+          "upstreamSha256": "229d82d6844be21143fe17f1af78e709a4904d4e003e9c5e6d3a30c07445f5f7"
+        },
+        {
+          "target": "button/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386",
+          "upstreamSha256": "0f6b6f040d92b4153821d3f9b4d6b9cbc567247e4fda913e64c1d0fcc4a2f386"
+        }
+      ]
+    },
+    {
+      "name": "button-group",
+      "owner": "button-group",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/button-group",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/button-group.json",
+      "registrySha256": "61079d5dc3db44b9fd7597050cb0904eb6f018c2848b4780b7801d2bb87f1d6e",
+      "registryPath": "components/button-group.json",
+      "storedRegistrySha256": "b6b58e5a8afc7f1d55c8e58b6e315abdcb120b667c41e65a3dbe5e01efc652af",
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [
+        "separator"
+      ],
+      "files": [
+        {
+          "target": "button-group/button-group-separator.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a59723a5068b88b037e0a11279f9735d1284315052a3421bb900762d4f8b35a1",
+          "upstreamSha256": "5a7962a3522739dbabc09e79e2aa2c61e8d34449170e268483f89decc0333509"
+        },
+        {
+          "target": "button-group/button-group-text.svelte",
+          "type": "registry:file",
+          "sourceSha256": "965c1cfd30dd7863c891ba0949bc81bd3a786b370f483a41f4f779e13cec8eed",
+          "upstreamSha256": "29219c153985e53892a4b0f634ee49ea3c0db235bf4a8d942a5425793f74e19b"
+        },
+        {
+          "target": "button-group/button-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5254e4d5606bf5f26e52746713473f8a78596329605802e7547e7d44542d4a3a",
+          "upstreamSha256": "810817d1d6c80bcf9eeadfee0f6db141a767eae6cb6ecaffa64ffef19f08697d"
+        },
+        {
+          "target": "button-group/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "ec151d515cb7cd6a3322e838425565beaa12b83330ebe7f27c085cb57770070e",
+          "upstreamSha256": "ec151d515cb7cd6a3322e838425565beaa12b83330ebe7f27c085cb57770070e"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "owner": "calendar",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/calendar",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/calendar.json",
+      "registrySha256": "021707dfdd2a7adef94d44a4c6983481f9f59db81ff18bf30212b06320fc2af5",
+      "registryPath": "components/calendar.json",
+      "storedRegistrySha256": "284fb060503fbc38d1f96ef49452d4c5b47eaa0889b9015be07abf7576c0b391",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "target": "calendar/calendar-caption.svelte",
+          "type": "registry:file",
+          "sourceSha256": "44dfd5af94cd58532f35717d630fa1a39c43906816393f4fed025a9c0c074b1c",
+          "upstreamSha256": "44dfd5af94cd58532f35717d630fa1a39c43906816393f4fed025a9c0c074b1c"
+        },
+        {
+          "target": "calendar/calendar-cell.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f6d9e6cd91efc2da024d34cb3f9392d58e343d7c61c13d3a414cf0ef1ea71861",
+          "upstreamSha256": "5c1ebc45dfef90488eb717c8467564eec7212388a1099e784e2db6e704dcf22c"
+        },
+        {
+          "target": "calendar/calendar-day.svelte",
+          "type": "registry:file",
+          "sourceSha256": "32fe012fe39e2ec2fc107a68a0780c462d5857a1421680b0733826a74c56916e",
+          "upstreamSha256": "4c7b6aafe33daa90922a1e24aa2ae7c8928d6df3e4dcbb4a56056f16451fbd46"
+        },
+        {
+          "target": "calendar/calendar-grid-body.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7176e59900c7213a0655f1d79ae9ac1113582a506fef8dbf5fc58e4784a5196d",
+          "upstreamSha256": "0c822e8d5cce686a9d3d17d744e518ec4cd278ec16d6be8bd8deb7f4806235f6"
+        },
+        {
+          "target": "calendar/calendar-grid-head.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7bc973cebddb574682a346cceefb36188faba0b9e03f84cee97639888ffb6dfb",
+          "upstreamSha256": "22fb9e818072e57718ee2131c4614011360875765d9e11a1a64ad7b7a56715fd"
+        },
+        {
+          "target": "calendar/calendar-grid-row.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6719f3d9ab5e48278f83f4185f4001517b6f033b7b1497c1e357a1d3b2e3851b",
+          "upstreamSha256": "32c4601e0f8e197565e7e4562a4444eda595a19e6e9efa2b98899aa4971e8915"
+        },
+        {
+          "target": "calendar/calendar-grid.svelte",
+          "type": "registry:file",
+          "sourceSha256": "33cce79b0aa4d786cfb027588969b9bedfb98fb42db46a676c91f30119b254e7",
+          "upstreamSha256": "bd48b86db0a862e3abd3a89a2b53a1686476981db23e32d2b6a4197e5c174de0"
+        },
+        {
+          "target": "calendar/calendar-head-cell.svelte",
+          "type": "registry:file",
+          "sourceSha256": "4148cb1935dd929f8bd80cd435bff04a0b1f457cc53e7012dfd12e0084832d93",
+          "upstreamSha256": "cf87061ec2f6bb7d655616fd94a6f551bf9c99a5835a1953b43f728e60b60628"
+        },
+        {
+          "target": "calendar/calendar-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "52f52b86cccd870d203b73264d5835927005da447e61489441796da6ddae9cbb",
+          "upstreamSha256": "681277ff263bbb17a844b31389d781fa0c9a56920b5714150caeb9db7b239b37"
+        },
+        {
+          "target": "calendar/calendar-heading.svelte",
+          "type": "registry:file",
+          "sourceSha256": "2140bf2415ddd8fef5eaa4ae9f13981997b417401dc554593e629e7b0a71716f",
+          "upstreamSha256": "4f435340304a05bc404e7bfe7a0df38ddbadda90b9aa97c74fd6d0253539c8a9"
+        },
+        {
+          "target": "calendar/calendar-month-select.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f665ff53a46fd287f2c567d53ee4287a0e35ff9ba40d5763bdf9e0bb8ba31b5b",
+          "upstreamSha256": "737925aac48c4056bdc28e4e13e7062c1d5ed724af923c196ff58ad48a89ed57"
+        },
+        {
+          "target": "calendar/calendar-month.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5c197442077a6e2c7966475d7624a0022edb388b146e0bcf384fdedf238d8192",
+          "upstreamSha256": "e50f65475f7fd4996d1223438edfd77c12c161c7640dcf7d318a7673c492b780"
+        },
+        {
+          "target": "calendar/calendar-months.svelte",
+          "type": "registry:file",
+          "sourceSha256": "dc0ad3675029819235014771e5f97725dd613662c1d2f71129f383282a1c0c87",
+          "upstreamSha256": "3faf7b70e3f3e61bc4dc77d27b4ba4b41e888379fbaa6518b80e2d10937cfeac"
+        },
+        {
+          "target": "calendar/calendar-nav.svelte",
+          "type": "registry:file",
+          "sourceSha256": "75da0cee8373d891e1dc5c39a11d7d9f4dfe0ac910594537183584574381f213",
+          "upstreamSha256": "3bdf0f1b6498896b4d91b6ecd861341e7a8c10ddc19fde8883b5e3ede326e505"
+        },
+        {
+          "target": "calendar/calendar-next-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f59f50d94fcf98d116976b484762b5f51a8c13da3428efe1be070904070a5599",
+          "upstreamSha256": "358ddcd623424d7455db124336f653cbacdfee64abc130461da2d1603b66bcee"
+        },
+        {
+          "target": "calendar/calendar-prev-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "260420804c52243f0ef03558f5cb636dd4390e232eee8b773715d97c786227f0",
+          "upstreamSha256": "c4f09353ff9a606c614464716a3a836b7dcee9d2aacab99c1549e037fa69f42f"
+        },
+        {
+          "target": "calendar/calendar-year-select.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5a13cdaabeb7b18d1d4be86d2d1bb53189d1ff653e3114035b21db6bea8023eb",
+          "upstreamSha256": "9900bc3b9dd4cd7def021eb690778625d8e2dd49b4847afd90e6492b4388bda6"
+        },
+        {
+          "target": "calendar/calendar.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a1e2d5d641162b7dad31ad4a96d5f6246d18cbeea1e2967a74bb10d2e872dc2a",
+          "upstreamSha256": "ba408cf5f94a29b5a20584512734b03fead7faaceb9a1989851d168cbf3448bc"
+        },
+        {
+          "target": "calendar/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "f81c71d408c50b879ae00a24335734e3ff7922293dce1656ea31c28a8173cdc2",
+          "upstreamSha256": "f81c71d408c50b879ae00a24335734e3ff7922293dce1656ea31c28a8173cdc2"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "owner": "card",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/card",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/card.json",
+      "registrySha256": "361d7ade4c0fec087a16f95f7f49adbf21954dc2915a766baeec679805940f15",
+      "registryPath": "components/card.json",
+      "storedRegistrySha256": "b25c7bdbc9251cbb044d6573bf180f23471bfaa62f46a9b4e5bc78ef92c4a84e",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "card/card-action.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a4613e156de0f68ba81cf160a59c01ce78499e7cf6ca43b63cc30240d070b261",
+          "upstreamSha256": "bcc954b8f0e25738f1223d702fea14917952978d0c7e4f3cde0f5d35e1ce21fd"
+        },
+        {
+          "target": "card/card-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f2895d61e76ef86d8a81142a98662225d153448da0956ed8ca6acd712afd4e43",
+          "upstreamSha256": "b02fd3ed4f3eacd699f33738a316fcb4368c77129aed30f61e3da3889cac9785"
+        },
+        {
+          "target": "card/card-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5e6091339d6218e3c9c965391177a8da37813e0192805d13034d14b9a176b5dc",
+          "upstreamSha256": "41edfa97b81825ac954cc4bbce0dede0b6261d072c42c6ff01342720dd56bea7"
+        },
+        {
+          "target": "card/card-footer.svelte",
+          "type": "registry:file",
+          "sourceSha256": "0a9935105a273fdf7f8e8b4cbec4201c941617e5f27e00bf8ddb5889037df5de",
+          "upstreamSha256": "0a3623e2f4d549ee18fd980554ff804a1d7b91f94c62e2c457bcdf2a85ea66b2"
+        },
+        {
+          "target": "card/card-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d66eaf4ae3c09cfdc283e4641bcbc966c93a822aa5d55a736530e69512755e32",
+          "upstreamSha256": "d917cdc39a6197e1c3f60a99672bedd0d70e2be34e940c933d25293c39d8ad6a"
+        },
+        {
+          "target": "card/card-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6974da9829076549d4c51320f9503870839bb6270d53fa8ef70204fe564563a3",
+          "upstreamSha256": "6fcfc2052ed23cb81321780c1c61d71cdbad48446b5ebf0efc6b38f87cbc633c"
+        },
+        {
+          "target": "card/card.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e53d2aa3a1df1b0501c499744e7010074badb42ba4ef300d5813c62d9e632dbc",
+          "upstreamSha256": "00cdb6b2239cd6b0c71d67ef1dc79d6445ee51d89a3e8e9f10553548b32174ea"
+        },
+        {
+          "target": "card/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "41b4e0bf782f5e2bbed1863de169ad9f623b47a73f9fc57ba6776779e4be9edb",
+          "upstreamSha256": "41b4e0bf782f5e2bbed1863de169ad9f623b47a73f9fc57ba6776779e4be9edb"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "owner": "checkbox",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/checkbox",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/checkbox.json",
+      "registrySha256": "2232386617fbca92713d7931884a907e292ac6093894f5e40d938c3cfb42c316",
+      "registryPath": "components/checkbox.json",
+      "storedRegistrySha256": "bff14429bf6fd23cf06d8eda075d665d50bb1f3958db39f02c3795f64a0b1438",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "checkbox/checkbox.svelte",
+          "type": "registry:file",
+          "sourceSha256": "b2bed3dffe55151fd945a4648df247b935630d49bce97420138c2a3f2acf1ecf",
+          "upstreamSha256": "9bfc7519749d9dc9dd9f9a4f78ba2bd9a2c5e7a7e92e802d71dde28c1f501555"
+        },
+        {
+          "target": "checkbox/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "39b322ab4a26c63f60c64588ff4b18552c8b596e8472b9261fb68429b8cff1d6",
+          "upstreamSha256": "39b322ab4a26c63f60c64588ff4b18552c8b596e8472b9261fb68429b8cff1d6"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "owner": "collapsible",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/collapsible",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/collapsible.json",
+      "registrySha256": "25a416c5ba881700ec89f131436878ff77484f220a3187ddae6f7e66f9fbac4c",
+      "registryPath": "components/collapsible.json",
+      "storedRegistrySha256": "33eeec377ba2affa5a5c95dac605b39ca31f549e9ac58d2d7a74514f283e3b25",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "collapsible/collapsible-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "8af85ac6ed50471ad32a4e90fb0c54b0fbe0b0700cd3fc5a91b85de70bf22554",
+          "upstreamSha256": "8af85ac6ed50471ad32a4e90fb0c54b0fbe0b0700cd3fc5a91b85de70bf22554"
+        },
+        {
+          "target": "collapsible/collapsible-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e74d7c62176b48d8f5a7282fd0491fbab4dcfb0f23690b6cfae3f3d08b630e3a",
+          "upstreamSha256": "e74d7c62176b48d8f5a7282fd0491fbab4dcfb0f23690b6cfae3f3d08b630e3a"
+        },
+        {
+          "target": "collapsible/collapsible.svelte",
+          "type": "registry:file",
+          "sourceSha256": "1d48e117ac1b8fef1af070c56237a04e5ad1d4bafd4372852a0e9d10e9f4afc2",
+          "upstreamSha256": "1d48e117ac1b8fef1af070c56237a04e5ad1d4bafd4372852a0e9d10e9f4afc2"
+        },
+        {
+          "target": "collapsible/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "abeb5bef64eabc6e378338dddcecee0df56ab18ece8b1d08bd1ed6e740aff05e",
+          "upstreamSha256": "abeb5bef64eabc6e378338dddcecee0df56ab18ece8b1d08bd1ed6e740aff05e"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "owner": "dialog",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/dialog",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/dialog.json",
+      "registrySha256": "22a1573d0081bcdd23f308439b95b9e3daf540666c11d1be2b5150926823503c",
+      "registryPath": "components/dialog.json",
+      "storedRegistrySha256": "f4b756a15202a862b46ea8117186e1ffd972d0fc50140f960469ca3a464f8ec6",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "target": "dialog/dialog-close.svelte",
+          "type": "registry:file",
+          "sourceSha256": "4a9a1a6327d4e68fd87e8292dcb176eab244ba8da455f15997d2308b1fa03d46",
+          "upstreamSha256": "4a9a1a6327d4e68fd87e8292dcb176eab244ba8da455f15997d2308b1fa03d46"
+        },
+        {
+          "target": "dialog/dialog-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "af5707937e8b1ee2a65d101e17f874b62fa95ba5ce3d104633cb5a41fa88d89f",
+          "upstreamSha256": "10386693d10fab4fbab4e7794e572328f99d82dfa84e479550c35b005ea62a16"
+        },
+        {
+          "target": "dialog/dialog-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "228c22b3b23143779f3e52c25906cdad71b08ef5867e7fc86c024204c015c703",
+          "upstreamSha256": "1139289711f9f3841f517a55b9f8b8cb1098c855701f62cf7860bc4c2229f526"
+        },
+        {
+          "target": "dialog/dialog-footer.svelte",
+          "type": "registry:file",
+          "sourceSha256": "58dfa4e5b7464cf6b5c50a74587d68ea40f7d8b469492a283460374bac94dc3e",
+          "upstreamSha256": "8be65fee3eb34d3bc00ef92b0915fc73a75ef2114523f64b2f7b568a6c6689c4"
+        },
+        {
+          "target": "dialog/dialog-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6eacf49f908214325aad311b25eaeb8a7176f02bcf0b003118ba906b12c1f97b",
+          "upstreamSha256": "bf13196818547884634977bcb0fa7d54763e938e756596129a50c79bcdc598c6"
+        },
+        {
+          "target": "dialog/dialog-overlay.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a1a4766564ad44c703bca610b46f190609a12236546c5da67b6a5da675f9a067",
+          "upstreamSha256": "c16321aa8e88a1dfdefea0a76314db3f0bab81cd4dd760b75445e3040fa93070"
+        },
+        {
+          "target": "dialog/dialog-portal.svelte",
+          "type": "registry:file",
+          "sourceSha256": "718c0b6672a2911d7f9398e4ef14813cceabcf0be02b7920f10028d213a674b6",
+          "upstreamSha256": "718c0b6672a2911d7f9398e4ef14813cceabcf0be02b7920f10028d213a674b6"
+        },
+        {
+          "target": "dialog/dialog-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "084e9ea7b5870331a8c5a54f6dd7ee6f0108f060bdd463f078defbcd8b061d53",
+          "upstreamSha256": "7f309e7226a15bac50a929218564961a495a71d7c76f60a02abb2d716ffa1b9f"
+        },
+        {
+          "target": "dialog/dialog-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7b72b3d7fc35bf00f331716f723ee711125263ab09329952728483bb3237dd09",
+          "upstreamSha256": "7b72b3d7fc35bf00f331716f723ee711125263ab09329952728483bb3237dd09"
+        },
+        {
+          "target": "dialog/dialog.svelte",
+          "type": "registry:file",
+          "sourceSha256": "cc60100e895410b9b5f17b6071c933dfc950e5dbf4d00b261edec1e443008a27",
+          "upstreamSha256": "cc60100e895410b9b5f17b6071c933dfc950e5dbf4d00b261edec1e443008a27"
+        },
+        {
+          "target": "dialog/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "8357364bc114cc306188b2ed974986fa47d1c2018ae9b730b66e75ea7ae77753",
+          "upstreamSha256": "8357364bc114cc306188b2ed974986fa47d1c2018ae9b730b66e75ea7ae77753"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "owner": "dropdown-menu",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/dropdown-menu",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/dropdown-menu.json",
+      "registrySha256": "37a9d45fa771194d877afc9cb73bbb0beb9fc4cd49739e09c2444c8b63fe3888",
+      "registryPath": "components/dropdown-menu.json",
+      "storedRegistrySha256": "efb1835797c115a9d38c538dff0c9caa5de9d438f12dd400efd13137c44a6d34",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "dropdown-menu/dropdown-menu-checkbox-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "96f8cf7d2ce72fd2fd4ff5e579067b1a32101abbbe5a20612aa00a69e5df205d",
+          "upstreamSha256": "96f8cf7d2ce72fd2fd4ff5e579067b1a32101abbbe5a20612aa00a69e5df205d"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-checkbox-item.svelte",
+          "type": "registry:file",
+          "sourceSha256": "ebded553142c25a9991f31838eca8d441221a0e32854ae8776ca394f87d7c070",
+          "upstreamSha256": "34eab3bd5f6a2097118f8cb6e80d0118c58ff3e589e664826eae497ce6f42464"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "78435dba50a0d355f83cc65aaf27d8f3f782b3429584860dbe97549fdaf8d876",
+          "upstreamSha256": "b95a9e206c177c041d987e2507b34afc6544ff9efa9582595b6c86f3a7136398"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-group-heading.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5536cd08f3a58454a40fd827101c04152cb69acc6c1a99ba72c72b9851cae1d8",
+          "upstreamSha256": "f9e07b5350c5665d660abad80de206a84369925a6e140711053d1a8aa6bfbc1e"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "75f1eaeff2b3cf25f957d7f9137d3addb409815ec480e1a3bb4036bb82e8d60c",
+          "upstreamSha256": "75f1eaeff2b3cf25f957d7f9137d3addb409815ec480e1a3bb4036bb82e8d60c"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-item.svelte",
+          "type": "registry:file",
+          "sourceSha256": "673211ef850285a9b287bbcc0484ff7bc7279233776c0dab354ab0ab25f15c52",
+          "upstreamSha256": "d83495eb9347a126ab0788f22f82b76df294f539d0a85da1b307e9bfb9dbe1a6"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-label.svelte",
+          "type": "registry:file",
+          "sourceSha256": "2a00f512d54c5de75e0f3d208393cfb5e39d1a37e48461689f05bc643f353902",
+          "upstreamSha256": "1f728e11b51aacb8ab19b9fa967fe5ac9eca54ac2bce1eb9a612933d94a5a92d"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-portal.svelte",
+          "type": "registry:file",
+          "sourceSha256": "38f6abf9c1d47d2ab4912556d05845ec9ba1ee6825405adb5f8831d6a30ac08b",
+          "upstreamSha256": "38f6abf9c1d47d2ab4912556d05845ec9ba1ee6825405adb5f8831d6a30ac08b"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-radio-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "ac025c63e0ade7c26cef7db98de2fe217208fe9387eb8bfaf97730ab3f013da2",
+          "upstreamSha256": "ac025c63e0ade7c26cef7db98de2fe217208fe9387eb8bfaf97730ab3f013da2"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-radio-item.svelte",
+          "type": "registry:file",
+          "sourceSha256": "549f3ed56ded9a6f0363eb43385eb31dfaa90792b5e7124e0902e57011535db4",
+          "upstreamSha256": "b2468422033f5fd1dcb84a7d49eb105dff5cb55df93cc7eefce471c5730f4f72"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-separator.svelte",
+          "type": "registry:file",
+          "sourceSha256": "2da5e5e0b258992b44ffeab9806d87f75325fe19b5d96f070ba377247744928f",
+          "upstreamSha256": "eb941a895230331037934ed9ced00c3390e395860277627256a2ad37883d56c5"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-shortcut.svelte",
+          "type": "registry:file",
+          "sourceSha256": "1d53a5807a192a0f2e53d5b4c8802b97e11442b042d317537d0410d4da34791c",
+          "upstreamSha256": "4b78a66e933deaecb061cd55a8a05e7d00c766844e484490229c75103aa94b2d"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-sub-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "604bd5cbbcbb188835e8260fdb0c4817b53e57f3e536024a087e0ca500f2d936",
+          "upstreamSha256": "078eb316d114570a0ed017318c001ccd955e8285e596b78117a9226c4951e667"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-sub-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "39fb4cb2577b21e3b11e44dddd79ffe52ac5a4b5b4d37bacd97346e8164e18fe",
+          "upstreamSha256": "eb76551949a2cc35c0136e85139ab737fbc9a2bf05ec5ad721096db2e132a128"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-sub.svelte",
+          "type": "registry:file",
+          "sourceSha256": "1208155828183ef72dc8c96ff58c90fcd5584cce28d938a23545253013cfb9c5",
+          "upstreamSha256": "1208155828183ef72dc8c96ff58c90fcd5584cce28d938a23545253013cfb9c5"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "bdad1ff46fd23466dec6d1212186e9ac4e34edf862987308821956c6b24f709c",
+          "upstreamSha256": "bdad1ff46fd23466dec6d1212186e9ac4e34edf862987308821956c6b24f709c"
+        },
+        {
+          "target": "dropdown-menu/dropdown-menu.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d49b60f3d9832a870e5eed726d39f9c0e09abb2bc061deb1ef0dfec97aa319e5",
+          "upstreamSha256": "d49b60f3d9832a870e5eed726d39f9c0e09abb2bc061deb1ef0dfec97aa319e5"
+        },
+        {
+          "target": "dropdown-menu/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "843e6f031021c365665e0de10bb9862fa8dba12066336fbd3348fa0078028bcc",
+          "upstreamSha256": "843e6f031021c365665e0de10bb9862fa8dba12066336fbd3348fa0078028bcc"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "owner": "empty",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/empty",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/empty.json",
+      "registrySha256": "02644cbd3f9d0cdcc90b03d8e479b46d57865edc073f58887493b3e02d569111",
+      "registryPath": "components/empty.json",
+      "storedRegistrySha256": "3ad0e8da7febb109ff9b26b2f429ffb8081cb49b89adc63e1425b7a4dc661e34",
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "empty/empty-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "67a3730b0d0df716c2e401694362074d8f37c9bf9d3e87085d380ef77a8798b8",
+          "upstreamSha256": "cd5295163a09b6976a0d691581bdb7a4acf3521623c607533c623a7c70bf8b44"
+        },
+        {
+          "target": "empty/empty-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "18409a806ccd36b6989838b8717d37a8a1fb02842f992934b28429d8c79e86f4",
+          "upstreamSha256": "0468b9a76953ee7bcaadbd5230a7ab45a3cfdf2d61ed03e5389c80310e7b41d8"
+        },
+        {
+          "target": "empty/empty-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "4c2df6f255aefa30eac595ace4149bdd25c52a8d7576c2b92b54b4ac5dcba497",
+          "upstreamSha256": "3795e8af24effe0efe3a81c3c7aeb74ae73574a095e76f5c045509654a56afe7"
+        },
+        {
+          "target": "empty/empty-media.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7a23fc97238af626132596531660d1aff5e9030b10ca6b1cb2f211d9e77d482e",
+          "upstreamSha256": "89e4c5b23f03eec4e5a8346e293bcf7e0d5ac5bcf5d08812d278adb1a092eef6"
+        },
+        {
+          "target": "empty/empty-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "95d590156b6240b42bb75b2403cb6bf0f88c4f884ef4f63c116ca94f59dc3988",
+          "upstreamSha256": "d269cb71c2e64e67aff976bc794939639a80de9741ecc24b8ef18bec54a707a9"
+        },
+        {
+          "target": "empty/empty.svelte",
+          "type": "registry:file",
+          "sourceSha256": "af98257fcea6dea08ae61624fe00d9d7705aacfe90fd3d04f6470a01bd8a4830",
+          "upstreamSha256": "85bbf2379d60ce7fcb029332f5fb276898bc1988332a978b8fc9c883044c7642"
+        },
+        {
+          "target": "empty/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "2969750549e68f2cf14e8a6f46bdaf93bdd4a6fe252b000e802805c94f4a0f26",
+          "upstreamSha256": "2969750549e68f2cf14e8a6f46bdaf93bdd4a6fe252b000e802805c94f4a0f26"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "owner": "field",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/field",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/field.json",
+      "registrySha256": "edea20aa2e484c6b551146e94ca5ac3d970e8654e253eb4147a8f2b8cfb2d2f7",
+      "registryPath": "components/field.json",
+      "storedRegistrySha256": "f7cc02228ec1ec29ec3cb22f86909457469a74d303311eeb36a3e534774e89c5",
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [
+        "label",
+        "separator"
+      ],
+      "files": [
+        {
+          "target": "field/field-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "c9e06b2e361f3b8e1956ee7ff78f5c39160a09ef0a875f3f99ed4a61be7dcdbd",
+          "upstreamSha256": "b3700b22f016d16482749eaee9c062f2611c40576094d457c2764456afc923c1"
+        },
+        {
+          "target": "field/field-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d9e93f7d994376282ebb78c02950c004c0ee53a7ae7b3757c966ee96ae818216",
+          "upstreamSha256": "16a9366af2adde34962a23e3a590d0da4219b328c0a4a54b8575b26c7caca053"
+        },
+        {
+          "target": "field/field-error.svelte",
+          "type": "registry:file",
+          "sourceSha256": "b195493542a537577ef3817eadb703a08ab8a36af532599e08dc630cef78a655",
+          "upstreamSha256": "0b12d53967484fb070232e4bfe191e44fd3995ece9e8bdeaa15d5eae6a4ec0bb"
+        },
+        {
+          "target": "field/field-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "bd3429a10a15d5a59d1e6ce7a82bb9d92af696c8f47137c8af228c8eec564dd4",
+          "upstreamSha256": "c774c5a30d7359ec5d049dbe0546a0e86de56fe9a457691314d5a8c26af7fe31"
+        },
+        {
+          "target": "field/field-label.svelte",
+          "type": "registry:file",
+          "sourceSha256": "92f7cba35fe46467dcc0b6398ddf84ba61b45e32f8377e68edc01deb1c91f418",
+          "upstreamSha256": "90a0b4ef26fefd89d587e401838af5855f85e548b09b77966945953204f4288f"
+        },
+        {
+          "target": "field/field-legend.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6959d8a5615a690185a0a5a2f005a6c38368b8ee22b9daa4c1cffca07a7cdd65",
+          "upstreamSha256": "6abb3c0074b184eedc7b5ae878d065b5541df5deeab5b3b1a8722c762c64e370"
+        },
+        {
+          "target": "field/field-separator.svelte",
+          "type": "registry:file",
+          "sourceSha256": "44c7a0d70f9d99f0b06f577349bbeb1a753fff97bbb078610a9b9142c90681c0",
+          "upstreamSha256": "5b5d99143241790accdaa28df9dbb483f09736c680647bbf8270e88055d143e6"
+        },
+        {
+          "target": "field/field-set.svelte",
+          "type": "registry:file",
+          "sourceSha256": "0080bc8116235b9aecd4de3814812f212b4d5fac63936fc6b03b0ac54bdf50d3",
+          "upstreamSha256": "80e1d5f59ef3a1955bd5b510e2ee7eda4494b4b4d355eb8b9ef7b671cbf4e4dc"
+        },
+        {
+          "target": "field/field-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7093485b685f7c0f5539aafd1e30a8b8c01dfce647f0b1c3cbfeb871afb6eb16",
+          "upstreamSha256": "cb87617b8891b021a4018c579d991a683b5a7659396bb558762be34b9f967828"
+        },
+        {
+          "target": "field/field.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6d7be939e7e0e983727e70cbc6f0981d9efc6fd87c6c1493329ec1a312c0d5d5",
+          "upstreamSha256": "dbdb878583331e043ee3e6b9cf5ba2e47c6e92be30570e685d71ae5eddc6fb06"
+        },
+        {
+          "target": "field/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "f23a9216b464c2d979b5994b8088e915e4ae8b69d1ee8eaa611ea336a8971e05",
+          "upstreamSha256": "f23a9216b464c2d979b5994b8088e915e4ae8b69d1ee8eaa611ea336a8971e05"
+        }
+      ]
+    },
+    {
+      "name": "form",
+      "owner": "form",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/form",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/form.json",
+      "registrySha256": "2c88be2fbd8d0f42985a62132650c61348fc9c115b7811ad98cd8508df81ac48",
+      "registryPath": "components/form.json",
+      "storedRegistrySha256": "12e4ecba1d95bec65760533379fd07011cd22a59e51c2ed2fdccbc019b14efb6",
+      "dependencies": [],
+      "devDependencies": [
+        "formsnap@^2.0.1",
+        "sveltekit-superforms@^2.30.0"
+      ],
+      "registryDependencies": [
+        "button",
+        "label"
+      ],
+      "files": [
+        {
+          "target": "form/form-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "3f4e4eab3ace1880461e777adbd0f09c70ddc938698b0258e6da5d9acc742b2e",
+          "upstreamSha256": "7bd9883cb3ee2d661770e9e527674827e4d814d8765ff56d78f5f5ad85e586aa"
+        },
+        {
+          "target": "form/form-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "89fcefa1082ba99bc9bfe9929d7926f0fbb85f6a877b0959c3f06a291c5ae659",
+          "upstreamSha256": "6ce2679aa2eaff4ff92eaf5a44486ce892cbab5b5186351ab2a951471b044135"
+        },
+        {
+          "target": "form/form-element-field.svelte",
+          "type": "registry:file",
+          "sourceSha256": "925cf43070ab3c90ae4e3ad9e99e08dc5e28c65671a5c3f2d5f89929738f7224",
+          "upstreamSha256": "c9d2a41dc42b55e6210de29a40b8154b6a89942fee0db8351927bf3bd958dd48"
+        },
+        {
+          "target": "form/form-field-errors.svelte",
+          "type": "registry:file",
+          "sourceSha256": "16dcc3ba0793996be9f4c3e2f7dbc9ebe6c90769212381e534e5ff555209ab2e",
+          "upstreamSha256": "c23160cabb8707ebe0d0e3666c57e0dfaedc11828d17e9de76724f401f55e2e7"
+        },
+        {
+          "target": "form/form-field.svelte",
+          "type": "registry:file",
+          "sourceSha256": "b07ae38627cd9c140292f9a40f03fd0f1eb33deb2cc5eacad3cb43d6e5fe44ca",
+          "upstreamSha256": "3a437f6c590ce57cca0bb5a16e52fd456043966aa105e871e01bb6b1e59763c7"
+        },
+        {
+          "target": "form/form-fieldset.svelte",
+          "type": "registry:file",
+          "sourceSha256": "300b9a25d1199b939689a0252120d8c8a4e8b5f0485b8f13a7fd5e88ccc052e3",
+          "upstreamSha256": "3ff3577b2d008c2d2f0a8ff3345495e91ee9ad0461db2e58bd4d679c7df858a7"
+        },
+        {
+          "target": "form/form-label.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f8d49d3af96bf1be91566ce45cc62bec9b32fed21714897a897a18085b90c5d4",
+          "upstreamSha256": "3669d34431cfd801b4699cd89162032f935319d03066beb7bfedc3e600bb5866"
+        },
+        {
+          "target": "form/form-legend.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7800ea391ff929c0fcc6042bbfbee248445782e94e246d3ddd6512af2a69ae72",
+          "upstreamSha256": "d76d794de8fd58b14aaa8037486a31a59a47a2876c32f71c3fc252a743fb4c57"
+        },
+        {
+          "target": "form/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "f9273a73a493587790ac986e9aaa7005d68952ac58cf6da171ebfa9f9e348f4a",
+          "upstreamSha256": "f9273a73a493587790ac986e9aaa7005d68952ac58cf6da171ebfa9f9e348f4a"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "owner": "input",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/input",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/input.json",
+      "registrySha256": "cdad75e82be3e36fdb2d47b64b9aa239975f69d8d6f322533ce8e052f03160c6",
+      "registryPath": "components/input.json",
+      "storedRegistrySha256": "1fb0f8d6dd8379409c2ea2bcadceb318cc656e433666c2a0b37373c808d755c7",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "input/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "4e0ad69d49a27194c7f3dfd0cdd5933ee13fc40cc13a77138b547d300701d390",
+          "upstreamSha256": "4e0ad69d49a27194c7f3dfd0cdd5933ee13fc40cc13a77138b547d300701d390"
+        },
+        {
+          "target": "input/input.svelte",
+          "type": "registry:file",
+          "sourceSha256": "045dcb4f078f7ce75aed11115592be71543eeff987268f54fc891161ef79c3a1",
+          "upstreamSha256": "f76c992641ab9ae2eba72d4b0ca454a135e82e82712d39bb09104f3845f24a51"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "owner": "input-group",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/input-group",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/input-group.json",
+      "registrySha256": "f025a187b463f4d538825950b7f16f8ccc6087ec93a63c46496a507262a72ba5",
+      "registryPath": "components/input-group.json",
+      "storedRegistrySha256": "a26394396ab3a469a0823651aac06d2a200b9eafb54fe921e78578290d3bc522",
+      "dependencies": [],
+      "devDependencies": [
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea"
+      ],
+      "files": [
+        {
+          "target": "input-group/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "1dd120de081b76517fb92d58822cf8966457dd283ab34454e14225cfd66d8907",
+          "upstreamSha256": "1dd120de081b76517fb92d58822cf8966457dd283ab34454e14225cfd66d8907"
+        },
+        {
+          "target": "input-group/input-group-addon.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5fbf9b24f56482e0e50d5f64313ca188cea07dc5d3303884b1a86db6c7cc62ca",
+          "upstreamSha256": "fb27205107a8a8478d667d4cfed9398ce233664c00a3cbf4353122480b098328"
+        },
+        {
+          "target": "input-group/input-group-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d73e81175a2c382b0d02f74f01389d50bca88a2bcc7dfd95304bf2d174387ca2",
+          "upstreamSha256": "fe7c816ef9a0b615f51a616c66fb6daa104d246f843e15127385222ff1ed3abd"
+        },
+        {
+          "target": "input-group/input-group-input.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f68474b6a09d012b2d9dff5cd342ea76dd1328f586b947e80a651727c1a031de",
+          "upstreamSha256": "c8952b4f06bed97c50eb291d16e1f52fbefa0b7a23d08fd385a32dbf6ecf8ff4"
+        },
+        {
+          "target": "input-group/input-group-text.svelte",
+          "type": "registry:file",
+          "sourceSha256": "eff424df960c321aa078b7bd6fa1d6b1f2932ba193427dd62c5fe7178b8f73e2",
+          "upstreamSha256": "c795370f5c347bc8060e7b09185a5b403ca5c9d190676baaeb6ebbe510cc0226"
+        },
+        {
+          "target": "input-group/input-group-textarea.svelte",
+          "type": "registry:file",
+          "sourceSha256": "53d0bda3f0b2a2ffb0519d16bd81aad76a4d34210a79bc19926216c0365dc968",
+          "upstreamSha256": "714944263f59fe573baa2341d731e53e1191e75be2a32d13da73295590a03f0d"
+        },
+        {
+          "target": "input-group/input-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "775eefa2061236ebdcdddcf54c5432139130bb3fc0e8be9017ecc50e1722385b",
+          "upstreamSha256": "faeea95110d32f5ab86eb571839106a919f7c3f59bb085d16533823854bd84a2"
+        }
+      ]
+    },
+    {
+      "name": "is-mobile",
+      "owner": "sidebar",
+      "kind": "support",
+      "classification": null,
+      "localPath": null,
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/is-mobile.json",
+      "registrySha256": "f4a286715fe4b3a1610b94e75565422e0a8cae30d7d05463b7c5c3d909f677b5",
+      "registryPath": "support/is-mobile.json",
+      "storedRegistrySha256": "7ff8d3efbe530f37c66385587f0b7f16ad590727c039e0d41603795b2b258e32",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "hooks/is-mobile.svelte.ts",
+          "type": "registry:hook",
+          "sourceSha256": "a40889d62426f7b4b588bf4b6a099a46141245b22e1f80ee6a4c8194851431ba",
+          "upstreamSha256": "a40889d62426f7b4b588bf4b6a099a46141245b22e1f80ee6a4c8194851431ba"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "owner": "label",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/label",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/label.json",
+      "registrySha256": "ba64fdc6e4c66027f0f41dfc27d29372cf9ded66625bddfd24820254294e0d77",
+      "registryPath": "components/label.json",
+      "storedRegistrySha256": "134705158e7c9349aee0f48c060ea1960625ba10d691e5697c5b54d35739dbed",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "label/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "ea17621b03066fc6c0ab811ec97aac0cb2de4b504c0a1fc3f480c8fc4bef12f1",
+          "upstreamSha256": "ea17621b03066fc6c0ab811ec97aac0cb2de4b504c0a1fc3f480c8fc4bef12f1"
+        },
+        {
+          "target": "label/label.svelte",
+          "type": "registry:file",
+          "sourceSha256": "3d7a85f07bd55c5960d6c932c8d81f272f3b1ef3f668dcd3a1bba0b8e809385c",
+          "upstreamSha256": "b15b499cfca1ebcfa417cf818f3f370de0bc02fd6f4b0bbcc16ec9dc85ecf858"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "owner": "popover",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/popover",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/popover.json",
+      "registrySha256": "865dd7c0991a4318ba36ee48d68af5d7edeac8d5079b113ee04a8be61b3e430d",
+      "registryPath": "components/popover.json",
+      "storedRegistrySha256": "dc3baf3bcba8260abeb99ee0b534e9960f70a9f6757e3f645b6b99cb0d29523f",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "popover/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "6d1d43ce7deeebfa752727224c91962335fbc9fedd1ff007cffcdc4efc4e264f",
+          "upstreamSha256": "6d1d43ce7deeebfa752727224c91962335fbc9fedd1ff007cffcdc4efc4e264f"
+        },
+        {
+          "target": "popover/popover-close.svelte",
+          "type": "registry:file",
+          "sourceSha256": "bec13457158cb16ba4a0d45789ef2a6b6f3b2c84e14c819ebfa8eca76baced77",
+          "upstreamSha256": "bec13457158cb16ba4a0d45789ef2a6b6f3b2c84e14c819ebfa8eca76baced77"
+        },
+        {
+          "target": "popover/popover-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "dc44189239d58572189ca2ae611296af44189ab53858c1e14757f5b2d8e2fce3",
+          "upstreamSha256": "54728dab82320d1352366da06370239ed0a32dd9c5b731a3cb18d8c497d4191b"
+        },
+        {
+          "target": "popover/popover-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5f6ed2c43bad650fa5d793ad616c112022c8467ea67172138b4c60d0fe698d7e",
+          "upstreamSha256": "75cabfb4be96b51dd607fa155f54568674a3e44d7c7f41d2faa96c4e3b91a6d9"
+        },
+        {
+          "target": "popover/popover-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "69e2978dd1ea1eb1f16f1070830def3b7ff42ddc9caeee8ee31f2777b0af1dae",
+          "upstreamSha256": "a9bbc6ba1fdff27b08bebc7e1c4954ed572af2abceb4ab84969e224dd512477d"
+        },
+        {
+          "target": "popover/popover-portal.svelte",
+          "type": "registry:file",
+          "sourceSha256": "4db64c036aace1359a29d703a842998a6c74b17e84900eb6289cedc5f37ff43a",
+          "upstreamSha256": "4db64c036aace1359a29d703a842998a6c74b17e84900eb6289cedc5f37ff43a"
+        },
+        {
+          "target": "popover/popover-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "9d83ea6a88120a091ac1ff65ee8a9a5f36abffaaf737e7ba8823f3f4b0084341",
+          "upstreamSha256": "d4a4fb7c3f000f546951b4178b1e151c7839acc0231fdd6c636511908834f1ce"
+        },
+        {
+          "target": "popover/popover-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "eefe9fab7dd5d488ccc30e198c93a42a0440f0649569ddacb432a13d6f6def1e",
+          "upstreamSha256": "cad70d3c4b6863bf3972589426f1867294741a1ef08149a69cab0522cbaf15bb"
+        },
+        {
+          "target": "popover/popover.svelte",
+          "type": "registry:file",
+          "sourceSha256": "9697cf96a4ab4970b93e0aafd3962aaa21a97d88d2976886f2a7dd22db87b1ca",
+          "upstreamSha256": "9697cf96a4ab4970b93e0aafd3962aaa21a97d88d2976886f2a7dd22db87b1ca"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "owner": "select",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/select",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/select.json",
+      "registrySha256": "ee7ef59d9d4c2861b7e05a0ef83877c32161707d9407dd872c8dfe35fda17a8f",
+      "registryPath": "components/select.json",
+      "storedRegistrySha256": "61dbfeea7bf5932222c6edbe0d3391ce58641c88fd3cb67d4fb70b6563dcb055",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [
+        "separator"
+      ],
+      "files": [
+        {
+          "target": "select/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "b719ea09b0d16925c70ced94ddcc6b0ade58789c967b7ff6f93a4d2b4df5cedc",
+          "upstreamSha256": "b719ea09b0d16925c70ced94ddcc6b0ade58789c967b7ff6f93a4d2b4df5cedc"
+        },
+        {
+          "target": "select/select-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "1fbf5ad2b0f5a999171b85a3d3d40db01493dd137737bfd665f60db8758878e0",
+          "upstreamSha256": "dbfe464aa83b30eb4c0fba73d2c10557ad47b1d359ea78ba25d8ccaf0e5d9233"
+        },
+        {
+          "target": "select/select-group-heading.svelte",
+          "type": "registry:file",
+          "sourceSha256": "77d076501719c3b064a18c1dac10b9c74a32ddefcc6adc330f1c6ff00ea3c582",
+          "upstreamSha256": "d02299d47a02d609c8333b2a84e8f6b7cdac1b8d6c47dfec8a642aa5b0a64e26"
+        },
+        {
+          "target": "select/select-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "45fc25e01e9536fe6b5529569f6ded4430cff03b942a563d26e3561fe232d663",
+          "upstreamSha256": "167b422290acc795931f21d07c4178efccba9e8c019ecbe25ab4c0692357f6f9"
+        },
+        {
+          "target": "select/select-item.svelte",
+          "type": "registry:file",
+          "sourceSha256": "3b59aef55c6c60c773920b745686e7087c4c9d1b113c58516ff6c48ad278ebea",
+          "upstreamSha256": "f9ea9c2d9afa97e46a5d67f7cee9b3520d8d5b638b51e5f561934f80d5b0c38b"
+        },
+        {
+          "target": "select/select-label.svelte",
+          "type": "registry:file",
+          "sourceSha256": "1ad2eddc41189ee84a9a0ae7c635de6c1a8478bc9d2723798e7c6c46b6b182a8",
+          "upstreamSha256": "4c751e1981bcbdb8388a531ed2238dc7fa29b6cf3fdbdc9a04af4996a8329821"
+        },
+        {
+          "target": "select/select-portal.svelte",
+          "type": "registry:file",
+          "sourceSha256": "3ad1139eaca3b9c989495982493c99f42893d1aafbbf2f4aaab6fd117fbab742",
+          "upstreamSha256": "3ad1139eaca3b9c989495982493c99f42893d1aafbbf2f4aaab6fd117fbab742"
+        },
+        {
+          "target": "select/select-scroll-down-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e263fa50920ec328ebbbaad8aa34155294b2ce74a648ce35a88a2cd5d7af8e21",
+          "upstreamSha256": "c2066faa483e709fb2c64057d7252f2a42423bb745b6d6393439c89d9694c3dc"
+        },
+        {
+          "target": "select/select-scroll-up-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "dc74222511b8b42bec37540795fbf8edda81a99edde6e7ff9887e4fd35fbe199",
+          "upstreamSha256": "3543c2712e14032cb003e2c5203d87d132b11b7601d22579c483182d4e819a42"
+        },
+        {
+          "target": "select/select-separator.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e7819982081c89954865040a5cd2c6351e072aa117f29c2b1764da3e8edacb8e",
+          "upstreamSha256": "9337fb4267885558f1b5f588e1f61cf2ffa8da1024d12f1605977ce36afecdc7"
+        },
+        {
+          "target": "select/select-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "608fea0f2c30b1a2065b4012f99f4fb25718764f0e74fa2ea29526773a577ab7",
+          "upstreamSha256": "d224784e7aff30db99ab01d2a0c3a9c13cb27f1b2476a1680297598d1eb1c229"
+        },
+        {
+          "target": "select/select.svelte",
+          "type": "registry:file",
+          "sourceSha256": "4a7062d01d4cd23edfb5667f3da7a829626c169dff46846d713af524ebf30704",
+          "upstreamSha256": "4a7062d01d4cd23edfb5667f3da7a829626c169dff46846d713af524ebf30704"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "owner": "separator",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/separator",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/separator.json",
+      "registrySha256": "6237d754f2c12ac38a3204d90c9b35aaf145e14fb6208b976e61b8bef32cfb61",
+      "registryPath": "components/separator.json",
+      "storedRegistrySha256": "52f88fdba2216f82deb2a9d33bd733474c1fba2693041aaf76c1dafe308d72bb",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "separator/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "beeaaaab286f1aeff1e43a8ef1c02a60de5e6349780d12af73e9646c6db98bf6",
+          "upstreamSha256": "beeaaaab286f1aeff1e43a8ef1c02a60de5e6349780d12af73e9646c6db98bf6"
+        },
+        {
+          "target": "separator/separator.svelte",
+          "type": "registry:file",
+          "sourceSha256": "ef370ea1e862aa8fd76a030366a0abd2c6a7b78597cd90f652605af4f81f3eb0",
+          "upstreamSha256": "4c8f35390cc5fe2085df1396f7ed4d84d9c349315c8f8d4e2969e1cc59c9459a"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "owner": "sheet",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/sheet",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/sheet.json",
+      "registrySha256": "ff91af90631af987bcb1b5191b6b5474ea891119cd132f675a0790083ae1e692",
+      "registryPath": "components/sheet.json",
+      "storedRegistrySha256": "c6525ce1211de666b305973e53918f3a944bd050f2099f8d667b15fdedd8b200",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "target": "sheet/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "76e46597c822fc9a41b6b63b517ba313792cc4419c6e9ec2d6697e485dda9d06",
+          "upstreamSha256": "76e46597c822fc9a41b6b63b517ba313792cc4419c6e9ec2d6697e485dda9d06"
+        },
+        {
+          "target": "sheet/sheet-close.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5513573158c75ade2db6b5a07b59cf40f60f26e456cd811cd1f492057608216d",
+          "upstreamSha256": "5513573158c75ade2db6b5a07b59cf40f60f26e456cd811cd1f492057608216d"
+        },
+        {
+          "target": "sheet/sheet-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7e4172e4e51b85b8e7cf2742ccba21462d78ac625114bc37fde6b165887d1187",
+          "upstreamSha256": "4c26ff1f7321932d68376dc77ab0e1cc69b2d8536184f0554675bc6514461647"
+        },
+        {
+          "target": "sheet/sheet-description.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d30b4d6a0de7246e73ab4c367b5143b9cd77eab293f79af83382e9d230cf2f8f",
+          "upstreamSha256": "30d30a53e88657c7eee4dcf1a07c2bba2eec63cfc923a61a09471b85baacb72f"
+        },
+        {
+          "target": "sheet/sheet-footer.svelte",
+          "type": "registry:file",
+          "sourceSha256": "320feb8e8b62b237683d1af40401490bcfcf503c67935f09849fd23d4432d65e",
+          "upstreamSha256": "aa61b38d05aeeeec9bcf32975be0ffd4965f4b6b1666a22df9fbb0adaa9124c4"
+        },
+        {
+          "target": "sheet/sheet-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "bb83adfa7bde453633e2a905870390a9645c62191de8e1a4e8df75b36ecb1ced",
+          "upstreamSha256": "038f3020fbf95a7d946334d22052a0151e0124b02597601b521dcc4f05cc1f68"
+        },
+        {
+          "target": "sheet/sheet-overlay.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7e98d77251daa6965243353511325a4a398ac16436f2d4240cb840eb4155fcf6",
+          "upstreamSha256": "0c41d8b7f1289440c5a7ecde060616d37dea00cd2c755782ff6d6ef203a114d8"
+        },
+        {
+          "target": "sheet/sheet-portal.svelte",
+          "type": "registry:file",
+          "sourceSha256": "9391a12d66727280eadc465b8edfa04134f92a28468218683140624feebe5c94",
+          "upstreamSha256": "9391a12d66727280eadc465b8edfa04134f92a28468218683140624feebe5c94"
+        },
+        {
+          "target": "sheet/sheet-title.svelte",
+          "type": "registry:file",
+          "sourceSha256": "0b4586ffb17e272ff3bbe2432a6de0782ab0c4d0d36d504e589357af6a97deae",
+          "upstreamSha256": "470cd30933b296e7634b0033583600dd3cab50936fd8041782d77cb8050ce8a1"
+        },
+        {
+          "target": "sheet/sheet-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5e22ce7c04bbe478db7c37a43128902563c90d53febe6aa5684a706c959ca05b",
+          "upstreamSha256": "5e22ce7c04bbe478db7c37a43128902563c90d53febe6aa5684a706c959ca05b"
+        },
+        {
+          "target": "sheet/sheet.svelte",
+          "type": "registry:file",
+          "sourceSha256": "eed2a698206fc1fb24ca85f7ff351c8520a8fcc3f8fd489c04b974738088f00e",
+          "upstreamSha256": "eed2a698206fc1fb24ca85f7ff351c8520a8fcc3f8fd489c04b974738088f00e"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "owner": "sidebar",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/sidebar",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/sidebar.json",
+      "registrySha256": "53cf8317ccda30dc27609683486b2ed7f6c7b2f66cd1feeebde06b2ff4bd41f0",
+      "registryPath": "components/sidebar.json",
+      "storedRegistrySha256": "a9389c52242b3c29866e8dffbbeab61dabc8eccc284ef9cbca0f1f73c4457acc",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3",
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "is-mobile",
+        "separator",
+        "sheet",
+        "skeleton",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "target": "sidebar/constants.ts",
+          "type": "registry:file",
+          "sourceSha256": "ea5f64cfad10009a71dc8148ca91b0db9f7bd386468300ff82e68093dffe2fa4",
+          "upstreamSha256": "ea5f64cfad10009a71dc8148ca91b0db9f7bd386468300ff82e68093dffe2fa4"
+        },
+        {
+          "target": "sidebar/context.svelte.ts",
+          "type": "registry:file",
+          "sourceSha256": "7fdbe8d5af4b502a89eae0665dc048d680f2c62c6d3006f7d4c8d15f31d94c51",
+          "upstreamSha256": "6412350797180b86e9d35c2cf99b4c2f728e2cb09157ce67f11a978f934ee49a"
+        },
+        {
+          "target": "sidebar/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "d74498b2de3d3fbaa2e5944136d8f3e673de6a1d3f88a1440f9a88814640ba1f",
+          "upstreamSha256": "d74498b2de3d3fbaa2e5944136d8f3e673de6a1d3f88a1440f9a88814640ba1f"
+        },
+        {
+          "target": "sidebar/sidebar-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "8dfc20b31d05b41b6a91cfe30248e3898b21160e74adead98a1100b73d4d9632",
+          "upstreamSha256": "5dfa2606d869c8da210f6af22ca3f3e956e448b05bd93574a11483e074ec3734"
+        },
+        {
+          "target": "sidebar/sidebar-footer.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6532ed65834fd350c1f88f9d782e5e1f4ee479603ab9749d661d5467a736b23f",
+          "upstreamSha256": "c326543206b8897a5e6082fd7f22440aa20947ddd9ffb201bcc0fa34757f1bda"
+        },
+        {
+          "target": "sidebar/sidebar-group-action.svelte",
+          "type": "registry:file",
+          "sourceSha256": "8851007ad6f809a5612be810557e8e22ae271a31ae8ea0af5ab97b15dc86dfd7",
+          "upstreamSha256": "3c2746e962984edaf3c00132bec71783614fec98dae3a51bdc85bfb7945a5e85"
+        },
+        {
+          "target": "sidebar/sidebar-group-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f5bfef51d85feead70f385487139510cd44f50002136a9bdd8a8cabf6f678450",
+          "upstreamSha256": "ced10e364b9ea3bf89952b21a27e71bf6c66ba8b5b0988ac93cb1bcd18d7a5fa"
+        },
+        {
+          "target": "sidebar/sidebar-group-label.svelte",
+          "type": "registry:file",
+          "sourceSha256": "634c8e7086ca5b765f615a65d25917d79839ec3a042191d5dc91618c0201b5ef",
+          "upstreamSha256": "f9f43033cbd8ed6985d7c5aa97e9f0af9cad3006dcc865c5d23ed62c5679d80d"
+        },
+        {
+          "target": "sidebar/sidebar-group.svelte",
+          "type": "registry:file",
+          "sourceSha256": "2e6935b2979d1f68efc91698675fac48c594eda8573efd491f84ac3dc44cbca5",
+          "upstreamSha256": "8878e789dcb128462d6e42b2b9c245e9c047e9be216a08e87c510d2524e12907"
+        },
+        {
+          "target": "sidebar/sidebar-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "acb1dd87322ec9535937b58217297975ce93a1e7d3e8f1548b7664b49f30f98e",
+          "upstreamSha256": "c36c815811eb65ec0b0c84ed1e2833d7849d919713bb75e47aaf86bd96222d48"
+        },
+        {
+          "target": "sidebar/sidebar-input.svelte",
+          "type": "registry:file",
+          "sourceSha256": "7f112773dcb42a7410a60070896ac0a6c44595d74f0f23b971f586ca36f59f53",
+          "upstreamSha256": "a692dbab4ccdc96f6fe13b133449d77d0892f86a925a5a855bdc7cd7bb348a61"
+        },
+        {
+          "target": "sidebar/sidebar-inset.svelte",
+          "type": "registry:file",
+          "sourceSha256": "095acf8c9850c458bd5d38ce357075a237fe2297ad63bd05bd1399840a70da97",
+          "upstreamSha256": "1770359cacf0a6ce50d70bdd0d5e6b486087c5e672ee45e96a142d5f574c33cf"
+        },
+        {
+          "target": "sidebar/sidebar-menu-action.svelte",
+          "type": "registry:file",
+          "sourceSha256": "880d5b4f25bbb978f2c5a06cef225cd0c2035b0b46b59df09b25940b53f1d917",
+          "upstreamSha256": "7eb23995f28c830b5fc6386b79c0fda8dc5451addef2643ae8a4f809f773ea5f"
+        },
+        {
+          "target": "sidebar/sidebar-menu-badge.svelte",
+          "type": "registry:file",
+          "sourceSha256": "5c1bdea71d35cc66fdc73dc144936f296babfd0c46863e40e7315b357d5554c0",
+          "upstreamSha256": "f04001c1b54454b5ba1256e8e166ae53fb73f374700bbcf57a7ca84655614712"
+        },
+        {
+          "target": "sidebar/sidebar-menu-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "20d83e7496ecc690b9227a07d5a8299b9090bd0edef184aa697e64f6fa1ace33",
+          "upstreamSha256": "2a76681ad9d2dc76828aabad977a96831ad01f7f20b153c87ff37599b4648594"
+        },
+        {
+          "target": "sidebar/sidebar-menu-item.svelte",
+          "type": "registry:file",
+          "sourceSha256": "704601e9ea3910adf742ed65422ec0a2ad4739a494c5a191e17a80b1759ebb46",
+          "upstreamSha256": "9557aeaf84ecc1c281e50aef33d248c5413a2bb78dd6204a77509dfdd6045d89"
+        },
+        {
+          "target": "sidebar/sidebar-menu-skeleton.svelte",
+          "type": "registry:file",
+          "sourceSha256": "f68202b20d2275961413eab1d953aa637d8a5f01b3fde73c55d28977aa80095c",
+          "upstreamSha256": "4f8a6b842340643a01e2e13f0c6c41bd0707386620ac140e28eb91dc8d676ac5"
+        },
+        {
+          "target": "sidebar/sidebar-menu-sub-button.svelte",
+          "type": "registry:file",
+          "sourceSha256": "2f487cab6409715340bbe777c55715ea6f301c672fb4e7be6becaa7877d9d025",
+          "upstreamSha256": "9f4bb8fdb5082e27f30ce6fc4d3d51c2480217d5e9236fb4925323af8081f581"
+        },
+        {
+          "target": "sidebar/sidebar-menu-sub-item.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a6b3686fd70d13bee2307c34f78d5df19d8797da5b065e6d26724fd560424ffe",
+          "upstreamSha256": "654ab3ed5805b3daa6fceec9cc05ea2a5b20bfce8618845aeed478985326234f"
+        },
+        {
+          "target": "sidebar/sidebar-menu-sub.svelte",
+          "type": "registry:file",
+          "sourceSha256": "25ba20a48707885a5a132f33c8024f3a3083718b795e4a9c47b282ccec47e1e2",
+          "upstreamSha256": "9a2d8c1cce88c8f41eeaa3390de954dc95b3f78f2607dc35f5b957848b4bfc17"
+        },
+        {
+          "target": "sidebar/sidebar-menu.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a575b44b23382e56c47977d12b08493e1a9e0d9be980c291eed83e002836b8ab",
+          "upstreamSha256": "f7963a0a2947a2e497ea72d6ef0701c68dc52521ebfb346ffa4d89533bd0d07b"
+        },
+        {
+          "target": "sidebar/sidebar-provider.svelte",
+          "type": "registry:file",
+          "sourceSha256": "20bed2ef5cf437a04eee91b7c119f86f75e8bf116914c267535e4a7cbb21d391",
+          "upstreamSha256": "d5b882a955b4222eb0900616d6a5f9d91d41ca38d8167e6a991f08fd8709a0c0"
+        },
+        {
+          "target": "sidebar/sidebar-rail.svelte",
+          "type": "registry:file",
+          "sourceSha256": "51aa212ae1866695b4fba7be5b6cdad767cda7c9360b1ca6d8b07084b6b36bb6",
+          "upstreamSha256": "6b5ff39af2cf91f52e272f7822f17db074960ca9b05605e94e6f526f4a900c7a"
+        },
+        {
+          "target": "sidebar/sidebar-separator.svelte",
+          "type": "registry:file",
+          "sourceSha256": "240f957a08a77311b139d2b85793d0d13f59b7146f57f979c180204c06d7509c",
+          "upstreamSha256": "eb7f828b953b2951c47da9719a717ed230e3b6f1641276e7afb4cb201dda780c"
+        },
+        {
+          "target": "sidebar/sidebar-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "4982941b7c25728b19a0b1b51ad888ce6c38caab09b46dd45dd7353aaf545cd7",
+          "upstreamSha256": "bee8de0c66d8da1a3dfc602470c5e44e4a6b0b2e7cec34a91fa6881f06621505"
+        },
+        {
+          "target": "sidebar/sidebar.svelte",
+          "type": "registry:file",
+          "sourceSha256": "b05e2eb0e78882a76ee8568dc6d7e722ddeab92e3e4f0061a54f7c048d36baa4",
+          "upstreamSha256": "f4baee25ad66730ccdb2aabe382859f12910010b013fdbcb00d4a88ca3327179"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "owner": "skeleton",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/skeleton",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/skeleton.json",
+      "registrySha256": "dac6feb5dec63764cf5b50921cf4274d2a40bee2f92c16340b73d64b2b2a726b",
+      "registryPath": "components/skeleton.json",
+      "storedRegistrySha256": "d0382910f5f6fa228e2229de2ca528f95286459aa588bcd4466200b48351c680",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "skeleton/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "25f4d78e3dbd09eaf8eaa356a6a907f2e9b8f701190bcc402ee698a39974ca65",
+          "upstreamSha256": "25f4d78e3dbd09eaf8eaa356a6a907f2e9b8f701190bcc402ee698a39974ca65"
+        },
+        {
+          "target": "skeleton/skeleton.svelte",
+          "type": "registry:file",
+          "sourceSha256": "ccda46222eb302d58373af5686d5a698124556f189607eebde6ea8edaeeeb0af",
+          "upstreamSha256": "0846a8739cffa52dc5569f308778b3b628031285d06fbe434acbe50531a773e7"
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "owner": "slider",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/slider",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/slider.json",
+      "registrySha256": "99bc4c253e20e09c01484728f03a575a8110ea5810c230d4934c0993db563be1",
+      "registryPath": "components/slider.json",
+      "storedRegistrySha256": "fe7af9ca54033de324dcddf647794b91dcb0881ed31e87d43991f9bc324bab8f",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "slider/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "0e2bda41f2c93303b7c87ddf67ff6e1d05ecfdfb3e834fbf5707ba6961eeb4d5",
+          "upstreamSha256": "0e2bda41f2c93303b7c87ddf67ff6e1d05ecfdfb3e834fbf5707ba6961eeb4d5"
+        },
+        {
+          "target": "slider/slider.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6dc7e691218e7a4ffd7c3c8a32b20a61d7039a55d6a9e7a46c3ebfd77de4041a",
+          "upstreamSha256": "e7497e0ae68b4317ed1420f3e9c0b3dd71a15e37043a772be2f811925cd3a0b6"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "owner": "sonner",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/sonner",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/sonner.json",
+      "registrySha256": "994bf155f8c8394b003c88e8ddd98c37414f417709a7986d7415ff5bbd164170",
+      "registryPath": "components/sonner.json",
+      "storedRegistrySha256": "57bc07ab014c6674d47f0174ae21c5e9ca3ad41e86d33aef5e738ce13de151d7",
+      "dependencies": [],
+      "devDependencies": [
+        "mode-watcher@^1.1.0",
+        "svelte-sonner@^1.1.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "sonner/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "a72067e92f2db255eb6133c065bf75ef5650abcd9487ddbd9db118ca99b9dcca",
+          "upstreamSha256": "a72067e92f2db255eb6133c065bf75ef5650abcd9487ddbd9db118ca99b9dcca"
+        },
+        {
+          "target": "sonner/sonner.svelte",
+          "type": "registry:file",
+          "sourceSha256": "dad59d8d1236597853cb2045dbd48f5533a491dba66b1fe43fd24893a992309b",
+          "upstreamSha256": "dad59d8d1236597853cb2045dbd48f5533a491dba66b1fe43fd24893a992309b"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "owner": "switch",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/switch",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/switch.json",
+      "registrySha256": "713417296ff9ad42a82f6a0bf9b9ed0bca4323889434fa2f9ff6c8daecc94617",
+      "registryPath": "components/switch.json",
+      "storedRegistrySha256": "5c415722f6b907157e586ff270b90e18a769dd1d3ceed94261d89415c200328e",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "switch/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "29fe3052a55b69e37d9995a3a74ad196bda339c438596bda0dac0bde426a420b",
+          "upstreamSha256": "29fe3052a55b69e37d9995a3a74ad196bda339c438596bda0dac0bde426a420b"
+        },
+        {
+          "target": "switch/switch.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6fd73b1be98702e51102d0ab6d2fa58ea812db2c43977e8a6c0d3ad5e3145d7b",
+          "upstreamSha256": "a979fb9511d989b39ec258a39448a08f8a93bc622d4dc3662b143fd65a2551c8"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "owner": "table",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/table",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/table.json",
+      "registrySha256": "7c2dd7b0e47b8ee9a44830fdb1e42572cf8852ae820d3ecff8a581fa3f2e4c94",
+      "registryPath": "components/table.json",
+      "storedRegistrySha256": "ab8e5a24faf47e1b1e633910806aa031e21b8201b6274eea85950f5fa094d9f8",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "table/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "25acd0f0d67391720a63212a88a31b27490041addf0000284e3200a18e808eea",
+          "upstreamSha256": "25acd0f0d67391720a63212a88a31b27490041addf0000284e3200a18e808eea"
+        },
+        {
+          "target": "table/table-body.svelte",
+          "type": "registry:file",
+          "sourceSha256": "0af78342bd65abec103fa09c3ca8553c0f195e7caeaa16f89aff1a2d4e5fd4d9",
+          "upstreamSha256": "1cd221bb2ef6dcfa58590799bc0bceeb7c3b4e54f419ed6f325e1161526b1f9d"
+        },
+        {
+          "target": "table/table-caption.svelte",
+          "type": "registry:file",
+          "sourceSha256": "e943ebb010b3e1c3c6333b78fea5f7e86fa92093f98f2c97afcbfee26819bb1e",
+          "upstreamSha256": "2d17458c23fcebde416776cd69388bbfa559d62467a321a6c757cb229a937bec"
+        },
+        {
+          "target": "table/table-cell.svelte",
+          "type": "registry:file",
+          "sourceSha256": "dac746e885798f54450c5826ed07ceebce88dcaa58a09e4e113f6ae6bd7ab188",
+          "upstreamSha256": "9fdeaad2f81218dbbfb48f6d0f8d626577f01e0e51df4ad2a69409dfae2ad0d6"
+        },
+        {
+          "target": "table/table-footer.svelte",
+          "type": "registry:file",
+          "sourceSha256": "54f7dc81dd5e31d35c6b1ba512ac91baadef944307443de0446038652ee31fe4",
+          "upstreamSha256": "bb31e8951ce2350805b76dc75184e6d19feee382fc8c6d4ba54f6f19e5d4d3bf"
+        },
+        {
+          "target": "table/table-head.svelte",
+          "type": "registry:file",
+          "sourceSha256": "82bb56421217ee42f118bca02bf6975fe9ed93a62b68173a768076ed602c7f27",
+          "upstreamSha256": "ffa99a88c42e4595b9a0fc49ba921e9e2a2cfd3173e8e3d4d73d98665cc53b85"
+        },
+        {
+          "target": "table/table-header.svelte",
+          "type": "registry:file",
+          "sourceSha256": "610bb90de6e357f444d3ab7741fc40bda56e349a910000b9e6e2e9c8a05bdd75",
+          "upstreamSha256": "60f127c155d713f565b8c523717b8931dfa96d0761e92be54fb14ab2fb95939c"
+        },
+        {
+          "target": "table/table-row.svelte",
+          "type": "registry:file",
+          "sourceSha256": "9cfcc1712c28f433776644c71eedf969c9f118445b9488d59905e26455b5d8a9",
+          "upstreamSha256": "7a0e27f1e2a2c3421d99ad9d8307203368af954058f25b3958d9204c4fb16b55"
+        },
+        {
+          "target": "table/table.svelte",
+          "type": "registry:file",
+          "sourceSha256": "06ff0e4266022d74b1371989376b8eb1b2dcc83448d8ea4f30eb1c9b6ec4e3c0",
+          "upstreamSha256": "c420dd0ce67f62db2c2b309eded58c22e9ad58e2b8a058cf4885cce100f688b6"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "owner": "tabs",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/tabs",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/tabs.json",
+      "registrySha256": "6b8e558e410512aa84fdb598e7e7a9df6efb0e83cab996509e4447da5bd2cc0d",
+      "registryPath": "components/tabs.json",
+      "storedRegistrySha256": "243ec064e692187de72bbd2a33205febe7d9e175650be5bef8b7a4ed8308450d",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3",
+        "tailwind-variants@^3.3.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "tabs/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "e8c5e55fb540595b2a250f2ffd292cac31b2b272820df0f36df348351c7a84b5",
+          "upstreamSha256": "e8c5e55fb540595b2a250f2ffd292cac31b2b272820df0f36df348351c7a84b5"
+        },
+        {
+          "target": "tabs/tabs-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "6bde991e1e5c87071a703313ddb9c39ea60bd6ce63a955c7ef1f598ce51c85b7",
+          "upstreamSha256": "df48a17899892b6e9130aba13f787d26c442f03dfc8b9f27404d1919d350eaef"
+        },
+        {
+          "target": "tabs/tabs-list.svelte",
+          "type": "registry:file",
+          "sourceSha256": "ab710488f005d6a490f427a81296cd4258c47be7af2137a9aa9caf58077d737d",
+          "upstreamSha256": "f037b86b7081477e90c2e56ab5d3142ee62f24e9a25eebb8dc26edae56ee6cbe"
+        },
+        {
+          "target": "tabs/tabs-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "252b528236636c7fde4b1f165b3c47e4c9b8f45627de2e6cc49ef426a6193ce8",
+          "upstreamSha256": "78d3119c2fa770f64db9254b71b89f0ee140f8bfa1187a1d49240437cfdc6673"
+        },
+        {
+          "target": "tabs/tabs.svelte",
+          "type": "registry:file",
+          "sourceSha256": "de34df1e4e4ea481bd9513a7e47d1cf04562240cd8e591181abe1dd6674dbfe5",
+          "upstreamSha256": "fc1b31839404b9186b87af60c65230f9a98bf065c7b6c88fcd504be0ee186b8e"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "owner": "textarea",
+      "kind": "component",
+      "classification": "derived",
+      "localPath": "src/lib/textarea",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/textarea.json",
+      "registrySha256": "7033879566322eb40728e884a1a66df904268f01c06864786c034755997e479e",
+      "registryPath": "components/textarea.json",
+      "storedRegistrySha256": "612a3ea2ac4bf526dfcd93b17eb2eb63122be6280f3c654d25d23d4588277ce9",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "textarea/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "3b5f25dfd5d1d9b5305f613f7544a7e39362cd4b0a9c3250414cd5ff02e45398",
+          "upstreamSha256": "3b5f25dfd5d1d9b5305f613f7544a7e39362cd4b0a9c3250414cd5ff02e45398"
+        },
+        {
+          "target": "textarea/textarea.svelte",
+          "type": "registry:file",
+          "sourceSha256": "25e89d6a193ca86689f4220d2fa1f20de78b67d7a3cb1f08c09900efb5e346ac",
+          "upstreamSha256": "c2befdb99eb1cb3b987dbda80ee7745ec5f6bacf43990c4a03eace86d6a196ae"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "owner": "tooltip",
+      "kind": "component",
+      "classification": "heavily-customized",
+      "localPath": "src/lib/tooltip",
+      "registryUrl": "https://raw.githubusercontent.com/huntabyte/shadcn-svelte/5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50/docs/static/registry/styles/nova/tooltip.json",
+      "registrySha256": "0acea1e901a2069bd1b019fba6c680e14c3b87d634545fb71a85b3fb9eb1891a",
+      "registryPath": "components/tooltip.json",
+      "storedRegistrySha256": "01bbc86ce5a3cae529bc2179f4b8ed5607e750877cbdbd21f9a9c2045d0f3049",
+      "dependencies": [],
+      "devDependencies": [
+        "@internationalized/date@^3.12.0",
+        "bits-ui@^2.16.3"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "target": "tooltip/index.ts",
+          "type": "registry:file",
+          "sourceSha256": "a5924dc1196bf9f431af3ef3d9675ded3f30d38f9f3148118cb6f4cad433e0c4",
+          "upstreamSha256": "a5924dc1196bf9f431af3ef3d9675ded3f30d38f9f3148118cb6f4cad433e0c4"
+        },
+        {
+          "target": "tooltip/tooltip-content.svelte",
+          "type": "registry:file",
+          "sourceSha256": "72df44cbc4984fb8c31ef1f5bf8ae7c4a924e3daf8a2fdf6f4442387c09f88d3",
+          "upstreamSha256": "66ade16a6359b08b58ceb5fee1672d79c9f7d78bc910365e0296a85bd30750c2"
+        },
+        {
+          "target": "tooltip/tooltip-portal.svelte",
+          "type": "registry:file",
+          "sourceSha256": "d38e62fa30732ba5ea79df440badb59331d22c13a19fdc1ad777857f6039b648",
+          "upstreamSha256": "d38e62fa30732ba5ea79df440badb59331d22c13a19fdc1ad777857f6039b648"
+        },
+        {
+          "target": "tooltip/tooltip-provider.svelte",
+          "type": "registry:file",
+          "sourceSha256": "3599daffb73460dc3377582b99fb04503cc1f3facd660f99db5e9c785c48367e",
+          "upstreamSha256": "3599daffb73460dc3377582b99fb04503cc1f3facd660f99db5e9c785c48367e"
+        },
+        {
+          "target": "tooltip/tooltip-trigger.svelte",
+          "type": "registry:file",
+          "sourceSha256": "139ecd079c457f1318a8cfee9495143859a84fda92b0b811e893a738b46dddbd",
+          "upstreamSha256": "139ecd079c457f1318a8cfee9495143859a84fda92b0b811e893a738b46dddbd"
+        },
+        {
+          "target": "tooltip/tooltip.svelte",
+          "type": "registry:file",
+          "sourceSha256": "a33d843a5e4e6e5fe426654f6742a453f44f4ff928e94a21d188d9035e4d02f8",
+          "upstreamSha256": "a33d843a5e4e6e5fe426654f6742a453f44f4ff928e94a21d188d9035e4d02f8"
+        }
+      ]
+    }
+  ],
+  "localDependency": {
+    "range": "^1.3.0",
+    "installedVersion": "1.4.2"
+  }
+}

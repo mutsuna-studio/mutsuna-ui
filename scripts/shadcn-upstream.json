@@ -1,0 +1,54 @@
+{
+  "packageName": "shadcn-svelte",
+  "repository": "huntabyte/shadcn-svelte",
+  "style": "nova",
+  "registryPath": "docs/static/registry/styles/{style}/{name}.json",
+  "reviewGroups": {
+    "heavily-customized": ["avatar", "button", "calendar", "dialog", "select", "slider", "sonner", "tooltip"],
+    "interaction": ["alert-dialog", "checkbox", "collapsible", "dropdown-menu", "form", "label", "popover", "separator", "sheet", "sidebar", "switch", "tabs"],
+    "presentation": ["alert", "badge", "breadcrumb", "button-group", "card", "empty", "field", "input", "input-group", "skeleton", "table", "textarea"]
+  },
+  "components": [
+    { "name": "alert", "localPath": "src/lib/alert", "classification": "derived" },
+    { "name": "alert-dialog", "localPath": "src/lib/alert-dialog", "classification": "derived" },
+    { "name": "avatar", "localPath": "src/lib/avatar", "classification": "heavily-customized" },
+    { "name": "badge", "localPath": "src/lib/badge", "classification": "derived" },
+    { "name": "breadcrumb", "localPath": "src/lib/breadcrumb", "classification": "derived" },
+    { "name": "button", "localPath": "src/lib/button", "classification": "heavily-customized" },
+    { "name": "button-group", "localPath": "src/lib/button-group", "classification": "derived" },
+    { "name": "calendar", "localPath": "src/lib/calendar", "classification": "heavily-customized" },
+    { "name": "card", "localPath": "src/lib/card", "classification": "derived" },
+    { "name": "checkbox", "localPath": "src/lib/checkbox", "classification": "derived" },
+    { "name": "collapsible", "localPath": "src/lib/collapsible", "classification": "derived" },
+    { "name": "dialog", "localPath": "src/lib/dialog", "classification": "heavily-customized" },
+    { "name": "dropdown-menu", "localPath": "src/lib/dropdown-menu", "classification": "derived" },
+    { "name": "empty", "localPath": "src/lib/empty", "classification": "derived" },
+    { "name": "field", "localPath": "src/lib/field", "classification": "derived" },
+    { "name": "form", "localPath": "src/lib/form", "classification": "derived" },
+    { "name": "input", "localPath": "src/lib/input", "classification": "derived" },
+    { "name": "input-group", "localPath": "src/lib/input-group", "classification": "derived" },
+    { "name": "label", "localPath": "src/lib/label", "classification": "derived" },
+    { "name": "popover", "localPath": "src/lib/popover", "classification": "derived" },
+    { "name": "select", "localPath": "src/lib/select", "classification": "heavily-customized" },
+    { "name": "separator", "localPath": "src/lib/separator", "classification": "derived" },
+    { "name": "sheet", "localPath": "src/lib/sheet", "classification": "derived" },
+    { "name": "sidebar", "localPath": "src/lib/sidebar", "classification": "derived" },
+    { "name": "skeleton", "localPath": "src/lib/skeleton", "classification": "derived" },
+    { "name": "slider", "localPath": "src/lib/slider", "classification": "heavily-customized" },
+    { "name": "sonner", "localPath": "src/lib/sonner", "classification": "heavily-customized" },
+    { "name": "switch", "localPath": "src/lib/switch", "classification": "derived" },
+    { "name": "table", "localPath": "src/lib/table", "classification": "derived" },
+    { "name": "tabs", "localPath": "src/lib/tabs", "classification": "derived" },
+    { "name": "textarea", "localPath": "src/lib/textarea", "classification": "derived" },
+    { "name": "tooltip", "localPath": "src/lib/tooltip", "classification": "heavily-customized" }
+  ],
+  "supportItems": [
+    {
+      "name": "is-mobile",
+      "owner": "sidebar",
+      "localFiles": {
+        "hooks/is-mobile.svelte.ts": "src/lib/sidebar/is-mobile.svelte.ts"
+      }
+    }
+  ]
+}

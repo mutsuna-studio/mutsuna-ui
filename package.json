@@ -584,6 +584,8 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "prepack": "pnpm run build",
     "sync:loading-ui": "node scripts/sync-loading-ui-css-patterns.mjs",
+    "sync:shadcn": "node scripts/sync-shadcn-upstream.mjs",
+    "review:shadcn": "node scripts/review-shadcn-upstream.mjs",
     "storybook": "STORYBOOK_DISABLE_TELEMETRY=1 WATCHPACK_POLLING=true storybook dev -p 6206",
     "test": "pnpm run check && pnpm run build && node --test test/*.test.mjs",
     "test:consumer": "node test/consumer-smoke.mjs",
