@@ -3,5 +3,6 @@ dist/
 .svelte-kit/
 storybook-static/
 coverage/
+.tmp/
 *.tgz
 .DS_Store

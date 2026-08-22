@@ -1,0 +1,121 @@
+name: Sync shadcn-svelte upstream
+
+on:
+  schedule:
+    - cron: "41 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-shadcn-svelte-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Protect an open review
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          OPEN_PR_NUMBER="$(gh pr list --state open --base main --head automation/shadcn-svelte-sync --json number --jq '.[0].number // empty')"
+          if [[ -n "$OPEN_PR_NUMBER" ]]; then
+            LATEST_VERSION="$(pnpm view shadcn-svelte version)"
+            PR_BODY="$(gh pr view "$OPEN_PR_NUMBER" --json body --jq .body)"
+            TARGET_VERSION="$(sed -n 's/.*<!-- shadcn-target:\([^ ]*\) -->.*/\1/p' <<<"$PR_BODY" | head -1)"
+            MARKER="<!-- shadcn-newer:$LATEST_VERSION -->"
+            if [[ -n "$TARGET_VERSION" && "$TARGET_VERSION" != "$LATEST_VERSION" ]]; then
+              EXISTING_COMMENT="$(gh api "repos/${{ github.repository }}/issues/$OPEN_PR_NUMBER/comments" --paginate --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -1)"
+              if [[ -z "$EXISTING_COMMENT" ]]; then
+                gh pr comment "$OPEN_PR_NUMBER" --body "$MARKER
+
+          shadcn-svelte $LATEST_VERSION が公開されています。現在の $TARGET_VERSION reviewを完了してBASEを進めた後、次回同期で順番に取り込みます。"
+              fi
+            fi
+            echo "blocked=true" >> "$GITHUB_OUTPUT"
+            echo "Open review PR #$OPEN_PR_NUMBER is preserved without overwriting its branch."
+          elif [[ -f upstream/shadcn-svelte/candidate/manifest.json ]]; then
+            echo "blocked=true" >> "$GITHUB_OUTPUT"
+            echo "A bootstrap or local candidate is already committed on main; finalize it before scheduled synchronization."
+          else
+            echo "blocked=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Prepare immutable upstream candidate
+        if: steps.guard.outputs.blocked == 'false'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm sync:shadcn
+      - name: Detect candidate changes
+        if: steps.guard.outputs.blocked == 'false'
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.changes.outputs.changed == 'true'
+        run: pnpm test
+      - name: Open draft synchronization pull request
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          VERSION="$(node -p "JSON.parse(require('node:fs').readFileSync('upstream/shadcn-svelte/candidate/manifest.json', 'utf8')).version")"
+          COMMIT="$(node -p "JSON.parse(require('node:fs').readFileSync('upstream/shadcn-svelte/candidate/manifest.json', 'utf8')).commit")"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add upstream/shadcn-svelte/candidate
+          git commit -m "chore: review shadcn-svelte $VERSION upstream"
+          git fetch origin refs/heads/automation/shadcn-svelte-sync:refs/remotes/origin/automation/shadcn-svelte-sync || true
+          git push --force-with-lease origin HEAD:automation/shadcn-svelte-sync
+          SUMMARY="$(cat upstream/shadcn-svelte/candidate/SUMMARY.md)"
+          PR_BODY=$(cat <<EOF
+          <!-- shadcn-target:$VERSION -->
+          ## 概要
+
+          shadcn-svelte $VERSION の公式release tagをcommit $COMMITへ解決し、nova registryのreview candidateを生成しました。
+
+          $SUMMARY
+
+          ## 公開contractへの影響
+
+          - [x] automationはsrc/lib、公開subpath、型、props、events、snippets、CSS変数、theme contractを変更しない
+          - [ ] review中に採用した公開contract変更を記録した
+
+          ## 検証
+
+          - [x] pnpm test
+          - [x] git diff --check
+          - [ ] 採用変更がある場合はStorybookとconsumer検証を完了した
+
+          ## Release
+
+          - [x] candidate／repository toolingのみのためchangeset不要
+          - [ ] src/libへ採用変更がある場合はchangesetを追加した
+
+          ## 関連Issue
+
+          なし
+          EOF
+          )
+          gh pr create --draft --base main --head automation/shadcn-svelte-sync --title "chore: review shadcn-svelte $VERSION upstream" --body "$PR_BODY"

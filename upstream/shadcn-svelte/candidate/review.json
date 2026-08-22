@@ -1,0 +1,2099 @@
+{
+  "schemaVersion": 1,
+  "from": null,
+  "to": {
+    "version": "1.5.0",
+    "commit": "5a8a880a1813bc4a84588f29b6f5ac6c1e6fdf50"
+  },
+  "entries": [
+    {
+      "component": "alert",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "alert",
+          "target": "alert/alert-action.svelte",
+          "localPath": "src/lib/alert/alert-action.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert",
+          "target": "alert/alert-description.svelte",
+          "localPath": "src/lib/alert/alert-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert",
+          "target": "alert/alert-title.svelte",
+          "localPath": "src/lib/alert/alert-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert",
+          "target": "alert/alert.svelte",
+          "localPath": "src/lib/alert/alert.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert",
+          "target": "alert/index.ts",
+          "localPath": "src/lib/alert/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "alert",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "tailwind-variants@^3.3.0"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "alert-dialog",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-action.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-action.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-cancel.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-cancel.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-content.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-description.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-footer.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-footer.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-header.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-media.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-media.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-overlay.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-overlay.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-portal.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-portal.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-title.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog-trigger.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/alert-dialog.svelte",
+          "localPath": "src/lib/alert-dialog/alert-dialog.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "alert-dialog",
+          "target": "alert-dialog/index.ts",
+          "localPath": "src/lib/alert-dialog/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "alert-dialog",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        },
+        {
+          "item": "alert-dialog",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "avatar",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "avatar",
+          "target": "avatar/avatar-badge.svelte",
+          "localPath": "src/lib/avatar/avatar-badge.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "avatar",
+          "target": "avatar/avatar-fallback.svelte",
+          "localPath": "src/lib/avatar/avatar-fallback.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "avatar",
+          "target": "avatar/avatar-group-count.svelte",
+          "localPath": "src/lib/avatar/avatar-group-count.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "avatar",
+          "target": "avatar/avatar-group.svelte",
+          "localPath": "src/lib/avatar/avatar-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "avatar",
+          "target": "avatar/avatar-image.svelte",
+          "localPath": "src/lib/avatar/avatar-image.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "avatar",
+          "target": "avatar/avatar.svelte",
+          "localPath": "src/lib/avatar/avatar.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "avatar",
+          "target": "avatar/index.ts",
+          "localPath": "src/lib/avatar/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "avatar",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "badge",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "badge",
+          "target": "badge/badge.svelte",
+          "localPath": "src/lib/badge/badge.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "badge",
+          "target": "badge/index.ts",
+          "localPath": "src/lib/badge/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "badge",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "tailwind-variants@^3.3.0"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "breadcrumb",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/breadcrumb-ellipsis.svelte",
+          "localPath": "src/lib/breadcrumb/breadcrumb-ellipsis.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/breadcrumb-item.svelte",
+          "localPath": "src/lib/breadcrumb/breadcrumb-item.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/breadcrumb-link.svelte",
+          "localPath": "src/lib/breadcrumb/breadcrumb-link.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/breadcrumb-list.svelte",
+          "localPath": "src/lib/breadcrumb/breadcrumb-list.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/breadcrumb-page.svelte",
+          "localPath": "src/lib/breadcrumb/breadcrumb-page.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/breadcrumb-separator.svelte",
+          "localPath": "src/lib/breadcrumb/breadcrumb-separator.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/breadcrumb.svelte",
+          "localPath": "src/lib/breadcrumb/breadcrumb.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "breadcrumb",
+          "target": "breadcrumb/index.ts",
+          "localPath": "src/lib/breadcrumb/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": []
+    },
+    {
+      "component": "button",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "reviewed-no-change",
+      "note": "nova 1.5.0のvariant・size・focus/invalid・disabled対応は反映済み。Mutsuna固有のloading/icon API、loading時a11y、cursor-pointerを維持し、上流差分は採用不要。tailwind-variants 3.3.0も現行rangeで解決済み。",
+      "files": [
+        {
+          "item": "button",
+          "target": "button/button.svelte",
+          "localPath": "src/lib/button/button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "button",
+          "target": "button/index.ts",
+          "localPath": "src/lib/button/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "button",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "tailwind-variants@^3.3.0"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "button-group",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "button-group",
+          "target": "button-group/button-group-separator.svelte",
+          "localPath": "src/lib/button-group/button-group-separator.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "button-group",
+          "target": "button-group/button-group-text.svelte",
+          "localPath": "src/lib/button-group/button-group-text.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "button-group",
+          "target": "button-group/button-group.svelte",
+          "localPath": "src/lib/button-group/button-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "button-group",
+          "target": "button-group/index.ts",
+          "localPath": "src/lib/button-group/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "button-group",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "tailwind-variants@^3.3.0"
+          ]
+        },
+        {
+          "item": "button-group",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "separator"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "calendar",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-caption.svelte",
+          "localPath": "src/lib/calendar/calendar-caption.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-cell.svelte",
+          "localPath": "src/lib/calendar/calendar-cell.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-day.svelte",
+          "localPath": "src/lib/calendar/calendar-day.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-grid-body.svelte",
+          "localPath": "src/lib/calendar/calendar-grid-body.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-grid-head.svelte",
+          "localPath": "src/lib/calendar/calendar-grid-head.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-grid-row.svelte",
+          "localPath": "src/lib/calendar/calendar-grid-row.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-grid.svelte",
+          "localPath": "src/lib/calendar/calendar-grid.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-head-cell.svelte",
+          "localPath": "src/lib/calendar/calendar-head-cell.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-header.svelte",
+          "localPath": "src/lib/calendar/calendar-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-heading.svelte",
+          "localPath": "src/lib/calendar/calendar-heading.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-month-select.svelte",
+          "localPath": "src/lib/calendar/calendar-month-select.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-month.svelte",
+          "localPath": "src/lib/calendar/calendar-month.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-months.svelte",
+          "localPath": "src/lib/calendar/calendar-months.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-nav.svelte",
+          "localPath": "src/lib/calendar/calendar-nav.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-next-button.svelte",
+          "localPath": "src/lib/calendar/calendar-next-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-prev-button.svelte",
+          "localPath": "src/lib/calendar/calendar-prev-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar-year-select.svelte",
+          "localPath": "src/lib/calendar/calendar-year-select.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/calendar.svelte",
+          "localPath": "src/lib/calendar/calendar.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "calendar",
+          "target": "calendar/index.ts",
+          "localPath": "src/lib/calendar/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "calendar",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        },
+        {
+          "item": "calendar",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "card",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "card",
+          "target": "card/card-action.svelte",
+          "localPath": "src/lib/card/card-action.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "card",
+          "target": "card/card-content.svelte",
+          "localPath": "src/lib/card/card-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "card",
+          "target": "card/card-description.svelte",
+          "localPath": "src/lib/card/card-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "card",
+          "target": "card/card-footer.svelte",
+          "localPath": "src/lib/card/card-footer.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "card",
+          "target": "card/card-header.svelte",
+          "localPath": "src/lib/card/card-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "card",
+          "target": "card/card-title.svelte",
+          "localPath": "src/lib/card/card-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "card",
+          "target": "card/card.svelte",
+          "localPath": "src/lib/card/card.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "card",
+          "target": "card/index.ts",
+          "localPath": "src/lib/card/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": []
+    },
+    {
+      "component": "checkbox",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "checkbox",
+          "target": "checkbox/checkbox.svelte",
+          "localPath": "src/lib/checkbox/checkbox.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "checkbox",
+          "target": "checkbox/index.ts",
+          "localPath": "src/lib/checkbox/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "checkbox",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "collapsible",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "collapsible",
+          "target": "collapsible/collapsible-content.svelte",
+          "localPath": "src/lib/collapsible/collapsible-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "collapsible",
+          "target": "collapsible/collapsible-trigger.svelte",
+          "localPath": "src/lib/collapsible/collapsible-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "collapsible",
+          "target": "collapsible/collapsible.svelte",
+          "localPath": "src/lib/collapsible/collapsible.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "collapsible",
+          "target": "collapsible/index.ts",
+          "localPath": "src/lib/collapsible/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "collapsible",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "dialog",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-close.svelte",
+          "localPath": "src/lib/dialog/dialog-close.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-content.svelte",
+          "localPath": "src/lib/dialog/dialog-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-description.svelte",
+          "localPath": "src/lib/dialog/dialog-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-footer.svelte",
+          "localPath": "src/lib/dialog/dialog-footer.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-header.svelte",
+          "localPath": "src/lib/dialog/dialog-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-overlay.svelte",
+          "localPath": "src/lib/dialog/dialog-overlay.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-portal.svelte",
+          "localPath": "src/lib/dialog/dialog-portal.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-title.svelte",
+          "localPath": "src/lib/dialog/dialog-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog-trigger.svelte",
+          "localPath": "src/lib/dialog/dialog-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/dialog.svelte",
+          "localPath": "src/lib/dialog/dialog.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dialog",
+          "target": "dialog/index.ts",
+          "localPath": "src/lib/dialog/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "dialog",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        },
+        {
+          "item": "dialog",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "dropdown-menu",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-checkbox-group.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-checkbox-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-checkbox-item.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-checkbox-item.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-content.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-group-heading.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-group-heading.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-group.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-item.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-item.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-label.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-label.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-portal.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-portal.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-radio-group.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-radio-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-radio-item.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-radio-item.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-separator.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-separator.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-shortcut.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-shortcut.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-sub-content.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-sub-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-sub-trigger.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-sub-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-sub.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-sub.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu-trigger.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/dropdown-menu.svelte",
+          "localPath": "src/lib/dropdown-menu/dropdown-menu.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "dropdown-menu",
+          "target": "dropdown-menu/index.ts",
+          "localPath": "src/lib/dropdown-menu/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "dropdown-menu",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "empty",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "empty",
+          "target": "empty/empty-content.svelte",
+          "localPath": "src/lib/empty/empty-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "empty",
+          "target": "empty/empty-description.svelte",
+          "localPath": "src/lib/empty/empty-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "empty",
+          "target": "empty/empty-header.svelte",
+          "localPath": "src/lib/empty/empty-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "empty",
+          "target": "empty/empty-media.svelte",
+          "localPath": "src/lib/empty/empty-media.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "empty",
+          "target": "empty/empty-title.svelte",
+          "localPath": "src/lib/empty/empty-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "empty",
+          "target": "empty/empty.svelte",
+          "localPath": "src/lib/empty/empty.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "empty",
+          "target": "empty/index.ts",
+          "localPath": "src/lib/empty/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "empty",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "tailwind-variants@^3.3.0"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "field",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "field",
+          "target": "field/field-content.svelte",
+          "localPath": "src/lib/field/field-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-description.svelte",
+          "localPath": "src/lib/field/field-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-error.svelte",
+          "localPath": "src/lib/field/field-error.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-group.svelte",
+          "localPath": "src/lib/field/field-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-label.svelte",
+          "localPath": "src/lib/field/field-label.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-legend.svelte",
+          "localPath": "src/lib/field/field-legend.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-separator.svelte",
+          "localPath": "src/lib/field/field-separator.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-set.svelte",
+          "localPath": "src/lib/field/field-set.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field-title.svelte",
+          "localPath": "src/lib/field/field-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/field.svelte",
+          "localPath": "src/lib/field/field.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "field",
+          "target": "field/index.ts",
+          "localPath": "src/lib/field/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "field",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "tailwind-variants@^3.3.0"
+          ]
+        },
+        {
+          "item": "field",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "label",
+            "separator"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "form",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "form",
+          "target": "form/form-button.svelte",
+          "localPath": "src/lib/form/form-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/form-description.svelte",
+          "localPath": "src/lib/form/form-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/form-element-field.svelte",
+          "localPath": "src/lib/form/form-element-field.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/form-field-errors.svelte",
+          "localPath": "src/lib/form/form-field-errors.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/form-field.svelte",
+          "localPath": "src/lib/form/form-field.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/form-fieldset.svelte",
+          "localPath": "src/lib/form/form-fieldset.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/form-label.svelte",
+          "localPath": "src/lib/form/form-label.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/form-legend.svelte",
+          "localPath": "src/lib/form/form-legend.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "form",
+          "target": "form/index.ts",
+          "localPath": "src/lib/form/index.ts",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "form",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "formsnap@^2.0.1",
+            "sveltekit-superforms@^2.30.0"
+          ]
+        },
+        {
+          "item": "form",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "button",
+            "label"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "input",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "input",
+          "target": "input/index.ts",
+          "localPath": "src/lib/input/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "input",
+          "target": "input/input.svelte",
+          "localPath": "src/lib/input/input.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": []
+    },
+    {
+      "component": "input-group",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "input-group",
+          "target": "input-group/index.ts",
+          "localPath": "src/lib/input-group/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "input-group",
+          "target": "input-group/input-group-addon.svelte",
+          "localPath": "src/lib/input-group/input-group-addon.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "input-group",
+          "target": "input-group/input-group-button.svelte",
+          "localPath": "src/lib/input-group/input-group-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "input-group",
+          "target": "input-group/input-group-input.svelte",
+          "localPath": "src/lib/input-group/input-group-input.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "input-group",
+          "target": "input-group/input-group-text.svelte",
+          "localPath": "src/lib/input-group/input-group-text.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "input-group",
+          "target": "input-group/input-group-textarea.svelte",
+          "localPath": "src/lib/input-group/input-group-textarea.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "input-group",
+          "target": "input-group/input-group.svelte",
+          "localPath": "src/lib/input-group/input-group.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "input-group",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "tailwind-variants@^3.3.0"
+          ]
+        },
+        {
+          "item": "input-group",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "button",
+            "input",
+            "textarea"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "label",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "label",
+          "target": "label/index.ts",
+          "localPath": "src/lib/label/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "label",
+          "target": "label/label.svelte",
+          "localPath": "src/lib/label/label.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "label",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "popover",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "popover",
+          "target": "popover/index.ts",
+          "localPath": "src/lib/popover/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover-close.svelte",
+          "localPath": "src/lib/popover/popover-close.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover-content.svelte",
+          "localPath": "src/lib/popover/popover-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover-description.svelte",
+          "localPath": "src/lib/popover/popover-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover-header.svelte",
+          "localPath": "src/lib/popover/popover-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover-portal.svelte",
+          "localPath": "src/lib/popover/popover-portal.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover-title.svelte",
+          "localPath": "src/lib/popover/popover-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover-trigger.svelte",
+          "localPath": "src/lib/popover/popover-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "popover",
+          "target": "popover/popover.svelte",
+          "localPath": "src/lib/popover/popover.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "popover",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "select",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "select",
+          "target": "select/index.ts",
+          "localPath": "src/lib/select/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-content.svelte",
+          "localPath": "src/lib/select/select-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-group-heading.svelte",
+          "localPath": "src/lib/select/select-group-heading.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-group.svelte",
+          "localPath": "src/lib/select/select-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-item.svelte",
+          "localPath": "src/lib/select/select-item.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-label.svelte",
+          "localPath": "src/lib/select/select-label.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-portal.svelte",
+          "localPath": "src/lib/select/select-portal.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-scroll-down-button.svelte",
+          "localPath": "src/lib/select/select-scroll-down-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-scroll-up-button.svelte",
+          "localPath": "src/lib/select/select-scroll-up-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-separator.svelte",
+          "localPath": "src/lib/select/select-separator.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select-trigger.svelte",
+          "localPath": "src/lib/select/select-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "select",
+          "target": "select/select.svelte",
+          "localPath": "src/lib/select/select.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "select",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        },
+        {
+          "item": "select",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "separator"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "separator",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "separator",
+          "target": "separator/index.ts",
+          "localPath": "src/lib/separator/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "separator",
+          "target": "separator/separator.svelte",
+          "localPath": "src/lib/separator/separator.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "separator",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "sheet",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "sheet",
+          "target": "sheet/index.ts",
+          "localPath": "src/lib/sheet/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-close.svelte",
+          "localPath": "src/lib/sheet/sheet-close.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-content.svelte",
+          "localPath": "src/lib/sheet/sheet-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-description.svelte",
+          "localPath": "src/lib/sheet/sheet-description.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-footer.svelte",
+          "localPath": "src/lib/sheet/sheet-footer.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-header.svelte",
+          "localPath": "src/lib/sheet/sheet-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-overlay.svelte",
+          "localPath": "src/lib/sheet/sheet-overlay.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-portal.svelte",
+          "localPath": "src/lib/sheet/sheet-portal.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-title.svelte",
+          "localPath": "src/lib/sheet/sheet-title.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet-trigger.svelte",
+          "localPath": "src/lib/sheet/sheet-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sheet",
+          "target": "sheet/sheet.svelte",
+          "localPath": "src/lib/sheet/sheet.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "sheet",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        },
+        {
+          "item": "sheet",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "sidebar",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "is-mobile",
+          "target": "hooks/is-mobile.svelte.ts",
+          "localPath": "src/lib/sidebar/is-mobile.svelte.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/constants.ts",
+          "localPath": "src/lib/sidebar/constants.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/context.svelte.ts",
+          "localPath": "src/lib/sidebar/context.svelte.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/index.ts",
+          "localPath": "src/lib/sidebar/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-content.svelte",
+          "localPath": "src/lib/sidebar/sidebar-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-footer.svelte",
+          "localPath": "src/lib/sidebar/sidebar-footer.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-group-action.svelte",
+          "localPath": "src/lib/sidebar/sidebar-group-action.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-group-content.svelte",
+          "localPath": "src/lib/sidebar/sidebar-group-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-group-label.svelte",
+          "localPath": "src/lib/sidebar/sidebar-group-label.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-group.svelte",
+          "localPath": "src/lib/sidebar/sidebar-group.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-header.svelte",
+          "localPath": "src/lib/sidebar/sidebar-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-input.svelte",
+          "localPath": "src/lib/sidebar/sidebar-input.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-inset.svelte",
+          "localPath": "src/lib/sidebar/sidebar-inset.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-action.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-action.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-badge.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-badge.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-button.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-item.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-item.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-skeleton.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-skeleton.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-sub-button.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-sub-button.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-sub-item.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-sub-item.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu-sub.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu-sub.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-menu.svelte",
+          "localPath": "src/lib/sidebar/sidebar-menu.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-provider.svelte",
+          "localPath": "src/lib/sidebar/sidebar-provider.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-rail.svelte",
+          "localPath": "src/lib/sidebar/sidebar-rail.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-separator.svelte",
+          "localPath": "src/lib/sidebar/sidebar-separator.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar-trigger.svelte",
+          "localPath": "src/lib/sidebar/sidebar-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sidebar",
+          "target": "sidebar/sidebar.svelte",
+          "localPath": "src/lib/sidebar/sidebar.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "sidebar",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3",
+            "tailwind-variants@^3.3.0"
+          ]
+        },
+        {
+          "item": "sidebar",
+          "type": "registryDependencies",
+          "before": [],
+          "after": [
+            "button",
+            "input",
+            "is-mobile",
+            "separator",
+            "sheet",
+            "skeleton",
+            "tooltip"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "skeleton",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "skeleton",
+          "target": "skeleton/index.ts",
+          "localPath": "src/lib/skeleton/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "skeleton",
+          "target": "skeleton/skeleton.svelte",
+          "localPath": "src/lib/skeleton/skeleton.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": []
+    },
+    {
+      "component": "slider",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "slider",
+          "target": "slider/index.ts",
+          "localPath": "src/lib/slider/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "slider",
+          "target": "slider/slider.svelte",
+          "localPath": "src/lib/slider/slider.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "slider",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "sonner",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "sonner",
+          "target": "sonner/index.ts",
+          "localPath": "src/lib/sonner/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "sonner",
+          "target": "sonner/sonner.svelte",
+          "localPath": "src/lib/sonner/sonner.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "sonner",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "mode-watcher@^1.1.0",
+            "svelte-sonner@^1.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "switch",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "switch",
+          "target": "switch/index.ts",
+          "localPath": "src/lib/switch/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "switch",
+          "target": "switch/switch.svelte",
+          "localPath": "src/lib/switch/switch.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "switch",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "table",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "table",
+          "target": "table/index.ts",
+          "localPath": "src/lib/table/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table-body.svelte",
+          "localPath": "src/lib/table/table-body.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table-caption.svelte",
+          "localPath": "src/lib/table/table-caption.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table-cell.svelte",
+          "localPath": "src/lib/table/table-cell.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table-footer.svelte",
+          "localPath": "src/lib/table/table-footer.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table-head.svelte",
+          "localPath": "src/lib/table/table-head.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table-header.svelte",
+          "localPath": "src/lib/table/table-header.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table-row.svelte",
+          "localPath": "src/lib/table/table-row.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "table",
+          "target": "table/table.svelte",
+          "localPath": "src/lib/table/table.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": []
+    },
+    {
+      "component": "tabs",
+      "classification": "derived",
+      "reviewGroup": "interaction",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "tabs",
+          "target": "tabs/index.ts",
+          "localPath": "src/lib/tabs/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tabs",
+          "target": "tabs/tabs-content.svelte",
+          "localPath": "src/lib/tabs/tabs-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tabs",
+          "target": "tabs/tabs-list.svelte",
+          "localPath": "src/lib/tabs/tabs-list.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tabs",
+          "target": "tabs/tabs-trigger.svelte",
+          "localPath": "src/lib/tabs/tabs-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tabs",
+          "target": "tabs/tabs.svelte",
+          "localPath": "src/lib/tabs/tabs.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "tabs",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3",
+            "tailwind-variants@^3.3.0"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "textarea",
+      "classification": "derived",
+      "reviewGroup": "presentation",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "textarea",
+          "target": "textarea/index.ts",
+          "localPath": "src/lib/textarea/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "textarea",
+          "target": "textarea/textarea.svelte",
+          "localPath": "src/lib/textarea/textarea.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": []
+    },
+    {
+      "component": "tooltip",
+      "classification": "heavily-customized",
+      "reviewGroup": "heavily-customized",
+      "change": "bootstrap",
+      "decision": "pending",
+      "note": null,
+      "files": [
+        {
+          "item": "tooltip",
+          "target": "tooltip/index.ts",
+          "localPath": "src/lib/tooltip/index.ts",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tooltip",
+          "target": "tooltip/tooltip-content.svelte",
+          "localPath": "src/lib/tooltip/tooltip-content.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tooltip",
+          "target": "tooltip/tooltip-portal.svelte",
+          "localPath": "src/lib/tooltip/tooltip-portal.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tooltip",
+          "target": "tooltip/tooltip-provider.svelte",
+          "localPath": "src/lib/tooltip/tooltip-provider.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tooltip",
+          "target": "tooltip/tooltip-trigger.svelte",
+          "localPath": "src/lib/tooltip/tooltip-trigger.svelte",
+          "mergeStatus": "bootstrap"
+        },
+        {
+          "item": "tooltip",
+          "target": "tooltip/tooltip.svelte",
+          "localPath": "src/lib/tooltip/tooltip.svelte",
+          "mergeStatus": "bootstrap"
+        }
+      ],
+      "dependencyChanges": [
+        {
+          "item": "tooltip",
+          "type": "devDependencies",
+          "before": [],
+          "after": [
+            "@internationalized/date@^3.12.0",
+            "bits-ui@^2.16.3"
+          ]
+        }
+      ]
+    }
+  ]
+}
