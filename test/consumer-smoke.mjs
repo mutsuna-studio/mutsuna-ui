@@ -141,7 +141,15 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
       <CustomerAvatar id="external-customer" name="External customer" />
       <Loading variant="dots" label="External consumer loading" />
       <LoadingMorphingInfinity label="External consumer morphing loading" />
-      <Slider type="single" bind:value={sliderValue} min={0} max={100} aria-label="External slider" />
+      <Slider
+        type="single"
+        bind:value={sliderValue}
+        min={0}
+        max={100}
+        aria-label="External slider"
+        thumbLabels={["External slider value"]}
+        getThumbValueText={(value) => \`\${value}%\`}
+      />
       <Button type="button" onclick={() => showSuccessToast("Shared toast", "Visible message", { detail: "Hidden detail" })}>Toast</Button>
       <Dialog>
         <DialogTrigger>
