@@ -23,9 +23,12 @@ const { Story } = defineMeta({
 			<span>変更を許可しない</span>
 			<Switch disabled />
 		</label>
-		<label class="flex items-center justify-between gap-4 text-sm">
+		<div class="flex items-center justify-between gap-4 text-sm">
 			<span>小さいサイズ</span>
-			<Switch size="sm" />
-		</label>
+			<span class="flex items-center gap-2">
+				<Switch size="sm" aria-label="小さいサイズ、オフ" />
+				<Switch size="sm" checked aria-label="小さいサイズ、オン" />
+			</span>
+		</div>
 	</div>
 </Story>

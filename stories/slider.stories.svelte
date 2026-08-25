@@ -23,9 +23,18 @@ let verticalValue = $state(65);
     </label>
     <div class="grid gap-2 text-sm">
       <span>価格帯: {priceRange[0]}〜{priceRange[1]}万円</span>
-      <Slider type="multiple" bind:value={priceRange} min={0} max={100} step={5} aria-label="価格帯" />
+      <Slider
+        type="multiple"
+        bind:value={priceRange}
+        min={0}
+        max={100}
+        step={5}
+        aria-label="価格帯"
+        thumbLabels={["最低価格", "最高価格"]}
+        getThumbValueText={(value) => `${value}万円`}
+      />
     </div>
-    <label class="grid gap-2 text-sm text-muted-foreground">
+    <label class="grid gap-2 text-sm">
       <span>変更できない値</span>
       <Slider type="single" value={40} min={0} max={100} disabled aria-label="変更できない値" />
     </label>

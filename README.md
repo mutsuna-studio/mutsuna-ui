@@ -79,6 +79,27 @@ import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
 </ScrollbarArea>
 ```
 
+範囲Sliderでは、各つまみの読み上げ名と単位付きの読み上げ値を指定できる。
+
+```svelte
+<script lang="ts">
+import { Slider } from "@mutsuna/ui/slider";
+
+let priceRange = $state([20, 80]);
+</script>
+
+<Slider
+  type="multiple"
+  bind:value={priceRange}
+  min={0}
+  max={100}
+  step={5}
+  aria-label="価格帯"
+  thumbLabels={["最低価格", "最高価格"]}
+  getThumbValueText={(value) => `${value}万円`}
+/>
+```
+
 CSSだけで動くloading indicatorは`Loading`のvariantから選択する。色は`currentColor`でthemeへ追従し、OSの視差効果を減らす設定にも対応する。
 
 ```svelte
