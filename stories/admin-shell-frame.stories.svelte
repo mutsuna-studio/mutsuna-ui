@@ -2,12 +2,12 @@
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import BadgeCheckIcon from "@lucide/svelte/icons/badge-check";
 import BellIcon from "@lucide/svelte/icons/bell";
-import CalendarDaysIcon from "@lucide/svelte/icons/calendar-days";
+import BlocksIcon from "@lucide/svelte/icons/blocks";
+import BookOpenIcon from "@lucide/svelte/icons/book-open";
 import CircleHelpIcon from "@lucide/svelte/icons/circle-help";
-import CreditCardIcon from "@lucide/svelte/icons/credit-card";
 import LogOutIcon from "@lucide/svelte/icons/log-out";
-import MapIcon from "@lucide/svelte/icons/map";
-import UsersIcon from "@lucide/svelte/icons/users";
+import PaletteIcon from "@lucide/svelte/icons/palette";
+import PanelsTopLeftIcon from "@lucide/svelte/icons/panels-top-left";
 import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
 import { SidebarUserMenu, SidebarWorkspaceSwitcher } from "@mutsuna/ui/sidebar-identity";
 
@@ -24,51 +24,70 @@ import * as Sidebar from "@mutsuna/ui/sidebar";
 
 let sidebarOpen = $state(true);
 
-const locations = [
-  { id: "ginza", name: "Mutsuna 銀座店", description: "むつな工房" },
-  { id: "shibuya", name: "Mutsuna 渋谷店", description: "むつな工房" },
+const libraries = [
+  { id: "ui", name: "@mutsuna/ui", description: "UIコンポーネント" },
 ];
 const userPrimaryItems = [
-  { id: "account", label: "アカウント", icon: BadgeCheckIcon },
-  { id: "billing", label: "利用プラン", icon: CreditCardIcon },
+  { id: "profile", label: "プロフィール", icon: BadgeCheckIcon },
+  { id: "docs", label: "ドキュメント", icon: BookOpenIcon },
 ];
 const userSecondaryItems = [{ id: "logout", label: "ログアウト", icon: LogOutIcon }];
+const components = [
+  { name: "Button", category: "入力", status: "公開中" },
+  { name: "Input", category: "入力", status: "公開中" },
+  { name: "Textarea", category: "入力", status: "公開中" },
+  { name: "Select", category: "入力", status: "公開中" },
+  { name: "Checkbox", category: "入力", status: "公開中" },
+  { name: "Switch", category: "入力", status: "公開中" },
+  { name: "Slider", category: "入力", status: "公開中" },
+  { name: "Calendar", category: "日時", status: "公開中" },
+  { name: "TimePicker", category: "日時", status: "公開中" },
+  { name: "Dialog", category: "オーバーレイ", status: "公開中" },
+  { name: "Sheet", category: "オーバーレイ", status: "公開中" },
+  { name: "Popover", category: "オーバーレイ", status: "公開中" },
+  { name: "Tooltip", category: "フィードバック", status: "公開中" },
+  { name: "Toast", category: "フィードバック", status: "公開中" },
+  { name: "Table", category: "データ表示", status: "公開中" },
+  { name: "DataTable", category: "データ表示", status: "公開中" },
+  { name: "Sidebar", category: "レイアウト", status: "公開中" },
+  { name: "AdminShellFrame", category: "レイアウト", status: "公開中" },
+];
 </script>
 
 <Story name="Default" asChild parameters={{ layout: "fullscreen" }}>
-  <AdminShellFrame pageTitle="予約一覧" bind:sidebarOpen>
+  <AdminShellFrame pageTitle="コンポーネント一覧" bind:sidebarOpen>
     {#snippet sidebar()}
       <Sidebar.Root collapsible="icon" hideHeaderSeam>
         <Sidebar.Header>
           <SidebarWorkspaceSwitcher
-            workspaces={locations}
-            activeWorkspaceId="ginza"
-            activeDescription="プロ"
-            menuLabel="店舗切替"
-            managementAction={{ href: "#location-management", label: "店舗管理へ" }}
+            workspaces={libraries}
+            activeWorkspaceId="ui"
+            activeDescription="UIパッケージ"
+            menuLabel="ライブラリ"
+            managementAction={{ href: "#package", label: "パッケージ情報" }}
           />
         </Sidebar.Header>
         <Sidebar.Content>
           <Sidebar.Group>
-            <Sidebar.GroupLabel>予約管理</Sidebar.GroupLabel>
+            <Sidebar.GroupLabel>UIライブラリ</Sidebar.GroupLabel>
             <Sidebar.GroupContent>
               <Sidebar.Menu>
                 <Sidebar.MenuItem>
-                  <Sidebar.MenuButton isActive tooltipContent="予約">
-                    <CalendarDaysIcon aria-hidden="true" />
-                    <span>予約</span>
+                  <Sidebar.MenuButton isActive tooltipContent="コンポーネント">
+                    <BlocksIcon aria-hidden="true" />
+                    <span>コンポーネント</span>
                   </Sidebar.MenuButton>
                 </Sidebar.MenuItem>
                 <Sidebar.MenuItem>
-                  <Sidebar.MenuButton tooltipContent="マップ">
-                    <MapIcon aria-hidden="true" />
-                    <span>マップ</span>
+                  <Sidebar.MenuButton tooltipContent="パターン">
+                    <PanelsTopLeftIcon aria-hidden="true" />
+                    <span>パターン</span>
                   </Sidebar.MenuButton>
                 </Sidebar.MenuItem>
                 <Sidebar.MenuItem>
-                  <Sidebar.MenuButton tooltipContent="顧客">
-                    <UsersIcon aria-hidden="true" />
-                    <span>顧客</span>
+                  <Sidebar.MenuButton tooltipContent="テーマ">
+                    <PaletteIcon aria-hidden="true" />
+                    <span>テーマ</span>
                   </Sidebar.MenuButton>
                 </Sidebar.MenuItem>
               </Sidebar.Menu>
@@ -77,7 +96,7 @@ const userSecondaryItems = [{ id: "logout", label: "ログアウト", icon: LogO
         </Sidebar.Content>
         <Sidebar.Footer>
           <SidebarUserMenu
-            user={{ name: "山田 太郎", email: "taro@example.com" }}
+            user={{ name: "UI Maintainer", email: "ui@example.com" }}
             primaryItems={userPrimaryItems}
             secondaryItems={userSecondaryItems}
           />
@@ -90,45 +109,22 @@ const userSecondaryItems = [{ id: "logout", label: "ログアウト", icon: LogO
       <Button size="icon-sm" variant="ghost" aria-label="ヘルプ"><CircleHelpIcon aria-hidden="true" /></Button>
     {/snippet}
     <section class="grid gap-6 pt-3">
-      <p class="text-sm text-muted-foreground">店舗切替、主要ナビゲーション、ユーザーメニューを備えた管理画面shell。</p>
+      <p class="text-sm text-muted-foreground">@mutsuna/ui の再利用可能なコンポーネントとレイアウトパターンを確認できます。</p>
       <div class="grid gap-3">
         <div class="flex items-center justify-between gap-3">
-          <h2 class="text-base font-semibold">本日の予約</h2>
-          <Button size="sm">新しい予約</Button>
+          <h2 class="text-base font-semibold">UIコンポーネント</h2>
+          <Button size="sm">Storyを追加</Button>
         </div>
         <div class="divide-y border-y">
-          <div class="grid grid-cols-[5rem_1fr_auto] items-center gap-3 py-3 text-sm">
-            <span class="font-medium">10:00</span>
-            <span>初回相談</span>
-            <span class="text-muted-foreground">山田 太郎</span>
-          </div>
-          <div class="grid grid-cols-[5rem_1fr_auto] items-center gap-3 py-3 text-sm">
-            <span class="font-medium">13:30</span>
-            <span>定期メンテナンス</span>
-            <span class="text-muted-foreground">佐藤 花子</span>
-          </div>
+          {#each components as component}
+            <div class="grid grid-cols-[minmax(7rem,1fr)_7rem_auto] items-center gap-3 py-3 text-sm">
+              <span class="min-w-0 truncate font-medium" title={component.name}>{component.name}</span>
+              <span class="whitespace-nowrap">{component.category}</span>
+              <span class="text-muted-foreground">{component.status}</span>
+            </div>
+          {/each}
         </div>
       </div>
     </section>
-  </AdminShellFrame>
-</Story>
-
-<Story name="Nested Scroll Content" asChild parameters={{ layout: "fullscreen" }}>
-  <AdminShellFrame
-    pageTitle="会議一覧"
-    contentGutter="auto"
-    contentPadding="none"
-    contentClass="overflow-hidden"
-  >
-    {#snippet sidebar()}
-      <Sidebar.Root collapsible="icon">
-        <Sidebar.Content />
-      </Sidebar.Root>
-    {/snippet}
-    <div class="h-full overflow-y-auto p-4">
-      <div class="min-h-[120vh] rounded-xl border bg-card p-4 text-sm text-card-foreground">
-        内側の領域がスクロールを担当し、shell外枠にはgutterやpaddingを追加しません。
-      </div>
-    </div>
   </AdminShellFrame>
 </Story>

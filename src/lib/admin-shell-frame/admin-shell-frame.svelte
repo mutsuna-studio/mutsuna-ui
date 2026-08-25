@@ -52,14 +52,15 @@ function handleSidebarOpenChange(open: boolean): void {
   <Sidebar.Inset class={cn("bg-sidebar h-svh min-h-0 overflow-hidden", insetClass)}>
     <header
       class={cn(
-        "bg-sidebar flex h-14 shrink-0 items-center justify-between gap-2 px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-10",
+        "bg-sidebar flex h-14 shrink-0 items-center justify-between gap-2 px-4 transition-[width,height] ease-linear",
         headerClass,
       )}
     >
       <div class="flex min-w-0 items-center gap-2">
-        <Sidebar.Trigger class="-ms-1" />
+        <Sidebar.Trigger class="-ms-1 size-11" />
         <Separator orientation="vertical" class="me-2 data-[orientation=vertical]:h-4" />
         {#if breadcrumb}
+          <h1 class="sr-only">{pageTitle}</h1>
           {@render breadcrumb()}
         {:else}
           <Breadcrumb.Root>
@@ -71,14 +72,16 @@ function handleSidebarOpenChange(open: boolean): void {
                 <Breadcrumb.Separator class="hidden md:block" />
               {/if}
               <Breadcrumb.Item>
-                <Breadcrumb.Page>{pageTitle}</Breadcrumb.Page>
+                <h1 class="text-foreground font-normal" aria-current="page">{pageTitle}</h1>
               </Breadcrumb.Item>
             </Breadcrumb.List>
           </Breadcrumb.Root>
         {/if}
       </div>
       {#if headerActions}
-        <div class="flex shrink-0 items-center gap-2">
+        <div
+          class="flex shrink-0 items-center gap-2 [&_[data-slot=button]]:min-h-11 [&_[data-slot=button]]:min-w-11"
+        >
           {@render headerActions()}
         </div>
       {/if}
@@ -86,8 +89,8 @@ function handleSidebarOpenChange(open: boolean): void {
     <ScrollbarArea
       gutter={contentGutter}
       class={cn(
-        "bg-background border-sidebar-border rounded-t-2xl sm:rounded-se-none min-h-0 min-w-0 flex-1 overflow-auto border-t border-s",
-        contentPadding === "default" && "p-2 pt-0 sm:p-4 sm:pt-0",
+        "bg-background border-sidebar-border mb-2 min-h-0 min-w-0 flex-1 overflow-auto rounded-[14px] border-y sm:me-2 sm:border",
+        contentPadding === "default" && "px-2 sm:p-4 sm:pt-0",
         contentClass,
       )}
     >

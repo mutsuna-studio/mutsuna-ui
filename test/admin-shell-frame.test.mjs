@@ -28,26 +28,66 @@ test("admin shell supports nested scrolling without a reserved outer gutter or p
   assert.match(source, /contentGutter = "stable"/);
   assert.match(source, /contentPadding = "default"/);
   assert.match(source, /<ScrollbarArea\s+gutter=\{contentGutter\}/);
-  assert.match(source, /contentPadding === "default" && "p-2 pt-0 sm:p-4 sm:pt-0"/);
+  assert.match(source, /contentPadding === "default" && "px-2 sm:p-4 sm:pt-0"/);
 });
 
-test("app shell story keeps sidebar identity and menu labels intact when collapsed", async () => {
+test("admin shell exposes pageTitle as the page heading", async () => {
+  const source = await readFile(componentUrl, "utf8");
+
+  assert.match(
+    source,
+    /\{#if breadcrumb\}[\s\S]*<h1 class="sr-only">\{pageTitle\}<\/h1>/
+  );
+  assert.match(
+    source,
+    /<h1 class="text-foreground font-normal" aria-current="page">\{pageTitle\}<\/h1>/
+  );
+  assert.doesNotMatch(source, /<Breadcrumb\.Page>\{pageTitle\}<\/Breadcrumb\.Page>/);
+});
+
+test("admin shell header controls expose a 44px operation area", async () => {
+  const source = await readFile(componentUrl, "utf8");
+
+  assert.match(source, /<Sidebar\.Trigger class="-ms-1 size-11" \/>/);
+  assert.match(source, /\[&_\[data-slot=button\]\]:min-h-11/);
+  assert.match(source, /\[&_\[data-slot=button\]\]:min-w-11/);
+  assert.doesNotMatch(
+    source,
+    /group-has-data-\[collapsible=icon\]\/sidebar-wrapper:h-10/
+  );
+});
+
+test("admin shell uses full mobile width while preserving the bottom frame and desktop end frame", async () => {
+  const source = await readFile(componentUrl, "utf8");
+
+  assert.match(source, /rounded-\[14px\] border-y sm:me-2 sm:border/);
+  assert.doesNotMatch(source, /\sms-2\s/);
+  assert.doesNotMatch(source, /\sme-2\s/);
+  assert.match(source, /\smb-2\s/);
+  assert.doesNotMatch(source, /rounded-t-\[14px\]/);
+});
+
+test("app shell story presents a generic UI package catalog", async () => {
   const source = await readFile(storyUrl, "utf8");
 
   assert.match(source, /<SidebarWorkspaceSwitcher/);
-  assert.match(source, /menuLabel="店舗切替"/);
+  assert.match(source, /name: "@mutsuna\/ui"/);
+  assert.match(source, /menuLabel="ライブラリ"/);
   assert.match(
     source,
-    /<CalendarDaysIcon aria-hidden="true" \/>[\s\S]*<span>予約<\/span>/
+    /<BlocksIcon aria-hidden="true" \/>[\s\S]*<span>コンポーネント<\/span>/
   );
   assert.match(
     source,
-    /<MapIcon aria-hidden="true" \/>[\s\S]*<span>マップ<\/span>/
+    /<PanelsTopLeftIcon aria-hidden="true" \/>[\s\S]*<span>パターン<\/span>/
   );
   assert.match(
     source,
-    /<UsersIcon aria-hidden="true" \/>[\s\S]*<span>顧客<\/span>/
+    /<PaletteIcon aria-hidden="true" \/>[\s\S]*<span>テーマ<\/span>/
   );
+  assert.match(source, /pageTitle="コンポーネント一覧"/);
+  assert.match(source, /@mutsuna\/ui の再利用可能なコンポーネント/);
+  assert.doesNotMatch(source, /予約|店舗切替|顧客/);
   assert.match(source, /<SidebarUserMenu/);
   assert.match(source, /<BellIcon aria-hidden="true" \/>/);
   assert.match(source, /<CircleHelpIcon aria-hidden="true" \/>/);
@@ -55,4 +95,12 @@ test("app shell story keeps sidebar identity and menu labels intact when collaps
     source,
     /<Sidebar\.Header[^>]*>Workspace<\/Sidebar\.Header>/
   );
+});
+
+test("app shell story includes enough main content to exercise scrolling", async () => {
+  const source = await readFile(storyUrl, "utf8");
+  const componentCount = source.match(/\{ name: "[^"]+", category:/g)?.length ?? 0;
+
+  assert.ok(componentCount >= 18);
+  assert.match(source, /\{#each components as component\}/);
 });
