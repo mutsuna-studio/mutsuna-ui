@@ -8,11 +8,13 @@ let {
   ref = $bindable(null),
   class: className,
   gutter = "stable",
+  tabindex = 0,
   children,
   ...restProps
 }: WithElementRef<HTMLAttributes<HTMLDivElement>> & { gutter?: ScrollbarGutter } = $props();
 </script>
 
+<!-- svelte-ignore a11y_no_noninteractive_tabindex: scroll containers require keyboard focus when no focusable descendants are present -->
 <div
   bind:this={ref}
   class={cn(
@@ -22,6 +24,7 @@ let {
     className,
   )}
   use:scrollbarVisibility
+  {tabindex}
   {...restProps}
 >
   {@render children?.()}

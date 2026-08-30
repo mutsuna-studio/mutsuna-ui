@@ -12,15 +12,27 @@ import DialogFooter from "@mutsuna/ui/dialog/dialog-footer.svelte";
 import DialogHeader from "@mutsuna/ui/dialog/dialog-header.svelte";
 import DialogTitle from "@mutsuna/ui/dialog/dialog-title.svelte";
 import DialogTrigger from "@mutsuna/ui/dialog/dialog-trigger.svelte";
+import { expect, userEvent, within } from "storybook/test";
 
 const { Story } = defineMeta({
-  title: "UI/Dialog",
+  title: "Components/Overlays/Dialog",
   component: Dialog,
   tags: ["autodocs"],
 });
 </script>
 
-<Story name="Default" asChild>
+<Story
+	name="Default"
+	play={async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole("button", { name: "項目を作成" }));
+
+		const dialog = await within(document.body).findByRole("dialog", { name: "項目を作成" });
+		await expect(dialog).toHaveAttribute("data-state", "open");
+		await expect(within(dialog).getByDisplayValue("サンプル項目")).toBeInTheDocument();
+	}}
+	asChild
+>
 	<Dialog>
 		<DialogTrigger>
 			{#snippet child({ props })}

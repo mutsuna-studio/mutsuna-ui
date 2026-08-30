@@ -4,7 +4,7 @@ import { Button } from "@mutsuna/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@mutsuna/ui/card";
 
 const { Story } = defineMeta({
-  title: "UI/Card",
+  title: "Components/Data Display/Card",
   component: Card,
   tags: ["autodocs"],
 });

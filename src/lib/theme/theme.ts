@@ -37,6 +37,9 @@ const oklchPattern = /^oklch\(\s*([0-9]+(?:\.[0-9]+)?)\s+([0-9]+(?:\.[0-9]+)?)\s
 const hexPattern = /^#[0-9a-fA-F]{6}$/;
 const lightForeground = "oklch(0.987 0.022 95.277)";
 const darkForeground = "oklch(0.141 0.005 285.823)";
+const absoluteLightForeground = "oklch(1 0 0)";
+const absoluteDarkForeground = "oklch(0 0 0)";
+const minimumTextContrastRatio = 4.5;
 
 export const defaultTheme: Theme = createTheme("orange", "oklch(0.555 0.163 48.998)");
 
@@ -157,13 +160,45 @@ function toHexChannel(value: number): string {
 }
 
 function resolvePrimaryForeground(primary: OklchColor): string {
-  return relativeLuminance(oklchToRgb(primary)) > 0.38 ? darkForeground : lightForeground;
+  const primaryRgb = oklchToRgb(primary);
+  const preferredForeground = findHighestContrastForeground(primaryRgb, [lightForeground, darkForeground]);
+  if (preferredForeground.contrastRatio >= minimumTextContrastRatio) {
+    return preferredForeground.color;
+  }
+
+  return findHighestContrastForeground(primaryRgb, [absoluteLightForeground, absoluteDarkForeground]).color;
+}
+
+function findHighestContrastForeground(primary: RgbColor, candidates: readonly string[]): { color: string; contrastRatio: number } {
+  let selectedColor = candidates[0] ?? absoluteDarkForeground;
+  let selectedContrastRatio = Number.NEGATIVE_INFINITY;
+
+  for (const candidate of candidates) {
+    const parsedCandidate = parseOklchColor(candidate);
+    if (parsedCandidate === null) {
+      continue;
+    }
+
+    const candidateContrastRatio = contrastRatio(primary, oklchToRgb(parsedCandidate));
+    if (candidateContrastRatio > selectedContrastRatio) {
+      selectedColor = candidate;
+      selectedContrastRatio = candidateContrastRatio;
+    }
+  }
+
+  return { color: selectedColor, contrastRatio: selectedContrastRatio };
+}
+
+function contrastRatio(first: RgbColor, second: RgbColor): number {
+  const firstLuminance = relativeLuminance(first);
+  const secondLuminance = relativeLuminance(second);
+  return (Math.max(firstLuminance, secondLuminance) + 0.05) / (Math.min(firstLuminance, secondLuminance) + 0.05);
 }
 
 function relativeLuminance(rgb: RgbColor): number {
-  const r = toLinearRgbChannel(rgb.r);
-  const g = toLinearRgbChannel(rgb.g);
-  const b = toLinearRgbChannel(rgb.b);
+  const r = toLinearRgbChannel(clamp(rgb.r, 0, 1));
+  const g = toLinearRgbChannel(clamp(rgb.g, 0, 1));
+  const b = toLinearRgbChannel(clamp(rgb.b, 0, 1));
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 

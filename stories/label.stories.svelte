@@ -4,7 +4,7 @@ import { Input } from "@mutsuna/ui/input";
 import { Label } from "@mutsuna/ui/label";
 
 const { Story } = defineMeta({
-  title: "UI/Label",
+  title: "Components/Forms/Label",
   component: Label,
   tags: ["autodocs"],
 });

@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { SortableList } from "@mutsuna/ui/sortable-list";
 
 const { Story } = defineMeta({
-  title: "UI/Sortable List",
+  title: "Patterns/Sortable List",
   component: SortableList,
   tags: ["autodocs"],
 });

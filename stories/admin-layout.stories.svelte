@@ -87,11 +87,18 @@ const rows = [
 
 <Story name="Dialog Form" asChild>
   <Dialog.Root open>
-    <Dialog.Trigger><Button>編集</Button></Dialog.Trigger>
+    <Dialog.Trigger>
+      {#snippet child({ props })}<Button {...props}>編集</Button>{/snippet}
+    </Dialog.Trigger>
     <Dialog.Content class="max-w-lg">
       <Dialog.Header><Dialog.Title>項目を編集</Dialog.Title><Dialog.Description>判断単位ごとに入力し、最後に保存します。</Dialog.Description></Dialog.Header>
       <Dialog.Body class="grid gap-4 py-4"><Field.Field><Field.Label for="dialog-name">名称</Field.Label><Input id="dialog-name" value="サンプル項目" /></Field.Field><Field.Field><Field.Label for="dialog-note">補足</Field.Label><Textarea id="dialog-note" /></Field.Field></Dialog.Body>
-      <Dialog.Footer><Dialog.Close><Button variant="outline">キャンセル</Button></Dialog.Close><Button>保存</Button></Dialog.Footer>
+      <Dialog.Footer>
+        <Dialog.Close>
+          {#snippet child({ props })}<Button {...props} variant="outline">キャンセル</Button>{/snippet}
+        </Dialog.Close>
+        <Button>保存</Button>
+      </Dialog.Footer>
     </Dialog.Content>
   </Dialog.Root>
 </Story>

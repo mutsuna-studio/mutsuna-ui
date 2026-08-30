@@ -13,7 +13,7 @@ export function getCalendarDayColorClass(value: DateValue): string {
 
 function getCalendarDayAccentClass(color: "red" | "blue"): string {
   if (color === "red") {
-    return "text-red-600 not-data-[disabled]:not-data-[outside-month]:not-data-[selected]:hover:!text-red-600 [&[data-today]:not([data-selected]):not([data-disabled]):not([data-outside-month])]:!text-red-600";
+    return "text-red-700 not-data-[disabled]:not-data-[outside-month]:not-data-[selected]:hover:!text-red-700 [&[data-today]:not([data-selected]):not([data-disabled]):not([data-outside-month])]:!text-red-700";
   }
 
   return "text-blue-600 not-data-[disabled]:not-data-[outside-month]:not-data-[selected]:hover:!text-blue-600 [&[data-today]:not([data-selected]):not([data-disabled]):not([data-outside-month])]:!text-blue-600";

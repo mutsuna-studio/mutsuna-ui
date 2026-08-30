@@ -5,7 +5,7 @@ import Toaster from "@mutsuna/ui/sonner/sonner.svelte";
 import { readFormActionToast, showFormActionToast } from "@mutsuna/ui/sveltekit-form";
 
 const { Story } = defineMeta({
-  title: "UI/SvelteKit Form Action Toast",
+  title: "Patterns/SvelteKit Form Action Toast",
   component: Toaster,
   tags: ["autodocs"],
 });

@@ -75,17 +75,21 @@ get along, so we shut typescript up by casting `value` to `never`.
 			{#each months as month, monthIndex (month)}
 				<Calendar.Month>
 					<Calendar.Header>
-						<Calendar.Caption
-							{captionLayout}
-							months={monthsProp}
-							{monthFormat}
-							{years}
-							{yearFormat}
-							month={month.value}
-							bind:placeholder
-							{locale}
-							{monthIndex}
-						/>
+						{#snippet child({ props })}
+							<div {...props}>
+								<Calendar.Caption
+									{captionLayout}
+									months={monthsProp}
+									{monthFormat}
+									{years}
+									{yearFormat}
+									month={month.value}
+									bind:placeholder
+									{locale}
+									{monthIndex}
+								/>
+							</div>
+						{/snippet}
 					</Calendar.Header>
 					<Calendar.Grid>
 						<Calendar.GridHead>

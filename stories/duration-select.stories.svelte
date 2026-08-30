@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import DurationSelect from "@mutsuna/ui/duration-select/duration-select.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Duration Select",
+  title: "Components/Inputs/Duration Select",
   component: DurationSelect,
   tags: ["autodocs"],
 });

@@ -14,7 +14,7 @@ import AlertDialogTitle from "@mutsuna/ui/alert-dialog/alert-dialog-title.svelte
 import AlertDialogTrigger from "@mutsuna/ui/alert-dialog/alert-dialog-trigger.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Alert Dialog",
+  title: "Components/Overlays/Alert Dialog",
   component: AlertDialog,
   tags: ["autodocs"],
 });

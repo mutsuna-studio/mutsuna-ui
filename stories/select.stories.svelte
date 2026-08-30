@@ -12,7 +12,7 @@ import SelectTrigger from "@mutsuna/ui/select/select-trigger.svelte";
 import type { SelectSearchableOption } from "@mutsuna/ui/select/select.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Select",
+  title: "Components/Inputs/Select",
   component: Select,
   tags: ["autodocs"],
 });
@@ -57,6 +57,80 @@ let offeringText = $state("下見相談");
 
 const selectedSearchableResource = $derived(resourceSuggestions.find((suggestion) => suggestion.value === selectedSearchableResourceId));
 </script>
+
+{#snippet comparisonOptions()}
+	<SelectContent>
+		<SelectItem value="meeting_room">会議室</SelectItem>
+		<SelectItem value="booth">個室ブース</SelectItem>
+		<SelectItem value="desk">デスク</SelectItem>
+		<SelectItem value="long">複数拠点で共通利用する長い名前の会議室</SelectItem>
+	</SelectContent>
+{/snippet}
+
+<Story name="States" parameters={{ controls: { disable: true }, options: { showPanel: false } }} asChild>
+	<section class="grid max-w-3xl gap-4" aria-labelledby="select-states-heading">
+		<div class="space-y-1">
+			<h2 id="select-states-heading" class="text-sm font-medium">Select states</h2>
+			<p class="text-muted-foreground text-xs">未選択・選択済み・小サイズ・無効・エラー・長文を比較する。</p>
+		</div>
+		<div class="grid gap-4 sm:grid-cols-2">
+			<div class="grid gap-2">
+				<Label for="states-select-placeholder">未選択</Label>
+				<Select type="single" value="">
+					<SelectTrigger id="states-select-placeholder" class="w-full">
+						<span class="text-muted-foreground">選択してください</span>
+					</SelectTrigger>
+					{@render comparisonOptions()}
+				</Select>
+			</div>
+			<div class="grid gap-2">
+				<Label for="states-select-selected">選択済み</Label>
+				<Select type="single" value="meeting_room">
+					<SelectTrigger id="states-select-selected" class="w-full"><span>会議室</span></SelectTrigger>
+					{@render comparisonOptions()}
+				</Select>
+			</div>
+			<div class="grid gap-2">
+				<Label for="states-select-compact">小サイズ</Label>
+				<Select type="single" value="booth">
+					<SelectTrigger id="states-select-compact" size="sm" class="w-full"><span>個室ブース</span></SelectTrigger>
+					{@render comparisonOptions()}
+				</Select>
+			</div>
+			<div class="grid gap-2">
+				<Label for="states-select-disabled">無効</Label>
+				<Select type="single" value="desk" disabled>
+					<SelectTrigger id="states-select-disabled" class="w-full"><span>デスク</span></SelectTrigger>
+					{@render comparisonOptions()}
+				</Select>
+			</div>
+			<div class="grid gap-2">
+				<Label for="states-select-invalid">エラー</Label>
+				<Select type="single" value="">
+					<SelectTrigger
+						id="states-select-invalid"
+						class="w-full"
+						aria-invalid="true"
+						aria-describedby="states-select-invalid-error"
+					>
+						<span class="text-muted-foreground">選択してください</span>
+					</SelectTrigger>
+					{@render comparisonOptions()}
+				</Select>
+				<p id="states-select-invalid-error" class="text-destructive text-xs">リソース種別を選択してください。</p>
+			</div>
+			<div class="grid min-w-0 gap-2">
+				<Label for="states-select-long">長い値</Label>
+				<Select type="single" value="long">
+					<SelectTrigger id="states-select-long" class="w-full min-w-0">
+						<span class="truncate">複数拠点で共通利用する長い名前の会議室</span>
+					</SelectTrigger>
+					{@render comparisonOptions()}
+				</Select>
+			</div>
+		</div>
+	</section>
+</Story>
 
 <Story name="Default" asChild>
 	<div class="grid max-w-md gap-4">

@@ -4,7 +4,7 @@ import { Badge } from "@mutsuna/ui/badge";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@mutsuna/ui/table";
 
 const { Story } = defineMeta({
-  title: "UI/Table",
+  title: "Components/Data Display/Table",
   component: Table,
   tags: ["autodocs"],
 });

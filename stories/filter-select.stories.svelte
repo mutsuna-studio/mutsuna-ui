@@ -9,7 +9,7 @@ import type { FilterSelectOption } from "@mutsuna/ui/filter-select/filter-select
 import FilterSelect from "@mutsuna/ui/filter-select/filter-select.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Filter Select",
+  title: "Components/Inputs/Filter Select",
   component: FilterSelect,
   tags: ["autodocs"],
 });

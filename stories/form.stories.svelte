@@ -5,7 +5,7 @@ import Input from "@mutsuna/ui/input/input.svelte";
 import Label from "@mutsuna/ui/label/label.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Form",
+  title: "Components/Forms/Form",
   component: FormButton,
   tags: ["autodocs"],
 });

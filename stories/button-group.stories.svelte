@@ -4,7 +4,7 @@ import { Button } from "@mutsuna/ui/button";
 import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@mutsuna/ui/button-group";
 
 const { Story } = defineMeta({
-  title: "UI/Button Group",
+  title: "Components/Actions/Button Group",
   component: ButtonGroup,
   tags: ["autodocs"],
 });

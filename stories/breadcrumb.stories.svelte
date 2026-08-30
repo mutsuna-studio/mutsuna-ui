@@ -11,7 +11,7 @@ import {
 } from "@mutsuna/ui/breadcrumb";
 
 const { Story } = defineMeta({
-  title: "UI/Breadcrumb",
+  title: "Components/Navigation/Breadcrumb",
   component: Breadcrumb,
   tags: ["autodocs"],
 });

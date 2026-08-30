@@ -8,7 +8,7 @@ import TooltipProvider from "@mutsuna/ui/tooltip/tooltip-provider.svelte";
 import TooltipTrigger from "@mutsuna/ui/tooltip/tooltip-trigger.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Tooltip",
+  title: "Components/Overlays/Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
 });

@@ -6,7 +6,7 @@ import { Loading, loadingVariants } from "@mutsuna/ui/loading";
 type LoadingStoryArgs = ComponentProps<typeof Loading>;
 
 const { Story } = defineMeta({
-  title: "UI/Loading",
+  title: "Components/Feedback/Loading",
   component: Loading,
   tags: ["autodocs"],
   argTypes: {

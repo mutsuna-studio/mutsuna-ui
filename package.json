@@ -588,6 +588,7 @@
     "review:shadcn": "node scripts/review-shadcn-upstream.mjs",
     "storybook": "STORYBOOK_DISABLE_TELEMETRY=1 WATCHPACK_POLLING=true storybook dev -p 6206",
     "test": "pnpm run check && pnpm run build && node --test test/*.test.mjs",
+    "test:storybook": "STORYBOOK_DISABLE_TELEMETRY=1 vitest --project=storybook --run",
     "test:consumer": "node test/consumer-smoke.mjs",
     "version": "changeset version"
   },
@@ -611,20 +612,27 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
+    "@storybook/addon-a11y": "^10.5.10",
+    "@storybook/addon-docs": "^10.5.10",
     "@storybook/addon-svelte-csf": "^5.1.2",
-    "@storybook/svelte-vite": "^10.4.6",
+    "@storybook/addon-vitest": "^10.5.10",
+    "@storybook/svelte-vite": "^10.5.10",
     "@sveltejs/kit": "^2.61.1",
     "@sveltejs/package": "^2.5.8",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tailwindcss/vite": "^4.3.0",
     "@types/japanese-holidays": "^1.0.3",
     "@types/node": "^24.12.4",
-    "storybook": "^10.4.6",
+    "@vitest/browser-playwright": "^4.1.11",
+    "@vitest/coverage-v8": "4.1.11",
+    "playwright": "^1.62.1",
+    "storybook": "^10.5.10",
     "svelte": "^5.55.2",
     "svelte-check": "^4.4.6",
     "tailwindcss": "^4.3.0",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "vite": "^8.0.7"
+    "vite": "^8.0.7",
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "@sveltejs/kit": ">=2.57.0 <3",

@@ -4,7 +4,7 @@ import Label from "@mutsuna/ui/label/label.svelte";
 import Textarea from "@mutsuna/ui/textarea/textarea.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Textarea",
+  title: "Components/Inputs/Textarea",
   component: Textarea,
   tags: ["autodocs"],
 });
@@ -22,7 +22,7 @@ const { Story } = defineMeta({
 		</Label>
 	</div>
 </Story>
-<Story name="States" asChild>
+<Story name="States" parameters={{ controls: { disable: true }, options: { showPanel: false } }} asChild>
 	<div class="grid max-w-xl gap-4">
 		<Label class="grid gap-2">
 			未入力

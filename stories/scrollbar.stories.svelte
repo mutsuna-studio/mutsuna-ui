@@ -8,7 +8,7 @@ type StoryArgs = {
 };
 
 const { Story } = defineMeta({
-  title: "UI/Scrollbar",
+  title: "Foundations/Scrollbar",
   component: ScrollbarArea,
   args: {
     gutter: "stable",

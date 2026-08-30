@@ -4,7 +4,7 @@ import { Button } from "@mutsuna/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@mutsuna/ui/sheet";
 
 const { Story } = defineMeta({
-  title: "UI/Sheet",
+  title: "Components/Overlays/Sheet",
   component: Sheet,
   tags: ["autodocs"],
 });

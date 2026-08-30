@@ -22,20 +22,23 @@ const initialFields: EditorField[] = [
 ];
 
 const { Story } = defineMeta({
-  title: "UI/Form Template Editor",
+  title: "Components/Forms/Form Template Editor",
   component: FormTemplateEditor,
   tags: ["autodocs"],
 });
 </script>
 
-<Story
-  name="Default"
-  args={{
-    fields: structuredClone(initialFields),
-    visibilityOptions: [
+<script lang="ts">
+let fields = $state(structuredClone(initialFields));
+</script>
+
+<Story name="Default" asChild>
+  <FormTemplateEditor
+    bind:fields
+    visibilityOptions={[
       { value: "always", label: "常に表示" },
       { value: "conditional", label: "条件に一致する場合" },
-    ],
-    allowFixedRequired: true,
-  }}
-/>
+    ]}
+    allowFixedRequired
+  />
+</Story>

@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, CustomerAvatar } from "@mutsuna/ui/avatar";
 
 const { Story } = defineMeta({
-  title: "UI/Avatar",
+  title: "Components/Data Display/Avatar",
   component: Avatar,
   tags: ["autodocs"],
 });

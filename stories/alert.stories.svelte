@@ -9,7 +9,7 @@ import AlertDescription from "@mutsuna/ui/alert/alert-description.svelte";
 import AlertTitle from "@mutsuna/ui/alert/alert-title.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Alert",
+  title: "Components/Feedback/Alert",
   component: Alert,
   tags: ["autodocs"],
 });
