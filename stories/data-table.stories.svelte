@@ -145,28 +145,6 @@ function clearRowSelection(): void {
 	rowSelection = {};
 }
 
-function isActivationKey(event: KeyboardEvent): boolean {
-	return event.key === "Enter" || event.key === " ";
-}
-
-function handleSelectAllKeydown(event: KeyboardEvent): void {
-	if (!isActivationKey(event)) {
-		return;
-	}
-
-	event.preventDefault();
-	setAllRowsSelected(!allRowsSelected);
-}
-
-function handleRowSelectionKeydown(event: KeyboardEvent, rowId: string): void {
-	if (!isActivationKey(event)) {
-		return;
-	}
-
-	event.preventDefault();
-	setRowSelected(rowId, !rowSelection[rowId]);
-}
-
 const advancedTable = createSvelteTable({
   data: projects,
   columns,
@@ -244,20 +222,12 @@ const advancedRows = $derived.by(() => {
 					{#each advancedHeaderGroups as headerGroup (headerGroup.id)}
 						<TableRow>
 							<TableHead class="w-10">
-								<div
-									role="button"
-									tabindex="0"
+								<Checkbox
 									aria-label="すべての項目を選択"
-									class="grid size-4 place-items-center"
-									onclick={() => setAllRowsSelected(!allRowsSelected)}
-									onkeydown={handleSelectAllKeydown}
-								>
-									<Checkbox
-										checked={allRowsSelected}
-										indeterminate={someRowsSelected}
-										class="pointer-events-none"
-									/>
-								</div>
+									checked={allRowsSelected}
+									indeterminate={someRowsSelected}
+									onCheckedChange={setAllRowsSelected}
+								/>
 							</TableHead>
 							{#each headerGroup.headers as header (header.id)}
 								<TableHead class={getHeaderClass(header.column.id)}>
@@ -287,19 +257,11 @@ const advancedRows = $derived.by(() => {
 					{#each advancedRows as row (row.id)}
 						<TableRow data-state={rowSelection[row.id] ? "selected" : undefined}>
 							<TableCell>
-								<div
-									role="button"
-									tabindex="0"
+								<Checkbox
 									aria-label={`${row.original.id}を選択`}
-									class="grid size-4 place-items-center"
-									onclick={() => setRowSelected(row.id, !rowSelection[row.id])}
-									onkeydown={(event) => handleRowSelectionKeydown(event, row.id)}
-								>
-									<Checkbox
-										checked={Boolean(rowSelection[row.id])}
-										class="pointer-events-none"
-									/>
-								</div>
+									checked={Boolean(rowSelection[row.id])}
+									onCheckedChange={(checked) => setRowSelected(row.id, checked)}
+								/>
 							</TableCell>
 							{#each row.getVisibleCells() as cell (cell.id)}
 								<TableCell class={isRightAlignedColumn(cell.column.id) ? "text-right" : undefined}>

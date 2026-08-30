@@ -23,6 +23,7 @@ function applyPreviewTheme(themeKey: unknown): void {
 }
 
 const preview: Preview = {
+  tags: ["autodocs"],
   globalTypes: {
     themeColor: {
       description: "全ストーリーへ適用するMutsuna UIのテーマカラー",
@@ -44,6 +45,10 @@ const preview: Preview = {
     },
   ],
   parameters: {
+    a11y: {
+      // Every story fails CI on an accessibility violation. Keep the catalog exception-free.
+      test: "error",
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

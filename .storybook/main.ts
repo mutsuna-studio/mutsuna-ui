@@ -8,7 +8,12 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const config: StorybookConfig = {
   stories: ["../stories/**/*.stories.svelte"],
   staticDirs: ["../public"],
-  addons: ["@storybook/addon-svelte-csf"],
+  addons: [
+    "@storybook/addon-docs",
+    "@storybook/addon-a11y",
+    "@storybook/addon-vitest",
+    "@storybook/addon-svelte-csf",
+  ],
   framework: {
     name: "@storybook/svelte-vite",
     options: {},

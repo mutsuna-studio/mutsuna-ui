@@ -34,7 +34,7 @@ type ToolbarAction =
 </script>
 
 <script lang="ts">
-import { Editor, defaultValueCtx, editorViewCtx, rootCtx } from "@milkdown/kit/core";
+import { Editor, defaultValueCtx, editorViewCtx, editorViewOptionsCtx, rootCtx } from "@milkdown/kit/core";
 import type { Ctx } from "@milkdown/kit/ctx";
 import { history } from "@milkdown/kit/plugin/history";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
@@ -116,6 +116,11 @@ onMount(() => {
     .config((ctx) => {
       ctx.set(rootCtx, editorRoot);
       ctx.set(defaultValueCtx, markdown);
+      ctx.set(editorViewOptionsCtx, {
+        attributes: {
+          "aria-labelledby": `${id}-label`,
+        },
+      });
       ctx
         .get(listenerCtx)
         .markdownUpdated((listenerContext, serializedMarkdown) => {
@@ -305,7 +310,7 @@ export function insertMarkdown(text: string): void {
         </Button>
       {/each}
     </div>
-    <div {id} bind:this={rootElement} class="milkdown-markdown-editor {minHeightClass} px-4 py-3 text-sm" aria-labelledby={`${id}-label`}></div>
+    <div {id} bind:this={rootElement} class="milkdown-markdown-editor {minHeightClass} px-4 py-3 text-sm"></div>
   </div>
 </div>
 

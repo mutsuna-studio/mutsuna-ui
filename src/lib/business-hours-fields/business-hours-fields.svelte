@@ -82,9 +82,9 @@ function applyBulkBusinessHours(): void {
           </Label>
           {#if hours.isOpen}
             <div class="flex flex-wrap items-center gap-2">
-              <Input name={`opensAt.${hours.weekday}`} type="time" step="900" bind:value={businessHours[index].opensAt} class="w-32" required />
+              <Input aria-label={`${hours.label}の開始時刻`} name={`opensAt.${hours.weekday}`} type="time" step="900" bind:value={businessHours[index].opensAt} class="w-32" required />
               <span class="text-sm text-muted-foreground">〜</span>
-              <Input name={`closesAt.${hours.weekday}`} type="time" step="900" bind:value={businessHours[index].closesAt} class="w-32" required />
+              <Input aria-label={`${hours.label}の終了時刻`} name={`closesAt.${hours.weekday}`} type="time" step="900" bind:value={businessHours[index].closesAt} class="w-32" required />
             </div>
           {:else}
             <p class="text-sm text-muted-foreground">定休日</p>
@@ -157,9 +157,9 @@ function applyBulkBusinessHours(): void {
       </Label>
       {#if holidayIsOpen}
         <div class="flex flex-wrap items-center gap-2">
-          <Input name="holidayOpensAt" type="time" step="900" bind:value={holidayOpensAt} class="w-32" required />
+          <Input aria-label="祝日の開始時刻" name="holidayOpensAt" type="time" step="900" bind:value={holidayOpensAt} class="w-32" required />
           <span class="text-sm text-muted-foreground">〜</span>
-          <Input name="holidayClosesAt" type="time" step="900" bind:value={holidayClosesAt} class="w-32" required />
+          <Input aria-label="祝日の終了時刻" name="holidayClosesAt" type="time" step="900" bind:value={holidayClosesAt} class="w-32" required />
         </div>
       {:else}
         <p class="text-sm text-muted-foreground">祝日は定休日</p>

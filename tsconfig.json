@@ -16,6 +16,6 @@
     "target": "ES2022",
     "types": ["svelte"]
   },
-  "include": [".storybook/**/*.ts", "src/**/*.ts", "src/**/*.svelte", "stories/**/*.svelte", "vite.config.ts"],
+  "include": [".storybook/**/*.ts", "src/**/*.ts", "src/**/*.svelte", "stories/**/*.svelte", "vite.config.ts", "vitest.config.ts"],
   "exclude": ["dist", "node_modules"]
 }

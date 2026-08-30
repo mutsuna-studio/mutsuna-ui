@@ -21,13 +21,13 @@ const { Story } = defineMeta({
 			<InputGroupAddon align="inline-start">
 				<InputGroupText>¥</InputGroupText>
 			</InputGroupAddon>
-			<InputGroupInput value="12000" inputmode="numeric" />
+			<InputGroupInput aria-label="月額料金" value="12000" inputmode="numeric" />
 			<InputGroupAddon align="inline-end">
 				<InputGroupText>月</InputGroupText>
 			</InputGroupAddon>
 		</InputGroup>
 		<InputGroup>
-			<InputGroupInput placeholder="検索キーワード" />
+			<InputGroupInput aria-label="検索キーワード" placeholder="検索キーワード" />
 			<InputGroupAddon align="inline-end">
 				<InputGroupButton>検索</InputGroupButton>
 			</InputGroupAddon>
@@ -40,7 +40,7 @@ const { Story } = defineMeta({
 		<InputGroupAddon align="block-start" class="border-b">
 			<InputGroupText>利用者に表示する説明</InputGroupText>
 		</InputGroupAddon>
-		<InputGroupTextarea value="利用者に公開する項目です。表示条件を確認してください。" />
+		<InputGroupTextarea aria-label="利用者に表示する説明" value="利用者に公開する項目です。表示条件を確認してください。" />
 		<InputGroupAddon align="block-end" class="border-t">
 			<Button type="button" size="sm" variant="outline">下書き保存</Button>
 		</InputGroupAddon>
@@ -52,6 +52,6 @@ const { Story } = defineMeta({
 		<InputGroupAddon align="inline-start">
 			<InputGroupText>分前</InputGroupText>
 		</InputGroupAddon>
-		<InputGroupInput aria-invalid="true" value="-10" inputmode="numeric" />
+		<InputGroupInput aria-label="通知する分数" aria-invalid="true" value="-10" inputmode="numeric" />
 	</InputGroup>
 </Story>

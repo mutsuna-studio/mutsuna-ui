@@ -204,6 +204,14 @@ pnpm storybook
 
 `http://localhost:6206`で確認可能。storyとStorybook設定はnpm packageへ含めない。
 
+各componentのDocs、Controls、Accessibility panelを同じstoryから生成する。実ブラウザで全storyのrender、a11y、`play`による代表操作を検証するには次を実行する。
+
+```sh
+pnpm test:storybook
+```
+
+すべてのstoryのa11y違反はCIを失敗させる。`todo`の例外を追加せず、componentまたはstoryの責務に応じて違反を解消する。
+
 ## Development
 
 ```sh
@@ -211,6 +219,7 @@ corepack enable
 pnpm install --frozen-lockfile
 pnpm test
 pnpm build-storybook
+pnpm test:storybook
 pnpm test:consumer
 ```
 

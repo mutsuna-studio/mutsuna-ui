@@ -37,7 +37,7 @@ function hashString(value: string): number {
 }
 </script>
 
-<Root {size} class={cn(className)} aria-label={name}>
+<Root {size} class={cn(className)} role="img" aria-label={name}>
   {#if imageUrl !== null}
     <Image src={imageUrl} alt={name} />
   {/if}

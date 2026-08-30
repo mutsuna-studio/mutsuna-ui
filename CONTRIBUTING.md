@@ -45,11 +45,12 @@ pnpm storybook
 ```sh
 pnpm test
 pnpm build-storybook
+pnpm test:storybook
 pnpm test:consumer
 git diff --check
 ```
 
-公開exportを変更した場合は`pnpm test:consumer`、Storybookを変更した場合は`pnpm build-storybook`が必須。
+公開exportを変更した場合は`pnpm test:consumer`、Storybookを変更した場合は`pnpm build-storybook`と`pnpm test:storybook`が必須。a11y違反は`todo`へ追加せず、componentまたはstoryの責務に応じて解消する。
 
 ## Changesets
 

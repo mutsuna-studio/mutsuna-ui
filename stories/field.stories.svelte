@@ -21,13 +21,13 @@ const { Story } = defineMeta({
 <Story name="Default" asChild>
 	<FieldGroup class="max-w-xl">
 		<Field>
-			<FieldLabel>表示名</FieldLabel>
-			<Input value="六名工房 岡崎店" />
+			<FieldLabel for="field-display-name">表示名</FieldLabel>
+			<Input id="field-display-name" value="六名工房 岡崎店" />
 			<FieldDescription>利用者向けページと管理画面に表示されます。</FieldDescription>
 		</Field>
 		<Field data-invalid="true">
-			<FieldLabel>識別コード</FieldLabel>
-			<Input aria-invalid="true" value="" placeholder="例: okazaki" />
+			<FieldLabel for="field-code">識別コード</FieldLabel>
+			<Input id="field-code" aria-invalid="true" value="" placeholder="例: okazaki" />
 			<FieldError errors={[{ message: "識別コードを入力してください。" }]} />
 		</Field>
 	</FieldGroup>
@@ -37,7 +37,7 @@ const { Story } = defineMeta({
 	<FieldGroup class="max-w-xl">
 		<Field orientation="horizontal">
 			<FieldLabel>公開状態</FieldLabel>
-			<Checkbox checked />
+			<Checkbox checked aria-label="公開状態" />
 			<FieldContent>
 				<FieldDescription>公開すると利用者がこの項目を確認できます。</FieldDescription>
 			</FieldContent>
@@ -51,11 +51,11 @@ const { Story } = defineMeta({
 		<FieldDescription>変更時に通知する対象を選びます。</FieldDescription>
 		<FieldGroup>
 			<Field orientation="horizontal">
-				<Checkbox checked />
+				<Checkbox checked aria-label="担当者へ通知" />
 				<FieldLabel>担当者へ通知</FieldLabel>
 			</Field>
 			<Field orientation="horizontal">
-				<Checkbox />
+				<Checkbox aria-label="利用者へ控えを送信" />
 				<FieldLabel>利用者へ控えを送信</FieldLabel>
 			</Field>
 		</FieldGroup>
