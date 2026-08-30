@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
 
 const { Story } = defineMeta({
-  title: "UI/Template Insert Menu",
+  title: "Components/Forms/Template Insert Menu",
   component: TemplateInsertMenu,
   tags: ["autodocs"],
 });

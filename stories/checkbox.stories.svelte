@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import Checkbox from "@mutsuna/ui/checkbox/checkbox.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Checkbox",
+  title: "Components/Inputs/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
 });
@@ -32,6 +32,54 @@ function toggleAllWeekdays(checked: boolean): void {
   selectedWeekdays = Object.fromEntries(weekdayOptions.map((option) => [option.key, checked]));
 }
 </script>
+
+<Story name="States" parameters={{ controls: { disable: true }, options: { showPanel: false } }} asChild>
+	<section class="grid max-w-2xl gap-4" aria-labelledby="checkbox-states-heading">
+		<div class="space-y-1">
+			<h2 id="checkbox-states-heading" class="text-sm font-medium">Checkbox states</h2>
+			<p class="text-muted-foreground text-xs">未選択・選択済み・一部選択と、それぞれの無効状態を比較する。</p>
+		</div>
+		<div class="grid gap-4 sm:grid-cols-2">
+			<div class="grid gap-3 rounded-lg border p-4">
+				<h3 class="text-muted-foreground text-xs font-medium">通常</h3>
+				<label class="flex items-center gap-3 text-sm">
+					<Checkbox />
+					<span>未選択</span>
+				</label>
+				<label class="flex items-center gap-3 text-sm">
+					<Checkbox checked />
+					<span>選択済み</span>
+				</label>
+				<label class="flex items-center gap-3 text-sm">
+					<Checkbox indeterminate />
+					<span>一部選択</span>
+				</label>
+			</div>
+			<div class="grid gap-3 rounded-lg border p-4">
+				<h3 class="text-muted-foreground text-xs font-medium">無効</h3>
+				<label class="text-muted-foreground flex items-center gap-3 text-sm">
+					<Checkbox disabled />
+					<span>未選択</span>
+				</label>
+				<label class="text-muted-foreground flex items-center gap-3 text-sm">
+					<Checkbox checked disabled />
+					<span>選択済み</span>
+				</label>
+				<label class="text-muted-foreground flex items-center gap-3 text-sm">
+					<Checkbox indeterminate disabled />
+					<span>一部選択</span>
+				</label>
+			</div>
+		</div>
+		<div class="grid gap-2 rounded-lg border border-destructive/50 p-4">
+			<label class="flex items-center gap-3 text-sm">
+				<Checkbox aria-invalid="true" aria-describedby="states-invalid-checkbox-error" />
+				<span>利用規約に同意する</span>
+			</label>
+			<p id="states-invalid-checkbox-error" class="text-destructive text-xs">続行するには同意が必要です。</p>
+		</div>
+	</section>
+</Story>
 
 <Story name="Checkbox" asChild>
 	<div class="grid max-w-md gap-6">

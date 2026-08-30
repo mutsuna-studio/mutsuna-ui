@@ -3,13 +3,13 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { Switch } from "@mutsuna/ui/switch";
 
 const { Story } = defineMeta({
-  title: "UI/Switch",
+  title: "Components/Inputs/Switch",
   component: Switch,
   tags: ["autodocs"],
 });
 </script>
 
-<Story name="States" asChild>
+<Story name="States" parameters={{ controls: { disable: true }, options: { showPanel: false } }} asChild>
 	<div class="grid max-w-sm gap-4">
 		<label class="flex items-center justify-between gap-4 text-sm">
 			<span>機能を有効にする</span>

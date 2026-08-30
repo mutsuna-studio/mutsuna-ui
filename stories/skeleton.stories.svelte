@@ -6,7 +6,7 @@ import CardHeader from "@mutsuna/ui/card/card-header.svelte";
 import Skeleton from "@mutsuna/ui/skeleton/skeleton.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Skeleton",
+  title: "Components/Feedback/Skeleton",
   component: Skeleton,
   tags: ["autodocs"],
 });

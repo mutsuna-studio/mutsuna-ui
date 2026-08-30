@@ -4,7 +4,7 @@ import { parseDate } from "@internationalized/date";
 import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 
 const { Story } = defineMeta({
-  title: "UI/Date Time Range Fields",
+  title: "Components/Inputs/Date Time Range Fields",
   component: DateTimeRangeFields,
   tags: ["autodocs"],
 });

@@ -4,7 +4,7 @@ import Label from "@mutsuna/ui/label/label.svelte";
 import TimePicker from "@mutsuna/ui/time-picker/time-picker.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Time Picker",
+  title: "Components/Inputs/Time Picker",
   component: TimePicker,
   tags: ["autodocs"],
 });

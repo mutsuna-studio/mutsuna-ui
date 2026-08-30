@@ -16,7 +16,7 @@ type StoryArgs = {
 };
 
 const { Story } = defineMeta({
-  title: "UI/Theme",
+  title: "Foundations/Theme",
   component: ThemeProvider,
   args: {
     heading: "オレンジテーマ",

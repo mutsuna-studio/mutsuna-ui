@@ -9,7 +9,7 @@ import InputGroupText from "@mutsuna/ui/input-group/input-group-text.svelte";
 import InputGroupTextarea from "@mutsuna/ui/input-group/input-group-textarea.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Input Group",
+  title: "Components/Inputs/Input Group",
   component: InputGroup,
   tags: ["autodocs"],
 });

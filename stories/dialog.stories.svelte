@@ -15,7 +15,7 @@ import DialogTrigger from "@mutsuna/ui/dialog/dialog-trigger.svelte";
 import { expect, userEvent, within } from "storybook/test";
 
 const { Story } = defineMeta({
-  title: "UI/Dialog",
+  title: "Components/Overlays/Dialog",
   component: Dialog,
   tags: ["autodocs"],
 });

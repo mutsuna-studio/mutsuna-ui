@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import Calendar from "@mutsuna/ui/calendar/calendar.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Calendar",
+  title: "Components/Data Display/Calendar",
   component: Calendar,
   tags: ["autodocs"],
 });

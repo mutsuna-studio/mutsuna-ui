@@ -22,7 +22,7 @@ const initialFields: EditorField[] = [
 ];
 
 const { Story } = defineMeta({
-  title: "UI/Form Template Editor",
+  title: "Components/Forms/Form Template Editor",
   component: FormTemplateEditor,
   tags: ["autodocs"],
 });

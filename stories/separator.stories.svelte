@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { Separator } from "@mutsuna/ui/separator";
 
 const { Story } = defineMeta({
-  title: "UI/Separator",
+  title: "Components/Layout/Separator",
   component: Separator,
   tags: ["autodocs"],
 });

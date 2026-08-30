@@ -5,7 +5,7 @@ import { Button } from "@mutsuna/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@mutsuna/ui/collapsible";
 
 const { Story } = defineMeta({
-  title: "UI/Collapsible",
+  title: "Components/Layout/Collapsible",
   component: Collapsible,
   tags: ["autodocs"],
 });

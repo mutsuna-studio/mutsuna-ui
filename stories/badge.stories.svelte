@@ -8,7 +8,7 @@ type BadgeStoryArgs = ComponentProps<typeof Badge> & {
 };
 
 const { Story } = defineMeta({
-  title: "UI/Badge",
+  title: "Components/Data Display/Badge",
   component: Badge,
   tags: ["autodocs"],
   argTypes: {

@@ -4,7 +4,7 @@ import { Slider } from "@mutsuna/ui/slider";
 import { expect, userEvent, within } from "storybook/test";
 
 const { Story } = defineMeta({
-  title: "UI/Slider",
+  title: "Components/Inputs/Slider",
   component: Slider,
   tags: ["autodocs"],
 });
@@ -18,6 +18,7 @@ let verticalValue = $state(65);
 
 <Story
   name="States"
+  parameters={{ controls: { disable: true }, options: { showPanel: false } }}
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const volumeSlider = canvas.getByRole("slider", { name: "音量" });

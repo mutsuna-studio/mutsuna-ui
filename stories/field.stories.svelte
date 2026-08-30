@@ -12,7 +12,7 @@ import FieldLegend from "@mutsuna/ui/field/field-legend.svelte";
 import FieldSet from "@mutsuna/ui/field/field-set.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Field",
+  title: "Components/Forms/Field",
   component: Field,
   tags: ["autodocs"],
 });

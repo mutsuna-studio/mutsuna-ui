@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@mutsuna/ui/tabs";
 
 const { Story } = defineMeta({
-  title: "UI/Tabs",
+  title: "Components/Navigation/Tabs",
   component: Tabs,
   tags: ["autodocs"],
 });

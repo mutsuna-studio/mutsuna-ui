@@ -12,7 +12,7 @@ import PopoverTitle from "@mutsuna/ui/popover/popover-title.svelte";
 import PopoverTrigger from "@mutsuna/ui/popover/popover-trigger.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Popover",
+  title: "Components/Overlays/Popover",
   component: Popover,
   tags: ["autodocs"],
 });

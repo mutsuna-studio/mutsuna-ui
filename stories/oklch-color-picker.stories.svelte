@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import { OklchColorPicker } from "@mutsuna/ui/oklch-color-picker";
 
 const { Story } = defineMeta({
-  title: "UI/OKLCH Color Picker",
+  title: "Components/Inputs/OKLCH Color Picker",
   component: OklchColorPicker,
   tags: ["autodocs"],
 });

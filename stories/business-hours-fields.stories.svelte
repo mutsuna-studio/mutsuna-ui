@@ -11,7 +11,7 @@ const businessHours: BusinessHourDraft[] = weekdays.map((weekday, index) => ({
 }));
 
 const { Story } = defineMeta({
-  title: "UI/Business Hours Fields",
+  title: "Components/Forms/Business Hours Fields",
   component: BusinessHoursFields,
   tags: ["autodocs"],
 });

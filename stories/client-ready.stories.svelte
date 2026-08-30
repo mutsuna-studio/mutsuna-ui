@@ -3,7 +3,7 @@ import { defineMeta } from "@storybook/addon-svelte-csf";
 import ClientReady from "@mutsuna/ui/client-ready";
 
 const { Story } = defineMeta({
-  title: "UI/Client Ready",
+  title: "Foundations/Client Ready",
   component: ClientReady,
   tags: ["autodocs"],
 });

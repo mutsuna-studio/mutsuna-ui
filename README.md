@@ -204,6 +204,23 @@ pnpm storybook
 
 `http://localhost:6206`で確認可能。storyとStorybook設定はnpm packageへ含めない。
 
+ツールバーの「テーマカラー」と「表示モード」から、全storyのブランドカラーとlight／dark表示を切り替えられる。代表的なcomponentは`States` storyでvariant、size、disabled、loading、error、長文などを一画面で比較する。
+
+sidebarはcomponentの役割で分類し、storyの`title`を分類の正本にする。
+
+| 分類 | 役割 |
+| --- | --- |
+| `Foundations` | theme、scrollbar、client境界など横断基盤 |
+| `Components/Actions` | buttonなど操作の起点 |
+| `Components/Inputs` | 値の入力・選択・編集 |
+| `Components/Forms` | label、field、form構成と複合form |
+| `Components/Navigation` | breadcrumb、menu、sidebar、tabs |
+| `Components/Data Display` | avatar、badge、calendar、card、table |
+| `Components/Feedback` | alert、empty、loading、skeleton、toast |
+| `Components/Overlays` | dialog、popover、sheet、tooltip |
+| `Components/Layout` | collapsible、separatorなど配置・区切り |
+| `Patterns` | 複数componentを組み合わせた再利用可能なUIパターン |
+
 各componentのDocs、Controls、Accessibility panelを同じstoryから生成する。実ブラウザで全storyのrender、a11y、`play`による代表操作を検証するには次を実行する。
 
 ```sh

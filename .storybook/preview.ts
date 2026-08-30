@@ -22,6 +22,13 @@ function applyPreviewTheme(themeKey: unknown): void {
   }
 }
 
+function applyPreviewColorMode(colorMode: unknown): void {
+  const isDark = colorMode === "dark";
+
+  document.documentElement.classList.toggle("dark", isDark);
+  document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+}
+
 const preview: Preview = {
   tags: ["autodocs"],
   globalTypes: {
@@ -34,13 +41,27 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    colorMode: {
+      description: "全ストーリーへ適用するライト・ダーク表示",
+      toolbar: {
+        title: "表示モード",
+        icon: "mirror",
+        items: [
+          { value: "light", title: "ライト" },
+          { value: "dark", title: "ダーク" },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     themeColor: "orange",
+    colorMode: "light",
   },
   decorators: [
     (Story, context) => {
       applyPreviewTheme(context.globals.themeColor);
+      applyPreviewColorMode(context.globals.colorMode);
       return Story();
     },
   ],
@@ -53,6 +74,22 @@ const preview: Preview = {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
+      },
+    },
+    options: {
+      showPanel: true,
+      storySort: {
+        method: "alphabetical",
+        locales: "en-US",
+        order: [
+          "Foundations",
+          ["Theme", "Scrollbar", "Client Ready"],
+          "Components",
+          ["Actions", "Inputs", "Forms", "Navigation", "Data Display", "Feedback", "Overlays", "Layout"],
+          "Patterns",
+          ["App Shell", "Workspace Layout", "Data Table", "Sidebar Identity", "Sortable List", "SvelteKit Form Action Toast"],
+          "*",
+        ],
       },
     },
   },

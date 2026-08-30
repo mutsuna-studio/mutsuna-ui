@@ -18,7 +18,7 @@ import DropdownMenuSubTrigger from "@mutsuna/ui/dropdown-menu/dropdown-menu-sub-
 import DropdownMenuTrigger from "@mutsuna/ui/dropdown-menu/dropdown-menu-trigger.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Dropdown Menu",
+  title: "Components/Navigation/Dropdown Menu",
   component: DropdownMenu,
   tags: ["autodocs"],
 });

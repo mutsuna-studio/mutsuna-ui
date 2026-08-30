@@ -7,7 +7,7 @@ import FieldLabel from "@mutsuna/ui/field/field-label.svelte";
 import EditableText from "@mutsuna/ui/editable-text/editable-text.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Editable Text",
+  title: "Components/Inputs/Editable Text",
   component: EditableText,
   tags: ["autodocs"],
 });

@@ -8,7 +8,7 @@ import Toaster from "@mutsuna/ui/sonner/sonner.svelte";
 type ToastStoryArgs = ComponentProps<typeof Toaster>;
 
 const { Story } = defineMeta({
-  title: "UI/Toast",
+  title: "Components/Feedback/Toast",
   component: Toaster,
   tags: ["autodocs"],
   argTypes: {

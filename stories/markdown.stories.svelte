@@ -6,7 +6,7 @@ import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 type MarkdownEditorStoryArgs = ComponentProps<typeof MarkdownTextEditor>;
 
 const { Story } = defineMeta({
-  title: "UI/Markdown Editor",
+  title: "Components/Inputs/Markdown Editor",
   component: MarkdownTextEditor,
   tags: ["autodocs"],
   argTypes: {

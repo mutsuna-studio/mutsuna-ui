@@ -13,7 +13,7 @@ import EmptyMedia from "@mutsuna/ui/empty/empty-media.svelte";
 import EmptyTitle from "@mutsuna/ui/empty/empty-title.svelte";
 
 const { Story } = defineMeta({
-  title: "UI/Empty",
+  title: "Components/Feedback/Empty",
   component: Empty,
   tags: ["autodocs"],
 });

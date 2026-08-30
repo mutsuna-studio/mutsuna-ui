@@ -6,7 +6,7 @@ import UsersIcon from "@lucide/svelte/icons/users";
 import * as Sidebar from "@mutsuna/ui/sidebar";
 
 const { Story } = defineMeta({
-  title: "UI/Sidebar",
+  title: "Components/Navigation/Sidebar",
   component: Sidebar.Sidebar,
   tags: ["autodocs"],
 });
