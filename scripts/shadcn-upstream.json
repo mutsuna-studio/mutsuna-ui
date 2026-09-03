@@ -5,7 +5,7 @@
   "registryPath": "docs/static/registry/styles/{style}/{name}.json",
   "reviewGroups": {
     "heavily-customized": ["avatar", "button", "calendar", "dialog", "select", "slider", "sonner", "tooltip"],
-    "interaction": ["alert-dialog", "checkbox", "collapsible", "dropdown-menu", "form", "label", "popover", "separator", "sheet", "sidebar", "switch", "tabs"],
+    "interaction": ["alert-dialog", "checkbox", "collapsible", "drawer", "dropdown-menu", "form", "label", "popover", "separator", "sheet", "sidebar", "switch", "tabs"],
     "presentation": ["alert", "badge", "breadcrumb", "button-group", "card", "empty", "field", "input", "input-group", "skeleton", "table", "textarea"]
   },
   "components": [
@@ -21,6 +21,7 @@
     { "name": "checkbox", "localPath": "src/lib/checkbox", "classification": "derived" },
     { "name": "collapsible", "localPath": "src/lib/collapsible", "classification": "derived" },
     { "name": "dialog", "localPath": "src/lib/dialog", "classification": "heavily-customized" },
+    { "name": "drawer", "localPath": "src/lib/drawer", "classification": "derived" },
     { "name": "dropdown-menu", "localPath": "src/lib/dropdown-menu", "classification": "derived" },
     { "name": "empty", "localPath": "src/lib/empty", "classification": "derived" },
     { "name": "field", "localPath": "src/lib/field", "classification": "derived" },

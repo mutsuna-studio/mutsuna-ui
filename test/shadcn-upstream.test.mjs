@@ -25,7 +25,7 @@ async function write(path, content) {
   await writeFile(path, content);
 }
 
-test("tracking configuration covers the approved 32 nova components", async () => {
+test("tracking configuration covers the approved 33 nova components", async () => {
   const config = JSON.parse(await readFile(join(packageRoot, "scripts/shadcn-upstream.json"), "utf8"));
   const names = config.components.map((component) => component.name);
   const heavilyCustomized = config.components
@@ -33,11 +33,11 @@ test("tracking configuration covers the approved 32 nova components", async () =
     .map((component) => component.name);
 
   assert.equal(config.style, "nova");
-  assert.equal(new Set(names).size, 32);
+  assert.equal(new Set(names).size, 33);
   assert.deepEqual(heavilyCustomized, ["avatar", "button", "calendar", "dialog", "select", "slider", "sonner", "tooltip"]);
   assert.deepEqual(config.supportItems.map((item) => [item.name, item.owner]), [["is-mobile", "sidebar"]]);
   const grouped = Object.values(config.reviewGroups).flat();
-  assert.equal(new Set(grouped).size, 32);
+  assert.equal(new Set(grouped).size, 33);
   assert.deepEqual([...grouped].sort(), [...names].sort());
 });
 

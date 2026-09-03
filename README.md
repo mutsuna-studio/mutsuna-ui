@@ -52,6 +52,39 @@ import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 </Card>
 ```
 
+画面幅に応じてデスクトップではDialog、モバイルでは下方向のDrawerを使う場合は`ResponsiveDialog`を利用する。既存の`Dialog`と`Drawer`は自動変換されない。
+
+```svelte
+<script lang="ts">
+import { Button } from "@mutsuna/ui/button";
+import * as ResponsiveDialog from "@mutsuna/ui/responsive-dialog";
+</script>
+
+<ResponsiveDialog.Root>
+  <ResponsiveDialog.Trigger>
+    {#snippet child({ props })}
+      <Button {...props}>編集</Button>
+    {/snippet}
+  </ResponsiveDialog.Trigger>
+  <ResponsiveDialog.Content>
+    <ResponsiveDialog.Header>
+      <ResponsiveDialog.Title>プロフィールを編集</ResponsiveDialog.Title>
+      <ResponsiveDialog.Description>内容を変更して保存します。</ResponsiveDialog.Description>
+    </ResponsiveDialog.Header>
+    <ResponsiveDialog.Body>フォーム内容</ResponsiveDialog.Body>
+    <ResponsiveDialog.Footer>
+      <ResponsiveDialog.Close>
+        {#snippet child({ props })}
+          <Button {...props} variant="outline">閉じる</Button>
+        {/snippet}
+      </ResponsiveDialog.Close>
+    </ResponsiveDialog.Footer>
+  </ResponsiveDialog.Content>
+</ResponsiveDialog.Root>
+```
+
+既定のbreakpointは`768px`。`mode="desktop"`または`mode="mobile"`で表示方式を固定できる。SSRでは既定でDialogをfallbackとして描画し、必要に応じて`ssrMode="mobile"`を指定する。表示モード判定の内部基盤はprimitiveに依存せず、将来のAlert Dialogや用途別Popoverとの組み合わせでも再利用できる。
+
 theme colorは`ThemeProvider`でCSS変数へ反映する。永続化先は利用側が管理する。
 
 ```svelte
@@ -188,7 +221,8 @@ packageには`@sveltejs/package`で生成したJavaScript、Svelte component、�
 
 componentと代表状態は[公開Storybook](https://mutsuna-studio.github.io/mutsuna-ui/)を正本として確認できる。主な分類:
 
-- primitive: button、input、dialog、popover、select、table、tabsなど
+- primitive: button、input、dialog、drawer、popover、select、table、tabsなど
+- responsive overlay: responsive dialog
 - form: field、form、date/time、filter select、form template editorなど
 - admin UI: admin layout、admin shell、sidebar、data tableなど
 - visual system: theme、theme CSS、scrollbar、color picker
@@ -217,7 +251,7 @@ sidebarはcomponentの役割で分類し、storyの`title`を分類の正本に�
 | `Components/Navigation` | breadcrumb、menu、sidebar、tabs |
 | `Components/Data Display` | avatar、badge、calendar、card、table |
 | `Components/Feedback` | alert、empty、loading、skeleton、toast |
-| `Components/Overlays` | dialog、popover、sheet、tooltip |
+| `Components/Overlays` | dialog、drawer、popover、sheet、tooltip |
 | `Components/Layout` | collapsible、separatorなど配置・区切り |
 | `Patterns` | 複数componentを組み合わせた再利用可能なUIパターン |
 
