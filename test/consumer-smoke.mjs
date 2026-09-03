@@ -84,6 +84,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 import { BusinessHoursFields, type BusinessHourDraft, weekdayLabels, weekdays } from "@mutsuna/ui/business-hours-fields";
 import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@mutsuna/ui/drawer";
+import { ResponsiveDialog, ResponsiveDialogContent, ResponsiveDialogTitle, ResponsiveDialogTrigger } from "@mutsuna/ui/responsive-dialog";
 import { FormTemplateEditor, type EditorField } from "@mutsuna/ui/form-template-editor";
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { Loading, LoadingMorphingInfinity } from "@mutsuna/ui/loading";
@@ -157,6 +159,18 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
         </DialogTrigger>
         <DialogContent><DialogTitle>Installed from tarball</DialogTitle></DialogContent>
       </Dialog>
+      <Drawer>
+        <DrawerTrigger>
+          {#snippet child({ props })}<Button {...props}>Open drawer</Button>{/snippet}
+        </DrawerTrigger>
+        <DrawerContent><DrawerTitle>Installed drawer from tarball</DrawerTitle></DrawerContent>
+      </Drawer>
+      <ResponsiveDialog mode="desktop">
+        <ResponsiveDialogTrigger>
+          {#snippet child({ props })}<Button {...props}>Open responsive dialog</Button>{/snippet}
+        </ResponsiveDialogTrigger>
+        <ResponsiveDialogContent><ResponsiveDialogTitle>Responsive dialog from tarball</ResponsiveDialogTitle></ResponsiveDialogContent>
+      </ResponsiveDialog>
       <ScrollbarArea gutter="auto" class="mt-4 h-20 overflow-y-auto">
         <div class="h-40">Themed scrollbar</div>
       </ScrollbarArea>
