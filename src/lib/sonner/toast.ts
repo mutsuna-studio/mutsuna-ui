@@ -12,6 +12,12 @@ export type ToastCopyOptions = Readonly<{
 
 type ToastPublisher = (title: string, options: ExternalToast) => string | number;
 
+const COPY_FEEDBACK_DURATION = 2000;
+const copyFeedbackTimers = new WeakMap<
+  HTMLButtonElement,
+  ReturnType<typeof setTimeout>
+>();
+
 function normalizeDescription(description?: unknown): string | undefined {
   if (description == null) return undefined;
   if (typeof description === "string") return description;
@@ -37,19 +43,35 @@ async function copyText(text: string): Promise<void> {
 function createToastOptions(
   title: string,
   message?: unknown,
-  copy?: ToastCopyOptions,
-  onCopied?: () => void
+  copy?: ToastCopyOptions
 ): ExternalToast {
   const copyTextValue = formatToastCopyText(title, message, copy?.detail);
+  const copyLabel = copy?.label ?? "コピー";
   return {
     description: normalizeDescription(message),
     action: {
-      label: copy?.label ?? "コピー",
+      label: copyLabel,
       onClick: (event) => {
+        const actionButton = event.currentTarget;
         event.preventDefault();
         void copyText(copyTextValue)
           .then(() => {
-            onCopied?.();
+            if (!actionButton.isConnected) return;
+            actionButton.dataset.copied = "true";
+            actionButton.setAttribute("aria-label", "コピーしました");
+            actionButton.textContent = "コピーしました";
+
+            const previousTimer = copyFeedbackTimers.get(actionButton);
+            if (previousTimer !== undefined) clearTimeout(previousTimer);
+
+            const feedbackTimer = setTimeout(() => {
+              copyFeedbackTimers.delete(actionButton);
+              if (!actionButton.isConnected) return;
+              delete actionButton.dataset.copied;
+              actionButton.removeAttribute("aria-label");
+              actionButton.textContent = copyLabel;
+            }, COPY_FEEDBACK_DURATION);
+            copyFeedbackTimers.set(actionButton, feedbackTimer);
           })
           .catch(() => {
             toast.error("コピーできませんでした", {
@@ -67,14 +89,7 @@ function showCopyableToast(
   message?: unknown,
   copy?: ToastCopyOptions
 ): void {
-  let toastId: string | number | undefined;
-  toastId = publish(
-    title,
-    createToastOptions(title, message, copy, () => {
-      if (toastId === undefined) return;
-      publish(title, { id: toastId, description: "コピーしました" });
-    })
-  );
+  publish(title, createToastOptions(title, message, copy));
 }
 
 export function showToast(
