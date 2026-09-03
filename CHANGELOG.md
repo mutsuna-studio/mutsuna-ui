@@ -1,5 +1,11 @@
 # @mutsuna/ui
 
+## 0.8.0
+
+### Minor Changes
+
+- 29e5f90: 上下左右から展開でき、内部スクロールと競合せずスワイプで閉じられる Drawer と、デスクトップでは Dialog、モバイルでは Drawer を表示する ResponsiveDialog を追加します。
+
 ## 0.7.1
 
 ### Patch Changes
