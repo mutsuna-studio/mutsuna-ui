@@ -1,5 +1,12 @@
 # @mutsuna/ui
 
+## 0.7.1
+
+### Patch Changes
+
+- e143efc: トースト下端に、自動で閉じるまでの残り時間を示すプログレスバーを追加する。右上の閉じる操作とコピー操作を縦に揃え、コピー完了時は本文と残り時間を維持したまま一時的にチェックアイコンへ切り替える。
+- dc5fe45: テーマの primary foreground と共有トークンを実コントラスト比から調整し、入力、editor、avatar、calendar、scroll 領域の accessible name、landmark、keyboard 操作を改善する。
+
 ## 0.7.0
 
 ### Minor Changes
