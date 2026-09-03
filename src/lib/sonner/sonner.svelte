@@ -7,14 +7,27 @@ import OctagonXIcon from "@lucide/svelte/icons/octagon-x";
 import InfoIcon from "@lucide/svelte/icons/info";
 import TriangleAlertIcon from "@lucide/svelte/icons/triangle-alert";
 
-let { richColors = true, closeButton = true, ...restProps }: SonnerProps = $props();
+let {
+	richColors = true,
+	closeButton = true,
+	duration = 4000,
+	toastOptions,
+	style,
+	...restProps
+}: SonnerProps = $props();
+
+let progressDuration = $derived(toastOptions?.duration ?? duration);
 </script>
 
 <Sonner
 	theme={mode.current}
 	{richColors}
 	{closeButton}
+	{duration}
+	{toastOptions}
 	class="mutsuna-toaster toaster group"
+	data-mutsuna-progress={Number.isFinite(progressDuration) && progressDuration > 0}
+	style={`--mutsuna-toast-duration: ${progressDuration}ms; ${style ?? ""}`}
 	{...restProps}
 >
 	{#snippet loadingIcon()}
@@ -35,28 +48,91 @@ let { richColors = true, closeButton = true, ...restProps }: SonnerProps = $prop
 </Sonner>
 
 <style>
+	:global(
+		.mutsuna-toaster[data-mutsuna-progress="true"]
+			[data-sonner-toast][data-styled="true"]:not([data-type="loading"])
+	) {
+		overflow: hidden;
+		padding-inline-end: 3.25rem;
+	}
+
+	:global(
+		.mutsuna-toaster[data-mutsuna-progress="true"]
+			[data-sonner-toast][data-styled="true"]:not([data-type="loading"])::after
+	) {
+		position: absolute;
+		inset-inline: 0;
+		bottom: 0;
+		height: 2px;
+		content: "";
+		transform: scaleX(1);
+		transform-origin: left;
+		border-radius: 999px;
+		background: currentColor;
+		opacity: 0.55;
+		pointer-events: none;
+		animation: mutsuna-toast-progress var(--mutsuna-toast-duration) linear forwards;
+	}
+
+	:global(
+		.mutsuna-toaster[dir="rtl"][data-mutsuna-progress="true"]
+			[data-sonner-toast][data-styled="true"]:not([data-type="loading"])::after
+	) {
+		transform-origin: right;
+	}
+
+	:global(
+		.mutsuna-toaster[data-mutsuna-progress="true"]
+			[data-sonner-toast][data-styled="true"]:not([data-type="loading"])[data-expanded="true"]::after
+	),
+	:global(
+		.mutsuna-toaster[data-mutsuna-progress="true"]
+			[data-sonner-toast][data-styled="true"]:not([data-type="loading"]):hover::after
+	),
+	:global(
+		.mutsuna-toaster[data-mutsuna-progress="true"]
+			[data-sonner-toast][data-styled="true"]:not([data-type="loading"]):active::after
+	) {
+		animation-play-state: paused;
+	}
+
 	:global(.mutsuna-toaster [data-sonner-toast][data-styled="true"] [data-button]) {
+		position: absolute;
+		inset-inline-end: 0.75rem;
+		top: calc(50% + 0.125rem);
 		order: 2;
 		width: 1.5rem;
 		height: 1.5rem;
-		margin: 0 0 0 auto;
+		margin: 0;
 		padding: 0;
 		border-radius: 0.25rem;
 		color: inherit;
 		background: transparent;
 		font-size: 0;
+		justify-content: center;
+		transition: opacity 150ms ease;
 	}
 
 	:global(.mutsuna-toaster [data-sonner-toast][data-styled="true"] [data-button]::before) {
 		width: 1rem;
 		height: 1rem;
+		flex: none;
 		content: "";
 		background-color: currentColor;
 		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='14' height='14' x='8' y='8' rx='2' ry='2'/%3E%3Cpath d='M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2'/%3E%3C/svg%3E") center / contain no-repeat;
 	}
 
+	:global(
+		.mutsuna-toaster [data-sonner-toast][data-styled="true"] [data-button][data-copied="true"]::before
+	) {
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m20 6-11 11-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+	}
+
 	:global(.mutsuna-toaster [data-sonner-toast][data-styled="true"] [data-close-button]) {
-		position: static;
+		position: absolute;
+		inset-inline-start: auto;
+		inset-inline-end: 0.75rem;
+		top: calc(50% - 1.625rem);
 		order: 3;
 		width: 1.5rem;
 		height: 1.5rem;
@@ -67,6 +143,13 @@ let { richColors = true, closeButton = true, ...restProps }: SonnerProps = $prop
 		transform: none;
 		color: inherit;
 		background: transparent !important;
+		transition: opacity 150ms ease;
+	}
+
+	:global(.mutsuna-toaster [data-sonner-toast][data-styled="true"] [data-close-button] svg) {
+		width: 1rem;
+		height: 1rem;
+		flex: none;
 	}
 
 	:global(.mutsuna-toaster [data-sonner-toast][data-styled="true"] [data-button]:hover),
@@ -81,4 +164,11 @@ let { richColors = true, closeButton = true, ...restProps }: SonnerProps = $prop
 		outline-offset: 2px;
 		box-shadow: none;
 	}
+
+	@keyframes mutsuna-toast-progress {
+		to {
+			transform: scaleX(0);
+		}
+	}
+
 </style>

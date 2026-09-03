@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { formatToastCopyText } from "../dist/sonner/toast-copy.js";
+
+const sonnerSource = new URL("../src/lib/sonner/sonner.svelte", import.meta.url);
+const toastSource = new URL("../src/lib/sonner/toast.ts", import.meta.url);
 
 test("非表示詳細がなくてもタイトルと表示メッセージをコピー内容にする", () => {
   assert.equal(
@@ -43,4 +47,36 @@ test("Errorの非表示詳細はstackを含める", () => {
     copyText,
     /^タイトル: 接続に失敗しました\nメッセージ: もう一度お試しください。\nエラー詳細: Error: connection reset/
   );
+});
+
+test("トーストの残り時間を控えめなバーで示し、操作中は一時停止する", async () => {
+  const source = await readFile(sonnerSource, "utf8");
+
+  assert.match(source, /--mutsuna-toast-duration/);
+  assert.match(source, /inset-inline: 0/);
+  assert.match(source, /bottom: 0/);
+  assert.match(source, /height: 2px/);
+  assert.match(source, /opacity: 0\.55/);
+  assert.match(source, /animation-play-state: paused/);
+  assert.match(source, /:not\(\[data-type="loading"\]\)/);
+});
+
+test("コピー完了はアイコンだけを変更し、トーストの残り時間を維持する", async () => {
+  const [sonner, toast] = await Promise.all([
+    readFile(sonnerSource, "utf8"),
+    readFile(toastSource, "utf8"),
+  ]);
+
+  assert.match(sonner, /\[data-button\]\[data-copied="true"\]::before/);
+  assert.match(sonner, /\[data-button\][\s\S]*?top: calc\(50% \+ 0\.125rem\)/);
+  assert.match(sonner, /\[data-close-button\][\s\S]*?top: calc\(50% - 1\.625rem\)/);
+  assert.match(sonner, /justify-content: center/);
+  assert.match(sonner, /\[data-close-button\] svg\)[\s\S]*?width: 1rem/);
+  assert.equal(sonner.match(/transition: opacity 150ms ease/g)?.length, 2);
+  assert.match(toast, /COPY_FEEDBACK_DURATION = 2000/);
+  assert.match(toast, /actionButton\.dataset\.copied = "true"/);
+  assert.match(toast, /actionButton\.setAttribute\("aria-label", "コピーしました"\)/);
+  assert.match(toast, /delete actionButton\.dataset\.copied/);
+  assert.match(toast, /actionButton\.textContent = copyLabel/);
+  assert.doesNotMatch(toast, /progressRestart|id: toastId/);
 });

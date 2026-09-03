@@ -15,6 +15,9 @@ const { Story } = defineMeta({
     closeButton: {
       control: "boolean",
     },
+    duration: {
+      control: { type: "number", min: 1000, max: 15000, step: 500 },
+    },
     position: {
       control: "select",
       options: ["top-left", "top-right", "bottom-left", "bottom-right", "top-center", "bottom-center"],
@@ -25,6 +28,7 @@ const { Story } = defineMeta({
   },
   args: {
     closeButton: true,
+    duration: 6000,
     position: "bottom-right",
     richColors: true,
   } satisfies ToastStoryArgs,
@@ -49,7 +53,7 @@ const { Story } = defineMeta({
 					})}>Copyable Error</Button
 			>
 		</div>
-		<p class="text-sm text-muted-foreground">すべてのトーストでタイトルとメッセージをコピーできます。詳細情報を渡した場合は、画面に出さずコピー内容だけに追加します。</p>
+		<p class="text-sm text-muted-foreground">下端の細いバーが、自動で閉じるまでの残り時間を示します。右端にはコピーと閉じる操作を縦に配置し、コピー完了のチェックは2秒後に元のアイコンへ戻ります。</p>
 	</div>
 {/snippet}
 
