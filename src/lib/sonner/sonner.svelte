@@ -57,6 +57,13 @@ let progressDuration = $derived(toastOptions?.duration ?? duration);
 	}
 
 	:global(
+		.mutsuna-toaster
+			[data-sonner-toast][data-styled="true"]:has([data-button]):has([data-close-button])
+	) {
+		min-block-size: 3.75rem;
+	}
+
+	:global(
 		.mutsuna-toaster[data-mutsuna-progress="true"]
 			[data-sonner-toast][data-styled="true"]:not([data-type="loading"])::after
 	) {

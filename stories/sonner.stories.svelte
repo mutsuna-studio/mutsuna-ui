@@ -40,6 +40,7 @@ const { Story } = defineMeta({
 	<div class="grid max-w-lg gap-4">
 		<Toaster {...args} />
 		<div class="flex flex-wrap gap-2">
+			<Button onclick={() => showToast("組織IDをコピー")}>One Line</Button>
 			<Button onclick={() => showToast("組織IDをコピー", "org_01HX...")}>Default</Button>
 			<Button onclick={() => showSuccessToast("保存しました", "営業時間の設定を更新しました。")}>Success</Button>
 			<Button variant="outline" onclick={() => showInfoToast("同期を開始しました", "完了まで数分かかる場合があります。")}>Info</Button>
@@ -53,7 +54,7 @@ const { Story } = defineMeta({
 					})}>Copyable Error</Button
 			>
 		</div>
-		<p class="text-sm text-muted-foreground">下端の細いバーが、自動で閉じるまでの残り時間を示します。右端にはコピーと閉じる操作を縦に配置し、コピー完了のチェックは2秒後に元のアイコンへ戻ります。</p>
+		<p class="text-sm text-muted-foreground">1行のトーストでも、右端のコピーと閉じる操作に必要な高さを保ちます。下端の細いバーが、自動で閉じるまでの残り時間を示し、コピー完了のチェックは2秒後に元のアイコンへ戻ります。</p>
 	</div>
 {/snippet}
 

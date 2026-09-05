@@ -80,3 +80,12 @@ test("コピー完了はアイコンだけを変更し、トーストの残り�
   assert.match(toast, /actionButton\.textContent = copyLabel/);
   assert.doesNotMatch(toast, /progressRestart|id: toastId/);
 });
+
+test("1行トーストでもコピーと閉じる操作の高さを確保する", async () => {
+  const source = await readFile(sonnerSource, "utf8");
+
+  assert.match(
+    source,
+    /\[data-sonner-toast\]\[data-styled="true"\]:has\(\[data-button\]\):has\(\[data-close-button\]\)[\s\S]*?min-block-size: 3\.75rem/
+  );
+});
