@@ -321,3 +321,39 @@ CSS-only loading indicators are adapted from
 [Loading UI](https://loading-ui.com/), licensed under the MIT License.
 
 This project is not affiliated with or endorsed by Loading UI.
+
+### CycleSelect
+
+`@mutsuna/ui/cycle-select` exposes `CycleSelect`, `CycleSelectProps`, and `CycleSelectOption`.
+The label button advances to the next enabled option; the right button opens the standard Select list.
+
+```svelte
+<script lang="ts">
+  import { CycleSelect } from "@mutsuna/ui/cycle-select";
+  let value = $state("compact");
+  const options = [
+    { value: "compact", label: "Compact" },
+    { value: "detailed", label: "Detailed" },
+  ];
+</script>
+
+<CycleSelect bind:value {options} ariaLabel="Display" />
+```
+
+Options must have unique, nonempty values. Cycling follows array order, skips disabled options,
+and wraps to the start. An empty or unknown value advances to the first enabled option.
+If no different enabled option exists, only the advance button is disabled; an empty or entirely
+disabled list disables the list trigger too. Changing options does not automatically change the value.
+Both actions update `bind:value` and call `onValueChange`. `name` enables form submission.
+Use `disabled`, `size`, `class`, `placeholder`, `nextLabel`, `listLabel`, `aria-invalid`, and
+`aria-describedby` to configure state and accessible labels. Both buttons support keyboard operation;
+the list retains Select keyboard navigation and focus handling.
+
+### Floating Input labels
+
+Use `<Input label="Display name" />` for an accessible floating label. The label moves
+to a notch in the border on focus and remains there while a value is present. An omitted
+`id` is generated automatically. Existing inputs without `label` keep their usual appearance.
+Date/time inputs always raise the label to avoid overlapping native input UI. File, hidden,
+checkbox, radio, range, color, and button inputs do not support floating labels; use an external
+label for those types. `placeholder` is shown only while focused in floating mode.
