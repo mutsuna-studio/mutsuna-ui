@@ -76,6 +76,8 @@ try {
   await writeFile(
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
+import { Input } from "@mutsuna/ui/input";
+import { CycleSelect } from "@mutsuna/ui/cycle-select";
 import { Button } from "@mutsuna/ui/button";
 import { AdminPage, AdminPageHeader, AdminPanel } from "@mutsuna/ui/admin-layout";
 import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
@@ -121,6 +123,8 @@ let endTime = $state("10:00");
 const actionToast = readFormActionToast({ status: "success", message: "Shared form action" });
 </script>
 
+<Input label="表示名" name="displayName" />
+<CycleSelect ariaLabel="表示" options={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
 <ThemeProvider theme={themeTemplates[1]}>
   <AdminShellFrame pageTitle="External consumer" contentGutter="auto" contentPadding="none">
     {#snippet sidebar()}

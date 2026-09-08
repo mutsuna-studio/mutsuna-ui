@@ -1,4 +1,5 @@
 <script module lang="ts">
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import Label from "@mutsuna/ui/label/label.svelte";
 import Input from "@mutsuna/ui/input/input.svelte";
@@ -82,4 +83,33 @@ const { Story } = defineMeta({
 			<Input type="time" value="09:00" step="900" />
 		</Label>
 	</div>
+</Story>
+
+
+<Story name="Floating Label" asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const input = canvas.getByRole("textbox", { name: "表示名" });
+  const label = canvas.getByText("表示名", { selector: "label" });
+  const position = () => Math.round(label.getBoundingClientRect().top);
+  const initial = position();
+  await userEvent.click(label);
+  await expect(input).toHaveFocus();
+  await waitFor(() => expect(position()).toBeLessThan(initial));
+  await userEvent.type(input, "サンプル");
+  await userEvent.tab();
+  await waitFor(() => expect(position()).toBeLessThan(initial));
+  await userEvent.clear(input);
+  await userEvent.tab();
+  await waitFor(() => expect(position()).toBe(initial));
+}}>
+  <div class="grid w-full max-w-md gap-6 p-4">
+    <Input label="表示名" />
+    <Input label="メールアドレス" type="email" value="hello@example.com" />
+    <Input label="パスワード" type="password" />
+    <Input label="読み取り専用" value="変更不可" readonly />
+    <Input label="無効" disabled />
+    <Input label="エラー" aria-invalid="true" aria-describedby="floating-error" />
+    <p id="floating-error" class="text-sm text-destructive">入力してください。</p>
+    <Input label="日付" type="date" />
+  </div>
 </Story>

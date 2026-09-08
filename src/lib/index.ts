@@ -327,3 +327,5 @@ export { TimePicker } from "./time-picker/index.js";
 export { TimeSelect } from "./time-select/index.js";
 export { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from "./tooltip/index.js";
 export { cn, type WithElementRef, type WithoutChild, type WithoutChildren, type WithoutChildrenOrChild } from "./utils.js";
+
+export { CycleSelect, type CycleSelectOption, type CycleSelectProps } from "./cycle-select/index.js";

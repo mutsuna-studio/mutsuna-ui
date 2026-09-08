@@ -127,7 +127,7 @@ test("Storybook catalog groups every component by role", async () => {
     "Components/Data Display": 5,
     "Components/Feedback": 5,
     "Components/Forms": 6,
-    "Components/Inputs": 15,
+    "Components/Inputs": 16,
     "Components/Layout": 2,
     "Components/Navigation": 4,
     "Components/Overlays": 7,
