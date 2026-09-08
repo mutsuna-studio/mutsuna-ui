@@ -1,5 +1,13 @@
 # @mutsuna/ui
 
+## 0.9.0
+
+### Minor Changes
+
+- 83e1766: Add CycleSelect with one-click cycling, a separate candidate list trigger, and keyboard support.
+
+  Add opt-in floating labels to Input via the label prop.
+
 ## 0.8.1
 
 ### Patch Changes
