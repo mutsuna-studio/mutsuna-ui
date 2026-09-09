@@ -329,3 +329,5 @@ export { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger
 export { cn, type WithElementRef, type WithoutChild, type WithoutChildren, type WithoutChildrenOrChild } from "./utils.js";
 
 export { CycleSelect, type CycleSelectOption, type CycleSelectProps } from "./cycle-select/index.js";
+
+export { MonthPicker, type MonthPickerProps } from "./month-picker/index.js";

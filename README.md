@@ -357,3 +357,25 @@ to a notch in the border on focus and remains there while a value is present. An
 Date/time inputs always raise the label to avoid overlapping native input UI. File, hidden,
 checkbox, radio, range, color, and button inputs do not support floating labels; use an external
 label for those types. `placeholder` is shown only while focused in floating mode.
+
+### MonthPicker
+
+```svelte
+<script lang="ts">
+  import { MonthPicker } from "@mutsuna/ui/month-picker";
+  let month = $state("2026-09");
+</script>
+
+<MonthPicker bind:value={month} ariaLabel="対象年月" name="month" />
+```
+
+`value`, `min`, and `max` use `YYYY-MM` (years 0001–9999). Defaults are an empty value
+and an inclusive range of `1900-01` to `2100-12`. Changing the year only navigates;
+choosing a month commits the value and closes the popover. The header accepts direct
+`YYYYMM` input using six ASCII digits only; Enter commits it. Other characters are
+removed on input, including pasted text. Validation errors appear while editing.
+Invalid or out-of-range text stays open with an error, and blur does not commit. Escape cancels navigation.
+`onValueChange` runs only when a different month is committed. Changing bounds does not
+rewrite an existing value. Invalid or reversed bounds disable the picker. `disabled`,
+`size`, `class`, `id`, `placeholder`, `aria-invalid`, and `aria-describedby` are supported.
+The trigger uses `ariaLabel` for its accessible name; `name` adds a hidden form input.
