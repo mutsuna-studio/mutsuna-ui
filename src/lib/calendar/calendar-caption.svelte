@@ -8,7 +8,7 @@ import type Calendar from "./calendar.svelte";
 import { Select as SelectRoot, SelectContent, SelectItem, SelectTrigger } from "@mutsuna/ui/select";
 import { cn } from "../utils.js";
 
-const calendarYearFloor = 2020;
+const calendarYearFloor = 1;
 
 let {
   captionLayout,

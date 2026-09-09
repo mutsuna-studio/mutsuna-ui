@@ -330,4 +330,4 @@ export { cn, type WithElementRef, type WithoutChild, type WithoutChildren, type 
 
 export { CycleSelect, type CycleSelectOption, type CycleSelectProps } from "./cycle-select/index.js";
 
-export { MonthPicker, type MonthPickerProps } from "./month-picker/index.js";
+export { DatePicker, type DatePickerProps, type DatePickerPrecision } from "./date-picker/index.js";

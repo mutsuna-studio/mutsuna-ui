@@ -358,24 +358,39 @@ Date/time inputs always raise the label to avoid overlapping native input UI. Fi
 checkbox, radio, range, color, and button inputs do not support floating labels; use an external
 label for those types. `placeholder` is shown only while focused in floating mode.
 
-### MonthPicker
+### DatePicker
 
 ```svelte
 <script lang="ts">
-  import { MonthPicker } from "@mutsuna/ui/month-picker";
-  let month = $state("2026-09");
+  import { DatePicker } from "@mutsuna/ui/date-picker";
+  let value = $state("2026-09");
 </script>
-
-<MonthPicker bind:value={month} ariaLabel="対象年月" name="month" />
+<DatePicker precision="month" bind:value ariaLabel="対象年月" />
 ```
 
-`value`, `min`, and `max` use `YYYY-MM` (years 0001–9999). Defaults are an empty value
-and an inclusive range of `1900-01` to `2100-12`. Changing the year only navigates;
-choosing a month commits the value and closes the popover. The header accepts direct
-`YYYYMM` input using six ASCII digits only; Enter commits it. Other characters are
-removed on input, including pasted text. Validation errors appear while editing.
-Invalid or out-of-range text stays open with an error, and blur does not commit. Escape cancels navigation.
-`onValueChange` runs only when a different month is committed. Changing bounds does not
-rewrite an existing value. Invalid or reversed bounds disable the picker. `disabled`,
-`size`, `class`, `id`, `placeholder`, `aria-invalid`, and `aria-describedby` are supported.
-The trigger uses `ariaLabel` for its accessible name; `name` adds a hidden form input.
+`showWeekday` (default false) appends the Japanese weekday in day mode, such as
+`2026年9月9日(水)`. It does not change the stored value and is ignored for year/month.
+
+`precision` is `year`, `month`, or `day` (default). Values and inclusive `min`/`max`
+bounds are `YYYY`, `YYYY-MM`, or `YYYY-MM-DD`, respectively. Direct input accepts only
+4, 6, or 8 ASCII digits. Enter commits; invalid dates (including nonexistent days),
+out-of-range values and `isDateUnavailable(value)` matches show an error. Escape or
+clicking outside discards edits. Selection commits immediately. Default bounds span
+1900–2100. Changing bounds or precision does not rewrite the value; the caller must
+supply a value and bounds matching the new precision. Invalid bounds disable opening.
+
+`showCurrent` (default true) shows 今年/今月/今日 according to precision; `currentLabel`
+customizes its label. It uses the device's local date and respects the same constraints.
+`name`, `disabled`, `size`, `class`, `id`, `placeholder`, `aria-invalid`, and
+`aria-describedby` are supported. `onValueChange` fires only for a changed committed value.
+
+Breaking migration: replace `MonthPicker` from `@mutsuna/ui/month-picker` with
+`DatePicker precision="month"` from `@mutsuna/ui/date-picker`. Rename `showCurrentMonth`
+to `showCurrent` and `currentMonthLabel` to `currentLabel`. No compatibility exports remain.
+
+### Current date shortcuts
+
+Calendar shows a `今日` action by default. It selects today's local date and moves the
+visible month to it, respecting `disabled`, `readonly`, `minValue`, `maxValue`,
+`isDateDisabled`, and `isDateUnavailable`. Multiple selection adds today without removing
+other dates. Use `showToday={false}` to hide it or `todayLabel` to change its text.
