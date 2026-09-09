@@ -606,15 +606,15 @@
       "svelte": "./dist/cycle-select/*",
       "default": "./dist/cycle-select/*"
     },
-    "./month-picker": {
-      "types": "./dist/month-picker/index.d.ts",
-      "svelte": "./dist/month-picker/index.js",
-      "default": "./dist/month-picker/index.js"
+    "./date-picker": {
+      "types": "./dist/date-picker/index.d.ts",
+      "svelte": "./dist/date-picker/index.js",
+      "default": "./dist/date-picker/index.js"
     },
-    "./month-picker/*": {
-      "types": "./dist/month-picker/*.d.ts",
-      "svelte": "./dist/month-picker/*",
-      "default": "./dist/month-picker/*"
+    "./date-picker/*": {
+      "types": "./dist/date-picker/*.d.ts",
+      "svelte": "./dist/date-picker/*",
+      "default": "./dist/date-picker/*"
     }
   },
   "scripts": {

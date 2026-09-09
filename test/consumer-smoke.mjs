@@ -76,7 +76,7 @@ try {
   await writeFile(
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
-import { MonthPicker } from "@mutsuna/ui/month-picker";
+import { DatePicker } from "@mutsuna/ui/date-picker";
 import { Input } from "@mutsuna/ui/input";
 import { CycleSelect } from "@mutsuna/ui/cycle-select";
 import { Button } from "@mutsuna/ui/button";
@@ -124,7 +124,7 @@ let endTime = $state("10:00");
 const actionToast = readFormActionToast({ status: "success", message: "Shared form action" });
 </script>
 
-<MonthPicker ariaLabel="対象年月" value="2026-09" />
+<DatePicker precision="month" ariaLabel="対象年月" value="2026-09" />
 <Input label="表示名" name="displayName" />
 <CycleSelect ariaLabel="表示" options={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
 <ThemeProvider theme={themeTemplates[1]}>

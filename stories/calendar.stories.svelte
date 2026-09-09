@@ -1,4 +1,6 @@
 <script module lang="ts">
+import { expect, userEvent, within } from "storybook/test";
+import { today, getLocalTimeZone } from "@internationalized/date";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import Calendar from "@mutsuna/ui/calendar/calendar.svelte";
 
@@ -32,4 +34,18 @@ let selectedDate = $state<DateValue | undefined>(parseDate("2026-08-02"));
     isDateDisabled={(date) => date.day < 10}
     captionLayout="dropdown-months"
   />
+</Story>
+
+<Story name="Today" asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getByRole("button", { name: "今日" }));
+  await expect(canvas.getByTestId("today-value")).toHaveTextContent(today(getLocalTimeZone()).toString());
+}}>
+  <Calendar type="single" bind:value={selectedDate} />
+  <p data-testid="today-value">{selectedDate?.toString()}</p>
+</Story>
+<Story name="Today Unavailable" asChild play={async ({ canvasElement }) => {
+  await expect(within(canvasElement).getByRole("button", { name: "今日" })).toBeDisabled();
+}}>
+  <Calendar type="single" isDateUnavailable={() => true} />
 </Story>

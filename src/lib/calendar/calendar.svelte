@@ -3,7 +3,8 @@ import { Calendar as CalendarPrimitive } from "bits-ui";
 import * as Calendar from "./index.js";
 import { cn, type WithoutChildrenOrChild } from "../utils.js";
 import type { ButtonVariant } from "@mutsuna/ui/button";
-import { isEqualMonth, type DateValue } from "@internationalized/date";
+import { Button } from "../button/index.js";
+import { today, getLocalTimeZone, isSameDay, isEqualMonth, type DateValue } from "@internationalized/date";
 import type { Snippet } from "svelte";
 import { getCalendarDayColorClass } from "./calendar-day-color.js";
 
@@ -26,9 +27,13 @@ let {
   monthFormat: monthFormatProp,
   yearFormat = "numeric",
   day,
+  showToday = true,
+  todayLabel = "今日",
   disableDaysOutsideMonth = false,
   ...restProps
 }: WithoutChildrenOrChild<CalendarPrimitive.RootProps> & {
+  showToday?: boolean;
+  todayLabel?: string;
   buttonVariant?: ButtonVariant;
   captionLayout?: "dropdown" | "dropdown-months" | "dropdown-years" | "label";
   months?: CalendarPrimitive.MonthSelectProps["months"];
@@ -37,6 +42,28 @@ let {
   yearFormat?: CalendarPrimitive.YearSelectProps["yearFormat"];
   day?: Snippet<[{ day: DateValue; outsideMonth: boolean }]>;
 } = $props();
+
+function todayDisabled(date: DateValue) {
+  return Boolean(restProps.disabled || restProps.readonly ||
+    (restProps.minValue && date.compare(restProps.minValue) < 0) ||
+    (restProps.maxValue && date.compare(restProps.maxValue) > 0) ||
+    restProps.isDateDisabled?.(date) || restProps.isDateUnavailable?.(date));
+}
+function selectToday() {
+  const date = today(getLocalTimeZone());
+  if (todayDisabled(date)) return;
+  placeholder = date;
+  restProps.onPlaceholderChange?.(date);
+  if (restProps.type === "multiple") {
+    const selected = Array.isArray(value) ? value : [];
+    if (selected.some((item) => isSameDay(item, date))) return;
+    value = [...selected, date];
+    restProps.onValueChange?.(value);
+  } else {
+    value = date;
+    restProps.onValueChange?.(date);
+  }
+}
 
 const monthFormat = $derived.by(() => {
   if (monthFormatProp) return monthFormatProp;
@@ -123,5 +150,10 @@ get along, so we shut typescript up by casting `value` to `never`.
 				</Calendar.Month>
 			{/each}
 		</Calendar.Months>
+    {#if showToday}
+      <div class="mt-3 border-t pt-2">
+        <Button type="button" variant="ghost" size="sm" class="w-full" disabled={todayDisabled(today(getLocalTimeZone()))} onclick={selectToday}>{todayLabel}</Button>
+      </div>
+    {/if}
 	{/snippet}
 </CalendarPrimitive.Root>
