@@ -1,5 +1,11 @@
 # @mutsuna/ui
 
+## 0.10.0
+
+### Minor Changes
+
+- 1dbbe74: Add MonthPicker for selecting a year and month with range limits and keyboard support.
+
 ## 0.9.0
 
 ### Minor Changes
