@@ -1,15 +1,22 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createTheme, defaultTheme, hexToOklch, isValidOklchColor, oklchToHex, themeTemplates, themeToCssVariables } from "../src/lib/theme/theme.ts";
+import { createTheme, defaultTheme, findThemeTemplate, hexToOklch, isValidOklchColor, oklchToHex, themeTemplates, themeAppearanceVariableNames, themeToCssVariables } from "../src/lib/theme/theme.ts";
 
 test("theme templates use valid OKLCH colors", () => {
-  assert.equal(defaultTheme.primary, "oklch(0.555 0.163 48.998)");
-  assert.equal(themeTemplates.length, 5);
+  assert.equal(defaultTheme.primary, "oklch(0.575 0.2 45)");
+  assert.equal(defaultTheme.primaryForeground, "oklch(0.987 0.022 95.277)");
+  assert.equal(findThemeTemplate("orange").primaryForeground, defaultTheme.primaryForeground);
+  assert.equal(themeTemplates.length, 18);
+  assert.equal(new Set(themeTemplates.map(({ key }) => key)).size, themeTemplates.length);
+  assert.equal(findThemeTemplate("unknown"), null);
+  assert.equal(findThemeTemplate("svelte").previewHex, "#d43008");
 
   for (const template of themeTemplates) {
     assert.equal(isValidOklchColor(template.primary), true, template.key);
     assert.match(template.previewHex, /^#[0-9a-f]{6}$/);
     assert.equal(template.sidebarPrimary, template.primary);
+    assert.equal(findThemeTemplate(template.key), template);
+    assert.equal(template.source, template.key);
   }
 });
 
@@ -27,7 +34,7 @@ test("custom theme derives foreground and CSS variables", () => {
   assert.equal(theme.source, "custom");
   assert.equal(theme.sidebarPrimary, theme.primary);
   assert.equal(isValidOklchColor(theme.primaryForeground), true);
-  assert.deepEqual(themeToCssVariables(theme), [
+  assert.deepEqual(themeToCssVariables(theme).slice(0, 5), [
     ["--primary", theme.primary],
     ["--primary-foreground", theme.primaryForeground],
     ["--sidebar-primary", theme.sidebarPrimary],
@@ -67,7 +74,7 @@ test("sampled custom theme colors always resolve to an accessible foreground", (
 
 test("missing theme removes every managed CSS variable", () => {
   assert.deepEqual(
-    themeToCssVariables(null).map(([name, value]) => [name, value]),
+    themeToCssVariables(null).slice(0, 5).map(([name, value]) => [name, value]),
     [
       ["--primary", null],
       ["--primary-foreground", null],
@@ -79,8 +86,8 @@ test("missing theme removes every managed CSS variable", () => {
 });
 
 function contrastRatio(first, second) {
-  const firstLuminance = relativeLuminance(oklchToHex(first));
-  const secondLuminance = relativeLuminance(oklchToHex(second));
+  const firstLuminance = relativeLuminance(isValidOklchColor(first) ? oklchToHex(first) : first);
+  const secondLuminance = relativeLuminance(isValidOklchColor(second) ? oklchToHex(second) : second);
   return (Math.max(firstLuminance, secondLuminance) + 0.05) / (Math.min(firstLuminance, secondLuminance) + 0.05);
 }
 
@@ -91,3 +98,41 @@ function relativeLuminance(hex) {
   });
   return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
 }
+
+
+test("full theme tokens reset when switching to a color preset or clearing", () => {
+  const full = new Map(themeToCssVariables(findThemeTemplate("svelte")));
+  assert.match(full.get("--background"), /light-dark/);
+  assert.match(full.get("--theme-font-ui"), /Fira Sans/);
+  for (const theme of [findThemeTemplate("orange"), null]) {
+    const variables = new Map(themeToCssVariables(theme));
+    for (const name of themeAppearanceVariableNames) assert.equal(variables.get(name), null, name);
+  }
+});
+
+
+for (const key of ["claude", "github", "linear", "notion"]) test(`${key} appearance covers every token and keeps light/dark text readable`, () => {
+  const theme = findThemeTemplate(key);
+  const variables = new Map(themeToCssVariables(theme));
+  for (const name of themeAppearanceVariableNames) assert.ok(variables.get(name), name);
+  const pairs = [
+    ["--primary", "--primary-foreground"], ["--background", "--foreground"],
+    ["--card", "--card-foreground"], ["--popover", "--popover-foreground"],
+    ["--secondary", "--secondary-foreground"], ["--muted", "--muted-foreground"],
+    ["--accent", "--accent-foreground"], ["--sidebar", "--sidebar-foreground"],
+    ["--sidebar-primary", "--sidebar-primary-foreground"], ["--sidebar-accent", "--sidebar-accent-foreground"],
+  ];
+  for (const mode of [0, 1]) {
+    const resolve = (name) => variables.get(name).match(/^light-dark\((#[0-9a-f]+), (#[0-9a-f]+)\)$/)[mode + 1];
+    for (const [background, foreground] of pairs) {
+      assert.ok(contrastRatio(resolve(background), resolve(foreground)) >= 4.5, `${background} / ${foreground}, mode ${mode}`);
+    }
+  }
+  if (key === "claude") {
+    assert.match(variables.get("--theme-font-heading"), /Georgia/);
+    assert.match(variables.get("--theme-font-body"), /Inter Variable/);
+  }
+  assert.notEqual(variables.get("--sidebar-primary"), variables.get("--primary"));
+  const reset = new Map(themeToCssVariables(findThemeTemplate("blue")));
+  for (const name of themeAppearanceVariableNames) assert.equal(reset.get(name), null, name);
+});

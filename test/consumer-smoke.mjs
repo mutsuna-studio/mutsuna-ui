@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
@@ -79,6 +79,7 @@ try {
 import { DatePicker } from "@mutsuna/ui/date-picker";
 import { Input } from "@mutsuna/ui/input";
 import { CycleSelect } from "@mutsuna/ui/cycle-select";
+import { ColorPicker } from "@mutsuna/ui/color-picker";
 import { Button } from "@mutsuna/ui/button";
 import { AdminPage, AdminPageHeader, AdminPanel } from "@mutsuna/ui/admin-layout";
 import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
@@ -99,7 +100,7 @@ import { Slider } from "@mutsuna/ui/slider";
 import { showSuccessToast } from "@mutsuna/ui/sonner";
 import { readFormActionToast } from "@mutsuna/ui/sveltekit-form";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
-import { ThemeProvider, themeTemplates } from "@mutsuna/ui/theme";
+import { ThemeProvider, findThemeTemplate, type ThemeTemplateKey } from "@mutsuna/ui/theme";
 import { cn } from "@mutsuna/ui/utils";
 import { CalendarDate } from "@internationalized/date";
 
@@ -127,7 +128,8 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
 <DatePicker precision="month" ariaLabel="対象年月" value="2026-09" />
 <Input label="表示名" name="displayName" />
 <CycleSelect ariaLabel="表示" options={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
-<ThemeProvider theme={themeTemplates[1]}>
+<ColorPicker value="#191A22" name="themeColor" />
+<ThemeProvider theme={findThemeTemplate("github" satisfies ThemeTemplateKey)}>
   <AdminShellFrame pageTitle="External consumer" contentGutter="auto" contentPadding="none">
     {#snippet sidebar()}
       <Sidebar>
@@ -218,6 +220,13 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
   );
 
   run("npm", ["install", "--no-audit", "--no-fund"], consumerDirectory);
+  run("npm", ["exec", "--", "mutsuna-ui-lint", "src"], consumerDirectory);
+  await writeFile(join(consumerDirectory, "Bad.svelte"), `<script>import { Button } from '@mutsuna/ui/button';</script><Button loading><svg /></Button>`);
+  const lintFailure = spawnSync("npm", ["exec", "--", "mutsuna-ui-lint", "Bad.svelte"], { cwd: consumerDirectory, encoding: "utf8" });
+  if (lintFailure.status !== 1 || !lintFailure.stderr.includes("mutsuna/button-icon")) {
+    throw new Error(`Packed lint command failed to reject child SVG: ${lintFailure.stderr}`);
+  }
+
   run("npm", ["run", "build"], consumerDirectory);
 } finally {
   await rm(temporaryRoot, { recursive: true, force: true });

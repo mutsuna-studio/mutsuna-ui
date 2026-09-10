@@ -1,4 +1,5 @@
 <script module lang="ts">
+import { expect } from "storybook/test";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import PlusIcon from "@lucide/svelte/icons/plus";
 import RefreshCcwIcon from "@lucide/svelte/icons/refresh-ccw";
@@ -163,4 +164,27 @@ const { Story } = defineMeta({
 			</div>
 		</section>
 	</div>
+</Story>
+
+
+<Story name="Icon Loading Contract" asChild play={async ({ canvasElement }) => {
+  const buttons = canvasElement.querySelectorAll('[data-slot="button"]');
+  await expect(buttons).toHaveLength(12);
+  for (const button of buttons) {
+    await expect(button.querySelectorAll('svg')).toHaveLength(1);
+    const loading = button.getAttribute('aria-busy') === 'true';
+    await expect(button.querySelectorAll('[data-slot="button-loading-icon"]')).toHaveLength(loading ? 1 : 0);
+    if (loading && button.tagName === 'BUTTON') await expect(button).toBeDisabled();
+    if (loading && button.tagName === 'A') await expect(button).not.toHaveAttribute('href');
+  }
+}}>
+  <div class="flex max-w-lg flex-wrap items-center gap-3">
+    {#each [false, true] as loading}
+      {#each ["start", "end"] as iconPosition}
+        <Button icon={SaveIcon} {loading} iconPosition={iconPosition as "start" | "end"}>保存</Button>
+        <Button icon={SaveIcon} {loading} iconPosition={iconPosition as "start" | "end"} size="icon" aria-label="保存" />
+        <Button icon={SaveIcon} {loading} iconPosition={iconPosition as "start" | "end"} href="#preview">プレビュー</Button>
+      {/each}
+    {/each}
+  </div>
 </Story>

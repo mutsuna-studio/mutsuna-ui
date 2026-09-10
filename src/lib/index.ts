@@ -61,6 +61,7 @@ export {
   CardTitle,
 } from "./card/index.js";
 export { Checkbox } from "./checkbox/index.js";
+export { ColorPicker, type ColorFormat, type ColorPickerProps } from "./color-picker/index.js";
 export { default as ClientReady } from "./client-ready/index.js";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible/index.js";
 export { createSvelteTable, FlexRender, renderComponent, renderSnippet } from "./data-table/index.js";

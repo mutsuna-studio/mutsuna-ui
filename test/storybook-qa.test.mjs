@@ -46,7 +46,7 @@ test("Button story compares variants, sizes, disabled, loading, icons, and long 
   assert.match(buttonStory, /選択したすべての項目へ同じ設定を適用する/);
   assert.deepEqual(
     [...buttonStory.matchAll(/<Story name="([^"]+)"/g)].map((match) => match[1]),
-    ["Default", "States"],
+    ["Default", "States", "Icon Loading Contract"],
   );
 });
 
@@ -127,7 +127,7 @@ test("Storybook catalog groups every component by role", async () => {
     "Components/Data Display": 5,
     "Components/Feedback": 5,
     "Components/Forms": 6,
-    "Components/Inputs": 17,
+    "Components/Inputs": 18,
     "Components/Layout": 2,
     "Components/Navigation": 4,
     "Components/Overlays": 7,

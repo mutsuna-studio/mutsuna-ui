@@ -43,7 +43,9 @@ export type ButtonProps = WithElementRef<HTMLButtonAttributes> &
   WithElementRef<HTMLAnchorAttributes> & {
     variant?: ButtonVariant;
     size?: ButtonSize;
+    /** Replaces the icon prop with a spinner; do not add a spinner in children. */
     loading?: boolean;
+    /** Button icon. Use this prop instead of placing an icon in children. */
     icon?: LucideIcon;
     iconPosition?: ButtonIconPosition;
   };
