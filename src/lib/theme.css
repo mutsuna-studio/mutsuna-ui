@@ -2,12 +2,19 @@
 @import "tw-animate-css";
 @import "shadcn-svelte/tailwind.css";
 @import "@fontsource-variable/inter";
+@import "@fontsource/fira-sans/400.css";
+@import "@fontsource/fira-sans/500.css";
+@import "@fontsource/fira-sans/600.css";
+@import "@fontsource/dm-serif-display/400.css";
+@import "@fontsource/eb-garamond/400.css";
+@import "@fontsource/fira-mono/400.css";
 
 @source ".";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  color-scheme: light;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -49,6 +56,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -153,7 +161,8 @@
       height: 0;
     }
   }
-  --font-sans: "Inter Variable", sans-serif;
+  --font-sans: var(--theme-font-ui, "Inter Variable", sans-serif);
+  --font-mono: var(--theme-font-mono, ui-monospace, monospace);
 }
 
 @layer base {
@@ -167,6 +176,12 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6, [data-slot="card-title"] {
+    font-family: var(--theme-font-heading, inherit);
+  }
+  p {
+    font-family: var(--theme-font-body, inherit);
   }
   html {
     @apply font-sans;

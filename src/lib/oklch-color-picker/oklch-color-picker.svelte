@@ -1,149 +1,75 @@
 <script lang="ts">
-import CheckIcon from "@lucide/svelte/icons/check";
-import CopyIcon from "@lucide/svelte/icons/copy";
-import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
+import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
+import PipetteIcon from "@lucide/svelte/icons/pipette";
 import { untrack } from "svelte";
 import Button from "../button/button.svelte";
 import PopoverContent from "../popover/popover-content.svelte";
 import Popover from "../popover/popover.svelte";
 import PopoverTrigger from "../popover/popover-trigger.svelte";
-import TooltipContent from "../tooltip/tooltip-content.svelte";
-import TooltipProvider from "../tooltip/tooltip-provider.svelte";
-import Tooltip from "../tooltip/tooltip.svelte";
-import TooltipTrigger from "../tooltip/tooltip-trigger.svelte";
 import { cn } from "../utils.js";
-import { formatOklchColor, parseOklchColor, type OklchColor } from "./oklch-color.js";
+import { colorFormats, formatColor, hsvToRgb, parseColor, rgbToHsv, type ColorFormat, type HsvColor, type RgbColor } from "./color.js";
 
-type Props = {
+export type ColorPickerProps = {
   value: string;
   onchange?: (value: string) => void;
   name?: string;
   id?: string;
   disabled?: boolean;
   required?: boolean;
+  format?: ColorFormat;
+  "aria-label"?: string;
   "aria-describedby"?: string;
   class?: string;
 };
 
-const fallbackColor: Omit<OklchColor, "value"> = { lightness: 62, chroma: 0.14, hue: 250 };
-const huePaletteLightness = 70;
-const huePaletteChroma = 0.4;
-const presetColors = [
-  { label: "ローズ", lightness: 62, chroma: 0.2, hue: 15 },
-  { label: "アンバー", lightness: 72, chroma: 0.16, hue: 75 },
-  { label: "ライム", lightness: 72, chroma: 0.16, hue: 135 },
-  { label: "エメラルド", lightness: 62, chroma: 0.14, hue: 165 },
-  { label: "シアン", lightness: 68, chroma: 0.13, hue: 220 },
-  { label: "ブルー", lightness: 62, chroma: 0.14, hue: 250 },
-  { label: "バイオレット", lightness: 62, chroma: 0.16, hue: 300 },
-  { label: "フューシャ", lightness: 62, chroma: 0.18, hue: 340 },
-] as const satisfies readonly (Omit<OklchColor, "value"> & { label: string })[];
-let {
-  value = $bindable<string>(),
-  onchange,
-  name,
-  id,
-  disabled = false,
-  required = false,
-  "aria-describedby": ariaDescribedBy,
-  class: className,
-}: Props = $props();
-let draftValue = $state(value);
-let draftColor = $state<Omit<OklchColor, "value">>(readColor(value) ?? fallbackColor);
-let errorMessage = $state<string | null>(readError(value));
-let isCopied = $state(false);
-let copyStatusResetTimer: ReturnType<typeof setTimeout> | undefined;
-let initialColor = $state<Omit<OklchColor, "value">>(readColor(value) ?? fallbackColor);
+const fallbackRgb: RgbColor = { r: 25, g: 26, b: 34 };
 
-const inputId = $derived(id ?? "oklch-color");
+let {
+  value = $bindable<string>(), onchange, name, id, disabled = false, required = false, format,
+  "aria-label": ariaLabel = "色を選択", "aria-describedby": ariaDescribedBy, class: className,
+}: ColorPickerProps = $props();
+
+const initial = parseColor(value);
+const initialRgb = initial?.rgb ?? fallbackRgb;
+const initialFormat = untrack(() => format) ?? initial?.format ?? "hex";
+let rgb = $state<RgbColor>(initialRgb);
+let hsv = $state<HsvColor>(rgbToHsv(initialRgb));
+let activeFormat = $state<ColorFormat>(initialFormat);
+let draftValue = $state(value);
+let errorMessage = $state<string | null>(initial ? null : "HEX、RGB、HSL、OKLCHのいずれかで入力してください。");
+let open = $state(false);
+const inputId = $derived(id ?? "color-picker");
 const errorId = $derived(`${inputId}-error`);
-const describedBy = $derived([ariaDescribedBy, errorMessage === null ? undefined : errorId].filter(Boolean).join(" ") || undefined);
-const previewColor = $derived(formatOklchColor(draftColor));
-const submittedValue = $derived(readSubmittedValue(value));
-const lightnessThumbColor = $derived(formatOklchColor({ lightness: draftColor.lightness, chroma: 0, hue: 0 }));
-const lightnessThumbBorderColor = $derived(formatOklchColor({ lightness: 100 - draftColor.lightness, chroma: 0, hue: 0 }));
-const chromaGradient = $derived(createChromaGradient(draftColor.lightness, draftColor.hue));
-const chromaThumbBorderColor = $derived(
-  formatOklchColor({
-    lightness: 100 - draftColor.lightness,
-    chroma: 0.4 - draftColor.chroma,
-    hue: (draftColor.hue + 180) % 360,
-  }),
-);
-const hueGradient = createHueGradient();
-const hueThumbColor = $derived(formatOklchColor({ lightness: huePaletteLightness, chroma: huePaletteChroma, hue: draftColor.hue }));
-const hueThumbBorderColor = $derived(
-  formatOklchColor({ lightness: 100 - huePaletteLightness, chroma: huePaletteChroma, hue: (draftColor.hue + 180) % 360 }),
-);
+const describedBy = $derived([ariaDescribedBy, errorMessage ? errorId : undefined].filter(Boolean).join(" ") || undefined);
+const previewColor = $derived(formatColor(rgb, "hex"));
+const previewForeground = $derived(readableForeground(rgb));
+const hueColor = $derived(`hsl(${hsv.h} 100% 50%)`);
+const squareX = $derived(`${hsv.s}%`);
+const squareY = $derived(`${100 - hsv.v}%`);
+const hueY = $derived(`${(hsv.h / 360) * 100}%`);
 
 $effect(() => {
-  const nextValue = value;
+  const next = value;
+  const forcedFormat = format;
   untrack(() => {
-    const result = parseOklchColor(nextValue);
-    if (!result.ok) {
-      if (draftValue !== nextValue) draftValue = nextValue;
-      errorMessage = result.error;
-      return;
-    }
-    if (draftValue !== result.color.value) initialColor = result.color;
-    if (draftValue !== result.color.value) draftValue = result.color.value;
-    if (!isSameColor(draftColor, result.color)) draftColor = result.color;
+    const parsed = parseColor(next);
+    if (forcedFormat) activeFormat = forcedFormat;
+    else if (parsed) activeFormat = parsed.format;
+    if (next === draftValue) return;
+    draftValue = next;
+    if (!parsed) { errorMessage = "HEX、RGB、HSL、OKLCHのいずれかで入力してください。"; return; }
+    rgb = parsed.rgb;
+    hsv = rgbToHsv(parsed.rgb);
     errorMessage = null;
   });
 });
 
-function updateDraftValue(nextValue: string): void {
-  draftValue = nextValue;
-  const result = parseOklchColor(nextValue);
-  if (!result.ok) {
-    errorMessage = result.error;
-    return;
-  }
-  draftColor = result.color;
+function commitColor(nextHsv: HsvColor): void {
+  hsv = { h: Math.max(0, Math.min(360, nextHsv.h)), s: Math.max(0, Math.min(100, nextHsv.s)), v: Math.max(0, Math.min(100, nextHsv.v)) };
+  rgb = hsvToRgb(hsv);
+  draftValue = formatColor(rgb, activeFormat);
   errorMessage = null;
-  commit(result.color.value);
-}
-
-function updateChannel(channel: keyof Omit<OklchColor, "value">, event: Event): void {
-  const target = event.currentTarget;
-  if (!(target instanceof HTMLInputElement)) return;
-  applyColor({ ...draftColor, [channel]: Number(target.value) });
-}
-
-function updateNumericChannel(channel: keyof Omit<OklchColor, "value">, event: Event): void {
-  const target = event.currentTarget;
-  if (!(target instanceof HTMLInputElement) || target.value === "" || !target.validity.valid) return;
-  applyColor({ ...draftColor, [channel]: Number(target.value) });
-}
-
-function applyColor(nextColor: Omit<OklchColor, "value">): void {
-  draftColor = nextColor;
-  const nextValue = formatOklchColor(nextColor);
-  draftValue = nextValue;
-  errorMessage = null;
-  commit(nextValue);
-}
-
-function selectPreset(preset: Omit<OklchColor, "value">): void {
-  applyColor(preset);
-}
-
-function resetToInitialValue(): void {
-  applyColor(initialColor);
-}
-
-async function copyValue(): Promise<void> {
-  if (submittedValue === "") return;
-  try {
-    await navigator.clipboard.writeText(submittedValue);
-    isCopied = true;
-    if (copyStatusResetTimer !== undefined) clearTimeout(copyStatusResetTimer);
-    copyStatusResetTimer = setTimeout(() => {
-      isCopied = false;
-    }, 1_500);
-  } catch {
-    isCopied = false;
-  }
+  commit(draftValue);
 }
 
 function commit(nextValue: string): void {
@@ -152,227 +78,114 @@ function commit(nextValue: string): void {
   onchange?.(nextValue);
 }
 
-function readColor(source: string): Omit<OklchColor, "value"> | undefined {
-  const result = parseOklchColor(source);
-  return result.ok ? result.color : undefined;
+function updateText(event: Event): void {
+  const target = event.currentTarget;
+  if (!(target instanceof HTMLInputElement)) return;
+  draftValue = target.value;
+  const parsed = parseColor(target.value);
+  if (!parsed) { errorMessage = "HEX、RGB、HSL、OKLCHのいずれかで入力してください。"; return; }
+  rgb = parsed.rgb;
+  hsv = rgbToHsv(parsed.rgb);
+  activeFormat = format ?? parsed.format;
+  errorMessage = null;
+  commit(format ? formatColor(rgb, format) : target.value.trim());
 }
 
-function readError(source: string): string | null {
-  const result = parseOklchColor(source);
-  return result.ok ? null : result.error;
+function cycleFormat(event: MouseEvent): void {
+  event.stopPropagation();
+  if (disabled || format) return;
+  activeFormat = colorFormats[(colorFormats.indexOf(activeFormat) + 1) % colorFormats.length]!;
+  draftValue = formatColor(rgb, activeFormat);
+  commit(draftValue);
 }
 
-function readSubmittedValue(source: string): string {
-  const result = parseOklchColor(source);
-  return result.ok ? result.color.value : "";
+function inputTriggerProps(props: Record<string, unknown>): Record<string, unknown> {
+  const { type: _type, role: _role, "aria-haspopup": _hasPopup, "aria-expanded": _expanded, ...inputProps } = props;
+  return inputProps;
 }
 
-function createHueGradient(): string {
-  const colorStops = Array.from({ length: 7 }, (_, index) => {
-    const hue = index * 60;
-    return formatOklchColor({ lightness: huePaletteLightness, chroma: huePaletteChroma, hue });
+function updateSquare(event: PointerEvent): void {
+  if (disabled) return;
+  const target = event.currentTarget;
+  if (!(target instanceof HTMLElement)) return;
+  target.setPointerCapture?.(event.pointerId);
+  const bounds = target.getBoundingClientRect();
+  commitColor({ ...hsv, s: ((event.clientX - bounds.left) / bounds.width) * 100, v: 100 - ((event.clientY - bounds.top) / bounds.height) * 100 });
+}
+
+function updateHue(event: PointerEvent): void {
+  if (disabled) return;
+  const target = event.currentTarget;
+  if (!(target instanceof HTMLElement)) return;
+  target.setPointerCapture?.(event.pointerId);
+  const bounds = target.getBoundingClientRect();
+  commitColor({ ...hsv, h: ((event.clientY - bounds.top) / bounds.height) * 360 });
+}
+
+function moveSquare(event: KeyboardEvent): void {
+  const amount = event.shiftKey ? 10 : 1;
+  if (event.key === "ArrowLeft") commitColor({ ...hsv, s: hsv.s - amount });
+  else if (event.key === "ArrowRight") commitColor({ ...hsv, s: hsv.s + amount });
+  else if (event.key === "ArrowUp") commitColor({ ...hsv, v: hsv.v + amount });
+  else if (event.key === "ArrowDown") commitColor({ ...hsv, v: hsv.v - amount });
+  else return;
+  event.preventDefault();
+}
+
+function moveHue(event: KeyboardEvent): void {
+  const amount = event.shiftKey ? 10 : 1;
+  if (event.key === "ArrowUp" || event.key === "ArrowRight") commitColor({ ...hsv, h: hsv.h + amount });
+  else if (event.key === "ArrowDown" || event.key === "ArrowLeft") commitColor({ ...hsv, h: hsv.h - amount });
+  else return;
+  event.preventDefault();
+}
+
+function readableForeground(color: RgbColor): "#000000" | "#FFFFFF" {
+  const channels = [color.r, color.g, color.b].map((channel) => {
+    const value = channel / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
   });
-  return `linear-gradient(to right, ${colorStops.join(", ")})`;
-}
-
-function createChromaGradient(lightness: number, hue: number): string {
-  return `linear-gradient(to right, ${formatOklchColor({ lightness, chroma: 0, hue })}, ${formatOklchColor({ lightness, chroma: 0.4, hue })})`;
-}
-
-function isSameColor(left: Omit<OklchColor, "value">, right: Omit<OklchColor, "value">): boolean {
-  return left.lightness === right.lightness && left.chroma === right.chroma && left.hue === right.hue;
+  const luminance = 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!;
+  return luminance > 0.179 ? "#000000" : "#FFFFFF";
 }
 </script>
 
-<div class={cn("inline-flex", className)} data-slot="oklch-color-picker">
-  {#if name !== undefined}<input type="hidden" {name} value={draftValue} />{/if}
-  <TooltipProvider>
-    <Popover>
+<div class={cn("inline-grid w-72 gap-2", className)} data-slot="color-picker">
+  {#if name !== undefined}<input type="hidden" {name} value={errorMessage ? "" : draftValue} {required} />{/if}
+  <Popover bind:open>
+    <div class="relative grid min-w-0" style={`--picker-preview: ${previewColor}; --picker-preview-foreground: ${previewForeground}`}>
       <PopoverTrigger>
         {#snippet child({ props })}
-          <Button {...props} size="icon" class="cursor-pointer rounded-full border-2 border-background p-0 shadow-sm" style={`background-color: ${previewColor};`} aria-label={`テーマカラーを編集: ${value}`} {disabled} />
+          <input {...inputTriggerProps(props)} type="text" id={inputId} class="color-trigger-input" value={draftValue} aria-label={ariaLabel} aria-describedby={describedBy} aria-invalid={errorMessage ? true : undefined} autocomplete="off" spellcheck="false" {disabled} {required} oninput={updateText} />
         {/snippet}
       </PopoverTrigger>
-      <PopoverContent align="start" class="w-80 p-4" onOpenAutoFocus={(event) => event.preventDefault()}>
-      <div class="grid gap-4">
-        <div class="flex items-center gap-3">
-          <div class="size-14 shrink-0 rounded-xl border border-black/10 shadow-sm" style:background-color={previewColor} aria-label="選択中の色" role="img"></div>
-          <div class="min-w-0"><div class="flex items-center gap-1"><input id={inputId} class="oklch-inline-value min-w-0 flex-1 truncate p-0 font-mono text-xs text-muted-foreground placeholder:text-muted-foreground aria-invalid:text-destructive disabled:cursor-not-allowed disabled:opacity-50" aria-label="OKLCH値" placeholder="oklch(62% 0.14 250)" value={draftValue} aria-describedby={describedBy} aria-invalid={errorMessage === null ? undefined : true} {disabled} {required} oninput={(event) => updateDraftValue(event.currentTarget.value)} /><Tooltip><TooltipTrigger>{#snippet child({ props })}<Button {...props} type="button" size="icon" variant="ghost" class="size-5 shrink-0 cursor-pointer rounded-sm" aria-label={isCopied ? "OKLCH値をコピーしました" : "OKLCH値をコピー"} disabled={disabled || submittedValue === ""} onclick={copyValue}>{#if isCopied}<CheckIcon class="size-3" />{:else}<CopyIcon class="size-3" />{/if}</Button>{/snippet}</TooltipTrigger><TooltipContent>{isCopied ? "コピーしました" : "コピー"}</TooltipContent></Tooltip><Tooltip><TooltipTrigger>{#snippet child({ props })}<Button {...props} type="button" size="icon" variant="ghost" class="size-5 shrink-0 cursor-pointer rounded-sm" aria-label="初期値に戻す" disabled={disabled || isSameColor(draftColor, initialColor)} onclick={resetToInitialValue}><RotateCcwIcon class="size-3" /></Button>{/snippet}</TooltipTrigger><TooltipContent>初期値に戻す</TooltipContent></Tooltip></div></div>
-        </div>
-        <div class="grid gap-2">
-          <div class="flex flex-wrap gap-2" role="group" aria-label="テーマカラープリセット">
-            {#each presetColors as preset}
-              <Tooltip><TooltipTrigger>{#snippet child({ props })}<Button {...props} type="button" size="icon" variant="outline" class={cn("size-7 cursor-pointer rounded-full border-2 p-0 shadow-sm", isSameColor(draftColor, preset) && "border-foreground")} style={`background-color: ${formatOklchColor(preset)};`} aria-label={`プリセット: ${preset.label}`} aria-pressed={isSameColor(draftColor, preset)} {disabled} onclick={() => selectPreset(preset)}></Button>{/snippet}</TooltipTrigger><TooltipContent>{preset.label}</TooltipContent></Tooltip>
-            {/each}
-          </div>
-        </div>
-        <div class="grid gap-2">
-          <div class="grid gap-1 text-sm"><div class="flex justify-between"><label for={`${inputId}-lightness`}>明度</label><input id={`${inputId}-lightness-value`} class="oklch-channel-value w-12" aria-label="明度の数値" type="number" min="0" max="100" step="1" value={draftColor.lightness} {disabled} oninput={(event) => updateNumericChannel("lightness", event)} onchange={(event) => updateNumericChannel("lightness", event)} /></div><input id={`${inputId}-lightness`} class="oklch-lightness-slider" aria-label="明度" type="range" min="0" max="100" step="1" value={draftColor.lightness} style={`--oklch-lightness-thumb-color: ${lightnessThumbColor}; --oklch-lightness-thumb-border-color: ${lightnessThumbBorderColor};`} {disabled} oninput={(event) => updateChannel("lightness", event)} onchange={(event) => updateChannel("lightness", event)} /></div>
-          <div class="grid gap-1 text-sm"><div class="flex justify-between"><label for={`${inputId}-chroma`}>彩度</label><input id={`${inputId}-chroma-value`} class="oklch-channel-value w-12" aria-label="彩度の数値" type="number" min="0" max="0.4" step="0.01" value={draftColor.chroma} {disabled} oninput={(event) => updateNumericChannel("chroma", event)} onchange={(event) => updateNumericChannel("chroma", event)} /></div><input id={`${inputId}-chroma`} class="oklch-chroma-slider" aria-label="彩度" type="range" min="0" max="0.4" step="0.01" value={draftColor.chroma} style={`--oklch-chroma-gradient: ${chromaGradient}; --oklch-chroma-thumb-color: ${previewColor}; --oklch-chroma-thumb-border-color: ${chromaThumbBorderColor};`} {disabled} oninput={(event) => updateChannel("chroma", event)} onchange={(event) => updateChannel("chroma", event)} /></div>
-          <div class="grid gap-1 text-sm"><div class="flex justify-between"><label for={`${inputId}-hue`}>色相</label><input id={`${inputId}-hue-value`} class="oklch-channel-value w-12" aria-label="色相の数値" type="number" min="0" max="360" step="1" value={draftColor.hue} {disabled} oninput={(event) => updateNumericChannel("hue", event)} onchange={(event) => updateNumericChannel("hue", event)} /></div><input id={`${inputId}-hue`} class="oklch-hue-slider" aria-label="色相" type="range" min="0" max="360" step="1" value={draftColor.hue} style={`--oklch-hue-gradient: ${hueGradient}; --oklch-hue-thumb-color: ${hueThumbColor}; --oklch-hue-thumb-border-color: ${hueThumbBorderColor};`} {disabled} oninput={(event) => updateChannel("hue", event)} onchange={(event) => updateChannel("hue", event)} /></div>
-        </div>
-        {#if errorMessage !== null}<p id={errorId} class="text-sm text-destructive" role="alert">{errorMessage}</p>{/if}
+      <PipetteIcon class="color-preview-icon pointer-events-none absolute top-3 left-2.5 z-10 size-4" aria-hidden="true" />
+      <Button type="button" variant="ghost" size="icon" icon={ChevronsUpDownIcon} class="color-preview-control absolute top-1 right-1 z-10 size-8" aria-label={`色の表示形式を変更。現在は${activeFormat.toUpperCase()}`} title={`表示形式: ${activeFormat.toUpperCase()}`} disabled={disabled || Boolean(format)} onclick={cycleFormat} />
+    </div>
+    <PopoverContent align="start" sideOffset={8} class="color-picker-popover w-[min(22rem,calc(100vw-2rem))] p-3" onOpenAutoFocus={(event) => event.preventDefault()}>
+      <div class="flex gap-3">
+        <div class="color-square" style={`--picker-hue: ${hueColor}; --picker-x: ${squareX}; --picker-y: ${squareY}`} role="slider" tabindex={disabled ? undefined : 0} aria-label="彩度と明るさ" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(hsv.s)} aria-valuetext={`彩度 ${Math.round(hsv.s)}%、明るさ ${Math.round(hsv.v)}%`} aria-disabled={disabled} onpointerdown={updateSquare} onpointermove={(event) => { if (event.buttons === 1) updateSquare(event); }} onkeydown={moveSquare}><span class="color-square-thumb" aria-hidden="true"></span></div>
+        <div class="hue-strip" style={`--picker-hue-y: ${hueY}`} role="slider" tabindex={disabled ? undefined : 0} aria-label="色相" aria-valuemin="0" aria-valuemax="360" aria-valuenow={Math.round(hsv.h)} aria-disabled={disabled} onpointerdown={updateHue} onpointermove={(event) => { if (event.buttons === 1) updateHue(event); }} onkeydown={moveHue}><span class="hue-thumb" aria-hidden="true"></span></div>
       </div>
-      </PopoverContent>
-    </Popover>
-  </TooltipProvider>
+    </PopoverContent>
+  </Popover>
+  {#if errorMessage}<p id={errorId} class="text-xs text-destructive" role="alert">{errorMessage}</p>{/if}
 </div>
 
 <style>
-  .oklch-inline-value {
-    appearance: none;
-    border: 0;
-    border-radius: 0.125rem;
-    background: transparent;
-    outline: none;
-    padding-inline: 0.25rem;
-  }
-
-  .oklch-inline-value:focus-visible {
-    background: var(--muted);
-    box-shadow: 0 0 0 2px color-mix(in oklch, var(--ring) 50%, transparent);
-  }
-
-  .oklch-channel-value {
-    appearance: textfield;
-    border: 0;
-    border-radius: 0.125rem;
-    background: transparent;
-    padding-inline: 0.25rem;
-    text-align: right;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--muted-foreground);
-    outline: none;
-  }
-
-  .oklch-channel-value::-webkit-inner-spin-button,
-  .oklch-channel-value::-webkit-outer-spin-button {
-    appearance: none;
-  }
-
-  .oklch-channel-value:focus-visible {
-    background: var(--muted);
-    box-shadow: 0 0 0 2px color-mix(in oklch, var(--ring) 50%, transparent);
-  }
-
-  .oklch-lightness-slider {
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .oklch-lightness-slider::-webkit-slider-runnable-track {
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    background: linear-gradient(to right, #000, #fff);
-  }
-
-  .oklch-lightness-slider::-moz-range-track {
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    background: linear-gradient(to right, #000, #fff);
-  }
-
-  .oklch-lightness-slider::-webkit-slider-thumb {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-top: -0.4375rem;
-    appearance: none;
-    border: 2px solid var(--oklch-lightness-thumb-border-color);
-    border-radius: 9999px;
-    background: var(--oklch-lightness-thumb-color);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
-  }
-
-  .oklch-lightness-slider::-moz-range-thumb {
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--oklch-lightness-thumb-border-color);
-    border-radius: 9999px;
-    background: var(--oklch-lightness-thumb-color);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
-  }
-
-  .oklch-chroma-slider {
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .oklch-chroma-slider::-webkit-slider-runnable-track {
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    background: var(--oklch-chroma-gradient);
-  }
-
-  .oklch-chroma-slider::-moz-range-track {
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    background: var(--oklch-chroma-gradient);
-  }
-
-  .oklch-chroma-slider::-webkit-slider-thumb {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-top: -0.4375rem;
-    appearance: none;
-    border: 2px solid var(--oklch-chroma-thumb-border-color);
-    border-radius: 9999px;
-    background: var(--oklch-chroma-thumb-color);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
-  }
-
-  .oklch-chroma-slider::-moz-range-thumb {
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--oklch-chroma-thumb-border-color);
-    border-radius: 9999px;
-    background: var(--oklch-chroma-thumb-color);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
-  }
-
-  .oklch-hue-slider {
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .oklch-hue-slider::-webkit-slider-runnable-track {
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    background: var(--oklch-hue-gradient);
-  }
-
-  .oklch-hue-slider::-moz-range-track {
-    height: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    background: var(--oklch-hue-gradient);
-  }
-
-  .oklch-hue-slider::-webkit-slider-thumb {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-top: -0.4375rem;
-    appearance: none;
-    border: 2px solid var(--oklch-hue-thumb-border-color);
-    border-radius: 9999px;
-    background: var(--oklch-hue-thumb-color);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
-  }
-
-  .oklch-hue-slider::-moz-range-thumb {
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--oklch-hue-thumb-border-color);
-    border-radius: 9999px;
-    background: var(--oklch-hue-thumb-color);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
-  }
+  .color-trigger-input { height: 2.5rem; width: 100%; min-width: 0; border: 1px solid color-mix(in oklch, var(--picker-preview-foreground) 22%, var(--picker-preview)); border-radius: 0.5rem; background: var(--picker-preview); padding: 0.5rem 2.75rem 0.5rem 2rem; color: var(--picker-preview-foreground); font-family: var(--font-mono); font-size: var(--text-sm); outline: none; }
+  .color-trigger-input:hover { background: color-mix(in oklch, var(--picker-preview) 92%, var(--picker-preview-foreground)); }
+  .color-trigger-input::selection { background: color-mix(in oklch, var(--picker-preview-foreground) 25%, transparent); }
+  .color-trigger-input:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); }
+  .color-trigger-input[aria-invalid="true"] { border-color: var(--destructive); }
+  .color-trigger-input:disabled { cursor: not-allowed; opacity: 0.5; }
+  :global(.color-preview-icon) { color: var(--picker-preview-foreground); }
+  :global(.color-preview-control) { color: var(--picker-preview-foreground); }
+  :global(.color-preview-control:hover) { background: color-mix(in oklch, var(--picker-preview-foreground) 12%, transparent); color: var(--picker-preview-foreground); }
+  .color-picker-popover { gap: 0.75rem; }
+  .color-square { position: relative; min-width: 0; flex: 1; aspect-ratio: 1.18; cursor: crosshair; touch-action: none; overflow: hidden; border-radius: 0.5rem; background: linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, transparent), var(--picker-hue); outline: none; }
+  .color-square:focus-visible, .hue-strip:focus-visible { box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); }
+  .color-square-thumb { position: absolute; left: var(--picker-x); top: var(--picker-y); width: 1.25rem; height: 1.25rem; border: 2px solid white; border-radius: 9999px; box-shadow: 0 1px 3px rgb(0 0 0 / 60%), inset 0 0 0 1px rgb(0 0 0 / 20%); transform: translate(-50%, -50%); }
+  .hue-strip { position: relative; width: 0.875rem; flex: none; cursor: ns-resize; touch-action: none; border-radius: 9999px; background: linear-gradient(to bottom, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00); outline: none; }
+  .hue-thumb { position: absolute; left: 50%; top: var(--picker-hue-y); width: 1.4rem; height: 0.45rem; border: 2px solid white; border-radius: 9999px; background: transparent; box-shadow: 0 1px 3px rgb(0 0 0 / 60%); transform: translate(-50%, -50%); }
 </style>

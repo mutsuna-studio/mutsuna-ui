@@ -1,9 +1,41 @@
-export type ThemeTemplateKey = "orange" | "blue" | "green" | "rose" | "neutral";
+export const themeAppearanceVariableNames = [
+  "--background",
+  "--foreground",
+  "--card",
+  "--card-foreground",
+  "--popover",
+  "--popover-foreground",
+  "--secondary",
+  "--secondary-foreground",
+  "--muted",
+  "--muted-foreground",
+  "--accent",
+  "--accent-foreground",
+  "--border",
+  "--input",
+  "--sidebar",
+  "--sidebar-foreground",
+  "--sidebar-accent",
+  "--sidebar-accent-foreground",
+  "--sidebar-border",
+  "--sidebar-ring",
+  "--radius",
+  "--theme-font-ui",
+  "--theme-font-body",
+  "--theme-font-heading",
+  "--theme-font-mono",
+] as const;
+
+export type ThemeAppearanceVariableName = (typeof themeAppearanceVariableNames)[number];
+export type ThemeAppearance = Readonly<Partial<Record<ThemeAppearanceVariableName | "--primary" | "--primary-foreground" | "--sidebar-primary" | "--sidebar-primary-foreground" | "--ring", string>>>;
+
+export type ThemeTemplateKey = "orange" | "blue" | "green" | "rose" | "neutral" | "amber" | "lime" | "teal" | "cyan" | "indigo" | "violet" | "fuchsia" | "slate" | "svelte" | "claude" | "github" | "linear" | "notion";
 
 export type ThemeSource = ThemeTemplateKey | "custom";
 
 export type Theme = {
   readonly source: ThemeSource;
+  readonly appearance?: ThemeAppearance;
   readonly primary: string;
   readonly primaryForeground: string;
   readonly sidebarPrimary: string;
@@ -29,7 +61,7 @@ export type ThemeTemplate = Theme & {
   readonly previewHex: string;
 };
 
-export type ThemeCssVariableName = "--primary" | "--primary-foreground" | "--ring" | "--sidebar-primary" | "--sidebar-primary-foreground";
+export type ThemeCssVariableName = ThemeAppearanceVariableName | "--primary" | "--primary-foreground" | "--ring" | "--sidebar-primary" | "--sidebar-primary-foreground";
 
 export type ThemeCssVariable = readonly [name: ThemeCssVariableName, value: string | null];
 
@@ -41,14 +73,197 @@ const absoluteLightForeground = "oklch(1 0 0)";
 const absoluteDarkForeground = "oklch(0 0 0)";
 const minimumTextContrastRatio = 4.5;
 
-export const defaultTheme: Theme = createTheme("orange", "oklch(0.555 0.163 48.998)");
+// Palette and font roles adapted from https://svelte.dev (September 2026).
+const svelteAppearance: ThemeAppearance = {
+  "--primary": "light-dark(#d43008, #b32d00)",
+  "--primary-foreground": "#fff",
+  "--sidebar-primary": "light-dark(#d43008, #b32d00)",
+  "--sidebar-primary-foreground": "#fff",
+  "--ring": "light-dark(#d43008, #f96743)",
+  "--background": "light-dark(white, hsl(220 10% 12%))",
+  "--foreground": "light-dark(#141414, hsl(220 2% 90%))",
+  "--card": "light-dark(#fdfdfd, hsl(220 12% 14%))",
+  "--card-foreground": "light-dark(#262626, hsl(220 3% 80%))",
+  "--popover": "light-dark(#fff, hsl(220 14% 16%))",
+  "--popover-foreground": "light-dark(#141414, hsl(220 2% 90%))",
+  "--secondary": "light-dark(#f2f2f2, hsl(220 15% 21%))",
+  "--secondary-foreground": "light-dark(#262626, hsl(220 3% 80%))",
+  "--muted": "light-dark(#fafafa, hsl(220 14% 16%))",
+  "--muted-foreground": "light-dark(#666, hsl(220 5% 65%))",
+  "--accent": "light-dark(#f2f2f2, hsl(220 15% 21%))",
+  "--accent-foreground": "light-dark(#d43008, #f96743)",
+  "--border": "light-dark(#ebebeb, hsl(220 15% 22%))",
+  "--input": "light-dark(#ebebeb, hsl(220 15% 22%))",
+  "--sidebar": "light-dark(#fdfdfd, hsl(220 12% 14%))",
+  "--sidebar-foreground": "light-dark(#262626, hsl(220 3% 80%))",
+  "--sidebar-accent": "light-dark(#f2f2f2, hsl(220 15% 21%))",
+  "--sidebar-accent-foreground": "light-dark(#d43008, #f96743)",
+  "--sidebar-border": "light-dark(#ebebeb, hsl(220 15% 22%))",
+  "--sidebar-ring": "light-dark(#d43008, #f96743)",
+  "--radius": "0.25rem",
+  "--theme-font-ui": '"Fira Sans", -apple-system, sans-serif',
+  "--theme-font-body": '"EB Garamond", Georgia, serif',
+  "--theme-font-heading": '"DM Serif Display", Georgia, serif',
+  "--theme-font-mono": '"Fira Mono", monospace',
+};
+
+// Based on claude.ai app v2 tokens and the official Chat tutorial (September 2026).
+// Anthropic's proprietary fonts are not redistributed; use OFL font substitutes.
+const claudeAppearance: ThemeAppearance = {
+  "--primary": "light-dark(#d97757, #c46849)",
+  "--primary-foreground": "light-dark(#09090b, #09090b)",
+  "--sidebar-primary": "light-dark(#e7e6e1, #2c2c2a)",
+  "--sidebar-primary-foreground": "light-dark(#131313, #f9f9f7)",
+  "--ring": "light-dark(#c46849, #d97757)",
+  "--background": "light-dark(#f9f9f7, #151515)",
+  "--foreground": "light-dark(#131313, #f9f9f7)",
+  "--card": "light-dark(#ffffff, #20201f)",
+  "--card-foreground": "light-dark(#383835, #f9f9f7)",
+  "--popover": "light-dark(#ffffff, #20201f)",
+  "--popover-foreground": "light-dark(#131313, #f9f9f7)",
+  "--secondary": "light-dark(#f0efec, #2c2c2a)",
+  "--secondary-foreground": "light-dark(#383835, #f9f9f7)",
+  "--muted": "light-dark(#f3f3f0, #20201f)",
+  "--muted-foreground": "light-dark(#6d6b67, #97958d)",
+  "--accent": "light-dark(#f0efec, #2c2c2a)",
+  "--accent-foreground": "light-dark(#131313, #f9f9f7)",
+  "--border": "light-dark(#e5e4df, #353533)",
+  "--input": "light-dark(#d9d8d2, #444440)",
+  "--sidebar": "light-dark(#f3f3f0, #111111)",
+  "--sidebar-foreground": "light-dark(#383835, #c3c2b7)",
+  "--sidebar-accent": "light-dark(#e7e6e1, #2c2c2a)",
+  "--sidebar-accent-foreground": "light-dark(#131313, #f9f9f7)",
+  "--sidebar-border": "light-dark(#e5e4df, #353533)",
+  "--sidebar-ring": "light-dark(#c46849, #d97757)",
+  "--radius": "0.75rem",
+  "--theme-font-ui": '"Inter Variable", system-ui, sans-serif',
+  "--theme-font-heading": 'Georgia, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif',
+  "--theme-font-body": '"Inter Variable", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif',
+  "--theme-font-mono": '"Fira Mono", ui-monospace, monospace',
+};
+
+// Non-official app-inspired palettes. Sources and approximation scope are in README.md.
+const githubAppearance: ThemeAppearance = {
+  "--primary": "light-dark(#1f883d, #238636)",
+  "--primary-foreground": "light-dark(#ffffff, #ffffff)",
+  "--ring": "light-dark(#0969da, #58a6ff)",
+  "--background": "light-dark(#ffffff, #0d1117)",
+  "--foreground": "light-dark(#1f2328, #f0f6fc)",
+  "--card": "light-dark(#ffffff, #161b22)",
+  "--card-foreground": "light-dark(#1f2328, #f0f6fc)",
+  "--popover": "light-dark(#ffffff, #161b22)",
+  "--popover-foreground": "light-dark(#1f2328, #f0f6fc)",
+  "--secondary": "light-dark(#f6f8fa, #161b22)",
+  "--secondary-foreground": "light-dark(#1f2328, #f0f6fc)",
+  "--muted": "light-dark(#f6f8fa, #161b22)",
+  "--muted-foreground": "light-dark(#59636e, #9198a1)",
+  "--accent": "light-dark(#ddf4ff, #172d43)",
+  "--accent-foreground": "light-dark(#0550ae, #79c0ff)",
+  "--border": "light-dark(#d1d9e0, #3d444d)",
+  "--input": "light-dark(#d1d9e0, #3d444d)",
+  "--sidebar": "light-dark(#f6f8fa, #161b22)",
+  "--sidebar-foreground": "light-dark(#1f2328, #f0f6fc)",
+  "--sidebar-primary": "light-dark(#ddf4ff, #172d43)",
+  "--sidebar-primary-foreground": "light-dark(#0550ae, #79c0ff)",
+  "--sidebar-accent": "light-dark(#ddf4ff, #172d43)",
+  "--sidebar-accent-foreground": "light-dark(#0550ae, #79c0ff)",
+  "--sidebar-border": "light-dark(#d1d9e0, #3d444d)",
+  "--sidebar-ring": "light-dark(#0969da, #58a6ff)",
+  "--radius": "0.375rem",
+  "--theme-font-ui": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, sans-serif",
+  "--theme-font-body": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, sans-serif",
+  "--theme-font-heading": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, sans-serif",
+  "--theme-font-mono": 'ui-monospace, "SFMono-Regular", Consolas, monospace',
+};
+
+const linearAppearance: ThemeAppearance = {
+  "--primary": "light-dark(#5e6ad2, #747fea)",
+  "--primary-foreground": "light-dark(#ffffff, #09090b)",
+  "--ring": "light-dark(#5e6ad2, #919bff)",
+  "--background": "light-dark(#ffffff, #17181c)",
+  "--foreground": "light-dark(#202124, #eeeff2)",
+  "--card": "light-dark(#ffffff, #202127)",
+  "--card-foreground": "light-dark(#202124, #eeeff2)",
+  "--popover": "light-dark(#ffffff, #202127)",
+  "--popover-foreground": "light-dark(#202124, #eeeff2)",
+  "--secondary": "light-dark(#f5f5f7, #202127)",
+  "--secondary-foreground": "light-dark(#202124, #eeeff2)",
+  "--muted": "light-dark(#f5f5f7, #202127)",
+  "--muted-foreground": "light-dark(#64656f, #a1a3ad)",
+  "--accent": "light-dark(#eeeef9, #2c2d45)",
+  "--accent-foreground": "light-dark(#4e57ba, #b5bcff)",
+  "--border": "light-dark(#dedee5, #34353f)",
+  "--input": "light-dark(#dedee5, #34353f)",
+  "--sidebar": "light-dark(#f5f5f7, #202127)",
+  "--sidebar-foreground": "light-dark(#202124, #eeeff2)",
+  "--sidebar-primary": "light-dark(#eeeef9, #2c2d45)",
+  "--sidebar-primary-foreground": "light-dark(#4e57ba, #b5bcff)",
+  "--sidebar-accent": "light-dark(#eeeef9, #2c2d45)",
+  "--sidebar-accent-foreground": "light-dark(#4e57ba, #b5bcff)",
+  "--sidebar-border": "light-dark(#dedee5, #34353f)",
+  "--sidebar-ring": "light-dark(#5e6ad2, #919bff)",
+  "--radius": "0.375rem",
+  "--theme-font-ui": "\"Inter Variable\", -apple-system, \"Segoe UI\", sans-serif",
+  "--theme-font-body": "\"Inter Variable\", -apple-system, \"Segoe UI\", sans-serif",
+  "--theme-font-heading": "\"Inter Variable\", -apple-system, \"Segoe UI\", sans-serif",
+  "--theme-font-mono": 'ui-monospace, "SFMono-Regular", Consolas, monospace',
+};
+
+const notionAppearance: ThemeAppearance = {
+  "--primary": "light-dark(#2383e2, #529cca)",
+  "--primary-foreground": "light-dark(#09090b, #09090b)",
+  "--ring": "light-dark(#2383e2, #529cca)",
+  "--background": "light-dark(#ffffff, #191919)",
+  "--foreground": "light-dark(#37352f, #ebebeb)",
+  "--card": "light-dark(#ffffff, #202020)",
+  "--card-foreground": "light-dark(#37352f, #ebebeb)",
+  "--popover": "light-dark(#ffffff, #202020)",
+  "--popover-foreground": "light-dark(#37352f, #ebebeb)",
+  "--secondary": "light-dark(#f7f7f5, #202020)",
+  "--secondary-foreground": "light-dark(#37352f, #ebebeb)",
+  "--muted": "light-dark(#f7f7f5, #202020)",
+  "--muted-foreground": "light-dark(#686761, #a5a5a2)",
+  "--accent": "light-dark(#efefed, #2c2c2c)",
+  "--accent-foreground": "light-dark(#37352f, #ebebeb)",
+  "--border": "light-dark(#e3e3e0, #373737)",
+  "--input": "light-dark(#e3e3e0, #373737)",
+  "--sidebar": "light-dark(#f7f7f5, #202020)",
+  "--sidebar-foreground": "light-dark(#37352f, #ebebeb)",
+  "--sidebar-primary": "light-dark(#efefed, #2c2c2c)",
+  "--sidebar-primary-foreground": "light-dark(#37352f, #ebebeb)",
+  "--sidebar-accent": "light-dark(#efefed, #2c2c2c)",
+  "--sidebar-accent-foreground": "light-dark(#37352f, #ebebeb)",
+  "--sidebar-border": "light-dark(#e3e3e0, #373737)",
+  "--sidebar-ring": "light-dark(#2383e2, #529cca)",
+  "--radius": "0.25rem",
+  "--theme-font-ui": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif",
+  "--theme-font-body": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif",
+  "--theme-font-heading": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif",
+  "--theme-font-mono": 'ui-monospace, "SFMono-Regular", Consolas, monospace',
+};
+
+
+export const defaultTheme: Theme = createTheme("orange", "oklch(0.575 0.2 45)");
 
 export const themeTemplates: readonly ThemeTemplate[] = [
-  createThemeTemplate("orange", "オレンジ", "現在の標準色", "oklch(0.555 0.163 48.998)"),
+  createThemeTemplate("orange", "オレンジ", "現在の標準色", "oklch(0.575 0.2 45)"),
   createThemeTemplate("blue", "ブルー", "落ち着いた運用色", "oklch(0.546 0.175 252.58)"),
   createThemeTemplate("green", "グリーン", "状態確認に馴染む色", "oklch(0.541 0.145 158.64)"),
   createThemeTemplate("rose", "ローズ", "柔らかい強調色", "oklch(0.586 0.187 12.73)"),
   createThemeTemplate("neutral", "ニュートラル", "控えめな管理画面色", "oklch(0.442 0.017 285.786)"),
+  createThemeTemplate("amber", "アンバー", "温かみのある黄金色", "oklch(0.795 0.184 86.047)"),
+  createThemeTemplate("lime", "ライム", "軽やかな黄緑色", "oklch(0.648 0.16 125)"),
+  createThemeTemplate("teal", "ティール", "穏やかな青緑色", "oklch(0.52 0.09 185)"),
+  createThemeTemplate("cyan", "シアン", "澄んだ印象の水色", "oklch(0.715 0.143 215.221)"),
+  createThemeTemplate("indigo", "インディゴ", "深みのある藍色", "oklch(0.48 0.18 275)"),
+  createThemeTemplate("violet", "バイオレット", "上品な紫色", "oklch(0.54 0.19 300)"),
+  createThemeTemplate("fuchsia", "フューシャ", "華やかな赤紫色", "oklch(0.56 0.19 335)"),
+  createThemeTemplate("slate", "スレート", "青みを帯びた落ち着いた灰色", "oklch(0.446 0.043 257.281)"),
+  { ...createThemeTemplate("svelte", "Svelte", "Svelteの配色とタイポグラフィ", "oklch(0.568 0.204 33.189)"), appearance: svelteAppearance, previewHex: "#d43008" },
+  { ...createThemeTemplate("claude", "Claude-inspired", "チャット向けの穏やかな背景と控えめなクレイ色", "oklch(0.672 0.131 38.756)"), appearance: claudeAppearance, previewHex: "#d97757" },
+  { ...createThemeTemplate("github", "GitHub-inspired", "明確な境界線と緑の主要操作", "oklch(0.552 0.145 148.215)"), appearance: githubAppearance, previewHex: "#1f883d" },
+  { ...createThemeTemplate("linear", "Linear-inspired", "静かな背景階調と青紫のアクセント", "oklch(0.567 0.159 275.206)"), appearance: linearAppearance, previewHex: "#5e6ad2" },
+  { ...createThemeTemplate("notion", "Notion-inspired", "白い文書面と控えめな青い操作色", "oklch(0.606 0.167 252.702)"), appearance: notionAppearance, previewHex: "#2383e2" },
 ];
 
 export function createTheme(source: ThemeSource, primary: string): Theme {
@@ -73,11 +288,12 @@ export function findThemeTemplate(key: string): ThemeTemplate | null {
 
 export function themeToCssVariables(theme: Theme | null | undefined): readonly ThemeCssVariable[] {
   return [
-    ["--primary", theme?.primary ?? null],
-    ["--primary-foreground", theme?.primaryForeground ?? null],
-    ["--sidebar-primary", theme?.sidebarPrimary ?? null],
-    ["--sidebar-primary-foreground", theme?.sidebarPrimaryForeground ?? null],
-    ["--ring", theme?.primary ?? null],
+    ["--primary", theme?.appearance?.["--primary"] ?? theme?.primary ?? null],
+    ["--primary-foreground", theme?.appearance?.["--primary-foreground"] ?? theme?.primaryForeground ?? null],
+    ["--sidebar-primary", theme?.appearance?.["--sidebar-primary"] ?? theme?.sidebarPrimary ?? null],
+    ["--sidebar-primary-foreground", theme?.appearance?.["--sidebar-primary-foreground"] ?? theme?.sidebarPrimaryForeground ?? null],
+    ["--ring", theme?.appearance?.["--ring"] ?? theme?.primary ?? null],
+    ...themeAppearanceVariableNames.map((name): ThemeCssVariable => [name, theme?.appearance?.[name] ?? null]),
   ];
 }
 

@@ -21,7 +21,8 @@
   "files": [
     "dist",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "tooling"
   ],
   "sideEffects": [
     "**/*.css"
@@ -279,6 +280,16 @@
       "types": "./dist/oklch-color-picker/*.d.ts",
       "svelte": "./dist/oklch-color-picker/*",
       "default": "./dist/oklch-color-picker/*"
+    },
+    "./color-picker": {
+      "types": "./dist/color-picker/index.d.ts",
+      "svelte": "./dist/color-picker/index.js",
+      "default": "./dist/color-picker/index.js"
+    },
+    "./color-picker/*": {
+      "types": "./dist/color-picker/*.d.ts",
+      "svelte": "./dist/color-picker/*",
+      "default": "./dist/color-picker/*"
     },
     "./markdown": {
       "types": "./dist/markdown/index.d.ts",
@@ -634,6 +645,10 @@
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource/dm-serif-display": "^5.3.0",
+    "@fontsource/eb-garamond": "^5.3.0",
+    "@fontsource/fira-mono": "^5.3.0",
+    "@fontsource/fira-sans": "^5.3.0",
     "@internationalized/date": "^3.12.1",
     "@lucide/svelte": "^1.17.0",
     "@milkdown/kit": "^7.21.2",
@@ -684,5 +699,8 @@
     "@sveltejs/kit": {
       "optional": true
     }
+  },
+  "bin": {
+    "mutsuna-ui-lint": "./tooling/lint.mjs"
   }
 }

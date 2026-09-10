@@ -31,12 +31,8 @@ $effect(() => {
 </script>
 
 <div
-	class="contents"
-	style:--primary={theme?.primary}
-	style:--primary-foreground={theme?.primaryForeground}
-	style:--sidebar-primary={theme?.sidebarPrimary}
-	style:--sidebar-primary-foreground={theme?.sidebarPrimaryForeground}
-	style:--ring={theme?.primary}
+ class="contents"
+ style={cssVariables.filter(([, value]) => value !== null).map(([name, value]) => `${name}: ${value}`).join(";")}
 >
-	{@render children?.()}
+ {@render children?.()}
 </div>
