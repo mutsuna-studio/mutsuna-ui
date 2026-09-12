@@ -133,7 +133,7 @@ export {
   DropdownMenuTrigger,
 } from "./dropdown-menu/index.js";
 export { DurationSelect } from "./duration-select/index.js";
-export { EditableText } from "./editable-text/index.js";
+export { EditableText, type EditableTextProps, type EditableTextTriggerProps, type EditableTextCommit, type EditableTextCancel } from "./editable-text/index.js";
 export {
   Empty,
   EmptyContent,

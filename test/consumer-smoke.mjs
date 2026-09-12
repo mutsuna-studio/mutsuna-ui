@@ -77,6 +77,7 @@ try {
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
 import { DatePicker } from "@mutsuna/ui/date-picker";
+import { EditableText, type EditableTextCommit, type EditableTextProps } from "@mutsuna/ui/editable-text";
 import { Input } from "@mutsuna/ui/input";
 import { CycleSelect } from "@mutsuna/ui/cycle-select";
 import { ColorPicker } from "@mutsuna/ui/color-picker";
@@ -104,6 +105,7 @@ import { ThemeProvider, findThemeTemplate, type ThemeTemplateKey } from "@mutsun
 import { cn } from "@mutsuna/ui/utils";
 import { CalendarDate } from "@internationalized/date";
 
+const editableProps: EditableTextProps = { editOn: "doubleClick", onCommit: (_detail: EditableTextCommit) => undefined };
 let fields = $state<EditorField[]>([
   { kind: "fixed", key: "name", label: "Name", type: "text", required: true, enabled: true, options: [] },
 ]);
@@ -125,6 +127,9 @@ let endTime = $state("10:00");
 const actionToast = readFormActionToast({ status: "success", message: "Shared form action" });
 </script>
 
+<EditableText {...editableProps} value="Editable label">
+  {#snippet trigger({ value, props })}<Button {...props}>{value}</Button>{/snippet}
+</EditableText>
 <DatePicker precision="month" ariaLabel="対象年月" value="2026-09" />
 <Input label="表示名" name="displayName" />
 <CycleSelect ariaLabel="表示" options={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />

@@ -8,7 +8,7 @@ let { ref = $bindable(null), class: className, ...restProps }: CalendarPrimitive
 <CalendarPrimitive.Header
 	bind:ref
 	class={cn(
-		"flex h-(--cell-size) w-full items-center justify-center gap-1.5 text-sm font-medium",
+		"flex min-h-(--cell-size) w-full items-center justify-center gap-1.5 text-sm font-medium",
 		className
 	)}
 	{...restProps}

@@ -437,3 +437,35 @@ other dates. Use `showToday={false}` to hide it or `todayLabel` to change its te
 `pnpm lint:ui`は、公開エントリ`@mutsuna/ui`・`@mutsuna/ui/button`からimportされたButton内のLucideアイコンとインラインSVGを検出し、ファイル・行・列と修正方法を出力して終了コード1を返します。別名import、namespace import、条件分岐やラッパー要素内も対象です。`loading`の有無にかかわらず同じ用法を要求します。自動修正はしません。
 
 引数はファイルまたはディレクトリを複数指定できます。依存・ビルド出力ディレクトリとシンボリックリンクは走査しません。独自ラッパーや再export経由のButton、独自アイコン、別のsnippetから動的に渡す内容は検出対象外です。CLIの導入は任意で、既存の描画やchildren APIは変更しません。
+
+
+## Editable Text
+
+`bind:value`で値を受け取り、保存処理が必要なときだけ`onCommit`を指定します。値が変わらない確定では通知しません。
+
+```svelte
+<script lang="ts">
+import { EditableText } from "@mutsuna/ui/editable-text";
+import { Button } from "@mutsuna/ui/button";
+
+let name = $state("表示名");
+</script>
+
+<EditableText bind:value={name} aria-label="表示名を編集" />
+
+<EditableText bind:value={name} editOn="doubleClick" aria-label="表示名を編集">
+  {#snippet trigger({ value, props })}
+    <Button {...props} variant="ghost">{value}</Button>
+  {/snippet}
+</EditableText>
+```
+
+- 通常はクリックで編集。`editOn="doubleClick"`ではダブルクリックまたはF2で編集し、Enter／Spaceはボタンのアクションに使えます。
+- Enterで確定、Escapeで取消し。`multiline`ではEnterで改行、Cmd/Ctrl+Enterで確定します。IME変換中のEnterでは確定しません。
+- キーで編集を終えるとtriggerへフォーカスが戻ります。blurでは既定で確定し、`commitOnBlur={false}`なら取り消します。blur先のフォーカスは移動させません。
+- 編集中に`disabled`になった場合は取り消します。
+- `onclick`・`ondblclick`・`onkeydown`は内部処理と連携し、編集開始を止めたい場合は`event.preventDefault()`を使えます。
+- カスタムtriggerは`props`をbuttonへそのままspreadしてください。`Button`も利用できます。独自componentの場合はイベント・属性・Svelte attachmentをDOMのbuttonへ転送します。これで`bind:ref`とフォーカス復帰も動きます。
+- ダブルクリックモードのマウス単クリックは250ms待ってから`onclick`を呼びます。OSのダブルクリック判定時間とは独立しているため、遅いダブルクリックでは先に単クリックが実行されることがあります。取消不能な操作には別ボタンを使ってください。遅延callback内の`event.currentTarget`は利用できません。
+
+公開型は`EditableTextProps`、`EditableTextTriggerProps`、`EditableTextCommit`、`EditableTextCancel`を提供します。

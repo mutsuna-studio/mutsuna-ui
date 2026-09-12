@@ -1,5 +1,5 @@
 <script module lang="ts">
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import Calendar from "@mutsuna/ui/calendar/calendar.svelte";
@@ -25,6 +25,20 @@ let selectedDate = $state<DateValue | undefined>(parseDate("2026-08-02"));
     </p>
     <p class="px-3 pb-3 text-sm text-muted-foreground">年月を開くと、年・月候補にテーマ連動スクロールバーを表示。</p>
   </div>
+</Story>
+
+<Story name="Dropdown Interaction Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const monthYearTrigger = canvas.getByRole("button", { name: "年月" });
+  await userEvent.click(monthYearTrigger);
+  await expect(canvas.getByRole("button", { name: "日付選択へ戻る" })).toBeInTheDocument();
+  await expect(canvas.getByRole("button", { name: "2026年を選択" })).toHaveAttribute("aria-pressed", "true");
+  await expect(canvas.getByRole("button", { name: "8月を選択" })).toHaveAttribute("aria-pressed", "true");
+  await userEvent.click(canvas.getByRole("button", { name: "11月を選択" }));
+  await waitFor(() => expect(canvas.getByRole("button", { name: "年月" })).toHaveTextContent("2026年 11月"));
+  await expect(canvas.queryByRole("button", { name: "日付選択へ戻る" })).not.toBeInTheDocument();
+}}>
+  <Calendar type="single" value={parseDate("2026-08-02")} captionLayout="dropdown" />
 </Story>
 
 <Story name="Disabled Dates" asChild>

@@ -51,6 +51,7 @@
 - 共有componentのcatalogはこのrepositoryの`stories/*`を正本にする。
 - primitiveと複合componentの代表状態、disabled、loading、error、長文、狭いviewportを必要に応じて持たせる。
 - product固有のroute、API、権限、永続化をstoryへ持ち込まない。
+- 視覚確認用storyには、表示直後の入力・click・状態変更など見た目を自動で変える`play`を付けない。操作検証が必要な場合は、同じrenderを使う`!dev`・`!autodocs`付きのtest専用storyへ`play`を分離する。
 - storyとStorybook設定はnpm packageへ含めない。
 - Storybookのsourceをconsumer repositoryへ複製しない。
 

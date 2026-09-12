@@ -157,3 +157,10 @@ get along, so we shut typescript up by casting `value` to `never`.
     {/if}
 	{/snippet}
 </CalendarPrimitive.Root>
+
+<style>
+:global([data-calendar-month]:has([data-calendar-month-year-picker]) [data-calendar-grid]),
+:global([data-calendar-months]:has([data-calendar-month-year-picker]) > [data-calendar-nav]) {
+  display: none;
+}
+</style>

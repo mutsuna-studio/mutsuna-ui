@@ -8,6 +8,7 @@ let { ref = $bindable(null), class: className, children, ...restProps }: WithEle
 <nav
 	{...restProps}
 	bind:this={ref}
+	data-calendar-nav
 	class={cn("absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1", className)}
 >
 	{@render children?.()}

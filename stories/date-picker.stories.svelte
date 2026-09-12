@@ -1,8 +1,20 @@
 <script module lang="ts">
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import { expect, userEvent, within, waitFor } from "storybook/test";
+import { parseDate } from "@internationalized/date";
+import ChevronLeftIcon from "@lucide/svelte/icons/chevron-left";
+import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
+import CalendarClockIcon from "@lucide/svelte/icons/calendar-clock";
+import { Button } from "@mutsuna/ui/button";
+import { ButtonGroup } from "@mutsuna/ui/button-group";
 import { DatePicker } from "@mutsuna/ui/date-picker";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@mutsuna/ui/tooltip";
 const { Story } = defineMeta({ title: "Components/Inputs/DatePicker", component: DatePicker, tags: ["autodocs"] });
+
+const stepDateMin = "2026-01-01";
+const stepDateMax = "2027-12-31";
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tokyo" }).format(new Date());
+const currentMonth = today.slice(0, 7);
 
 async function checkDefault(canvasElement: HTMLElement) {
   if (import.meta.env.MODE !== "test") return;
@@ -108,6 +120,147 @@ async function checkWeekday(canvasElement: HTMLElement) {
 
 }
 </script>
+
+<script lang="ts">
+let stepDate = $state("2026-12-31");
+let toolbarDate = $state("2026-12-31");
+let stepMonth = $state("2026-12");
+let toolbarMonth = $state("2026-12");
+
+function moveDay(offset: number): void {
+  const next = parseDate(stepDate).add({ days: offset }).toString();
+  if (next >= stepDateMin && next <= stepDateMax) stepDate = next;
+}
+
+function moveToolbarDay(offset: number): void {
+  toolbarDate = parseDate(toolbarDate).add({ days: offset }).toString();
+}
+
+function moveMonth(value: string, offset: number): string {
+  return parseDate(`${value}-01`).add({ months: offset }).toString().slice(0, 7);
+}
+</script>
+
+{#snippet dayStepControl()}
+  <section class="grid w-full max-w-md gap-3 p-2">
+    <div class="space-y-1">
+      <h2 class="text-sm font-medium">前日・翌日へ移動</h2>
+      <p class="text-xs text-muted-foreground">日付選択と連続した日付移動を一つの操作群にまとめます。</p>
+    </div>
+    <div class="grid gap-6">
+      <div class="grid gap-2" data-testid="split-navigation">
+        <h3 class="text-xs text-muted-foreground">前後ボタンを両側に配置</h3>
+        <ButtonGroup aria-label="表示日を変更">
+          <Button type="button" variant="outline" size="icon" icon={ChevronLeftIcon} aria-label="前日へ" disabled={stepDate <= stepDateMin} onclick={() => moveDay(-1)} />
+          <DatePicker bind:value={stepDate} ariaLabel="表示日" name="step-date" min={stepDateMin} max={stepDateMax} showWeekday showIcon={false} class="w-[10.5rem]" />
+          <Button type="button" variant="outline" size="icon" icon={ChevronRightIcon} aria-label="翌日へ" disabled={stepDate >= stepDateMax} onclick={() => moveDay(1)} />
+        </ButtonGroup>
+      </div>
+
+      <div class="grid gap-2" data-testid="toolbar-navigation">
+        <h3 class="text-xs text-muted-foreground">今日を左、前後ボタンを右に配置</h3>
+        <TooltipProvider>
+          <ButtonGroup aria-label="表示日を変更">
+            <Tooltip>
+              <TooltipTrigger>
+                {#snippet child({ props })}
+                  <Button {...props} type="button" variant="outline" size="icon" icon={CalendarClockIcon} aria-label="今日へ移動" disabled={toolbarDate === today} onclick={() => (toolbarDate = today)} />
+                {/snippet}
+              </TooltipTrigger>
+              <TooltipContent sideOffset={6}>今日へ移動</TooltipContent>
+            </Tooltip>
+            <DatePicker bind:value={toolbarDate} ariaLabel="表示日" name="toolbar-date" showCurrent={false} showWeekday showIcon={false} class="w-[10.5rem]" />
+            <Button type="button" variant="outline" size="icon" icon={ChevronLeftIcon} aria-label="前日へ" onclick={() => moveToolbarDay(-1)} />
+            <Button type="button" variant="outline" size="icon" icon={ChevronRightIcon} aria-label="翌日へ" onclick={() => moveToolbarDay(1)} />
+          </ButtonGroup>
+        </TooltipProvider>
+      </div>
+    </div>
+  </section>
+{/snippet}
+
+<Story name="Day With Previous And Next" asChild>
+  <div class="grid gap-8">
+    {@render dayStepControl()}
+    {@render monthStepControl()}
+  </div>
+</Story>
+
+<Story name="Day With Previous And Next Interaction Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const split = within(canvas.getByTestId("split-navigation"));
+  const toolbar = within(canvas.getByTestId("toolbar-navigation"));
+  const splitValue = () => canvasElement.querySelector('input[name="step-date"]');
+  const toolbarValue = () => canvasElement.querySelector('input[name="toolbar-date"]');
+  await expect(splitValue()).toHaveValue("2026-12-31");
+  await userEvent.click(split.getByRole("button", { name: "翌日へ" }));
+  await expect(splitValue()).toHaveValue("2027-01-01");
+  await userEvent.click(split.getByRole("button", { name: "前日へ" }));
+  await expect(splitValue()).toHaveValue("2026-12-31");
+  await userEvent.click(toolbar.getByRole("button", { name: "翌日へ" }));
+  await expect(toolbarValue()).toHaveValue("2027-01-01");
+  await userEvent.click(toolbar.getByRole("button", { name: "今日へ移動" }));
+  await expect(toolbarValue()).toHaveValue(today);
+}}>
+  {@render dayStepControl()}
+</Story>
+
+{#snippet monthStepControl()}
+  <section class="grid w-full max-w-md gap-3 p-2">
+    <div class="space-y-1">
+      <h2 class="text-sm font-medium">前月・翌月へ移動</h2>
+      <p class="text-xs text-muted-foreground">年月選択と連続した月移動を一つの操作群にまとめます。</p>
+    </div>
+    <div class="grid gap-6">
+      <div class="grid gap-2" data-testid="split-month-navigation">
+        <h3 class="text-xs text-muted-foreground">前後ボタンを両側に配置</h3>
+        <ButtonGroup aria-label="表示月を変更">
+          <Button type="button" variant="outline" size="icon" icon={ChevronLeftIcon} aria-label="前月へ" onclick={() => (stepMonth = moveMonth(stepMonth, -1))} />
+          <DatePicker bind:value={stepMonth} precision="month" ariaLabel="表示月" name="step-month" showIcon={false} class="w-28" />
+          <Button type="button" variant="outline" size="icon" icon={ChevronRightIcon} aria-label="翌月へ" onclick={() => (stepMonth = moveMonth(stepMonth, 1))} />
+        </ButtonGroup>
+      </div>
+
+      <div class="grid gap-2" data-testid="toolbar-month-navigation">
+        <h3 class="text-xs text-muted-foreground">今月を左、前後ボタンを右に配置</h3>
+        <TooltipProvider>
+          <ButtonGroup aria-label="表示月を変更">
+            <Tooltip>
+              <TooltipTrigger>
+                {#snippet child({ props })}
+                  <Button {...props} type="button" variant="outline" size="icon" icon={CalendarClockIcon} aria-label="今月へ移動" disabled={toolbarMonth === currentMonth} onclick={() => (toolbarMonth = currentMonth)} />
+                {/snippet}
+              </TooltipTrigger>
+              <TooltipContent sideOffset={6}>今月へ移動</TooltipContent>
+            </Tooltip>
+            <DatePicker bind:value={toolbarMonth} precision="month" ariaLabel="表示月" name="toolbar-month" showCurrent={false} showIcon={false} class="w-28" />
+            <Button type="button" variant="outline" size="icon" icon={ChevronLeftIcon} aria-label="前月へ" onclick={() => (toolbarMonth = moveMonth(toolbarMonth, -1))} />
+            <Button type="button" variant="outline" size="icon" icon={ChevronRightIcon} aria-label="翌月へ" onclick={() => (toolbarMonth = moveMonth(toolbarMonth, 1))} />
+          </ButtonGroup>
+        </TooltipProvider>
+      </div>
+    </div>
+  </section>
+{/snippet}
+
+<Story name="Month With Previous And Next Interaction Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const split = within(canvas.getByTestId("split-month-navigation"));
+  const toolbar = within(canvas.getByTestId("toolbar-month-navigation"));
+  const splitValue = () => canvasElement.querySelector('input[name="step-month"]');
+  const toolbarValue = () => canvasElement.querySelector('input[name="toolbar-month"]');
+  await expect(splitValue()).toHaveValue("2026-12");
+  await userEvent.click(split.getByRole("button", { name: "翌月へ" }));
+  await expect(splitValue()).toHaveValue("2027-01");
+  await userEvent.click(split.getByRole("button", { name: "前月へ" }));
+  await expect(splitValue()).toHaveValue("2026-12");
+  await userEvent.click(toolbar.getByRole("button", { name: "翌月へ" }));
+  await expect(toolbarValue()).toHaveValue("2027-01");
+  await userEvent.click(toolbar.getByRole("button", { name: "今月へ移動" }));
+  await expect(toolbarValue()).toHaveValue(currentMonth);
+}}>
+  {@render monthStepControl()}
+</Story>
 
 <Story name="Default" asChild play={async ({ canvasElement }) => {
   if (import.meta.env.MODE !== "test") return;

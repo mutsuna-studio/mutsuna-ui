@@ -7,6 +7,7 @@ let { ref = $bindable(null), class: className, children, ...restProps }: WithEle
 
 <div
 	bind:this={ref}
+	data-calendar-months
 	class={cn("relative flex flex-col gap-4 md:flex-row", className)}
 	{...restProps}
 >

@@ -3,6 +3,7 @@ import type { DatePickerPrecision } from "./date-picker-utils.js";
 export interface DatePickerProps {
   precision?: DatePickerPrecision;
   showWeekday?: boolean;
+  showIcon?: boolean;
   isDateUnavailable?: (value: string) => boolean;
   showCurrent?: boolean;
   currentLabel?: string;
@@ -35,7 +36,7 @@ import { ScrollbarArea } from "../scrollbar/index.js";
 import { cn } from "../utils.js";
 
 let {
-  precision = "day", showWeekday = false, isDateUnavailable,
+  precision = "day", showWeekday = false, showIcon = true, isDateUnavailable,
   showCurrent = true, currentLabel,
   value = $bindable(""), onValueChange, ariaLabel, id, name, disabled = false,
   min: minProp, max: maxProp, placeholder: placeholderProp, size = "default",
@@ -132,8 +133,9 @@ function choose(month: number) { commit(monthValue(month)); }
       <Button {...props} {id} type="button" variant="outline" {size}
         disabled={disabled || !rangeValid} aria-label={`${ariaLabel}: ${selectedLabel}`}
         aria-invalid={invalid} aria-describedby={describedBy}
-        class={cn("min-w-0 justify-between", !valid(value) && "text-muted-foreground", className)}>
-        <span class="truncate">{selectedLabel}</span><CalendarIcon aria-hidden="true" />
+        class={cn("min-w-0", showIcon ? "justify-between" : "justify-center", !valid(value) && "text-muted-foreground", className)}>
+        <span class="truncate tabular-nums">{selectedLabel}</span>
+        {#if showIcon}<CalendarIcon aria-hidden="true" />{/if}
       </Button>
     {/snippet}
   </PopoverTrigger>

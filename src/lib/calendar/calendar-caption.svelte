@@ -2,7 +2,6 @@
 import { DateFormatter, getLocalTimeZone, type DateValue } from "@internationalized/date";
 import { tick, type ComponentProps } from "svelte";
 import Button from "@mutsuna/ui/button/button.svelte";
-import * as Popover from "@mutsuna/ui/popover";
 import ScrollbarArea from "@mutsuna/ui/scrollbar/scrollbar-area.svelte";
 import type Calendar from "./calendar.svelte";
 import { Select as SelectRoot, SelectContent, SelectItem, SelectTrigger } from "@mutsuna/ui/select";
@@ -57,10 +56,6 @@ const dropdownTriggerClass = "z-10 justify-center bg-background [&>svg]:hidden";
 const selectedMonthLabel = $derived(monthOptions.find((option) => option.value === String(month.month))?.label ?? formatMonth(month));
 const selectedYearLabel = $derived(yearOptions.find((option) => option.value === String(month.year))?.label ?? formatYear(month));
 const selectedMonthYearLabel = $derived(`${selectedYearLabel} ${selectedMonthLabel}`);
-const draftMonthLabel = $derived(monthOptions.find((option) => option.value === String(draftMonth))?.label ?? selectedMonthLabel);
-const draftYearLabel = $derived(yearOptions.find((option) => option.value === String(draftYear))?.label ?? selectedYearLabel);
-const draftMonthYearLabel = $derived(`${draftYearLabel} ${draftMonthLabel}`);
-
 $effect(() => {
   if (!monthYearOpen) {
     return;
@@ -150,25 +145,14 @@ function scrollElementIntoView(element: Element | null | undefined): void {
 </script>
 
 {#if captionLayout === "dropdown"}
-  <div class="flex items-center justify-center gap-2">
-    <Popover.Root bind:open={() => monthYearOpen, setMonthYearOpen}>
-      <Popover.Trigger>
-        {#snippet child({ props })}
-          <Button {...props} aria-label="年月" variant="outline" size="sm" class="z-10 h-7 w-32 justify-center bg-background px-2 text-sm font-medium">
-            {selectedMonthYearLabel}
-          </Button>
-        {/snippet}
-      </Popover.Trigger>
-      <Popover.Content class="w-56 gap-2 p-2" align="center" sideOffset={6}>
-        <div class="grid gap-2">
-          <div
-            class="border-input h-12 w-full rounded-md border bg-background px-2 text-center text-xl font-semibold leading-[3rem] tabular-nums"
-            data-calendar-month-year-selected-value
-          >
-            {draftMonthYearLabel}
-          </div>
-
-          <div class="grid grid-cols-2 gap-1.5">
+  <div class="grid w-full gap-2" data-calendar-caption-dropdown={monthYearOpen ? "open" : "closed"}>
+    <div class="flex justify-center">
+      <Button aria-label={monthYearOpen ? "日付選択へ戻る" : "年月"} variant="outline" size="sm" class="z-10 h-7 w-32 justify-center bg-background px-2 text-sm font-medium" onclick={() => setMonthYearOpen(!monthYearOpen)}>
+        {monthYearOpen ? "年月を選択" : selectedMonthYearLabel}
+      </Button>
+    </div>
+    {#if monthYearOpen}
+      <div class="grid grid-cols-2 gap-1.5" data-calendar-month-year-picker>
             <ScrollbarArea
               bind:ref={yearListElement}
               class="h-36 overflow-y-auto rounded-md border bg-background p-1"
@@ -218,10 +202,8 @@ function scrollElementIntoView(element: Element | null | undefined): void {
                 </button>
               {/each}
             </ScrollbarArea>
-          </div>
-        </div>
-      </Popover.Content>
-    </Popover.Root>
+      </div>
+    {/if}
   </div>
 {:else if captionLayout === "dropdown-months"}
   <div class="flex items-center justify-center gap-2">
