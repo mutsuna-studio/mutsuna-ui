@@ -124,10 +124,10 @@ test("Storybook catalog groups every component by role", async () => {
 
   assert.deepEqual(Object.fromEntries([...categoryCounts].sort()), {
     "Components/Actions": 2,
-    "Components/Data Display": 5,
+    "Components/Data Display": 6,
     "Components/Feedback": 5,
     "Components/Forms": 6,
-    "Components/Inputs": 18,
+    "Components/Inputs": 15,
     "Components/Layout": 2,
     "Components/Navigation": 4,
     "Components/Overlays": 7,

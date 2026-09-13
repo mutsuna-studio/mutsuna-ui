@@ -1,11 +1,13 @@
 <script lang="ts">
 import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
 import PipetteIcon from "@lucide/svelte/icons/pipette";
-import { untrack } from "svelte";
+import { onDestroy, untrack } from "svelte";
 import Button from "../button/button.svelte";
 import PopoverContent from "../popover/popover-content.svelte";
 import Popover from "../popover/popover.svelte";
 import PopoverTrigger from "../popover/popover-trigger.svelte";
+import RollingText from "../rolling-text/rolling-text.svelte";
+import { wheelNavigation } from "../rolling-text/wheel-navigation.js";
 import { cn } from "../utils.js";
 import { colorFormats, formatColor, hsvToRgb, parseColor, rgbToHsv, type ColorFormat, type HsvColor, type RgbColor } from "./color.js";
 
@@ -38,6 +40,10 @@ let activeFormat = $state<ColorFormat>(initialFormat);
 let draftValue = $state(value);
 let errorMessage = $state<string | null>(initial ? null : "HEX、RGB、HSL、OKLCHのいずれかで入力してください。");
 let open = $state(false);
+let closedByOutsideInteraction = false;
+let formatChangeFrame: number | undefined;
+let formatChangeDirection = $state<"up" | "down">("up");
+const formatChangeDuration = 320;
 const inputId = $derived(id ?? "color-picker");
 const errorId = $derived(`${inputId}-error`);
 const describedBy = $derived([ariaDescribedBy, errorMessage ? errorId : undefined].filter(Boolean).join(" ") || undefined);
@@ -47,6 +53,7 @@ const hueColor = $derived(`hsl(${hsv.h} 100% 50%)`);
 const squareX = $derived(`${hsv.s}%`);
 const squareY = $derived(`${100 - hsv.v}%`);
 const hueY = $derived(`${(hsv.h / 360) * 100}%`);
+const formatWidthValues = $derived(colorFormats.map((candidate) => formatColor(rgb, candidate)));
 
 $effect(() => {
   const next = value;
@@ -91,17 +98,43 @@ function updateText(event: Event): void {
   commit(format ? formatColor(rgb, format) : target.value.trim());
 }
 
+function changeFormat(offset: 1 | -1, animationDirection: "up" | "down" = offset > 0 ? "up" : "down"): void {
+  if (disabled || format) return;
+  if (formatChangeFrame !== undefined) cancelAnimationFrame(formatChangeFrame);
+  formatChangeDirection = animationDirection;
+  activeFormat = colorFormats[(colorFormats.indexOf(activeFormat) + offset + colorFormats.length) % colorFormats.length]!;
+  const nextValue = formatColor(rgb, activeFormat);
+  formatChangeFrame = requestAnimationFrame(() => {
+    formatChangeFrame = requestAnimationFrame(() => {
+      draftValue = nextValue;
+      commit(nextValue);
+      formatChangeFrame = undefined;
+    });
+  });
+}
+
 function cycleFormat(event: MouseEvent): void {
   event.stopPropagation();
-  if (disabled || format) return;
-  activeFormat = colorFormats[(colorFormats.indexOf(activeFormat) + 1) % colorFormats.length]!;
-  draftValue = formatColor(rgb, activeFormat);
-  commit(draftValue);
+  changeFormat(1);
 }
+
+onDestroy(() => {
+  if (formatChangeFrame !== undefined) cancelAnimationFrame(formatChangeFrame);
+});
 
 function inputTriggerProps(props: Record<string, unknown>): Record<string, unknown> {
   const { type: _type, role: _role, "aria-haspopup": _hasPopup, "aria-expanded": _expanded, ...inputProps } = props;
   return inputProps;
+}
+
+function handleInteractOutside(): void {
+  closedByOutsideInteraction = true;
+}
+
+function handleCloseAutoFocus(event: Event): void {
+  if (!closedByOutsideInteraction) return;
+  event.preventDefault();
+  closedByOutsideInteraction = false;
 }
 
 function updateSquare(event: PointerEvent): void {
@@ -156,13 +189,14 @@ function readableForeground(color: RgbColor): "#000000" | "#FFFFFF" {
     <div class="relative grid min-w-0" style={`--picker-preview: ${previewColor}; --picker-preview-foreground: ${previewForeground}`}>
       <PopoverTrigger>
         {#snippet child({ props })}
-          <input {...inputTriggerProps(props)} type="text" id={inputId} class="color-trigger-input" value={draftValue} aria-label={ariaLabel} aria-describedby={describedBy} aria-invalid={errorMessage ? true : undefined} autocomplete="off" spellcheck="false" {disabled} {required} oninput={updateText} />
+          <input {...inputTriggerProps(props)} type="text" id={inputId} class="color-trigger-input" value={draftValue} aria-label={ariaLabel} aria-describedby={describedBy} aria-invalid={errorMessage ? true : undefined} autocomplete="off" spellcheck="false" {disabled} {required} oninput={updateText} use:wheelNavigation={{ onPrevious: () => changeFormat(-1, "up"), onNext: () => changeFormat(1, "down"), disabled: disabled || Boolean(format) }} />
         {/snippet}
       </PopoverTrigger>
       <PipetteIcon class="color-preview-icon pointer-events-none absolute top-3 left-2.5 z-10 size-4" aria-hidden="true" />
+      <RollingText value={draftValue} widthValues={formatWidthValues} direction={formatChangeDirection} duration={formatChangeDuration} aria-hidden="true" class="color-format-text pointer-events-none absolute top-2.5 right-11 left-8 z-10 font-mono text-sm" />
       <Button type="button" variant="ghost" size="icon" icon={ChevronsUpDownIcon} class="color-preview-control absolute top-1 right-1 z-10 size-8" aria-label={`色の表示形式を変更。現在は${activeFormat.toUpperCase()}`} title={`表示形式: ${activeFormat.toUpperCase()}`} disabled={disabled || Boolean(format)} onclick={cycleFormat} />
     </div>
-    <PopoverContent align="start" sideOffset={8} class="color-picker-popover w-[min(22rem,calc(100vw-2rem))] p-3" onOpenAutoFocus={(event) => event.preventDefault()}>
+    <PopoverContent align="start" sideOffset={8} class="color-picker-popover w-[min(22rem,calc(100vw-2rem))] p-3" onOpenAutoFocus={(event) => event.preventDefault()} onInteractOutside={handleInteractOutside} onCloseAutoFocus={handleCloseAutoFocus}>
       <div class="flex gap-3">
         <div class="color-square" style={`--picker-hue: ${hueColor}; --picker-x: ${squareX}; --picker-y: ${squareY}`} role="slider" tabindex={disabled ? undefined : 0} aria-label="彩度と明るさ" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(hsv.s)} aria-valuetext={`彩度 ${Math.round(hsv.s)}%、明るさ ${Math.round(hsv.v)}%`} aria-disabled={disabled} onpointerdown={updateSquare} onpointermove={(event) => { if (event.buttons === 1) updateSquare(event); }} onkeydown={moveSquare}><span class="color-square-thumb" aria-hidden="true"></span></div>
         <div class="hue-strip" style={`--picker-hue-y: ${hueY}`} role="slider" tabindex={disabled ? undefined : 0} aria-label="色相" aria-valuemin="0" aria-valuemax="360" aria-valuenow={Math.round(hsv.h)} aria-disabled={disabled} onpointerdown={updateHue} onpointermove={(event) => { if (event.buttons === 1) updateHue(event); }} onkeydown={moveHue}><span class="hue-thumb" aria-hidden="true"></span></div>
@@ -173,12 +207,15 @@ function readableForeground(color: RgbColor): "#000000" | "#FFFFFF" {
 </div>
 
 <style>
-  .color-trigger-input { height: 2.5rem; width: 100%; min-width: 0; border: 1px solid color-mix(in oklch, var(--picker-preview-foreground) 22%, var(--picker-preview)); border-radius: 0.5rem; background: var(--picker-preview); padding: 0.5rem 2.75rem 0.5rem 2rem; color: var(--picker-preview-foreground); font-family: var(--font-mono); font-size: var(--text-sm); outline: none; }
-  .color-trigger-input:hover { background: color-mix(in oklch, var(--picker-preview) 92%, var(--picker-preview-foreground)); }
+  .color-trigger-input { height: 2.5rem; width: 100%; min-width: 0; border: 1px solid color-mix(in oklch, var(--picker-preview-foreground) 22%, var(--picker-preview)); border-radius: 0.5rem; background: var(--picker-preview); padding: 0.5rem 2.75rem 0.5rem 2rem; color: transparent; caret-color: transparent; font-family: var(--font-mono); font-size: var(--text-sm); outline: none; transition: border-color 150ms ease, background-color 150ms ease; }
+  .color-trigger-input:hover { border-color: color-mix(in oklch, var(--picker-preview-foreground) 35%, var(--picker-preview)); }
   .color-trigger-input::selection { background: color-mix(in oklch, var(--picker-preview-foreground) 25%, transparent); }
-  .color-trigger-input:focus-visible { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 50%, transparent); }
+  .color-trigger-input:focus { color: var(--picker-preview-foreground); caret-color: var(--picker-preview-foreground); }
+  .color-trigger-input:focus-visible { border-color: var(--ring); }
+  .color-trigger-input:focus ~ :global(.color-format-text) { visibility: hidden; }
   .color-trigger-input[aria-invalid="true"] { border-color: var(--destructive); }
-  .color-trigger-input:disabled { cursor: not-allowed; opacity: 0.5; }
+  .color-trigger-input:disabled { cursor: not-allowed; }
+  :global(.color-format-text) { color: var(--picker-preview-foreground); line-height: 1.25rem; }
   :global(.color-preview-icon) { color: var(--picker-preview-foreground); }
   :global(.color-preview-control) { color: var(--picker-preview-foreground); }
   :global(.color-preview-control:hover) { background: color-mix(in oklch, var(--picker-preview-foreground) 12%, transparent); color: var(--picker-preview-foreground); }

@@ -1,6 +1,6 @@
 <script module lang="ts">
 import { defineMeta } from "@storybook/addon-svelte-csf";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { ColorPicker } from "@mutsuna/ui/color-picker";
 
 const { Story } = defineMeta({
@@ -20,7 +20,7 @@ const { Story } = defineMeta({
     await userEvent.type(input, "#FFFFFF");
     await expect(input).toHaveValue("#FFFFFF");
     await userEvent.click(canvas.getByRole("button", { name: /色の表示形式を変更/ }));
-    await expect(input).toHaveValue("rgb(255, 255, 255)");
+    await waitFor(() => expect(input).toHaveValue("rgb(255, 255, 255)"));
     await userEvent.click(input);
     await expect(input).toHaveAttribute("data-state", "open");
   }}

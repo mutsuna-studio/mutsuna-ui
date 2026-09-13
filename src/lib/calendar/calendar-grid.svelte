@@ -7,6 +7,7 @@ let { ref = $bindable(null), class: className, ...restProps }: CalendarPrimitive
 
 <CalendarPrimitive.Grid
 	bind:ref
+	data-calendar-grid
 	class={cn("flex w-full border-collapse flex-col", className)}
 	{...restProps}
 />

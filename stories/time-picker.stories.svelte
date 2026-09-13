@@ -1,4 +1,5 @@
 <script module lang="ts">
+import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import Label from "@mutsuna/ui/label/label.svelte";
 import TimePicker from "@mutsuna/ui/time-picker/time-picker.svelte";
@@ -13,12 +14,11 @@ const { Story } = defineMeta({
 <script lang="ts">
 let startTime = $state("09:00");
 let endTime = $state("10:00");
-let customTime = $state("13:05");
 let scrollableTime = $state("12:30");
 </script>
 
-<Story name="Time Range" asChild>
-	<div class="grid max-w-sm gap-4">
+<Story name="Default" parameters={{ controls: { disable: true }, options: { showPanel: false } }} asChild>
+	<div class="grid max-w-sm gap-5">
 		<div class="grid grid-cols-2 gap-3">
 			<Label class="grid gap-2">
 				開始
@@ -29,27 +29,53 @@ let scrollableTime = $state("12:30");
 				<TimePicker bind:value={endTime} />
 			</Label>
 		</div>
+		<div class="grid grid-cols-2 gap-3">
+			<Label class="grid gap-2">
+				5分刻み
+				<TimePicker bind:value={scrollableTime} minuteStep={5} />
+			</Label>
+			<Label class="grid gap-2">
+				無効
+				<TimePicker value="18:00" disabled />
+			</Label>
+		</div>
 	</div>
 </Story>
 
-<Story name="Scrollable Options" asChild>
-	<div class="grid max-w-[12rem] gap-2">
-		<Label>時刻</Label>
-		<TimePicker bind:value={scrollableTime} minuteStep={5} />
-		<p class="text-sm text-muted-foreground">時・分の候補リストにテーマ連動スクロールバーを表示。</p>
-	</div>
-</Story>
-
-<Story name="Five Minute Input" asChild>
-	<Label class="grid max-w-[8rem] gap-2">
-		入力
-		<TimePicker bind:value={customTime} />
-	</Label>
-</Story>
-
-<Story name="Disabled" asChild>
-	<Label class="grid max-w-[8rem] gap-2">
-		固定
-		<TimePicker value="18:00" disabled />
-	</Label>
+<Story name="Direct Input Interaction Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const screen = within(canvasElement.ownerDocument.body);
+  await userEvent.click(canvas.getByRole("button", { name: "時間" }));
+  const hour = await screen.findByRole("spinbutton", { name: "時" });
+  const minute = screen.getByRole("spinbutton", { name: "分" });
+  await waitFor(() => expect(hour).toHaveFocus());
+  await userEvent.click(hour);
+  await fireEvent.input(hour, { target: { value: "１４" } });
+  await userEvent.keyboard("{Tab}");
+  await waitFor(() => expect(minute).toHaveFocus());
+  await expect(hour).toHaveValue("14");
+  await fireEvent.input(minute, { target: { value: "２b７" } });
+  await expect(minute).toHaveValue("27");
+  await userEvent.keyboard("{Tab}");
+  await expect(hour).toHaveFocus();
+  await expect(minute).toHaveAttribute("aria-valuenow", "25");
+  await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+  await expect(minute).toHaveFocus();
+  await waitFor(() => expect(minute).toHaveProperty("selectionStart", 0));
+  await waitFor(() => expect(minute).toHaveProperty("selectionEnd", 2));
+  await userEvent.keyboard("{ArrowDown}");
+  await expect(minute).toHaveAttribute("aria-valuenow", "45");
+  await userEvent.click(hour);
+  await fireEvent.input(hour, { target: { value: "9:37" } });
+  await userEvent.keyboard("{Enter}");
+  await expect(hour).toHaveAttribute("aria-valuenow", "9");
+  await expect(minute).toHaveAttribute("aria-valuenow", "35");
+  await userEvent.click(hour);
+  await fireEvent.input(hour, { target: { value: "０．５" } });
+  await userEvent.keyboard("{Enter}");
+  await expect(hour).toHaveAttribute("aria-valuenow", "12");
+  await expect(minute).toHaveAttribute("aria-valuenow", "0");
+  await userEvent.keyboard("{Escape}");
+}}>
+  <TimePicker value="09:00" />
 </Story>

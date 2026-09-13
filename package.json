@@ -267,19 +267,15 @@
       "svelte": "./dist/loading/*",
       "default": "./dist/loading/*"
     },
-    "./oklch-color-picker": {
-      "types": "./dist/oklch-color-picker/index.d.ts",
-      "svelte": "./dist/oklch-color-picker/index.js",
-      "default": "./dist/oklch-color-picker/index.js"
+    "./rolling-text": {
+      "types": "./dist/rolling-text/index.d.ts",
+      "svelte": "./dist/rolling-text/index.js",
+      "default": "./dist/rolling-text/index.js"
     },
-    "./oklch-color-picker/oklch-color": {
-      "types": "./dist/oklch-color-picker/oklch-color.d.ts",
-      "default": "./dist/oklch-color-picker/oklch-color.js"
-    },
-    "./oklch-color-picker/*": {
-      "types": "./dist/oklch-color-picker/*.d.ts",
-      "svelte": "./dist/oklch-color-picker/*",
-      "default": "./dist/oklch-color-picker/*"
+    "./rolling-text/*": {
+      "types": "./dist/rolling-text/*.d.ts",
+      "svelte": "./dist/rolling-text/*",
+      "default": "./dist/rolling-text/*"
     },
     "./color-picker": {
       "types": "./dist/color-picker/index.d.ts",
@@ -516,16 +512,6 @@
       "svelte": "./dist/time-picker/*",
       "default": "./dist/time-picker/*"
     },
-    "./time-select": {
-      "types": "./dist/time-select/index.d.ts",
-      "svelte": "./dist/time-select/index.js",
-      "default": "./dist/time-select/index.js"
-    },
-    "./time-select/*": {
-      "types": "./dist/time-select/*.d.ts",
-      "svelte": "./dist/time-select/*",
-      "default": "./dist/time-select/*"
-    },
     "./client-ready/*": {
       "types": "./dist/client-ready/*.d.ts",
       "svelte": "./dist/client-ready/*",
@@ -626,6 +612,10 @@
       "types": "./dist/date-picker/*.d.ts",
       "svelte": "./dist/date-picker/*",
       "default": "./dist/date-picker/*"
+    },
+    "./date-time-input": {
+      "types": "./dist/date-time-input/index.d.ts",
+      "default": "./dist/date-time-input/index.js"
     }
   },
   "scripts": {

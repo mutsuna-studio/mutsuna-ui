@@ -1,29 +1,50 @@
-<script lang="ts">
-import { tick } from "svelte";
-import type { HTMLButtonAttributes, HTMLInputAttributes } from "svelte/elements";
+<script module lang="ts">
+import type { Snippet } from "svelte";
+import type { HTMLButtonAttributes, HTMLInputAttributes, HTMLTextareaAttributes } from "svelte/elements";
 import { cn, type WithElementRef, type WithoutChildren } from "../utils.js";
 
-type EditableTextCommit = {
+export type EditableTextCommit = {
   value: string;
   previousValue: string;
 };
 
-type EditableTextCancel = {
+export type EditableTextCancel = {
   value: string;
 };
 
 type InputAttributes = Omit<HTMLInputAttributes, "class" | "disabled" | "onblur" | "onkeydown" | "type" | "value">;
+type TextareaAttributes = Omit<HTMLTextareaAttributes, "class" | "disabled" | "onblur" | "oninput" | "onkeydown" | "value">;
+type EditableTextEditOn = "click" | "doubleClick";
 
-type Props = WithoutChildren<WithElementRef<Omit<HTMLButtonAttributes, "type" | "value">, HTMLButtonElement>> & {
+/** Spread onto a button or a component forwarding button attributes and attachments. */
+export type EditableTextTriggerProps = Pick<HTMLButtonAttributes, "class" | "type" | "disabled" | "aria-label"> & {
+  "data-slot": string;
+  onclick: (event: MouseEvent) => void;
+  ondblclick: (event: MouseEvent) => void;
+  onkeydown: (event: KeyboardEvent) => void;
+} & Record<string, unknown>;
+
+export type EditableTextProps = WithoutChildren<WithElementRef<Omit<HTMLButtonAttributes, "type" | "value">, HTMLButtonElement>> & {
   value?: string;
   placeholder?: string;
   inputClass?: string;
   inputProps?: InputAttributes;
+  multiline?: boolean;
+  textareaProps?: TextareaAttributes;
+  /** doubleClick keeps single-click actions; F2 starts keyboard editing. */
+  editOn?: EditableTextEditOn;
+  trigger?: Snippet<[{ value: string; props: EditableTextTriggerProps }]>;
   commitOnBlur?: boolean;
   selectOnEdit?: boolean;
   onCommit?: (detail: EditableTextCommit) => void;
   onCancel?: (detail: EditableTextCancel) => void;
 };
+
+</script>
+
+<script lang="ts">
+import { onDestroy, tick } from "svelte";
+import { createAttachmentKey } from "svelte/attachments";
 
 let {
   ref = $bindable(null),
@@ -31,31 +52,76 @@ let {
   placeholder = "未設定",
   inputClass,
   inputProps,
+  multiline = false,
+  textareaProps,
+  editOn = "click",
+  trigger,
   commitOnBlur = true,
   selectOnEdit = true,
   onCommit,
   onCancel,
   disabled,
   class: className,
+  onclick,
+  onkeydown,
+  ondblclick,
   "aria-label": ariaLabel,
   "data-slot": dataSlot = "editable-text",
   ...restProps
-}: Props = $props();
+}: EditableTextProps = $props();
 
-let inputRef: HTMLInputElement | null = $state(null);
+let inputRef: HTMLInputElement | HTMLTextAreaElement | null = $state(null);
 let editing = $state(false);
 let draftValue = $state("");
+let editingRect = $state<DOMRect>();
+const triggerAttachment = createAttachmentKey();
+let clickTimer: ReturnType<typeof setTimeout> | undefined;
 
 let isEmpty = $derived(value.trim().length === 0);
 let displayValue = $derived(isEmpty ? placeholder : value);
 
-async function startEditing() {
-  if (disabled) return;
+const editorProps = $derived({
+  "data-slot": `${dataSlot}-${multiline ? "textarea" : "input"}`,
+  class: cn(
+    "-mx-0.5 w-full min-w-0 border-0 bg-transparent px-0.5 py-0 text-sm leading-6 outline-none aria-invalid:text-destructive disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+    multiline ? "min-h-6 resize-none overflow-hidden" : "h-6",
+    inputClass
+  ),
+  "aria-label": ariaLabel ?? placeholder,
+  disabled,
+  onkeydown: handleInputKeydown,
+  onblur: handleInputBlur,
+});
 
+function attachTrigger(node: HTMLButtonElement) {
+  ref = node;
+  return () => { ref = null; };
+}
+
+const triggerProps: EditableTextTriggerProps = $derived({
+  [triggerAttachment]: attachTrigger,
+  ...restProps,
+  class: className,
+  type: "button" as const,
+  disabled,
+  "aria-label": ariaLabel,
+  "data-slot": dataSlot,
+  onclick: handleDisplayClick,
+  ondblclick: handleDisplayDoubleClick,
+  onkeydown: handleDisplayKeydown,
+});
+
+async function startEditing(event: MouseEvent | KeyboardEvent) {
+  if (disabled || editing || event.defaultPrevented) return;
+
+  clearTimeout(clickTimer);
+  editingRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
   draftValue = value;
   editing = true;
 
   await tick();
+  if (!editing || disabled) return;
+  resizeTextarea();
   inputRef?.focus();
 
   if (selectOnEdit) {
@@ -63,78 +129,127 @@ async function startEditing() {
   }
 }
 
-function commitEditing() {
-  const previousValue = value;
-
+async function finishEditing(commit: boolean, restoreFocus = false) {
+  if (!editing) return;
   editing = false;
-  value = draftValue;
 
-  if (draftValue !== previousValue) {
-    onCommit?.({ value: draftValue, previousValue });
+  if (commit) {
+    const previousValue = value;
+    value = draftValue;
+    if (value !== previousValue) onCommit?.({ value, previousValue });
+  } else {
+    draftValue = value;
+    onCancel?.({ value });
   }
-}
 
-function cancelEditing() {
-  editing = false;
-  draftValue = value;
-  onCancel?.({ value });
+  if (restoreFocus) {
+    await tick();
+    if (!editing && !disabled) ref?.focus({ preventScroll: true });
+  }
 }
 
 function handleInputKeydown(event: KeyboardEvent) {
-  if (event.isComposing) return;
+  // Safari may end composition before dispatching its confirming Enter.
+  if (event.isComposing || event.keyCode === 229) return;
+  const commit = event.key === "Enter" && (!multiline || event.metaKey || event.ctrlKey);
+  if (!commit && event.key !== "Escape") return;
+  event.preventDefault();
+  event.stopPropagation();
+  void finishEditing(commit, true);
+}
 
-  if (event.key === "Enter") {
-    event.preventDefault();
-    commitEditing();
-  }
-
-  if (event.key === "Escape") {
-    event.preventDefault();
-    cancelEditing();
-  }
+function resizeTextarea() {
+  if (!multiline || !(inputRef instanceof HTMLTextAreaElement)) return;
+  inputRef.style.height = "auto";
+  inputRef.style.height = `${inputRef.scrollHeight}px`;
 }
 
 function handleInputBlur() {
-  if (commitOnBlur) {
-    commitEditing();
+  void finishEditing(commitOnBlur && !disabled);
+}
+
+function handleDisplayKeydown(event: KeyboardEvent) {
+  onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLButtonElement });
+  if (editOn !== "doubleClick" || event.key !== "F2" || event.defaultPrevented || disabled) return;
+  void startEditing(event);
+  event.preventDefault();
+}
+
+function handleDisplayClick(event: MouseEvent) {
+  if (disabled) return;
+  if (editOn === "click") {
+    onclick?.(event as MouseEvent & { currentTarget: HTMLButtonElement });
+    void startEditing(event);
     return;
   }
 
-  cancelEditing();
+  if (event.detail === 0) {
+    onclick?.(event as MouseEvent & { currentTarget: HTMLButtonElement });
+    return;
+  }
+
+  clearTimeout(clickTimer);
+  const target = event.currentTarget as HTMLElement;
+  if (onclick) {
+    clickTimer = setTimeout(() => {
+      if (!disabled && !editing && target.isConnected) onclick?.(event as MouseEvent & { currentTarget: HTMLButtonElement });
+    }, 250);
+  }
 }
+
+function handleDisplayDoubleClick(event: MouseEvent) {
+  clearTimeout(clickTimer);
+  if (disabled) return;
+  ondblclick?.(event as MouseEvent & { currentTarget: HTMLButtonElement });
+  if (editOn === "doubleClick") void startEditing(event);
+}
+
+$effect(() => {
+  if (disabled) {
+    clearTimeout(clickTimer);
+    if (editing) void finishEditing(false);
+  }
+});
+
+onDestroy(() => clearTimeout(clickTimer));
 </script>
 
 {#if editing}
-	<input
-		bind:this={inputRef}
-		{...inputProps}
-		data-slot={`${dataSlot}-input`}
-		class={cn(
-			"bg-transparent focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-6 w-full min-w-0 rounded-sm border border-transparent px-0.5 py-0 text-sm leading-6 transition-colors focus-visible:ring-3 aria-invalid:ring-3 outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-			inputClass
-		)}
-		type="text"
-		aria-label={ariaLabel ?? placeholder}
-		{disabled}
-		bind:value={draftValue}
-		onkeydown={handleInputKeydown}
-		onblur={handleInputBlur}
-	/>
+	{#if multiline}
+		<textarea
+			bind:this={inputRef}
+			{...textareaProps}
+			{...editorProps}
+			style:width={editingRect && `${editingRect.width}px`}
+			style:height={editingRect && `${editingRect.height}px`}
+			rows={textareaProps?.rows ?? 1}
+			bind:value={draftValue}
+			oninput={resizeTextarea}
+		></textarea>
+	{:else}
+		<input
+			bind:this={inputRef}
+			{...inputProps}
+			{...editorProps}
+			style:width={editingRect && `${editingRect.width}px`}
+			style:height={editingRect && `${editingRect.height}px`}
+			type="text"
+			bind:value={draftValue}
+		/>
+	{/if}
+{:else if trigger}
+  {@render trigger({ value: displayValue, props: triggerProps })}
 {:else}
 	<button
-		bind:this={ref}
-		{...restProps}
+		{...triggerProps}
 		data-slot={dataSlot}
 		class={cn(
-			"focus-visible:border-ring focus-visible:ring-ring/50 -mx-0.5 inline-flex h-6 max-w-full items-center truncate rounded-sm border border-transparent px-0.5 py-0 text-left text-sm leading-6 text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50",
+			"-mx-0.5 inline-flex w-fit! max-w-full rounded-sm border-0 px-0.5 py-0 text-left text-sm leading-6 text-foreground transition-colors outline-none hover:bg-muted focus-visible:bg-ring/[0.04] disabled:pointer-events-none disabled:opacity-50",
+			multiline ? "min-h-6 items-start" : "h-6 items-center truncate",
 			isEmpty && "text-muted-foreground",
 			className
 		)}
-		type="button"
-		aria-label={ariaLabel}
-		{disabled}
-		onclick={startEditing}
 	>
-		<span class="truncate">{displayValue}</span>
+		<span class={multiline ? "whitespace-pre-wrap break-words" : "truncate"}>{displayValue}</span>
 	</button>
 {/if}
