@@ -214,7 +214,7 @@ function readableForeground(color: RgbColor): "#000000" | "#FFFFFF" {
   .color-trigger-input:focus-visible { border-color: var(--ring); }
   .color-trigger-input:focus ~ :global(.color-format-text) { visibility: hidden; }
   .color-trigger-input[aria-invalid="true"] { border-color: var(--destructive); }
-  .color-trigger-input:disabled { cursor: not-allowed; opacity: 0.5; }
+  .color-trigger-input:disabled { cursor: not-allowed; }
   :global(.color-format-text) { color: var(--picker-preview-foreground); line-height: 1.25rem; }
   :global(.color-preview-icon) { color: var(--picker-preview-foreground); }
   :global(.color-preview-control) { color: var(--picker-preview-foreground); }
