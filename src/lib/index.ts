@@ -207,6 +207,7 @@ export {
   type ScrollbarVisibilityOptions,
   scrollbarVisibility,
 } from "./scrollbar/index.js";
+export { RollingText, type RollingTextAlign, type RollingTextDirection, type RollingTextProps, wheelNavigation, type WheelNavigationOptions } from "./rolling-text/index.js";
 export {
   Select,
   SelectContent,
@@ -325,10 +326,11 @@ export {
   themeToCssVariables,
 } from "./theme/index.js";
 export { TimePicker } from "./time-picker/index.js";
-export { TimeSelect } from "./time-select/index.js";
 export { Tooltip, TooltipContent, TooltipPortal, TooltipProvider, TooltipTrigger } from "./tooltip/index.js";
 export { cn, type WithElementRef, type WithoutChild, type WithoutChildren, type WithoutChildrenOrChild } from "./utils.js";
 
 export { CycleSelect, type CycleSelectOption, type CycleSelectProps } from "./cycle-select/index.js";
 
 export { DatePicker, type DatePickerProps, type DatePickerPrecision } from "./date-picker/index.js";
+
+export { parseDateTimeInput, normalizeDateTimeInputText, type DateTimeInputPrecision, type DateTimeInputOptions, type ExcelDateSystem } from "./date-time-input/index.js";

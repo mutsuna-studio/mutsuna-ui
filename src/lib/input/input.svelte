@@ -32,9 +32,9 @@ const alwaysRaised = $derived(["date", "datetime-local", "month", "time", "week"
 		bind:this={ref}
 		data-slot={dataSlot}
 		class={cn(
-			"dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-			className,
-      floating && "floating-control"
+			"dark:bg-input/30 border-input focus-visible:border-ring focus-visible:bg-ring/[0.04] aria-invalid:border-destructive aria-invalid:bg-destructive/[0.05] disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+			floating && "floating-control h-10",
+			className
 		)}
 		type="file"
 		bind:files
@@ -48,9 +48,9 @@ const alwaysRaised = $derived(["date", "datetime-local", "month", "time", "week"
 		bind:this={ref}
 		data-slot={dataSlot}
 		class={cn(
-			"dark:bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium focus-visible:ring-3 aria-invalid:ring-3 md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-			className,
-      floating && "floating-control"
+			"dark:bg-input/30 border-input focus-visible:border-ring focus-visible:bg-ring/[0.04] aria-invalid:border-destructive aria-invalid:bg-destructive/[0.05] disabled:bg-input/50 dark:disabled:bg-input/80 h-8 rounded-lg border bg-transparent px-2.5 py-1 text-base transition-colors file:h-6 file:text-sm file:font-medium md:text-sm file:text-foreground placeholder:text-muted-foreground w-full min-w-0 outline-none file:inline-flex file:border-0 file:bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+			floating && "floating-control h-10",
+			className
 		)}
 		{type}
 		bind:value
@@ -71,16 +71,12 @@ const alwaysRaised = $derived(["date", "datetime-local", "month", "time", "week"
 {/if}
 
 <style>
-  .floating-input { --floating-border-width: 1px; position: relative; width: 100%; min-width: 0; }
-  .floating-input :global(.floating-control) { border-color: transparent; box-shadow: none; }
-  fieldset {
-    position: absolute; inset: -0.5rem 0 0; margin: 0; padding: 0 calc(0.625rem - 0.25rem - var(--floating-border-width));
-    border: var(--floating-border-width) solid var(--color-input); border-radius: var(--radius-lg);
-    pointer-events: none; min-width: 0;
-  }
-  legend { padding: 0; height: 1rem; max-width: 0; overflow: hidden; font-size: 0.75rem; white-space: nowrap; transition: max-width 150ms ease; }
+  .floating-input { --floating-outline: var(--color-input); position: relative; width: 100%; min-width: 0; interpolate-size: allow-keywords; }
+  .floating-input :global(.floating-control) { border-color: transparent; background-clip: padding-box; box-shadow: none; }
+  fieldset { position: absolute; inset: -0.5rem 0 0; margin: 0; padding: 0 calc(0.75rem - 0.25rem - 1px); border: 1px solid var(--floating-outline); border-radius: var(--radius-lg); pointer-events: none; min-width: 0; }
+  legend { width: 0; max-width: 100%; height: 1rem; overflow: hidden; padding: 0; font-size: 0.75rem; white-space: nowrap; transition: width 280ms cubic-bezier(0.16, 1, 0.3, 1); }
   legend span { padding: 0 0.25rem; visibility: hidden; }
-  label { position: absolute; left: 0.625rem; top: 50%; transform: translateY(-50%); max-width: calc(100% - 1.25rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-muted-foreground); font-size: 0.875rem; line-height: 1rem; cursor: text; transition: top 150ms ease, font-size 150ms ease; }
+  label { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); max-width: calc(100% - 1.5rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-muted-foreground); font-size: 0.875rem; line-height: 1rem; cursor: text; transition: top 180ms cubic-bezier(0.2, 0, 0, 1), font-size 180ms cubic-bezier(0.2, 0, 0, 1), color 150ms ease; }
   .floating-input:has(input:focus) label,
   .floating-input:has(input:not(:placeholder-shown)) label,
   .floating-input:has(input:autofill) label,
@@ -88,14 +84,12 @@ const alwaysRaised = $derived(["date", "datetime-local", "month", "time", "week"
   .floating-input:has(input:focus) legend,
   .floating-input:has(input:not(:placeholder-shown)) legend,
   .floating-input:has(input:autofill) legend,
-  .always-raised legend { max-width: 100%; }
-  .floating-input:has(input:focus) { --floating-border-width: 2px; }
-  .floating-input:has(input:focus) fieldset { border-color: var(--color-ring); }
-  .floating-input:has(input:focus) label { color: var(--color-foreground); }
-  .floating-input:has(input[aria-invalid="true"]) fieldset { border-color: var(--color-destructive); }
+  .always-raised legend { width: max-content; }
+  .floating-input:has(input:focus-visible) { --floating-outline: var(--color-ring); }
+  .floating-input:has(input[aria-invalid="true"]) { --floating-outline: var(--color-destructive); }
+  .floating-input:has(input:focus) label { color: var(--color-ring); }
   .floating-input:has(input[aria-invalid="true"]) label { color: var(--color-destructive); }
   .floating-input:has(input:disabled) label { opacity: 0.5; cursor: not-allowed; }
-  .floating-input:has(input:disabled) fieldset { opacity: 0.5; }
   .floating-input :global(input:not(:focus)::placeholder) { color: transparent; }
   @media (prefers-reduced-motion: reduce) { label, legend { transition: none; } }
 </style>

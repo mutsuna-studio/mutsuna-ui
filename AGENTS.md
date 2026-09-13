@@ -50,6 +50,7 @@
 
 - 共有componentのcatalogはこのrepositoryの`stories/*`を正本にする。
 - primitiveと複合componentの代表状態、disabled、loading、error、長文、狭いviewportを必要に応じて持たせる。
+- 同じcomponentの状態差だけでstoryを細分化しない。代表状態は比較できる1つのstoryへまとめ、独立storyは異なる操作フローや検証目的がある場合に限定する。
 - product固有のroute、API、権限、永続化をstoryへ持ち込まない。
 - 視覚確認用storyには、表示直後の入力・click・状態変更など見た目を自動で変える`play`を付けない。操作検証が必要な場合は、同じrenderを使う`!dev`・`!autodocs`付きのtest専用storyへ`play`を分離する。
 - storyとStorybook設定はnpm packageへ含めない。
@@ -105,3 +106,10 @@ release手順の正本は`RELEASING.md`。
 - MIT Licenseを維持する。
 - upstreamの著作権表示とライセンス本文を削除しない。
 - 新しいasset、font、icon、移植codeを追加するときは再配布条件を確認する。
+
+## 連結コントロールの枠線
+
+- 複数の入力・ボタンを隙間なく連結する部品は `ButtonGroup` を使い、角丸・境界の重なり・focus時の重なり順を個別実装しない。
+- 独自の操作要素を直接入れる場合は `data-slot` を付け、四辺の1px枠線を保持する。非表示フォーム入力や補助テキストには連結用の `data-slot` を付けない。
+- `border-l-0` / `border-r-0` / `border-t-0` / `border-b-0` で操作要素の枠線を削除しない。全体で1つの枠を持つ `InputGroup` の内側入力は別の構造として扱う。
+- 新しい連結部品のブラウザテストでは、非表示フォーム要素を含む構成で通常時の境界が1pxだけ重なることと、キーボードfocus時の四辺・重なり順を確認する。

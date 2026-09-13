@@ -246,7 +246,7 @@ function updateSearchableListPosition(): void {
       data-placeholder={!hasSelectedValue}
       data-disabled={disabled ? "" : undefined}
       class={cn(
-        "border-input data-placeholder:text-muted-foreground dark:bg-input/30 focus-within:border-ring focus-within:ring-ring/50 dark:hover:bg-input/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors focus-within:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] flex w-fit items-center justify-between whitespace-nowrap outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "border-input data-placeholder:text-muted-foreground dark:bg-input/30 focus-within:border-ring focus-within:bg-ring/[0.04] dark:hover:bg-input/50 gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-sm transition-colors data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] flex w-fit items-center justify-between whitespace-nowrap outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
     >

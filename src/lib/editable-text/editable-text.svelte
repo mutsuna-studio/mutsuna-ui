@@ -244,7 +244,7 @@ onDestroy(() => clearTimeout(clickTimer));
 		{...triggerProps}
 		data-slot={dataSlot}
 		class={cn(
-			"focus-visible:ring-ring/40 -mx-0.5 inline-flex w-fit! max-w-full rounded-sm border-0 px-0.5 py-0 text-left text-sm leading-6 text-foreground transition-colors outline-none hover:bg-muted focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50",
+			"-mx-0.5 inline-flex w-fit! max-w-full rounded-sm border-0 px-0.5 py-0 text-left text-sm leading-6 text-foreground transition-colors outline-none hover:bg-muted focus-visible:bg-ring/[0.04] disabled:pointer-events-none disabled:opacity-50",
 			multiline ? "min-h-6 items-start" : "h-6 items-center truncate",
 			isEmpty && "text-muted-foreground",
 			className

@@ -1,4 +1,3 @@
-export { default as DateTimeRangeFields } from "./date-time-range-fields.svelte";
 export {
   createDefaultEndDate,
   createDefaultFutureDateTimeRange,

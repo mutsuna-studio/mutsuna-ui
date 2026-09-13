@@ -51,7 +51,7 @@ function selectWorkspace(workspaceId: string): void {
       {#snippet fallback()}
         <button
           type="button"
-          class="ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground gap-2 rounded-xl px-3 py-1 text-left text-sm whitespace-nowrap transition-[width,height,padding] duration-200 group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-1! focus-visible:ring-3 has-[>svg:first-child]:pl-2.5 has-[>svg:last-child]:pr-2.5 data-active:font-medium peer/menu-button group/menu-button flex h-10 w-full items-center overflow-hidden outline-hidden"
+          class="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground gap-2 rounded-xl border border-transparent px-3 py-1 text-left text-sm whitespace-nowrap transition-[width,height,padding,background-color,border-color] duration-200 group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-1! focus-visible:border-sidebar-ring focus-visible:bg-sidebar-accent has-[>svg:first-child]:pl-2.5 has-[>svg:last-child]:pr-2.5 data-active:font-medium peer/menu-button group/menu-button flex h-10 w-full items-center overflow-hidden outline-hidden"
           data-slot="sidebar-menu-button"
           data-sidebar="menu-button"
           data-size="lg"

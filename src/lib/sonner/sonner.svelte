@@ -48,6 +48,11 @@ let progressDuration = $derived(toastOptions?.duration ?? duration);
 </Sonner>
 
 <style>
+	:global(.mutsuna-toaster [data-sonner-toast][data-styled="true"] [data-icon]) {
+		align-self: flex-start;
+		margin-block-start: 0.125rem;
+	}
+
 	:global(
 		.mutsuna-toaster[data-mutsuna-progress="true"]
 			[data-sonner-toast][data-styled="true"]:not([data-type="loading"])

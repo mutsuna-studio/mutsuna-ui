@@ -258,7 +258,7 @@ function toggleCompactSearch(event: MouseEvent): void {
 }
 
 :global(.floating-input-with-actions .floating-input > fieldset) {
-	padding-left: calc(2rem - 0.25rem - var(--floating-border-width));
+	padding-left: calc(2rem - 0.25rem - 1px);
 }
 
 :global(.collapsible-search) {

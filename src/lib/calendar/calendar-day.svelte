@@ -21,7 +21,7 @@ let { ref = $bindable(null), class: className, ...restProps }: CalendarPrimitive
 		// Unavailable
 		"data-[unavailable]:text-muted-foreground data-[unavailable]:line-through",
 		// focus
-		"focus:border-ring focus:ring-ring/50 focus:relative",
+		"focus:border-ring focus:bg-ring/[0.04] focus:relative",
 		// inner spans
 		"[&>span]:text-xs [&>span]:opacity-70",
 		className

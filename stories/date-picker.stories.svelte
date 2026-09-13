@@ -1,6 +1,6 @@
 <script module lang="ts">
 import { defineMeta } from "@storybook/addon-svelte-csf";
-import { expect, userEvent, within, waitFor } from "storybook/test";
+import { expect, fireEvent, userEvent, within, waitFor } from "storybook/test";
 import { parseDate } from "@internationalized/date";
 import ChevronLeftIcon from "@lucide/svelte/icons/chevron-left";
 import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
@@ -22,11 +22,15 @@ async function checkDefault(canvasElement: HTMLElement) {
   const body = within(canvasElement.ownerDocument.body);
   const trigger = canvas.getByRole("button", { name: "対象年月: 2026年9月" });
   await userEvent.click(trigger);
-  await userEvent.click(await body.findByRole("button", { name: "2027年" }));
+  const year = await body.findByRole("spinbutton", { name: "年" });
+  await userEvent.click(year);
+  await fireEvent.input(year, { target: { value: "２０２７" } });
+  await userEvent.keyboard("{Tab}");
   await expect(canvasElement.querySelector('input[name="month"]')).toHaveValue("2026-09");
-  await expect(body.getByRole("button", { name: "6月" })).toBeDisabled();
-  const may = body.getByRole("button", { name: "5月" });
-  may.focus();
+  const month = body.getByRole("spinbutton", { name: "月" });
+  await expect(month).toHaveFocus();
+  await expect(body.getByRole("button", { name: "月を1つ進める" })).toBeDisabled();
+  await expect(month).toHaveAttribute("aria-valuenow", "5");
   await userEvent.keyboard("{Enter}");
   await expect(trigger).toHaveTextContent("2027年5月");
   await expect(canvasElement.querySelector('input[name="month"]')).toHaveValue("2027-05");
@@ -38,32 +42,41 @@ async function checkDefault(canvasElement: HTMLElement) {
 }
 
 async function checkDirectInput(canvasElement: HTMLElement) {
-  if (import.meta.env.MODE !== "test") return;
   const canvas = within(canvasElement);
   const body = within(canvasElement.ownerDocument.body);
   const trigger = canvas.getByRole("button", { name: "直接入力: 2026年9月" });
   await userEvent.click(trigger);
-  const input = await body.findByRole("textbox", { name: "年月を直接入力" });
-  await userEvent.clear(input);
-  await userEvent.type(input, "abc１２３-/");
-  await expect(input).toHaveValue("");
-  await expect(body.queryByRole("button", { name: "確定" })).not.toBeInTheDocument();
-  await userEvent.type(input, "202613");
-  await expect(await body.findByRole("alert")).toHaveTextContent("形式");
+  await expect(body.queryByRole("textbox", { name: "年月を直接入力" })).not.toBeInTheDocument();
+  const year = await body.findByRole("spinbutton", { name: "年" });
+  const month = body.getByRole("spinbutton", { name: "月" });
+  await userEvent.clear(year);
+  await userEvent.type(year, "202613");
+  await userEvent.keyboard("{Enter}");
+  await expect(body.getByRole("alert")).toHaveTextContent("形式");
   await expect(canvasElement.querySelector('input[name="direct"]')).toHaveValue("2026-09");
-  await userEvent.clear(input);
-  await userEvent.type(input, "202801{Enter}");
+  await userEvent.clear(year);
+  await userEvent.type(year, "202801");
+  await userEvent.keyboard("{Enter}");
   await expect(body.getByRole("alert")).toHaveTextContent("範囲");
-  await userEvent.clear(input);
-  await userEvent.type(input, "202703");
-  await userEvent.click(body.getByRole("button", { name: "2026年" }));
-  await expect(input).toHaveValue("202603");
-  await userEvent.clear(input);
-  await userEvent.type(input, "202703{Enter}");
+  await userEvent.click(year);
+  await fireEvent.input(year, { target: { value: "２０２７０３" } });
+  await userEvent.keyboard("{Tab}");
+  await waitFor(() => expect(month).toHaveFocus());
+  await expect(year).toHaveAttribute("aria-valuenow", "2027");
+  await expect(month).toHaveAttribute("aria-valuenow", "3");
+  for (const text of ["2026-9", "2026-09", "２０２６／９", "46278", "202609"]) {
+    await userEvent.click(year);
+    await fireEvent.input(year, { target: { value: text } });
+    await userEvent.keyboard("{Tab}");
+    await waitFor(() => expect(month).toHaveAttribute("aria-valuenow", "9"));
+    await expect(year).toHaveAttribute("aria-valuenow", "2026");
+  }
+  await userEvent.click(year);
+  await fireEvent.input(year, { target: { value: "2027/3" } });
+  await userEvent.keyboard("{Tab}");
+  await userEvent.keyboard("{Enter}");
   await expect(trigger).toHaveTextContent("2027年3月");
   await expect(canvasElement.querySelector('input[name="direct"]')).toHaveValue("2027-03");
-  await waitFor(() => expect(trigger).toHaveFocus());
-
 }
 
 async function checkCurrentMonth(canvasElement: HTMLElement) {
@@ -91,7 +104,10 @@ async function checkYear(canvasElement: HTMLElement) {
   if (import.meta.env.MODE !== "test") return;
   const canvas = within(canvasElement); const body = within(canvasElement.ownerDocument.body);
   await userEvent.click(canvas.getByRole("button"));
-  await userEvent.click(await body.findByRole("button", { name: "2027年" }));
+  const year = await body.findByRole("spinbutton", { name: "年" });
+  await userEvent.click(year);
+  await fireEvent.input(year, { target: { value: "２０２７" } });
+  await userEvent.keyboard("{Enter}");
   await expect(canvasElement.querySelector('input[name="year"]')).toHaveValue("2027");
   await waitFor(() => expect(canvas.getByRole("button")).toHaveFocus());
 
@@ -249,6 +265,15 @@ function moveMonth(value: string, offset: number): string {
   const toolbar = within(canvas.getByTestId("toolbar-month-navigation"));
   const splitValue = () => canvasElement.querySelector('input[name="step-month"]');
   const toolbarValue = () => canvasElement.querySelector('input[name="toolbar-month"]');
+  // Hidden form inputs between controls must not interrupt border overlap.
+  for (const container of [canvas.getByTestId("split-month-navigation"), canvas.getByTestId("toolbar-month-navigation")]) {
+    const buttons = within(container).getAllByRole("button");
+    for (let index = 1; index < buttons.length; index++) {
+      const previous = buttons[index - 1].getBoundingClientRect();
+      const current = buttons[index].getBoundingClientRect();
+      await expect(Math.abs(previous.right - current.left - 1)).toBeLessThan(0.1);
+    }
+  }
   await expect(splitValue()).toHaveValue("2026-12");
   await userEvent.click(split.getByRole("button", { name: "翌月へ" }));
   await expect(splitValue()).toHaveValue("2027-01");
@@ -341,4 +366,37 @@ function moveMonth(value: string, offset: number): string {
       </div>
     </div>
   </section>
+</Story>
+
+<Story name="Roller Interaction Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const body = within(canvasElement.ownerDocument.body);
+  const trigger = canvas.getByRole("button", { name: "ローラー年月: 2026年12月" });
+  await userEvent.click(trigger);
+  const month = await body.findByRole("spinbutton", { name: "月" });
+  const year = body.getByRole("spinbutton", { name: "年" });
+  await waitFor(() => expect(year).toHaveFocus());
+  await fireEvent.wheel(month, { deltaY: 100 });
+  await waitFor(() => expect(year).toHaveAttribute("aria-valuenow", "2027"));
+  await expect(month).toHaveAttribute("aria-valuenow", "1");
+  await expect(canvasElement.querySelector('input[name="roller-month"]')).toHaveValue("2026-12");
+  await fireEvent.wheel(month, { deltaY: 100 });
+  await waitFor(() => expect(month).toHaveAttribute("aria-valuenow", "3"));
+  await expect(body.getByRole("button", { name: "月を1つ進める" })).toBeDisabled();
+  await fireEvent.wheel(month, { deltaY: -100 });
+  await waitFor(() => expect(month).toHaveAttribute("aria-valuenow", "1"));
+  await fireEvent.wheel(month, { deltaY: -100 });
+  await waitFor(() => expect(year).toHaveAttribute("aria-valuenow", "2026"));
+  await expect(month).toHaveAttribute("aria-valuenow", "12");
+  await userEvent.click(month);
+  await fireEvent.input(month, { target: { value: "１a１" } });
+  await expect(month).toHaveValue("11");
+  await fireEvent.keyDown(month, { key: "Tab", shiftKey: true });
+  await waitFor(() => expect(year).toHaveFocus());
+  await fireEvent.keyDown(year, { key: "Tab" });
+  await waitFor(() => expect(month).toHaveFocus());
+  await userEvent.click(body.getByRole("button", { name: "選択" }));
+  await expect(trigger).toHaveTextContent("2026年11月");
+}}>
+  <DatePicker precision="month" ariaLabel="ローラー年月" name="roller-month" value="2026-12" min="2026-11" max="2027-03" isDateUnavailable={(value) => value === "2027-02"} />
 </Story>

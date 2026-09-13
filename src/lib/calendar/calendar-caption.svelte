@@ -1,11 +1,11 @@
 <script lang="ts">
 import { DateFormatter, getLocalTimeZone, type DateValue } from "@internationalized/date";
-import { tick, type ComponentProps } from "svelte";
+import { type ComponentProps } from "svelte";
+import { parseDateTimeInput, type ExcelDateSystem } from "../date-time-input/index.js";
 import Button from "@mutsuna/ui/button/button.svelte";
-import ScrollbarArea from "@mutsuna/ui/scrollbar/scrollbar-area.svelte";
+import { stepCalendarMonth } from "./calendar-month-step.js";
+import CalendarRoller from "./calendar-roller.svelte";
 import type Calendar from "./calendar.svelte";
-import { Select as SelectRoot, SelectContent, SelectItem, SelectTrigger } from "@mutsuna/ui/select";
-import { cn } from "../utils.js";
 
 const calendarYearFloor = 1;
 
@@ -19,6 +19,8 @@ let {
   locale,
   placeholder = $bindable(),
   monthIndex = 0,
+  disabled = false,
+  excelDateSystem = "1900",
 }: {
   captionLayout: ComponentProps<typeof Calendar>["captionLayout"];
   months: ComponentProps<typeof Calendar>["months"];
@@ -29,45 +31,18 @@ let {
   placeholder: DateValue | undefined;
   locale: string;
   monthIndex: number;
+  disabled?: boolean;
+  excelDateSystem?: ExcelDateSystem;
 } = $props();
 
 let monthYearOpen = $state(false);
-let draftYear = $state(calendarYearFloor);
-let draftMonth = $state(1);
-let yearListElement = $state<HTMLDivElement | null>(null);
-let monthListElement = $state<HTMLDivElement | null>(null);
-
-const monthOptions = $derived(
-  (months ?? Array.from({ length: 12 }, (_, index) => index + 1)).map((value) => ({
-    value: String(value),
-    label: formatMonthOption(value),
-  })),
-);
-
-const yearOptions = $derived(
-  (years ?? [])
-    .filter((value) => value >= calendarYearFloor)
-    .map((value) => ({
-      value: String(value),
-      label: formatYearOption(value),
-    })),
-);
-const dropdownTriggerClass = "z-10 justify-center bg-background [&>svg]:hidden";
-const selectedMonthLabel = $derived(monthOptions.find((option) => option.value === String(month.month))?.label ?? formatMonth(month));
-const selectedYearLabel = $derived(yearOptions.find((option) => option.value === String(month.year))?.label ?? formatYear(month));
-const selectedMonthYearLabel = $derived(`${selectedYearLabel} ${selectedMonthLabel}`);
-$effect(() => {
-  if (!monthYearOpen) {
-    return;
-  }
-
-  month.year;
-  month.month;
-  draftYear;
-  draftMonth;
-  void tick().then(scrollSelectedOptionsIntoView);
-});
-
+let yearInput = $state<HTMLInputElement | null>(null);
+let monthInput = $state<HTMLInputElement | null>(null);
+const monthOptions = $derived((months ?? Array.from({ length: 12 }, (_, i) => i + 1))
+  .filter((value) => value >= 1 && value <= 12).map((value) => ({ value, label: formatMonthOption(value) })));
+const yearOptions = $derived((years ?? []).filter((value) => value >= calendarYearFloor)
+  .map((value) => ({ value, label: formatYearOption(value) })));
+const selectedMonthYearLabel = $derived(`${formatYear(month)} ${formatMonth(month)}`);
 function formatYear(date: DateValue) {
   const dateObj = date.toDate(getLocalTimeZone());
   if (typeof yearFormat === "function") return yearFormat(dateObj.getFullYear());
@@ -90,152 +65,51 @@ function formatYearOption(value: number) {
   return new DateFormatter(locale, { year: yearFormat }).format(new Date(value, 0, 1));
 }
 
-function updatePlaceholderMonth(value: string): void {
-  if (!placeholder) return;
-  const parsedMonth = Number.parseInt(value, 10);
-  if (Number.isNaN(parsedMonth)) return;
-  const nextPlaceholder = placeholder.set({ month: parsedMonth });
-  placeholder = nextPlaceholder.subtract({ months: monthIndex });
+function steppedMonth(offset: number) {
+  return stepCalendarMonth(month.year, month.month, offset, yearOptions.map((option) => option.value), monthOptions.map((option) => option.value));
 }
-
-function updatePlaceholderYear(value: string): void {
-  if (!placeholder) return;
-  const parsedYear = Number.parseInt(value, 10);
-  if (Number.isNaN(parsedYear) || parsedYear < calendarYearFloor) return;
-  const nextPlaceholder = placeholder.set({ year: parsedYear });
-  placeholder = nextPlaceholder.subtract({ months: monthIndex });
+function stepMonth(offset: number) {
+  if (!placeholder || disabled) return;
+  const next = steppedMonth(offset);
+  placeholder = month.set(next).subtract({ months: monthIndex });
 }
+const canPreviousMonth = $derived.by(() => { const next = steppedMonth(-1); return next.year !== month.year || next.month !== month.month; });
+const canNextMonth = $derived.by(() => { const next = steppedMonth(1); return next.year !== month.year || next.month !== month.month; });
 
-function setMonthYearOpen(open: boolean): void {
-  monthYearOpen = open;
-  if (!open) return;
-  draftYear = month.year;
-  draftMonth = month.month;
+function inputYearMonth(text: string) {
+  const parsed = parseDateTimeInput(text, "month", { excelDateSystem });
+  if (!parsed || !placeholder || disabled) return;
+  const year = Number(parsed.slice(0, 4)), nextMonth = Number(parsed.slice(5));
+  if (!yearOptions.some((option) => option.value === year) || !monthOptions.some((option) => option.value === nextMonth)) return;
+  placeholder = month.set({ year, month: nextMonth }).subtract({ months: monthIndex });
 }
-
-function selectDraftYear(value: string): void {
-  const parsedValue = Number.parseInt(value, 10);
-  if (Number.isNaN(parsedValue)) return;
-  if (parsedValue < calendarYearFloor) return;
-  draftYear = parsedValue;
-}
-
-function selectDraftMonth(value: string): void {
-  if (!placeholder) return;
-  const parsedValue = Number.parseInt(value, 10);
-  if (Number.isNaN(parsedValue) || parsedValue < 1 || parsedValue > 12) return;
-  draftMonth = parsedValue;
-  const nextPlaceholder = placeholder.set({ year: draftYear, month: draftMonth });
-  placeholder = nextPlaceholder.subtract({ months: monthIndex });
-  monthYearOpen = false;
-}
-
-function scrollSelectedOptionsIntoView(): void {
-  scrollElementIntoView(yearListElement?.querySelector(`[data-calendar-year-option="${draftYear}"]`));
-  scrollElementIntoView(monthListElement?.querySelector(`[data-calendar-month-option="${draftMonth}"]`));
-}
-
-function scrollElementIntoView(element: Element | null | undefined): void {
-  if (element === undefined || element === null || typeof element.scrollIntoView !== "function") {
-    return;
-  }
-
-  element.scrollIntoView({ block: "center", inline: "nearest" });
+function update(unit: "year" | "month", value: number): void {
+  if (!placeholder || disabled) return;
+  placeholder = month.set({ [unit]: value }).subtract({ months: monthIndex });
 }
 </script>
 
-{#if captionLayout === "dropdown"}
+{#if captionLayout?.startsWith("dropdown")}
   <div class="grid w-full gap-2" data-calendar-caption-dropdown={monthYearOpen ? "open" : "closed"}>
     <div class="flex justify-center">
-      <Button aria-label={monthYearOpen ? "日付選択へ戻る" : "年月"} variant="outline" size="sm" class="z-10 h-7 w-32 justify-center bg-background px-2 text-sm font-medium" onclick={() => setMonthYearOpen(!monthYearOpen)}>
-        {monthYearOpen ? "年月を選択" : selectedMonthYearLabel}
+      <Button type="button" aria-label={monthYearOpen ? "日付選択へ戻る" : "年月"} aria-expanded={monthYearOpen} variant="outline" size="sm" class="z-10 h-7 w-32 justify-center bg-background px-2 text-sm font-medium" {disabled} onclick={() => monthYearOpen = !monthYearOpen}>
+        {monthYearOpen ? "日付選択へ戻る" : selectedMonthYearLabel}
       </Button>
     </div>
     {#if monthYearOpen}
-      <div class="grid grid-cols-2 gap-1.5" data-calendar-month-year-picker>
-            <ScrollbarArea
-              bind:ref={yearListElement}
-              class="h-36 overflow-y-auto rounded-md border bg-background p-1"
-              role="group"
-              aria-label="年候補"
-              data-calendar-year-list
-            >
-              {#each yearOptions as option (option.value)}
-                <button
-                  type="button"
-                  data-calendar-year-option={option.value}
-                  class={cn(
-                    "h-8 w-full rounded-md text-sm font-medium tabular-nums hover:bg-accent hover:text-accent-foreground",
-                    option.value === String(draftYear) && "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
-                  )}
-                  aria-pressed={option.value === String(draftYear)}
-                  aria-label={`${option.label}を選択`}
-                  onpointerdown={(event) => event.preventDefault()}
-                  onclick={() => selectDraftYear(option.value)}
-                >
-                  {option.label}
-                </button>
-              {/each}
-            </ScrollbarArea>
-
-            <ScrollbarArea
-              bind:ref={monthListElement}
-              class="h-36 overflow-y-auto rounded-md border bg-background p-1"
-              role="group"
-              aria-label="月候補"
-              data-calendar-month-list
-            >
-              {#each monthOptions as option (option.value)}
-                <button
-                  type="button"
-                  data-calendar-month-option={option.value}
-                  class={cn(
-                    "h-8 w-full rounded-md text-sm font-medium tabular-nums hover:bg-accent hover:text-accent-foreground",
-                    option.value === String(draftMonth) && "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
-                  )}
-                  aria-pressed={option.value === String(draftMonth)}
-                  aria-label={`${option.label}を選択`}
-                  onpointerdown={(event) => event.preventDefault()}
-                  onclick={() => selectDraftMonth(option.value)}
-                >
-                  {option.label}
-                </button>
-              {/each}
-            </ScrollbarArea>
+      <div class="flex items-center gap-2" data-calendar-month-year-picker>
+        <div class="min-w-0 flex-1">
+          {#if captionLayout !== "dropdown-months"}
+            <CalendarRoller onYearMonthInput={inputYearMonth} bind:ref={yearInput} onTab={captionLayout === "dropdown" ? () => monthInput?.focus() : undefined} label="年" value={month.year} options={yearOptions} {disabled} onValueChange={(value) => update("year", value)} />
+          {:else}<span>{formatYear(month)}</span>{/if}
+        </div>
+        <div class="min-w-0 flex-1">
+          {#if captionLayout !== "dropdown-years"}
+            <CalendarRoller bind:ref={monthInput} onTab={captionLayout === "dropdown" ? () => yearInput?.focus() : undefined} label="月" value={month.month} options={monthOptions} {disabled} onStep={stepMonth} canPrevious={canPreviousMonth} canNext={canNextMonth} onValueChange={(value) => update("month", value)} />
+          {:else}<span>{formatMonth(month)}</span>{/if}
+        </div>
       </div>
     {/if}
-  </div>
-{:else if captionLayout === "dropdown-months"}
-  <div class="flex items-center justify-center gap-2">
-    <SelectRoot type="single" value={String(month.month)} onValueChange={updatePlaceholderMonth}>
-      <SelectTrigger size="sm" class={`${dropdownTriggerClass} w-20`}>
-        <span>{monthOptions.find((option) => option.value === String(month.month))?.label ?? formatMonth(month)}</span>
-      </SelectTrigger>
-      <SelectContent>
-        {#each monthOptions as option (option.value)}
-          <SelectItem value={option.value}>{option.label}</SelectItem>
-        {/each}
-      </SelectContent>
-    </SelectRoot>
-    {#if placeholder}
-      <span>{formatYear(placeholder)}</span>
-    {/if}
-  </div>
-{:else if captionLayout === "dropdown-years"}
-  <div class="flex items-center justify-center gap-2">
-    {#if placeholder}
-      <span>{formatMonth(placeholder)}</span>
-    {/if}
-    <SelectRoot type="single" value={String(month.year)} onValueChange={updatePlaceholderYear}>
-      <SelectTrigger size="sm" class={`${dropdownTriggerClass} w-24`}>
-        <span>{yearOptions.find((option) => option.value === String(month.year))?.label ?? formatYear(month)}</span>
-      </SelectTrigger>
-      <SelectContent class="max-h-64">
-        {#each yearOptions as option (option.value)}
-          <SelectItem value={option.value}>{option.label}</SelectItem>
-        {/each}
-      </SelectContent>
-    </SelectRoot>
   </div>
 {:else}
   {formatMonth(month)} {formatYear(month)}

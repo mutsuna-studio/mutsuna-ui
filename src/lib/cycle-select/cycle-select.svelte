@@ -24,6 +24,7 @@ export interface CycleSelectProps {
 </script>
 
 <script lang="ts">
+import { ButtonGroup } from "../button-group/index.js";
 import { selectTriggerClass } from "../select/trigger-style.js";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../select/index.js";
 import { cn } from "../utils.js";
@@ -54,10 +55,11 @@ function advance() {
 }
 </script>
 
-<div bind:this={anchor} role="group" aria-label={ariaLabel} data-slot="cycle-select" class={cn("inline-flex min-w-0 items-stretch", className)}>
+<ButtonGroup bind:ref={anchor} aria-label={ariaLabel} data-slot="cycle-select" class={cn("inline-flex min-w-0", className)}>
   <button
     {id}
     type="button"
+    data-slot="button"
     data-size={size}
     disabled={disabled || !next}
     aria-label={`${ariaLabel}: ${selected?.label ?? placeholder} — ${nextLabel}${next ? `: ${next.label}` : ""}`}
@@ -67,7 +69,7 @@ function advance() {
     onclick={advance}
     class={cn(
       selectTriggerClass,
-      "relative min-w-0 flex-1 justify-start rounded-r-none border-r-0 focus-visible:z-10 data-[size=sm]:rounded-r-none data-[invalid]:border-destructive",
+      "min-w-0 flex-1 justify-start data-[invalid]:border-destructive",
       !selected && "text-muted-foreground",
     )}
   >
@@ -80,7 +82,7 @@ function advance() {
       aria-label={`${ariaLabel}: ${listLabel}`}
       aria-invalid={invalid}
       aria-describedby={describedBy}
-      class="shrink-0 rounded-l-none px-2 focus-visible:z-10 data-[size=sm]:rounded-l-none"
+      class="shrink-0 px-2"
     />
     <SelectContent customAnchor={anchor} align="start" class="w-(--bits-select-anchor-width) min-w-0" aria-label={`${ariaLabel}: ${listLabel}`}>
       {#each options as option (option.value)}
@@ -89,4 +91,4 @@ function advance() {
     </SelectContent>
   </Select>
   <span class="sr-only" role="status">{selected?.label ?? placeholder}</span>
-</div>
+</ButtonGroup>

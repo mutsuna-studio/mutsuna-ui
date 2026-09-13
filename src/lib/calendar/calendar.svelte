@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Calendar as CalendarPrimitive } from "bits-ui";
 import * as Calendar from "./index.js";
+import type { ExcelDateSystem } from "../date-time-input/index.js";
 import { cn, type WithoutChildrenOrChild } from "../utils.js";
 import type { ButtonVariant } from "@mutsuna/ui/button";
 import { Button } from "../button/index.js";
@@ -20,6 +21,7 @@ let {
   weekStartsOn = 1,
   fixedWeeks = true,
   buttonVariant = "ghost",
+  excelDateSystem = "1900",
   captionLayout = "label",
   locale = "ja-JP",
   months: monthsProp,
@@ -32,6 +34,7 @@ let {
   disableDaysOutsideMonth = false,
   ...restProps
 }: WithoutChildrenOrChild<CalendarPrimitive.RootProps> & {
+  excelDateSystem?: ExcelDateSystem;
   showToday?: boolean;
   todayLabel?: string;
   buttonVariant?: ButtonVariant;
@@ -99,13 +102,15 @@ get along, so we shut typescript up by casting `value` to `never`.
 				<Calendar.PrevButton variant={buttonVariant} />
 				<Calendar.NextButton variant={buttonVariant} />
 			</Calendar.Nav>
-			{#each months as month, monthIndex (month)}
+			{#each months as month, monthIndex (monthIndex)}
 				<Calendar.Month>
 					<Calendar.Header>
 						{#snippet child({ props })}
 							<div {...props}>
 								<Calendar.Caption
 									{captionLayout}
+									{excelDateSystem}
+									disabled={Boolean(restProps.disabled || restProps.readonly)}
 									months={monthsProp}
 									{monthFormat}
 									{years}

@@ -195,7 +195,6 @@ pnpm review:shadcn -- --finalize
 ```svelte
 <script lang="ts">
 import { BusinessHoursFields } from "@mutsuna/ui/business-hours-fields";
-import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 import { FormTemplateEditor } from "@mutsuna/ui/form-template-editor";
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
@@ -469,3 +468,17 @@ let name = $state("表示名");
 - ダブルクリックモードのマウス単クリックは250ms待ってから`onclick`を呼びます。OSのダブルクリック判定時間とは独立しているため、遅いダブルクリックでは先に単クリックが実行されることがあります。取消不能な操作には別ボタンを使ってください。遅延callback内の`event.currentTarget`は利用できません。
 
 公開型は`EditableTextProps`、`EditableTextTriggerProps`、`EditableTextCommit`、`EditableTextCancel`を提供します。
+
+### 日時入力の共通解析
+
+`@mutsuna/ui/date-time-input` の `parseDateTimeInput(input, precision, options)` は、年・年月・日付・時刻を正規化し、不正・曖昧な入力は `null` を返します。年から始まる `2026-9`、`2026/09`、`2026.9`、`2026年9月`、`202609`、日付の `2026/9/13`・`20260913`、時刻の `9:30`・`9時30分`・`9:30 PM` などと全角表記に対応します。2桁年や年を省略した日付、月日順序が曖昧な表記は推測しません。
+
+数値はExcelシリアル値として解釈します。文字列は通常の年月日・時刻表記を優先し、それに該当しない数字列をシリアル値として解釈します。`excel:1` のような接頭辞で明示もできます。既定は1900年方式で、`{ excelDateSystem: "1904" }` により1904年方式へ切り替えます。1900年方式の架空の2月29日（シリアル60）は日付へ変換しません。小数部は時刻で、秒は分未満を切り捨てます。タイムゾーン変換は行いません。
+
+DatePicker・TimePickerにも `excelDateSystem` を指定できます。年月は年ローラー、時刻は時ローラーへ入力し、Tab・Enterで解釈します。DatePickerの年・年月モードでは重複する上部入力を廃止し、日付モードでは日まで直接入力する欄を維持しています。
+
+### 連結コントロールの作成
+
+入力やボタンを連結する場合は `@mutsuna/ui/button-group` の `ButtonGroup` を使います。DatePickerやCycleSelectと同じ境界処理が適用され、通常時の二重線とフォーカス時の枠線欠けを防ぎます。独自の子コントロールには `data-slot="button"` などを指定し、四辺の1px枠線を保持してください。角丸、負のマージン、focus時のz-indexを個別に指定する必要はありません。非表示フォーム入力は間に挟んでも構いません。
+
+全体で一つの入力欄を構成する場合は、外枠をまとめて管理する `InputGroup` を使います。

@@ -60,7 +60,7 @@ test("deep component exports point TypeScript to generated declaration files", a
 
 test("every public component has a package-owned story", async () => {
   const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
-  const nonComponentExports = new Set(["./theme.css", "./utils"]);
+  const nonComponentExports = new Set(["./theme.css", "./utils", "./date-time-range-fields", "./date-time-input"]);
   const exportedComponents = Object.keys(packageJson.exports)
     .filter((subpath) => /^\.\/[^/*]+$/.test(subpath) && !nonComponentExports.has(subpath))
     .map((subpath) => subpath.slice(2))

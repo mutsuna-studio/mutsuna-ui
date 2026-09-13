@@ -38,6 +38,7 @@ function toggleAllWeekdays(checked: boolean): void {
 		<div class="space-y-1">
 			<h2 id="checkbox-states-heading" class="text-sm font-medium">Checkbox states</h2>
 			<p class="text-muted-foreground text-xs">未選択・選択済み・一部選択と、それぞれの無効状態を比較する。</p>
+			<p class="text-muted-foreground text-xs">クリックまたはSpaceキーでオンにすると、チェックが左から右上へ描かれます。動きを減らす設定では即座に表示します。</p>
 		</div>
 		<div class="grid gap-4 sm:grid-cols-2">
 			<div class="grid gap-3 rounded-lg border p-4">

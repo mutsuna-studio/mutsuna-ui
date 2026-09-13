@@ -77,9 +77,12 @@ try {
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
 import { DatePicker } from "@mutsuna/ui/date-picker";
+import { parseDateTimeInput, type ExcelDateSystem } from "@mutsuna/ui/date-time-input";
 import { EditableText, type EditableTextCommit, type EditableTextProps } from "@mutsuna/ui/editable-text";
 import { Input } from "@mutsuna/ui/input";
+import { Textarea } from "@mutsuna/ui/textarea";
 import { CycleSelect } from "@mutsuna/ui/cycle-select";
+import { RollingText, wheelNavigation } from "@mutsuna/ui/rolling-text";
 import { ColorPicker } from "@mutsuna/ui/color-picker";
 import { Button } from "@mutsuna/ui/button";
 import { AdminPage, AdminPageHeader, AdminPanel } from "@mutsuna/ui/admin-layout";
@@ -87,7 +90,6 @@ import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
 import { CustomerAvatar } from "@mutsuna/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 import { BusinessHoursFields, type BusinessHourDraft, weekdayLabels, weekdays } from "@mutsuna/ui/business-hours-fields";
-import { DateTimeRangeFields } from "@mutsuna/ui/date-time-range-fields";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@mutsuna/ui/dialog";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@mutsuna/ui/drawer";
 import { ResponsiveDialog, ResponsiveDialogContent, ResponsiveDialogTitle, ResponsiveDialogTrigger } from "@mutsuna/ui/responsive-dialog";
@@ -103,7 +105,6 @@ import { readFormActionToast } from "@mutsuna/ui/sveltekit-form";
 import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
 import { ThemeProvider, findThemeTemplate, type ThemeTemplateKey } from "@mutsuna/ui/theme";
 import { cn } from "@mutsuna/ui/utils";
-import { CalendarDate } from "@internationalized/date";
 
 const editableProps: EditableTextProps = { editOn: "doubleClick", onCommit: (_detail: EditableTextCommit) => undefined };
 let fields = $state<EditorField[]>([
@@ -118,12 +119,8 @@ let holidayOpensAt = $state("09:00");
 let holidayClosesAt = $state("18:00");
 let holidayPriority = $state(true);
 let sliderValue = $state(50);
-let startDateValue = $state(new CalendarDate(2026, 1, 1));
-let endDateValue = $state(new CalendarDate(2026, 1, 1));
-let startDate = $state("2026-01-01");
-let startTime = $state("09:00");
-let endDate = $state("2026-01-01");
-let endTime = $state("10:00");
+const dateSystem: ExcelDateSystem = "1900";
+const parsedExcelMonth = parseDateTimeInput("46278", "month", { excelDateSystem: dateSystem });
 const actionToast = readFormActionToast({ status: "success", message: "Shared form action" });
 </script>
 
@@ -132,7 +129,9 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
 </EditableText>
 <DatePicker precision="month" ariaLabel="対象年月" value="2026-09" />
 <Input label="表示名" name="displayName" />
+<Textarea label="説明" name="description" />
 <CycleSelect ariaLabel="表示" options={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
+<span use:wheelNavigation={{ onNext: () => undefined }}><RollingText value="External rolling text" widthValues={["External rolling text", "A wider external rolling text"]} align="center" /></span>
 <ColorPicker value="#191A22" name="themeColor" />
 <ThemeProvider theme={findThemeTemplate("github" satisfies ThemeTemplateKey)}>
   <AdminShellFrame pageTitle="External consumer" contentGutter="auto" contentPadding="none">
@@ -188,16 +187,6 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
         <div class="h-40">Themed scrollbar</div>
       </ScrollbarArea>
       <MarkdownTextEditor id="external-markdown" label="Markdown" value="## External" />
-      <DateTimeRangeFields
-        bind:startDateValue
-        bind:endDateValue
-        bind:startDate
-        bind:startTime
-        bind:endDate
-        bind:endTime
-        minimumStartDateValue={startDateValue}
-        minimumEndDateValue={startDateValue}
-      />
       <FormTemplateEditor bind:fields />
       <BusinessHoursFields
         title="Business hours"
