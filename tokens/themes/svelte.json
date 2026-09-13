@@ -1,0 +1,257 @@
+{
+  "theme": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.svelte.seed}"
+    },
+    "light": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-light}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-light}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-light}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.foreground-light}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.svelte.card-light}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.card-foreground-light}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.foreground-light}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.svelte.secondary-light}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.card-foreground-light}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.svelte.muted-light}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.muted-foreground-light}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.svelte.secondary-light}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-light}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.svelte.card-light}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.card-foreground-light}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.svelte.secondary-light}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-light}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-light}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.svelte.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-ui}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-body}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-heading}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-mono}"
+      }
+    },
+    "dark": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-dark}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-dark}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.svelte.ring-dark}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.svelte.background-dark}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.foreground-dark}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.svelte.card-dark}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.card-foreground-dark}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.svelte.popover-dark}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.foreground-dark}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.svelte.secondary-dark}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.card-foreground-dark}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.svelte.popover-dark}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.muted-foreground-dark}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.svelte.secondary-dark}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.ring-dark}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.svelte.border-dark}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.svelte.border-dark}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.svelte.card-dark}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.card-foreground-dark}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.svelte.secondary-dark}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.ring-dark}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.svelte.border-dark}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.svelte.ring-dark}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.svelte.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-ui}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-body}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-heading}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.svelte.theme-font-mono}"
+      }
+    },
+    "preview": {
+      "$type": "color",
+      "$value": "{color.svelte.primary-light}"
+    }
+  },
+  "$description": "Palette and font roles adapted from https://svelte.dev (September 2026). Non-official preset."
+}

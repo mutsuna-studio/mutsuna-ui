@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createTheme, defaultTheme, findThemeTemplate, hexToOklch, isValidOklchColor, oklchToHex, themeTemplates, themeAppearanceVariableNames, themeToCssVariables } from "../src/lib/theme/theme.ts";
+import { createTheme, defaultTheme, findThemeTemplate, hexToOklch, isValidOklchColor, oklchToHex, themeTemplates, themeAppearanceVariableNames, themeToCssVariables } from "../dist/theme/theme.js";
 
 test("theme templates use valid OKLCH colors", () => {
   assert.equal(defaultTheme.primary, "oklch(0.575 0.2 45)");

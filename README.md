@@ -438,6 +438,10 @@ other dates. Use `showToday={false}` to hide it or `todayLabel` to change its te
 引数はファイルまたはディレクトリを複数指定できます。依存・ビルド出力ディレクトリとシンボリックリンクは走査しません。独自ラッパーや再export経由のButton、独自アイコン、別のsnippetから動的に渡す内容は検出対象外です。CLIの導入は任意で、既存の描画やchildren APIは変更しません。
 
 
+## Design Tokensの編集
+
+テーマの色・角丸・フォントは [`tokens/`](./tokens/README.md) のJSONを正本にしています。新規色はOKLCH、外部由来の色は通常sRGBのDTCG Colorとして記述し、semantic tokenから参照します。変更後に `pnpm tokens:generate` を実行してください。check/buildで生成漏れを検出します。公開Theme APIとCSS変数の使い方は従来どおりです。
+
 ## Editable Text
 
 `bind:value`で値を受け取り、保存処理が必要なときだけ`onCommit`を指定します。値が変わらない確定では通知しません。

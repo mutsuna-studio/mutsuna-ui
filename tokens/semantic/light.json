@@ -1,0 +1,156 @@
+{
+  "semantic": {
+    "radius": {
+      "$type": "dimension",
+      "$value": "{dimension.base-light.radius}"
+    },
+    "background": {
+      "$type": "color",
+      "$value": "{color.base-light.background}"
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.foreground}"
+    },
+    "card": {
+      "$type": "color",
+      "$value": "{color.base-light.background}"
+    },
+    "card-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.foreground}"
+    },
+    "popover": {
+      "$type": "color",
+      "$value": "{color.base-light.background}"
+    },
+    "popover-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.foreground}"
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "{color.base-light.primary}"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.primary-foreground}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.base-light.secondary}"
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.secondary-foreground}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.base-light.secondary}"
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.muted-foreground}"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.base-light.secondary}"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.secondary-foreground}"
+    },
+    "destructive": {
+      "$type": "color",
+      "$value": "{color.base-light.destructive}"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "{color.base-light.warning}"
+    },
+    "warning-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.warning-foreground}"
+    },
+    "error": {
+      "$type": "color",
+      "$value": "{color.base-light.error}"
+    },
+    "error-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.error-foreground}"
+    },
+    "success": {
+      "$type": "color",
+      "$value": "{color.base-light.success}"
+    },
+    "success-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.success-foreground}"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.base-light.border}"
+    },
+    "input": {
+      "$type": "color",
+      "$value": "{color.base-light.border}"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "{color.base-light.ring}"
+    },
+    "chart-1": {
+      "$type": "color",
+      "$value": "{color.base-light.chart-1}"
+    },
+    "chart-2": {
+      "$type": "color",
+      "$value": "{color.base-light.chart-2}"
+    },
+    "chart-3": {
+      "$type": "color",
+      "$value": "{color.base-light.chart-3}"
+    },
+    "chart-4": {
+      "$type": "color",
+      "$value": "{color.base-light.chart-4}"
+    },
+    "chart-5": {
+      "$type": "color",
+      "$value": "{color.base-light.chart-5}"
+    },
+    "sidebar": {
+      "$type": "color",
+      "$value": "{color.base-light.sidebar}"
+    },
+    "sidebar-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.foreground}"
+    },
+    "sidebar-primary": {
+      "$type": "color",
+      "$value": "{color.base-light.sidebar-primary}"
+    },
+    "sidebar-primary-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.primary-foreground}"
+    },
+    "sidebar-accent": {
+      "$type": "color",
+      "$value": "{color.base-light.secondary}"
+    },
+    "sidebar-accent-foreground": {
+      "$type": "color",
+      "$value": "{color.base-light.secondary-foreground}"
+    },
+    "sidebar-border": {
+      "$type": "color",
+      "$value": "{color.base-light.border}"
+    },
+    "sidebar-ring": {
+      "$type": "color",
+      "$value": "{color.base-light.ring}"
+    }
+  }
+}

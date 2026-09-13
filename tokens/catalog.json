@@ -1,0 +1,95 @@
+{
+  "defaultTheme": "orange",
+  "themes": [
+    {
+      "key": "orange",
+      "name": "オレンジ",
+      "description": "現在の標準色"
+    },
+    {
+      "key": "blue",
+      "name": "ブルー",
+      "description": "落ち着いた運用色"
+    },
+    {
+      "key": "green",
+      "name": "グリーン",
+      "description": "状態確認に馴染む色"
+    },
+    {
+      "key": "rose",
+      "name": "ローズ",
+      "description": "柔らかい強調色"
+    },
+    {
+      "key": "neutral",
+      "name": "ニュートラル",
+      "description": "控えめな管理画面色"
+    },
+    {
+      "key": "amber",
+      "name": "アンバー",
+      "description": "温かみのある黄金色"
+    },
+    {
+      "key": "lime",
+      "name": "ライム",
+      "description": "軽やかな黄緑色"
+    },
+    {
+      "key": "teal",
+      "name": "ティール",
+      "description": "穏やかな青緑色"
+    },
+    {
+      "key": "cyan",
+      "name": "シアン",
+      "description": "澄んだ印象の水色"
+    },
+    {
+      "key": "indigo",
+      "name": "インディゴ",
+      "description": "深みのある藍色"
+    },
+    {
+      "key": "violet",
+      "name": "バイオレット",
+      "description": "上品な紫色"
+    },
+    {
+      "key": "fuchsia",
+      "name": "フューシャ",
+      "description": "華やかな赤紫色"
+    },
+    {
+      "key": "slate",
+      "name": "スレート",
+      "description": "青みを帯びた落ち着いた灰色"
+    },
+    {
+      "key": "svelte",
+      "name": "Svelte",
+      "description": "Svelteの配色とタイポグラフィ"
+    },
+    {
+      "key": "claude",
+      "name": "Claude-inspired",
+      "description": "チャット向けの穏やかな背景と控えめなクレイ色"
+    },
+    {
+      "key": "github",
+      "name": "GitHub-inspired",
+      "description": "明確な境界線と緑の主要操作"
+    },
+    {
+      "key": "linear",
+      "name": "Linear-inspired",
+      "description": "静かな背景階調と青紫のアクセント"
+    },
+    {
+      "key": "notion",
+      "name": "Notion-inspired",
+      "description": "白い文書面と控えめな青い操作色"
+    }
+  ]
+}

@@ -620,9 +620,9 @@
   },
   "scripts": {
     "changeset": "changeset",
-    "build": "svelte-package",
+    "build": "pnpm tokens:check && svelte-package",
     "build-storybook": "STORYBOOK_DISABLE_TELEMETRY=1 storybook build",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check": "pnpm tokens:check && svelte-check --tsconfig ./tsconfig.json",
     "prepack": "pnpm run build",
     "sync:loading-ui": "node scripts/sync-loading-ui-css-patterns.mjs",
     "sync:shadcn": "node scripts/sync-shadcn-upstream.mjs",
@@ -631,7 +631,10 @@
     "test": "pnpm run check && pnpm run build && node --test test/*.test.mjs",
     "test:storybook": "STORYBOOK_DISABLE_TELEMETRY=1 vitest --project=storybook --run",
     "test:consumer": "node test/consumer-smoke.mjs",
-    "version": "changeset version"
+    "version": "changeset version",
+    "tokens:generate": "node scripts/design-tokens.mjs",
+    "tokens:check": "node scripts/design-tokens.mjs --check",
+    "test:tokens:browser": "node --test test/design-tokens.browser.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

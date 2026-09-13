@@ -1,0 +1,257 @@
+{
+  "theme": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.github.seed}"
+    },
+    "light": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.github.primary-light}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.github.ring-light}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-light}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-light}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-light}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.github.secondary-light}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-light}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.github.secondary-light}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.github.muted-foreground-light}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.github.accent-light}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.github.accent-foreground-light}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.github.border-light}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.github.border-light}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.github.secondary-light}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-light}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.github.accent-light}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.github.accent-foreground-light}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.github.accent-light}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.github.accent-foreground-light}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.github.border-light}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.github.ring-light}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.github.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-ui}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-ui}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-ui}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-mono}"
+      }
+    },
+    "dark": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.github.primary-dark}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.github.ring-dark}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.github.background-dark}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-dark}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.github.card-dark}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-dark}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.github.card-dark}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-dark}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.github.card-dark}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-dark}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.github.card-dark}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.github.muted-foreground-dark}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.github.accent-dark}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.github.accent-foreground-dark}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.github.border-dark}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.github.border-dark}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.github.card-dark}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.github.foreground-dark}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.github.accent-dark}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.github.accent-foreground-dark}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.github.accent-dark}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.github.accent-foreground-dark}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.github.border-dark}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.github.ring-dark}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.github.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-ui}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-ui}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-ui}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-mono}"
+      }
+    },
+    "preview": {
+      "$type": "color",
+      "$value": "{color.github.primary-light}"
+    }
+  },
+  "$description": "Non-official GitHub-inspired palette. Sources and approximation scope are documented in README.md."
+}
