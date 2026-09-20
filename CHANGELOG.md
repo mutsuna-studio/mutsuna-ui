@@ -1,5 +1,15 @@
 # @mutsuna/ui
 
+## 0.14.0
+
+### Minor Changes
+
+- 0ebe4eb: Astro などで利用できる、標準 CSS 変数のみの `@mutsuna/ui/tokens.css` とフォントのみの `@mutsuna/ui/fonts.css` を追加しました。既存の `theme.css` は両方を読み込み、従来の Tailwind・Svelte 部品向けスタイルを維持します。Astro consumer で型チェック・本番ビルド・テーマ切替と Svelte island の操作を検証します。
+
+### Patch Changes
+
+- 0ebe4eb: テーマの色・角丸・フォントの正本を DTCG 形式の JSON へ集約し、既存 Theme API と CSS 変数を生成するようにしました。既存 18 テーマと light/dark の表示を維持し、生成漏れと不正な参照を検出します。
+
 ## 0.13.0
 
 ### Minor Changes
