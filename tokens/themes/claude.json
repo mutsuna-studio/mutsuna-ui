@@ -1,0 +1,257 @@
+{
+  "theme": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.claude.seed}"
+    },
+    "light": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.claude.primary-light}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.primary-foreground-light}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-light}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-light}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.claude.primary-dark}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-light}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.card-foreground-light}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-light}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.claude.secondary-light}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.card-foreground-light}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.claude.muted-light}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.muted-foreground-light}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.claude.secondary-light}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-light}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.claude.border-light}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.claude.input-light}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.claude.muted-light}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.card-foreground-light}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-light}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-light}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.claude.border-light}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.claude.primary-dark}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.claude.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-ui}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-heading}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-body}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-mono}"
+      }
+    },
+    "dark": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.claude.primary-dark}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.primary-foreground-light}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-dark}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.claude.primary-light}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.claude.background-dark}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.claude.card-dark}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.claude.card-dark}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-dark}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.claude.card-dark}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.muted-foreground-dark}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-dark}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.claude.border-dark}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.claude.input-dark}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-dark}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-foreground-dark}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-dark}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.sidebar-primary-foreground-dark}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.claude.border-dark}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.claude.primary-light}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.claude.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-ui}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-heading}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-body}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.claude.theme-font-mono}"
+      }
+    },
+    "preview": {
+      "$type": "color",
+      "$value": "{color.claude.primary-light}"
+    }
+  },
+  "$description": "Based on claude.ai app v2 tokens and the official Chat tutorial (September 2026). Proprietary fonts are not redistributed; OFL substitutes are used. Non-official preset."
+}

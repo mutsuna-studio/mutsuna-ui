@@ -72,6 +72,15 @@ git diff --check
 - Storybookを変更した場合は`pnpm build-storybook`を必須にする。
 - consumerへ影響する変更は、consumer側のcheck、test、buildも完了条件に含める。
 
+## Astro互換性
+
+- 新規コンポーネント、既存コンポーネントの改善、公開export・依存・テーマCSSの変更ではAstro互換性を確認し、`pnpm test:consumer:astro`を完了条件に含める。必要なChromiumは`pnpm exec playwright install chromium`で用意する。
+- 汎用部品にSvelteKitの`$app/*`やroute固有機能を持ち込まない。SSR時のmodule評価で`window`・`document`などのブラウザ専用APIを実行しない。
+- 公開入口の検証登録は`test/astro-coverage.json`を正本にする。exportを追加・削除したら同じ変更で更新する。`pnpm test`が未登録・削除漏れ・重複を検出する。
+- 新しい部品は対応する公開indexからexportする。wildcardのdeep importだけで公開しない。wildcardは登録済みindexと同じディレクトリに限定する。
+- 登録表から一時consumerのimport検証を生成する。汎用の全公開indexとCSS入口を実際のtarballから読み込み、Astro/Svelte check、SSR・client build、hydrationを検証する。除外は専用境界`./sveltekit-form`のみで、理由を必須にする。
+- import検証は部品を個別に描画・操作する検証とは区別する。既存のButton・Input・Dialogの操作検証を維持し、変更が操作・focus・hydrationへ影響する場合は対象のAstro fixtureとブラウザ検証も更新する。未検証の部品を操作検証済みとは扱わない。
+
 ## GitHub PR
 
 - 対応するGitHub Issueがある場合は、PR本文の`関連Issue`へ`#<番号>`を記載する。

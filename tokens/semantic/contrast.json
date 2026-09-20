@@ -1,0 +1,20 @@
+{
+  "contrast": {
+    "lightForeground": {
+      "$type": "color",
+      "$value": "{color.base-light.primary-foreground}"
+    },
+    "darkForeground": {
+      "$type": "color",
+      "$value": "{color.base-light.foreground}"
+    },
+    "absoluteLightForeground": {
+      "$type": "color",
+      "$value": "{color.base-light.background}"
+    },
+    "absoluteDarkForeground": {
+      "$type": "color",
+      "$value": "{color.contrast.absoluteDarkForeground}"
+    }
+  }
+}

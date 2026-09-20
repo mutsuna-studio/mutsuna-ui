@@ -1,0 +1,257 @@
+{
+  "theme": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.notion.seed}"
+    },
+    "light": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.notion.primary-light}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.primary-foreground-light}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.notion.primary-light}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.svelte.primary-foreground}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.notion.secondary-light}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.notion.secondary-light}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.muted-foreground-light}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.notion.accent-light}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.notion.border-light}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.notion.border-light}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.notion.secondary-light}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.notion.accent-light}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.notion.accent-light}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.foreground-light}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.notion.border-light}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.notion.primary-light}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.svelte.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.notion.theme-font-ui}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.notion.theme-font-ui}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.notion.theme-font-ui}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-mono}"
+      }
+    },
+    "dark": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.notion.primary-dark}"
+      },
+      "primary-foreground": {
+        "$type": "color",
+        "$value": "{color.claude.primary-foreground-light}"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": "{color.notion.primary-dark}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{color.notion.background-dark}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.notion.card-dark}"
+      },
+      "card-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "popover": {
+        "$type": "color",
+        "$value": "{color.notion.card-dark}"
+      },
+      "popover-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.notion.card-dark}"
+      },
+      "secondary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.notion.card-dark}"
+      },
+      "muted-foreground": {
+        "$type": "color",
+        "$value": "{color.notion.muted-foreground-dark}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.notion.accent-dark}"
+      },
+      "accent-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.notion.border-dark}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.notion.border-dark}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.notion.card-dark}"
+      },
+      "sidebar-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "sidebar-primary": {
+        "$type": "color",
+        "$value": "{color.notion.accent-dark}"
+      },
+      "sidebar-primary-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "sidebar-accent": {
+        "$type": "color",
+        "$value": "{color.notion.accent-dark}"
+      },
+      "sidebar-accent-foreground": {
+        "$type": "color",
+        "$value": "{color.svelte.border-light}"
+      },
+      "sidebar-border": {
+        "$type": "color",
+        "$value": "{color.notion.border-dark}"
+      },
+      "sidebar-ring": {
+        "$type": "color",
+        "$value": "{color.notion.primary-dark}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{dimension.svelte.radius}"
+      },
+      "theme-font-ui": {
+        "$type": "fontFamily",
+        "$value": "{font.notion.theme-font-ui}"
+      },
+      "theme-font-body": {
+        "$type": "fontFamily",
+        "$value": "{font.notion.theme-font-ui}"
+      },
+      "theme-font-heading": {
+        "$type": "fontFamily",
+        "$value": "{font.notion.theme-font-ui}"
+      },
+      "theme-font-mono": {
+        "$type": "fontFamily",
+        "$value": "{font.github.theme-font-mono}"
+      }
+    },
+    "preview": {
+      "$type": "color",
+      "$value": "{color.notion.primary-light}"
+    }
+  },
+  "$description": "Non-official Notion-inspired palette. Sources and approximation scope are documented in README.md."
+}

@@ -1,0 +1,8 @@
+{
+  "theme": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.indigo.seed}"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "dimension": {
+    "base-light": {
+      "radius": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.625,
+          "unit": "rem"
+        }
+      }
+    },
+    "svelte": {
+      "radius": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.25,
+          "unit": "rem"
+        }
+      }
+    },
+    "claude": {
+      "radius": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.75,
+          "unit": "rem"
+        }
+      }
+    },
+    "github": {
+      "radius": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.375,
+          "unit": "rem"
+        }
+      }
+    }
+  }
+}

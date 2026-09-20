@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
-import { oklchToHex } from "../src/lib/theme/theme.ts";
+import { oklchToHex } from "../dist/theme/theme.js";
 
 const packageRoot = join(import.meta.dirname, "..");
 
@@ -48,7 +48,7 @@ function blend(first, second, opacity) {
 }
 
 test("light theme muted and destructive text keep WCAG AA contrast", async () => {
-  const css = await readSource("src/lib/theme.css");
+  const css = await readSource("src/lib/tokens.css");
   const root = themeBlock(css, ":root");
   const background = oklchToHex(themeColor(root, "background"));
   const muted = oklchToHex(themeColor(root, "muted"));
