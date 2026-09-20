@@ -1,0 +1,21 @@
+{
+  "name": "mutsuna-ui-astro-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:tokens": "astro check --root tokens",
+    "check:svelte": "astro check --root svelte && svelte-check --workspace svelte --tsconfig ../tsconfig.json",
+    "build:tokens": "astro build --root tokens",
+    "build:svelte": "astro build --root svelte"
+  },
+  "dependencies": {
+    "astro": "7.3.3",
+    "@astrojs/check": "0.9.10",
+    "@astrojs/svelte": "9.0.1",
+    "@tailwindcss/vite": "4.3.0",
+    "svelte": "5.55.2",
+    "svelte-check": "4.4.6",
+    "tailwindcss": "4.3.0",
+    "typescript": "6.0.2"
+  }
+}

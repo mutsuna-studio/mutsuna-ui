@@ -42,7 +42,7 @@ test("color serialization uses components, retains gamut and alpha, and rejects 
 test("all 18 themes and base CSS retain their pre-migration output", async () => {
   const before = JSON.parse(await readFile(new URL("./fixtures/theme-before-tokens.json", import.meta.url), "utf8"));
   assert.deepEqual(defaultTheme, before.defaultTheme);
-  const css = await readFile(new URL("../src/lib/theme.css", import.meta.url), "utf8");
+  const css = await readFile(new URL("../src/lib/tokens.css", import.meta.url), "utf8");
   assert.equal(css.match(/:root \{[\s\S]*?(?=\/\* END GENERATED TOKENS)/)[0].trim(), before.css.trim());
   assert.equal(themeTemplates.length, before.templates.length);
   for (const [index, current] of themeTemplates.entries()) {

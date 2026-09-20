@@ -1,0 +1,6 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": ["**/*.ts", "**/*.svelte", "**/*.astro"],
+  "exclude": ["node_modules", "**/dist"],
+  "compilerOptions": { "types": ["astro/client"] }
+}

@@ -113,7 +113,7 @@ export async function generateTokens({ check = false } = {}) {
     const variables = semanticCss((await readJson(`tokens/semantic/${mode}.json`)).semantic, core);
     blocks.push(`${selector} {\n  color-scheme: ${mode};\n${Object.entries(variables).map(([name, value]) => `  ${name}: ${value};`).join("\n")}\n}`);
   }
-  const cssPath = "src/lib/theme.css";
+  const cssPath = "src/lib/tokens.css";
   const cssSource = await readFile(resolve(root, cssPath), "utf8");
   const marker = /\/\* BEGIN GENERATED TOKENS \*\/[\s\S]*?\/\* END GENERATED TOKENS \*\//g;
   if ([...cssSource.matchAll(marker)].length !== 1) throw new Error("Missing or duplicate CSS token markers");

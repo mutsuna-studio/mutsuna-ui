@@ -48,7 +48,7 @@ function blend(first, second, opacity) {
 }
 
 test("light theme muted and destructive text keep WCAG AA contrast", async () => {
-  const css = await readSource("src/lib/theme.css");
+  const css = await readSource("src/lib/tokens.css");
   const root = themeBlock(css, ":root");
   const background = oklchToHex(themeColor(root, "background"));
   const muted = oklchToHex(themeColor(root, "muted"));

@@ -60,7 +60,7 @@ test("deep component exports point TypeScript to generated declaration files", a
 
 test("every public component has a package-owned story", async () => {
   const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
-  const nonComponentExports = new Set(["./theme.css", "./utils", "./date-time-range-fields", "./date-time-input"]);
+  const nonComponentExports = new Set(["./theme.css", "./tokens.css", "./fonts.css", "./utils", "./date-time-range-fields", "./date-time-input"]);
   const exportedComponents = Object.keys(packageJson.exports)
     .filter((subpath) => /^\.\/[^/*]+$/.test(subpath) && !nonComponentExports.has(subpath))
     .map((subpath) => subpath.slice(2))
@@ -75,7 +75,7 @@ test("every public component has a package-owned story", async () => {
 
 test("theme imports are declared by the package", async () => {
   const packageJson = JSON.parse(await readFile(join(packageRoot, "package.json"), "utf8"));
-  const theme = await readFile(join(sourceRoot, "lib/theme.css"), "utf8");
+  const theme = (await Promise.all(["theme.css", "fonts.css"].map((name) => readFile(join(sourceRoot, "lib", name), "utf8")))).join("\n");
   const declaredPackages = new Set([...Object.keys(packageJson.dependencies ?? {}), ...Object.keys(packageJson.peerDependencies ?? {})]);
   const importedPackages = [...theme.matchAll(/@import\s+"([^".][^"]*)"/g)].map(([, specifier]) =>
     specifier.startsWith("@") ? specifier.split("/").slice(0, 2).join("/") : specifier.split("/")[0],
@@ -85,6 +85,20 @@ test("theme imports are declared by the package", async () => {
     importedPackages.filter((dependency) => !declaredPackages.has(dependency)),
     [],
   );
+});
+
+test("plain theme tokens have no framework, font, or build-tool dependencies", async () => {
+  const tokens = await readFile(join(sourceRoot, "lib/tokens.css"), "utf8");
+  const theme = await readFile(join(sourceRoot, "lib/theme.css"), "utf8");
+  const fonts = await readFile(join(sourceRoot, "lib/fonts.css"), "utf8");
+  assert.doesNotMatch(tokens, /@(?:import|apply|theme|source|custom-variant|font-face)\b/);
+  assert.match(tokens, /:root\s*\{/);
+  assert.match(tokens, /\.dark\s*\{/);
+  assert.match(theme, /@import "\.\/tokens\.css"/);
+  assert.match(theme, /@import "\.\/fonts\.css"/);
+  assert.doesNotMatch(theme, /--background:\s*oklch/);
+  assert.equal([...fonts.matchAll(/^@import /gm)].length, 7);
+  assert.doesNotMatch(fonts, /@import "(?!@fontsource)/);
 });
 
 test("package metadata stays ready for public npm releases", async () => {

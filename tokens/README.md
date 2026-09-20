@@ -23,7 +23,9 @@ pnpm exec playwright install chromium
 pnpm test:tokens:browser
 ```
 
-生成物は `src/lib/theme/tokens.generated.ts` と `src/lib/theme.css` の `BEGIN GENERATED TOKENS` 区間です。生成物もGitへ含めますが、直接編集しません。check/buildは生成漏れを検出して失敗します。テーマのアルゴリズムは `theme.ts`、CSSへの対応付け・`light-dark()`・フォントの引用符は `scripts/design-tokens.mjs` が担当します。
+生成物は `src/lib/theme/tokens.generated.ts` と `src/lib/tokens.css` です。生成物もGitへ含めますが、直接編集しません。check/buildは生成漏れを検出して失敗します。テーマのアルゴリズムは `theme.ts`、CSSへの対応付け・`light-dark()`・フォントの引用符は `scripts/design-tokens.mjs` が担当します。
+
+Webでは `@mutsuna/ui/tokens.css` からフレームワーク・ビルドツールに依存しない標準CSS変数を利用できます。既存の `@mutsuna/ui/theme.css` もこれを読み込み、Tailwind・部品用スタイル・フォントをまとめて提供します。フォントだけが必要なら `@mutsuna/ui/fonts.css` を使います。JSON自体の配布APIは追加していません。
 
 ## 色のルール
 

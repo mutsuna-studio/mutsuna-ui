@@ -37,3 +37,4 @@ jobs:
       - run: pnpm test:tokens:browser
       - run: pnpm test:storybook
       - run: pnpm test:consumer
+      - run: pnpm test:consumer:astro

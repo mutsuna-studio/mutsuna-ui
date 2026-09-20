@@ -1,0 +1,17 @@
+---
+import "@mutsuna/ui/theme.css";
+import { findThemeTemplate, themeToCssVariables } from "@mutsuna/ui/theme/core";
+import Controls from "../components/Controls.svelte";
+
+const theme = themeToCssVariables(findThemeTemplate("github"))
+  .filter(([, value]) => value !== null)
+  .map(([name, value]) => `${name}: ${value}`).join(";");
+---
+<!doctype html>
+<html lang="ja" style={theme}>
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><title>Astro Svelte controls</title></head>
+  <body class="p-8">
+    <h1 class="mb-4 text-xl font-semibold">Astro Svelte controls</h1>
+    <Controls client:load />
+  </body>
+</html>
