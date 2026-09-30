@@ -1,4 +1,5 @@
 <script module lang="ts">
+import { expect, userEvent, within } from "storybook/test";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import SearchIcon from "@lucide/svelte/icons/search";
 import Button from "@mutsuna/ui/button/button.svelte";
@@ -107,4 +108,30 @@ let disabledStatuses = $state<string[]>(["confirmed"]);
 		placeholderLabel="予約状態"
 		disabled
 	/>
+</Story>
+
+<Story name="Searchable" asChild>
+  <FilterSelect searchable label="担当者" ariaLabel="担当者" placeholderLabel="すべて" options={Array.from({ length: 40 }, (_, index) => ({ value: String(index), label: `担当者 ${index + 1}`, disabled: index === 39 }))} />
+</Story>
+
+<Story name="Searchable Interaction" tags={["!dev", "!autodocs"]} play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const body = within(canvasElement.ownerDocument.body);
+  await userEvent.click(canvas.getByRole('button', { name: '候補、0件選択' }));
+  const input = body.getByRole('textbox', { name: '候補の候補を検索' });
+  await userEvent.type(input, 'Alpha');
+  await userEvent.click(body.getByRole('checkbox', { name: 'Alpha' }));
+  await userEvent.clear(input);
+  await userEvent.type(input, 'Beta');
+  await expect(body.getByRole('checkbox', { name: 'Alpha' })).toBeChecked();
+  await expect(body.getByRole('checkbox', { name: 'Beta' })).toBeDisabled();
+  await userEvent.keyboard('{Escape}');
+  await expect(canvas.getByRole('button', { name: '候補、1件選択' })).toHaveFocus();
+  await userEvent.click(canvas.getByRole('button', { name: '候補、1件選択' }));
+  await userEvent.click(body.getByRole('button', { name: '選択を解除' }));
+  await userEvent.type(body.getByRole('textbox', { name: '候補の候補を検索' }), '該当なし');
+  await expect(body.getByText('一致する候補がありません')).toBeVisible();
+  await userEvent.click(body.getByRole('button', { name: '完了' }));
+}} asChild>
+  <FilterSelect searchable ariaLabel="候補" options={[{ value: 'a', label: 'Alpha' }, { value: 'b', label: 'Beta', disabled: true }]} />
 </Story>

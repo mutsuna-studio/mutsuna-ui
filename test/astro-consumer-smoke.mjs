@@ -75,6 +75,16 @@ import ImportProbe from "../components/ImportProbe.svelte";
       page.on("requestfailed", (request) => errors.push(request.failure()?.errorText));
       page.on("response", (response) => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
       page.on("request", (request) => requests.push(request.url()));
+      await page.addInitScript(() => {
+        window.__copiedCode = null;
+        window.__copyFails = false;
+        Object.defineProperty(navigator, "clipboard", { configurable: true, value: {
+          writeText: async (value) => {
+            if (window.__copyFails) throw new Error("Clipboard denied");
+            window.__copiedCode = value;
+          },
+        } });
+      });
       await page.goto(url);
       const style = (selector, property) => page.locator(selector).evaluate((element, property) => getComputedStyle(element).getPropertyValue(property), property);
       if (mode === "tokens") {
@@ -94,6 +104,151 @@ import ImportProbe from "../components/ImportProbe.svelte";
         await page.getByRole("textbox", { name: "Name", exact: true }).fill("Astro");
         assert.equal((await page.locator("output").textContent()).trim(), "Hello Astro");
         assert.equal(await page.getByRole("button", { name: "Disabled", exact: true }).isDisabled(), true);
+        const code = page.getByRole("textbox", { name: "Code", exact: true });
+        await code.fill("edited");
+        await page.waitForFunction(() => document.querySelector("#code-value").textContent === "edited");
+        await code.press("ControlOrMeta+z");
+        await page.waitForFunction(() => document.querySelector("#code-value").textContent === "initial");
+        await code.press("ControlOrMeta+Shift+z");
+        await page.waitForFunction(() => document.querySelector("#code-value").textContent === "edited");
+        const editsBeforeReplace = await page.locator("#code-edits").textContent();
+        await page.getByRole("button", { name: "Replace code", exact: true }).click();
+        await page.waitForFunction(() => document.querySelector('.cm-content').textContent === "external");
+        assert.equal(await page.locator("#code-edits").textContent(), editsBeforeReplace, "External updates must not emit onchange");
+        await page.getByRole("button", { name: "Toggle readonly", exact: true }).click();
+        await code.focus();
+        await page.keyboard.type("no-change");
+        assert.equal(await code.textContent(), "external");
+        assert.equal(await code.getAttribute("aria-readonly"), "true");
+        const disabledCode = page.locator('.cm-content[aria-label="Disabled code"]');
+        assert.equal(await disabledCode.getAttribute("contenteditable"), "false");
+
+        const editorRoot = page.locator('[data-slot="code-editor"]').first();
+        await editorRoot.getByRole("button", { name: "コードをコピー", exact: true }).click();
+        assert.equal(await page.evaluate(() => window.__copiedCode), "external", "Readonly editors must copy their current value");
+        assert.equal(await editorRoot.getByRole("status").textContent(), "コピーしました");
+        assert.equal(await page.locator('[data-slot="code-editor"][data-disabled]').getByRole("button", { name: "コードをコピー" }).isDisabled(), true);
+        await page.evaluate(() => { window.__copyFails = true; });
+        await editorRoot.getByRole("button", { name: "コードをコピー", exact: true }).click();
+        await page.waitForFunction(() => document.querySelector('[data-slot="code-editor"] [role="status"]').textContent === "コピーできませんでした");
+        await page.evaluate(() => { window.__copyFails = false; });
+        await editorRoot.getByRole("button", { name: "コードをコピー", exact: true }).click();
+        await page.waitForFunction(() => document.querySelector('[data-slot="code-editor"] [role="status"]').textContent === "コピーしました");
+
+        const modified = page.getByRole("textbox", { name: "Diff: Modified", exact: true });
+        const original = page.getByRole("textbox", { name: "Diff: Original", exact: true });
+        await original.focus();
+        await page.keyboard.type("not allowed");
+        assert.equal(await original.textContent(), "const before = 1;");
+        await modified.press("ControlOrMeta+a");
+        await page.keyboard.type("changed");
+        await page.waitForFunction(() => document.querySelector("#diff-value").textContent === "changed", null, { timeout: 5000 }).catch(async (cause) => {
+          throw new Error(JSON.stringify({ value: await page.locator("#diff-value").textContent(), content: await modified.textContent(), errors }), { cause });
+        });
+        const unifiedButton = page.getByRole("button", { name: "統合表示", exact: true });
+        await unifiedButton.focus();
+        await page.getByRole("tooltip", { name: "統合表示", exact: true }).waitFor();
+        await page.keyboard.press("Escape");
+        await unifiedButton.click();
+        await page.locator('[data-slot="code-diff"] .cm-deletedChunk').waitFor();
+        assert.equal(await page.locator("#diff-mode").textContent(), "unified");
+        const deletedKeyword = page.locator('[data-slot="code-diff"] .cm-deletedLine span').filter({ hasText: /^const$/ });
+        await deletedKeyword.waitFor();
+        const keywordColor = await deletedKeyword.evaluate(element => getComputedStyle(element).color);
+        const textColor = await modified.evaluate(element => getComputedStyle(element).color);
+        assert.notEqual(keywordColor, textColor, "Deleted JavaScript must be highlighted on first unified render");
+        await page.getByRole("button", { name: "Toggle diff language", exact: true }).click();
+        await deletedKeyword.waitFor({ state: "detached" });
+        await page.getByRole("button", { name: "Toggle diff language", exact: true }).click();
+        await deletedKeyword.waitFor();
+        assert.equal(await deletedKeyword.evaluate(element => getComputedStyle(element).color), keywordColor);
+
+        const assertDiffGutterAlignment = async () => {
+          const gutters = await page.locator('[data-slot="code-diff"] .cm-gutters').evaluateAll(elements => elements.map(element => ({
+            right: element.getBoundingClientRect().right,
+            border: getComputedStyle(element).borderRightWidth,
+            markers: [...element.querySelectorAll('.cm-changeGutter .cm-gutterElement')].map(marker => ({
+              right: marker.getBoundingClientRect().right, width: marker.getBoundingClientRect().width,
+            })),
+          })));
+          for (const gutter of gutters) {
+            assert.equal(gutter.border, "0px", "A separate gutter border would offset the change markers");
+            assert.ok(gutter.markers.length > 0);
+            for (const marker of gutter.markers) {
+              assert.ok(Math.abs(marker.right - gutter.right) < 0.5, "Change markers must align with the gutter divider");
+              assert.equal(marker.width, 2);
+            }
+          }
+        };
+        await assertDiffGutterAlignment();
+        await modified.press("ControlOrMeta+z");
+        await page.waitForFunction(() => document.querySelector("#diff-value").textContent === "after");
+        await modified.press("ControlOrMeta+Shift+z");
+        await page.waitForFunction(() => document.querySelector("#diff-value").textContent === "changed", null, { timeout: 5000 }).catch(async (cause) => {
+          throw new Error(JSON.stringify({ value: await page.locator("#diff-value").textContent(), content: await modified.textContent(), errors }), { cause });
+        });
+        await page.getByRole("button", { name: "Lock diff", exact: true }).click();
+        await modified.focus();
+        await page.keyboard.type("not allowed");
+        assert.equal(await page.locator("#diff-value").textContent(), "changed");
+        const diffEdits = await page.locator("#diff-edits").textContent();
+        await page.getByRole("button", { name: "Replace diff", exact: true }).click();
+        await page.waitForFunction(() => document.querySelector('[data-slot="code-diff"] .cm-deletedChunk').textContent.includes("baseline"));
+        assert.equal(await page.locator("#diff-value").textContent(), "replacement");
+        assert.equal(await page.locator("#diff-edits").textContent(), diffEdits);
+        await page.getByRole("button", { name: "左右比較", exact: true }).click();
+        const diffRoot = page.locator('[data-slot="code-diff"]');
+        await diffRoot.getByRole("button", { name: "コードをコピー", exact: true }).click();
+        assert.equal(await page.evaluate(() => window.__copiedCode), "replacement", "Diff copy must use the modified value");
+        await original.waitFor();
+        assert.equal(await original.textContent(), "baseline");
+        assert.equal(await modified.textContent(), "replacement");
+        await assertDiffGutterAlignment();
+        for (const width of [1280, 390]) {
+          await page.setViewportSize({ width, height: 900 });
+          const layout = await page.locator('[data-slot="code-diff"]').evaluate((element) => {
+            const rect = (node) => { const { x, width, height } = node.getBoundingClientRect(); return { x, width, height }; };
+            return {
+              area: rect(element.querySelector('.cm-mergeView')),
+              panes: [...element.querySelectorAll('.cm-mergeViewEditor')].map(rect),
+              scrollers: [...element.querySelectorAll('.cm-scroller')].map(rect),
+              gutters: [...element.querySelectorAll('.cm-gutters-before')].map(rect),
+            };
+          });
+          assert.ok(Math.abs(layout.panes[0].width - layout.panes[1].width) <= 1, 'Diff columns must be equal width');
+          for (let side = 0; side < 2; side++) {
+            assert.ok(layout.panes[side].height >= layout.area.height - 1, 'Diff divider must reach the bottom');
+            assert.ok(layout.scrollers[side].height >= layout.area.height - 1, 'Diff editors must fill the visible height');
+            assert.ok(layout.gutters[side].height >= layout.area.height - 1, 'Diff gutters must fill the visible height');
+          }
+        }
+        await page.setViewportSize({ width: 1280, height: 720 });
+        const headerStyles = await page.locator('[data-slot="code-editor-toolbar"]').evaluateAll(elements => elements.map(element => {
+          const style = getComputedStyle(element);
+          return { height: element.getBoundingClientRect().height, padding: style.padding, background: style.backgroundColor };
+        }));
+        assert.deepEqual(headerStyles[0], headerStyles[2], "Editor and diff headers must share height, padding and background");
+        const disabledHeaderOpacity = await page.locator('[data-slot="code-editor"][data-disabled] .language').evaluate(element => {
+          let opacity = 1;
+          for (let node = element; node; node = node.parentElement) opacity *= Number(getComputedStyle(node).opacity);
+          return opacity;
+        });
+        assert.equal(disabledHeaderOpacity, 1, "Disabled editor labels must retain readable contrast");
+
+
+        await page.getByRole("button", { name: "Astro multi filter、0件選択" }).click();
+        await page.getByRole("textbox", { name: "Astro multi filterの候補を検索" }).fill("Alpha");
+        await page.getByRole("checkbox", { name: "Alpha", exact: true }).check();
+        await page.getByRole("button", { name: "完了", exact: true }).click();
+        await page.getByRole("button", { name: "Astro multi filter、1件選択" }).waitFor();
+        const rangeStart = page.locator('[data-range-calendar-day][data-value="2026-06-10"]');
+        const rangeEnd = page.locator('[data-range-calendar-day][data-value="2026-06-12"]');
+        await rangeStart.click();
+        await rangeStart.press("ArrowRight");
+        await page.keyboard.press("ArrowRight");
+        await page.keyboard.press("Enter");
+        assert.equal(await rangeStart.getAttribute("data-range-start"), "");
+        assert.equal(await rangeEnd.getAttribute("data-range-end"), "");
         const trigger = page.getByRole("button", { name: "Open dialog", exact: true });
         await trigger.focus();
         await page.keyboard.press("Enter");
@@ -104,6 +259,12 @@ import ImportProbe from "../components/ImportProbe.svelte";
         await page.evaluate(() => document.documentElement.classList.add("dark"));
         await page.waitForFunction(() => getComputedStyle(document.querySelector("#counter")).backgroundColor === "rgb(35, 134, 54)");
         assert.equal(await style("body", "background-color"), "rgb(13, 17, 23)");
+        if (process.env.ASTRO_SMOKE_SCREENSHOTS) {
+          await mkdir(process.env.ASTRO_SMOKE_SCREENSHOTS, { recursive: true });
+          await page.screenshot({ path: join(process.env.ASTRO_SMOKE_SCREENSHOTS, "code-editor-dark.png"), fullPage: true });
+          await page.evaluate(() => document.documentElement.classList.remove("dark"));
+          await page.screenshot({ path: join(process.env.ASTRO_SMOKE_SCREENSHOTS, "code-editor-light.png"), fullPage: true });
+        }
         const importsHtml = await readFile(join(directory, "imports/index.html"), "utf8");
         assert.match(importsHtml, /data-import-probe/);
         await page.goto(`${url}imports/`);

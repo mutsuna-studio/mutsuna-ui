@@ -50,6 +50,7 @@
     "./sonner",
     "./time-picker",
     "./calendar",
+    "./range-calendar",
     "./data-table",
     "./form",
     "./sidebar",
@@ -59,7 +60,8 @@
     "./utils",
     "./cycle-select",
     "./date-picker",
-    "./date-time-input"
+    "./date-time-input",
+    "./code-editor"
   ],
   "styles": [
     "./theme.css",

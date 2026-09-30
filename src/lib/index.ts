@@ -334,3 +334,8 @@ export { CycleSelect, type CycleSelectOption, type CycleSelectProps } from "./cy
 export { DatePicker, type DatePickerProps, type DatePickerPrecision } from "./date-picker/index.js";
 
 export { parseDateTimeInput, normalizeDateTimeInputText, type DateTimeInputPrecision, type DateTimeInputOptions, type ExcelDateSystem } from "./date-time-input/index.js";
+
+export { CodeEditor, type CodeEditorProps, type CodeEditorLanguage } from "./code-editor/index.js";
+export { CodeDiff, type CodeDiffProps, type CodeDiffMode } from "./code-editor/index.js";
+
+export { RangeCalendar, type RangeCalendarProps } from "./range-calendar/index.js";

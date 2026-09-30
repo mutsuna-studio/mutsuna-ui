@@ -1,4 +1,6 @@
 <script module lang="ts">
+import { searchInteraction, facetInteraction, rangeInteraction, layoutInteraction, selectionInteraction, columnVisibilityInteraction } from "./examples/searchable-table-interactions.js";
+import SearchableTable from "./examples/SearchableTable.svelte";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import ArrowUpDownIcon from "@lucide/svelte/icons/arrow-up-down";
 import type { ColumnDef, RowSelectionState, SortingState, Updater } from "@tanstack/table-core";
@@ -24,6 +26,7 @@ const { Story } = defineMeta({
   component: Table,
   tags: ["autodocs"],
 });
+
 </script>
 
 <script lang="ts">
@@ -313,3 +316,14 @@ const advancedRows = $derived.by(() => {
 		</Table>
 	</div>
 </Story>
+
+<Story name="Search And Filter" parameters={{ docs: { description: { story: "ローカルデータの検索・絞り込み例。検索語はEnterまたは検索ボタンで反映します。検索欄へのフォーカスで直下の非モーダルパネルが開きます。状態・担当者・範囲をまとめて編集し、検索ボタンで一括適用します。キャンセル・Escapeは適用済み条件を維持し、個別解除後は次の条件または検索へフォーカスを戻します。狭い画面では先頭列を固定し、表のスクロール領域をキーボードでも操作できます。通信・保存処理は含みません。" } } }} asChild><SearchableTable /></Story>
+<Story name="Search And Filter Narrow" asChild><div style="width: 360px; max-width: 100%"><SearchableTable /></div></Story>
+<Story name="Search And Filter Interaction" tags={["!dev", "!autodocs"]} play={searchInteraction} asChild><SearchableTable /></Story>
+
+<Story name="Search And Filter Facets" tags={["!dev", "!autodocs"]} play={facetInteraction} asChild><SearchableTable /></Story>
+<Story name="Search And Filter Ranges" tags={["!dev", "!autodocs"]} play={rangeInteraction} asChild><SearchableTable /></Story>
+
+<Story name="Search And Filter Layout" tags={["!dev", "!autodocs"]} play={layoutInteraction} asChild><div style="width: 360px; max-width: 100%"><SearchableTable /></div></Story>
+<Story name="Search And Filter Selection" tags={["!dev", "!autodocs"]} play={selectionInteraction} asChild><SearchableTable /></Story>
+<Story name="Search And Filter Columns" tags={["!dev", "!autodocs"]} play={columnVisibilityInteraction} asChild><SearchableTable /></Story>
