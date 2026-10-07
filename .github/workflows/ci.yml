@@ -33,6 +33,12 @@ jobs:
         run: pnpm changeset status
       - run: pnpm test
       - run: pnpm build-storybook
+      - name: Use Ubuntu archive mirror for browser dependencies
+        shell: bash
+        run: |
+          if [[ -f /etc/apt/apt-mirrors.txt ]]; then
+            printf '%s\n' 'https://archive.ubuntu.com/ubuntu/' | sudo tee /etc/apt/apt-mirrors.txt > /dev/null
+          fi
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:tokens:browser
       - run: pnpm test:storybook
