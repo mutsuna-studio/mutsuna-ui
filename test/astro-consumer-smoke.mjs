@@ -376,9 +376,15 @@ import ImportProbe from "../components/ImportProbe.svelte";
         await select.click();
         const listId = await select.getAttribute("aria-controls");
         await page.locator("#select-container").evaluate(element => { element.style.width = "420px"; });
-        await page.waitForFunction(id => Math.abs(document.getElementById(id).getBoundingClientRect().width - 420) < 1, listId);
+        await page.waitForFunction(id => { const list = document.getElementById(id); return list && Math.abs(list.getBoundingClientRect().width - 420) < 1; }, listId);
         await page.setViewportSize({ width: 390, height: 500 });
-        await page.waitForFunction(id => document.getElementById(id).getBoundingClientRect().width <= 374, listId);
+        // Viewport emulation can move focus when the other responsive islands remount.
+        // Keep this assertion about list positioning, independent of their focus restoration.
+        await select.focus();
+        if (await select.getAttribute("aria-expanded") !== "true") {
+          await page.locator("#select-container").getByRole("button", { name: "候補を表示", exact: true }).click();
+        }
+        await page.waitForFunction(id => { const list = document.getElementById(id); return list && list.getBoundingClientRect().width <= 374; }, listId);
         await page.setViewportSize({ width: 1280, height: 720 });
         await select.press("ArrowDown");
         await select.press("ArrowDown");
