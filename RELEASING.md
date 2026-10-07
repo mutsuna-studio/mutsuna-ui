@@ -17,7 +17,7 @@ pnpm changeset
 
 1. changesetを含む変更がmainへmergeされる。
 2. `Release` workflowがtest、Storybook build、外部consumer smoke testを実行する。
-3. workflowがchangesetからversionとCHANGELOGを更新し、`changeset-release/main`からバージョン更新PRを作成する。
+3. workflowがchangesetからversionとCHANGELOGを更新し、`changeset-release/main`からバージョン更新PRを作成する。GitHubの設定によりActionsからのPR作成が拒否された場合は、生成済みブランチの差分を確認し、権限を持つ利用者が同ブランチからmainへのPRを作成する。バージョンを再生成・手動変更する必要はない。
 4. バージョン更新PRのCIを確認してmainへmergeする。
 5. 再度実行される`Release` workflowがnpm registryのversionを確認し、npm Trusted Publishingで公開する。`npm-release`環境の承認が必要な場合は、対象runと公開予定versionを確認して承認する。
 6. npm registryの公開versionを確認する。Renovateが`mutsuna-reserve`のconsumer更新PRを作成する。

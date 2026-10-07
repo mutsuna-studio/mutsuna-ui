@@ -1,5 +1,20 @@
 # @mutsuna/ui
 
+## 0.16.0
+
+### Minor Changes
+
+- aeddf81: Select と InputGroup に明示的な label による枠線ラベルを追加。通常・検索付き Select、アイコンや追加ボタン付き入力、複数行入力に対応し、ラベルのフォーカス関連付けとエラー表示を維持する。既存 Input の枠線描画を共通化し、label なしの挙動を保持する。
+- aeddf81: アイコン表示のサイドバーをホバー・キーボードフォーカスで一時展開し、メイン領域の幅を保持する。Escape で閉じられ、保存された開閉状態は変更しない。Root に expandOnHover（既定 true）と context に previewOpen を追加する。
+
+  折りたたみ時のメニューボタン内にアイコン・アバターを収め、アカウントメニューのアバター背景・画像・枠線の角丸を一致させる。
+
+### Patch Changes
+
+- aeddf81: Fix searchable Select keyboard navigation, Escape cancellation, focus retention and per-instance listbox IDs. Separate Select positioning and Markdown toolbar internals, and remove Dialog/Calendar barrel import cycles without changing public exports.
+
+  Guard Markdown editor initialization/teardown and pending updates, track Select element and visual viewport resizing, and share locked-item reorder logic while preserving keyboard focus.
+
 ## 0.15.0
 
 ### Minor Changes
