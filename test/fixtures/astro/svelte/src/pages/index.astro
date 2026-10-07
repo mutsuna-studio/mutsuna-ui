@@ -1,6 +1,8 @@
 ---
 import "@mutsuna/ui/theme.css";
 import { findThemeTemplate, themeToCssVariables } from "@mutsuna/ui/theme/core";
+import SidebarPreview from "../components/SidebarPreview.svelte";
+import OutlinedFields from "../components/OutlinedFields.svelte";
 import Controls from "../components/Controls.svelte";
 
 const theme = themeToCssVariables(findThemeTemplate("github"))
@@ -13,5 +15,7 @@ const theme = themeToCssVariables(findThemeTemplate("github"))
   <body class="p-8">
     <h1 class="mb-4 text-xl font-semibold">Astro Svelte controls</h1>
     <Controls client:load />
+    <SidebarPreview client:load />
+    <OutlinedFields client:load />
   </body>
 </html>

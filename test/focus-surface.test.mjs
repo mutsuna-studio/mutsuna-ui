@@ -8,7 +8,7 @@ const inputLikeSources = await Promise.all(
     "../src/lib/textarea/textarea.svelte",
     "../src/lib/input-group/input-group.svelte",
     "../src/lib/select/trigger-style.ts",
-    "../src/lib/select/select.svelte",
+    "../src/lib/internal/select/searchable-select.svelte",
   ].map((path) => readFile(new URL(path, import.meta.url), "utf8")),
 );
 

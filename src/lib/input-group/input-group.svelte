@@ -1,19 +1,34 @@
 <script lang="ts">
+import FloatingField from "../internal/floating-field.svelte";
+import { setGroupLabel } from "../internal/input-group-label.js";
 import { cn, type WithElementRef } from "../utils.js";
 import type { HTMLAttributes } from "svelte/elements";
 
-let { ref = $bindable(null), class: className, children, ...props }: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+let { label, labelFor, ref = $bindable(null), class: className, children, ...props }: WithElementRef<HTMLAttributes<HTMLDivElement>> & { label?: string; labelFor?: string } = $props();
+const generatedId = $props.id();
+const controlId = $derived(labelFor ?? (label ? generatedId : undefined));
+setGroupLabel({ get controlId() { return controlId; } });
 </script>
 
+{#snippet control()}
 <div
 	bind:this={ref}
 	data-slot="input-group"
+    data-floating-control={label ? "" : undefined}
 	role="group"
 	class={cn(
 		"group/input-group border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:bg-ring/[0.04] has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:bg-destructive/[0.05] has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 rounded-lg border transition-colors in-data-[slot=combobox-content]:focus-within:border-inherit has-disabled:opacity-50 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5 relative flex w-full min-w-0 items-center outline-none has-[>textarea]:h-auto",
+        label && "h-10 [&>[data-slot=input-group-addon]]:mx-0",
 		className
 	)}
 	{...props}
 >
 	{@render children?.()}
 </div>
+
+{/snippet}
+{#if label}
+  <FloatingField {label} for={controlId!} raised>{@render control()}</FloatingField>
+{:else}
+  {@render control()}
+{/if}

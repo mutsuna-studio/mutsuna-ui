@@ -24,6 +24,8 @@ class SidebarState {
   readonly props: SidebarStateProps;
   open = $derived.by(() => this.props.open());
   openMobile = $state(false);
+  /** Transient desktop preview; does not change open or the saved layout. */
+  previewOpen = $state(false);
   setOpen: SidebarStateProps["setOpen"];
   #isMobile: IsMobile;
   state = $derived.by(() => (this.open ? "expanded" : "collapsed"));

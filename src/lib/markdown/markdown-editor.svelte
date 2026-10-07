@@ -16,44 +16,17 @@ export type MarkdownEditorProps = {
   readonly toolbarPreset?: MarkdownEditorToolbarPreset;
   readonly onMarkdownChange?: (value: string) => void;
 };
-
-type ToolbarAction =
-  | {
-      readonly iconLabel: string;
-      readonly textLabel: string;
-      readonly title: string;
-      readonly kind: "heading";
-      readonly level: 2 | 3;
-    }
-  | {
-      readonly iconLabel: string;
-      readonly textLabel: string;
-      readonly title: string;
-      readonly kind: "strong" | "emphasis" | "bulletList" | "orderedList" | "blockquote" | "table" | "addTableRow" | "addTableColumn";
-    };
 </script>
 
 <script lang="ts">
-import { Editor, defaultValueCtx, editorViewCtx, editorViewOptionsCtx, rootCtx } from "@milkdown/kit/core";
+import { Editor, defaultValueCtx, editorViewCtx, editorViewOptionsCtx, rootCtx, serializerCtx } from "@milkdown/kit/core";
 import type { Ctx } from "@milkdown/kit/ctx";
 import { history } from "@milkdown/kit/plugin/history";
 import { listener, listenerCtx } from "@milkdown/kit/plugin/listener";
-import {
-  blockquoteSchema,
-  bulletListSchema,
-  commonmark,
-  emphasisSchema,
-  headingSchema,
-  orderedListSchema,
-  strongSchema,
-  toggleEmphasisCommand,
-  toggleStrongCommand,
-  wrapInBlockquoteCommand,
-  wrapInHeadingCommand,
-} from "@milkdown/kit/preset/commonmark";
-import { addColAfterCommand, addRowAfterCommand, gfm, insertTableCommand, tableSchema } from "@milkdown/kit/preset/gfm";
+import { commonmark } from "@milkdown/kit/preset/commonmark";
+import { gfm } from "@milkdown/kit/preset/gfm";
 import "@milkdown/kit/prose/view/style/prosemirror.css";
-import { callCommand, replaceAll } from "@milkdown/kit/utils";
+import { replaceAll } from "@milkdown/kit/utils";
 import BoldIcon from "@lucide/svelte/icons/bold";
 import Heading2Icon from "@lucide/svelte/icons/heading-2";
 import Heading3Icon from "@lucide/svelte/icons/heading-3";
@@ -65,7 +38,8 @@ import PlusIcon from "@lucide/svelte/icons/plus";
 import Table2Icon from "@lucide/svelte/icons/table-2";
 import { onMount } from "svelte";
 import { Button } from "../button/index.js";
-import { toggleList } from "./markdown-list-commands.js";
+import { startEditorLifecycle } from "../internal/markdown/lifecycle.js";
+import { allToolbarActions, executeToolbarAction, getToolbarStyles, type ToolbarAction } from "../internal/markdown/toolbar.js";
 
 let {
   id,
@@ -82,24 +56,10 @@ let {
 
 let rootElement = $state<HTMLDivElement | null>(null);
 let editor = $state<Editor | null>(null);
-let editorMarkdown = $state<string | null>(null);
+let failed = $state(false);
 let lastAppliedValue = $state<string | null>(null);
 let activeToolbarStyles = $state<readonly string[]>([]);
-let applyingExternalValue = false;
-const markdown = $derived(editorMarkdown ?? value);
 
-const allToolbarActions: readonly ToolbarAction[] = [
-  { iconLabel: "H2", textLabel: "H2", title: "見出し2", kind: "heading", level: 2 },
-  { iconLabel: "H3", textLabel: "H3", title: "見出し3", kind: "heading", level: 3 },
-  { iconLabel: "B", textLabel: "B", title: "太字", kind: "strong" },
-  { iconLabel: "I", textLabel: "I", title: "斜体", kind: "emphasis" },
-  { iconLabel: "List", textLabel: "•", title: "箇条書き", kind: "bulletList" },
-  { iconLabel: "Ordered list", textLabel: "1.", title: "番号付きリスト", kind: "orderedList" },
-  { iconLabel: "Quote", textLabel: "❝", title: "引用", kind: "blockquote" },
-  { iconLabel: "Table", textLabel: "表", title: "表を挿入", kind: "table" },
-  { iconLabel: "Add table row", textLabel: "行を追加", title: "選択中の行の下に行を追加", kind: "addTableRow" },
-  { iconLabel: "Add table column", textLabel: "列を追加", title: "選択中の列の右に列を追加", kind: "addTableColumn" },
-];
 const toolbarActions = $derived(
   toolbarPreset === "email"
     ? allToolbarActions.filter((action) => action.kind !== "table" && action.kind !== "addTableRow" && action.kind !== "addTableColumn")
@@ -111,11 +71,13 @@ onMount(() => {
     return;
   }
   const editorRoot = rootElement;
+  const initialValue = value;
+  let disposed = false;
 
   const instance = Editor.make()
     .config((ctx) => {
       ctx.set(rootCtx, editorRoot);
-      ctx.set(defaultValueCtx, markdown);
+      ctx.set(defaultValueCtx, initialValue);
       ctx.set(editorViewOptionsCtx, {
         attributes: {
           "aria-labelledby": `${id}-label`,
@@ -124,14 +86,16 @@ onMount(() => {
       ctx
         .get(listenerCtx)
         .markdownUpdated((listenerContext, serializedMarkdown) => {
+          if (disposed || editor === null) return;
           const nextMarkdown = normalizeMarkdown(serializedMarkdown);
-          editorMarkdown = nextMarkdown;
+          // The listener is debounced. Ignore a queued update from before an external replacement.
+          const view = listenerContext.get(editorViewCtx);
+          const currentMarkdown = normalizeMarkdown(listenerContext.get(serializerCtx)(view.state.doc));
+          if (nextMarkdown !== currentMarkdown) return;
           value = nextMarkdown;
           lastAppliedValue = nextMarkdown;
           syncToolbarStyles(listenerContext);
-          if (!applyingExternalValue) {
-            onMarkdownChange?.(nextMarkdown);
-          }
+          onMarkdownChange?.(nextMarkdown);
         });
     })
     .use(commonmark)
@@ -139,19 +103,21 @@ onMount(() => {
     .use(history)
     .use(listener);
 
-  void instance.create().then(() => {
+  const stopEditor = startEditorLifecycle(instance, () => {
+    lastAppliedValue = initialValue;
     editor = instance;
     syncToolbarStyles(instance.ctx);
-  });
+  }, () => { failed = true; editor = null; });
 
   let toolbarSyncFrame: number | null = null;
   const scheduleToolbarSync = () => {
+    if (disposed || editor === null) return;
     if (toolbarSyncFrame !== null) {
       cancelAnimationFrame(toolbarSyncFrame);
     }
     toolbarSyncFrame = requestAnimationFrame(() => {
       toolbarSyncFrame = null;
-      syncToolbarStyles(instance.ctx);
+      if (!disposed && editor !== null) syncToolbarStyles(instance.ctx);
     });
   };
   const handleSelectionChange = () => {
@@ -166,6 +132,7 @@ onMount(() => {
   editorRoot.addEventListener("keyup", scheduleToolbarSync);
 
   return () => {
+    disposed = true;
     if (toolbarSyncFrame !== null) {
       cancelAnimationFrame(toolbarSyncFrame);
     }
@@ -173,7 +140,7 @@ onMount(() => {
     editorRoot.removeEventListener("pointerup", scheduleToolbarSync);
     editorRoot.removeEventListener("keyup", scheduleToolbarSync);
     editor = null;
-    void instance.destroy();
+    stopEditor();
   };
 });
 
@@ -182,65 +149,19 @@ $effect(() => {
     return;
   }
 
-  applyingExternalValue = true;
-  editorMarkdown = value;
   lastAppliedValue = value;
   editor.action(replaceAll(value, true));
-  queueMicrotask(() => {
-    applyingExternalValue = false;
-  });
+  syncToolbarStyles(editor.ctx);
 });
 
 function runToolbarAction(action: ToolbarAction): void {
-  const currentEditor = editor;
-  if (currentEditor === null) {
-    return;
-  }
-
-  if (action.kind === "heading") {
-    currentEditor.action(callCommand(wrapInHeadingCommand.key, action.level));
-  } else if (action.kind === "strong") {
-    currentEditor.action(callCommand(toggleStrongCommand.key));
-  } else if (action.kind === "emphasis") {
-    currentEditor.action(callCommand(toggleEmphasisCommand.key));
-  } else if (action.kind === "bulletList" || action.kind === "orderedList") {
-    toggleList(currentEditor, action.kind);
-  } else if (action.kind === "table") {
-    currentEditor.action(callCommand(insertTableCommand.key, { row: 3, col: 3 }));
-  } else if (action.kind === "addTableRow") {
-    currentEditor.action(callCommand(addRowAfterCommand.key));
-  } else if (action.kind === "addTableColumn") {
-    currentEditor.action(callCommand(addColAfterCommand.key));
-  } else {
-    currentEditor.action(callCommand(wrapInBlockquoteCommand.key));
-  }
-
-  queueMicrotask(() => syncToolbarStyles(currentEditor.ctx));
+  if (!editor) return;
+  executeToolbarAction(editor, action);
+  queueMicrotask(() => { if (editor) syncToolbarStyles(editor.ctx); });
 }
 
 function syncToolbarStyles(ctx: Ctx): void {
-  const state = ctx.get(editorViewCtx)?.state;
-  if (state === undefined) {
-    return;
-  }
-  const styles: string[] = [];
-  const marks = state.storedMarks ?? state.selection.$from.marks();
-  const hasMark = (markType: ReturnType<typeof strongSchema.type>) =>
-    state.selection.empty ? marks.some((mark) => mark.type === markType) : state.doc.rangeHasMark(state.selection.from, state.selection.to, markType);
-
-  if (hasMark(strongSchema.type(ctx))) styles.push("strong");
-  if (hasMark(emphasisSchema.type(ctx))) styles.push("emphasis");
-
-  for (let depth = state.selection.$from.depth; depth > 0; depth -= 1) {
-    const node = state.selection.$from.node(depth);
-    if (node.type === headingSchema.type(ctx)) styles.push(`heading:${node.attrs.level}`);
-    if (node.type === bulletListSchema.type(ctx)) styles.push("bulletList");
-    if (node.type === orderedListSchema.type(ctx)) styles.push("orderedList");
-    if (node.type === blockquoteSchema.type(ctx)) styles.push("blockquote");
-    if (node.type === tableSchema.type(ctx)) styles.push("table");
-  }
-
-  activeToolbarStyles = styles;
+  activeToolbarStyles = getToolbarStyles(ctx);
 }
 
 function isToolbarActionActive(action: ToolbarAction): boolean {
@@ -273,6 +194,7 @@ export function insertMarkdown(text: string): void {
       {#each toolbarActions as action (action.title)}
         <Button
           type="button"
+          disabled={editor === null}
           variant={isToolbarActionActive(action) ? "secondary" : "ghost"}
           size={toolbarMode === "icon" ? "icon-sm" : "sm"}
           class={isToolbarActionActive(action) ? "ring-1 ring-border shadow-xs" : undefined}
@@ -310,7 +232,8 @@ export function insertMarkdown(text: string): void {
         </Button>
       {/each}
     </div>
-    <div {id} bind:this={rootElement} class="milkdown-markdown-editor {minHeightClass} px-4 py-3 text-sm"></div>
+    {#if failed}<p role="alert" class="px-4 py-3 text-sm text-destructive">エディターを読み込めませんでした。</p>{/if}
+    <div {id} bind:this={rootElement} hidden={failed} class="milkdown-markdown-editor {minHeightClass} px-4 py-3 text-sm"></div>
   </div>
 </div>
 

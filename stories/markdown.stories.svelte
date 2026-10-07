@@ -1,4 +1,6 @@
 <script module lang="ts">
+import { expect, userEvent, within, waitFor } from "storybook/test";
+import MarkdownLifecycle from "../test/fixtures/astro/svelte/src/components/MarkdownLifecycle.svelte";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import type { ComponentProps } from "svelte";
 import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
@@ -44,3 +46,34 @@ const { Story } = defineMeta({
     toolbarPreset: "full",
   }}
 />
+
+
+<Story name="Toolbar Interaction Test" tags={["!dev", "!autodocs"]} args={{ id: "markdown-toolbar-test", value: "Hello", toolbarPreset: "full" }} play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await waitFor(() => expect(canvasElement.querySelector('[contenteditable="true"]')).not.toBeNull());
+  const editor = canvasElement.querySelector<HTMLElement>('[contenteditable="true"]')!;
+  await userEvent.click(editor);
+  const selection = window.getSelection()!;
+  const range = document.createRange();
+  range.selectNodeContents(editor.querySelector("p")!);
+  selection.removeAllRanges();
+  selection.addRange(range);
+  await userEvent.click(canvas.getByRole("button", { name: "太字" }));
+  await expect(canvas.getByRole("button", { name: "太字" })).toHaveAttribute("aria-pressed", "true");
+  await waitFor(() => expect(editor.querySelector("strong")).toHaveTextContent("Hello"));
+  await userEvent.click(canvas.getByRole("button", { name: "見出し2" }));
+  await waitFor(() => expect(editor.querySelector("h2")).not.toBeNull());
+}} />
+
+<Story name="Lifecycle Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getByRole("button", { name: "Mount and remove markdown" }));
+  await waitFor(() => expect(canvasElement.querySelector("#lifecycle-markdown")).toBeNull());
+  await userEvent.click(canvas.getByRole("button", { name: "Mount and update markdown" }));
+  await waitFor(() => expect(canvasElement.querySelector("#lifecycle-markdown .ProseMirror")).toHaveTextContent("Latest"));
+  await userEvent.click(canvas.getByRole("button", { name: "Replace markdown" }));
+  await waitFor(() => expect(canvasElement.querySelector("#lifecycle-markdown .ProseMirror")).toHaveTextContent("External"));
+  await expect(canvas.getByTestId("markdown-changes")).toHaveTextContent("0");
+  await userEvent.click(canvas.getByRole("button", { name: "Remove markdown" }));
+  await waitFor(() => expect(canvasElement.querySelector("#lifecycle-markdown")).toBeNull());
+}}><MarkdownLifecycle /></Story>

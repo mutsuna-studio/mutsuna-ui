@@ -97,7 +97,7 @@ test("shared visual and scrolling primitives expose semantic keyboard contracts"
   assert.match(avatar, /role="img" aria-label=\{name\}/);
   assert.match(scrollbar, /tabindex = 0/);
   assert.match(scrollbar, /\{tabindex\}/);
-  assert.match(calendar, /<Calendar\.Header>[\s\S]*?#snippet child\(\{ props \}\)[\s\S]*?<div \{\.\.\.props\}>/);
+  assert.match(calendar, /<CalendarHeader>[\s\S]*?#snippet child\(\{ props \}\)[\s\S]*?<div \{\.\.\.props\}>/);
   assert.match(calendarDayColor, /text-red-700/);
   assert.doesNotMatch(calendarDayColor, /text-red-600/);
 });

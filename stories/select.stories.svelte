@@ -1,4 +1,5 @@
 <script module lang="ts">
+import { expect, userEvent, within, fireEvent, waitFor } from "storybook/test";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import Badge from "@mutsuna/ui/badge/badge.svelte";
 import Label from "@mutsuna/ui/label/label.svelte";
@@ -48,6 +49,11 @@ const offeringSuggestions: [SelectSearchableOption, ...SelectSearchableOption[]]
   { value: "workshop", label: "ワークショップ", description: "90分 / 最大8名" },
   { value: "studio-rental", label: "スタジオ貸切", description: "120分 / 事前確認あり" },
 ];
+
+let keyboardValue = $state("");
+let freeValue = $state("元の値");
+let notifications = $state(0);
+const keyboardOptions = [{ value: "a", label: "Alpha" }, { value: "b", label: "Disabled", disabled: true }, { value: "c", label: "Charlie" }];
 
 let resourceKind = $state("meeting_room");
 let billingMode = $state("manual");
@@ -228,4 +234,93 @@ const selectedSearchableResource = $derived(resourceSuggestions.find((suggestion
 
 		<Badge variant="outline">現在の値: {offeringText.trim() === "" ? "未入力" : offeringText.trim()}</Badge>
 	</div>
+</Story>
+
+<Story name="Searchable Keyboard Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const input = canvas.getByRole("combobox", { name: "候補選択" });
+  await userEvent.click(input);
+  const firstId = input.getAttribute("aria-controls");
+  await userEvent.keyboard("{ArrowDown}{ArrowDown}");
+  await expect(document.getElementById(input.getAttribute("aria-activedescendant")!)).toHaveTextContent("Charlie");
+  await userEvent.keyboard("{Enter}");
+  await expect(input).toHaveFocus();
+  await expect(canvas.getByTestId("keyboard-value")).toHaveTextContent("c");
+  await expect(input).toHaveAttribute("aria-expanded", "false");
+  await userEvent.type(input, "no matches");
+  await userEvent.keyboard("{ArrowDown}{Enter}{Escape}");
+  await expect(canvas.getByTestId("keyboard-value")).toHaveTextContent("c");
+  const free = canvas.getByRole("combobox", { name: "自由入力" });
+  await userEvent.click(free);
+  await expect(free.getAttribute("aria-controls")).not.toBe(firstId);
+  await userEvent.clear(free);
+  await userEvent.type(free, "破棄");
+  await userEvent.keyboard("{Escape}");
+  await userEvent.tab();
+  await expect(canvas.getByTestId("free-value")).toHaveTextContent("元の値");
+  await expect(canvas.getByTestId("notifications")).toHaveTextContent("0");
+  await userEvent.click(free);
+  await userEvent.clear(free);
+  await userEvent.type(free, "新しい値");
+  await fireEvent.keyDown(free, { key: "Enter", isComposing: true });
+  await expect(canvas.getByTestId("notifications")).toHaveTextContent("0");
+  await userEvent.keyboard("{Enter}");
+  await expect(canvas.getByTestId("free-value")).toHaveTextContent("新しい値");
+  await expect(canvas.getByTestId("notifications")).toHaveTextContent("1");
+  // Reopening without a draft must not replace the committed value with an empty string.
+  await userEvent.click(canvas.getAllByRole("button", { name: "候補を表示" })[1]);
+  await userEvent.keyboard("{Enter}");
+  await expect(canvas.getByTestId("free-value")).toHaveTextContent("新しい値");
+  await userEvent.click(canvas.getByRole("button", { name: "次へ" }));
+  await expect(canvas.getByTestId("notifications")).toHaveTextContent("1");
+  await userEvent.click(free);
+  await userEvent.clear(free);
+  await userEvent.type(free, "フォーカス移動で確定");
+  await userEvent.click(canvas.getByRole("button", { name: "次へ" }));
+  await expect(canvas.getByTestId("free-value")).toHaveTextContent("フォーカス移動で確定");
+  await expect(canvas.getByTestId("notifications")).toHaveTextContent("2");
+  await userEvent.click(input);
+  await userEvent.click(within(canvasElement.ownerDocument.body).getByRole("option", { name: "Alpha" }));
+  await expect(canvas.getByTestId("keyboard-value")).toHaveTextContent("a");
+}}>
+  <Select searchable options={keyboardOptions} bind:value={keyboardValue} ariaLabel="候補選択" />
+  <Select searchable freeText options={keyboardOptions} bind:value={freeValue} ariaLabel="自由入力" onValueChange={() => notifications++} />
+  <button type="button">次へ</button>
+  <output data-testid="keyboard-value">{keyboardValue}</output>
+  <output data-testid="free-value">{freeValue}</output>
+  <output data-testid="notifications">{notifications}</output>
+</Story>
+
+<Story name="Searchable Position Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const input = canvas.getByRole("combobox", { name: "Resize select" });
+  const container = canvas.getByTestId("resize-container");
+  await userEvent.click(input);
+  const list = document.getElementById(input.getAttribute("aria-controls")!)!;
+  await waitFor(() => expect(Math.abs(list.getBoundingClientRect().width - container.getBoundingClientRect().width)).toBeLessThan(1));
+  container.style.width = "420px";
+  await waitFor(() => expect(Math.abs(list.getBoundingClientRect().width - 420)).toBeLessThan(1));
+  // Model the visual viewport reported during keyboard display or pinch zoom.
+  const descriptor = Object.getOwnPropertyDescriptor(window, "visualViewport");
+  const viewport = Object.assign(new EventTarget(), { width: 280, height: 180, offsetLeft: 20, offsetTop: 0 });
+  try {
+    await userEvent.keyboard("{Escape}");
+    Object.defineProperty(window, "visualViewport", { configurable: true, value: viewport });
+    await userEvent.keyboard("{ArrowDown}");
+    const currentList = document.getElementById(input.getAttribute("aria-controls")!)!;
+    await waitFor(() => expect(currentList.getBoundingClientRect().width).toBeLessThanOrEqual(264));
+    viewport.width = 240;
+    viewport.dispatchEvent(new Event("resize"));
+    await waitFor(() => expect(currentList.getBoundingClientRect().width).toBeLessThanOrEqual(224));
+    await expect(currentList.getBoundingClientRect().left).toBeGreaterThanOrEqual(28);
+    await userEvent.keyboard("{Escape}");
+  } finally {
+    if (descriptor) Object.defineProperty(window, "visualViewport", descriptor);
+    else Reflect.deleteProperty(window, "visualViewport");
+    container.style.width = "300px";
+  }
+}}>
+  <div data-testid="resize-container" style="width:300px; max-width:100%">
+    <Select searchable options={keyboardOptions} ariaLabel="Resize select" class="w-full" />
+  </div>
 </Story>

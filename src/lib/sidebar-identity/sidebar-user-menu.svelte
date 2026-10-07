@@ -26,9 +26,9 @@ const sidebar = Sidebar.useSidebar();
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             {...props}
           >
-            <Avatar.Root class="size-8 rounded-lg">
+            <Avatar.Root class="size-8 rounded-lg after:rounded-lg">
               {#if user.avatarUrl}
-                <Avatar.Image src={user.avatarUrl} alt={user.name} />
+                <Avatar.Image src={user.avatarUrl} alt={user.name} class="rounded-lg" />
               {/if}
               <Avatar.Fallback class="rounded-lg"><UserIcon aria-hidden="true" /></Avatar.Fallback>
             </Avatar.Root>
@@ -48,9 +48,9 @@ const sidebar = Sidebar.useSidebar();
       >
         <DropdownMenu.Label class="p-0 font-normal">
           <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-            <Avatar.Root class="size-8 rounded-lg">
+            <Avatar.Root class="size-8 rounded-lg after:rounded-lg">
               {#if user.avatarUrl}
-                <Avatar.Image src={user.avatarUrl} alt={user.name} />
+                <Avatar.Image src={user.avatarUrl} alt={user.name} class="rounded-lg" />
               {/if}
               <Avatar.Fallback class="rounded-lg"><UserIcon aria-hidden="true" /></Avatar.Fallback>
             </Avatar.Root>
