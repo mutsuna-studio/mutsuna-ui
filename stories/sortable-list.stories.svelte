@@ -1,4 +1,5 @@
 <script module lang="ts">
+import { expect, userEvent, within, waitFor, fireEvent } from "storybook/test";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import { SortableList } from "@mutsuna/ui/sortable-list";
 
@@ -16,6 +17,8 @@ import ChevronUpIcon from "@lucide/svelte/icons/chevron-up";
 import GripVerticalIcon from "@lucide/svelte/icons/grip-vertical";
 
 type DemoItem = { id: string; label: string; locked?: boolean };
+
+let testItems = $state([{ id: "a" }, { id: "fixed", locked: true }, { id: "b" }, { id: "c" }]);
 
 let items = $state<DemoItem[]>([
   { id: "general", label: "一般的なお問い合わせ" },
@@ -57,4 +60,32 @@ let items = $state<DemoItem[]>([
       {/snippet}
     </SortableList>
   </div>
+</Story>
+
+<Story name="Locked Item Keyboard Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const order = () => Array.from(canvasElement.querySelectorAll("[data-sortable-key]")).map(element => element.getAttribute("data-sortable-key"));
+  canvas.getByRole("button", { name: "a down" }).focus();
+  await userEvent.keyboard("{Enter}");
+  await expect(order()).toEqual(["b", "fixed", "a", "c"]);
+  await waitFor(() => expect(canvas.getByRole("button", { name: "a down" })).toHaveFocus());
+  await userEvent.click(canvas.getByRole("button", { name: "a up" }));
+  await expect(order()).toEqual(["a", "fixed", "b", "c"]);
+  await expect(canvas.getByRole("button", { name: "fixed down" })).toBeDisabled();
+  const transfer = new DataTransfer();
+  const source = canvas.getByRole("button", { name: "drag a" });
+  const target = canvasElement.querySelector<HTMLElement>('[data-sortable-key="c"]')!;
+  await fireEvent.dragStart(source, { dataTransfer: transfer, clientY: source.getBoundingClientRect().top });
+  await fireEvent.dragOver(target, { dataTransfer: transfer, clientY: target.getBoundingClientRect().bottom - 1 });
+  await waitFor(() => expect(order()).toEqual(["b", "fixed", "c", "a"]));
+  await fireEvent.drop(target, { dataTransfer: transfer });
+  await waitFor(() => expect(document.querySelector('[data-slot="sortable-list-drag-preview"]')).toBeNull());
+}}>
+  <SortableList animationDuration={0} bind:items={testItems} getKey={item => item.id} isLocked={item => Boolean(item.locked)}>
+    {#snippet children(item, _index, controls)}
+      <button type="button" {...controls.dragHandleProps} disabled={controls.locked}>drag {item.id}</button>
+      <button type="button" disabled={!controls.canMoveUp} onclick={controls.moveUp}>{item.id} up</button>
+      <button type="button" disabled={!controls.canMoveDown} onclick={controls.moveDown}>{item.id} down</button>
+    {/snippet}
+  </SortableList>
 </Story>

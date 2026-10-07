@@ -341,6 +341,12 @@ CSS-only loading indicators are adapted from
 
 This project is not affiliated with or endorsed by Loading UI.
 
+### Searchable Select
+
+`Select searchable` は入力で候補を絞り込み、上下矢印で無効な候補を飛ばして移動し、Enterで確定します。確定後も入力欄のフォーカスを維持します。Escapeは候補を閉じ、未確定の入力を破棄します。Dialog内では最初のEscapeで候補だけを閉じます。
+
+`freeText` を併用すると、候補を矢印キーで選んでいない場合のEnter、またはコントロール外へのフォーカス移動で任意の文字列を確定します。IME変換中のEnterでは確定しません。候補選択時は通常モードで`option.value`、自由入力モードで`option.label`を保存します。
+
 ### CycleSelect
 
 `@mutsuna/ui/cycle-select` exposes `CycleSelect`, `CycleSelectProps`, and `CycleSelectOption`.
@@ -597,3 +603,27 @@ Code execution, persistence, validation logic, and grading belong to the consumi
 `mode="split"` (default) compares two panes; `mode="unified"` displays removed code above the editable replacement. `original` is a fixed baseline, updated only through props. `value` is the editable result; `readonly` locks it while allowing selection. Merge/accept/reject controls are intentionally omitted so the baseline cannot be changed in the UI. `originalLabel` / `modifiedLabel` default to 変更前 / 変更後. The accessible editor names combine `aria-label` with these labels. Standard CodeEditor language, size, error, disabled, wrapping, and extension props also apply; custom extensions attach to the modified side. Switching modes preserves the modified document, selection, and undo history. Use unified mode on narrow screens; the component does not switch modes automatically. The diff runtime is loaded only on mount. In Astro, hydrate with `client:load`.
 
 CodeEditor and CodeDiff include a language label and copy button in their header. `toolbar={false}` hides the header; `copyable={false}` hides only copy. The `actions` snippet adds application buttons. CodeDiff includes split/unified controls; use `bind:mode` to observe changes. Copy uses the current (modified) value and remains available when readonly; disabled prevents built-in controls. Language labels are display-only. `height` applies to the editing area, excluding the header.
+
+### 折りたたみサイドバーの一時展開
+
+`Sidebar.Root collapsible="icon"` はデスクトップでホバー・キーボードフォーカスすると、メイン領域の幅を変えずに重ねて展開する。ポインターとフォーカスが外れると戻り、Escapeでも閉じられる。ドロップダウンの操作中は展開を維持する。一時展開は `Provider.open`、`onOpenChange`、保存cookieを変更せず、通常のTriggerによる開閉は従来どおりレイアウトへ反映する。
+
+`expandOnHover={false}` で一時展開を無効にできる。`useSidebar().previewOpen` は一時展開の表示状態を表す。モバイルでは従来のSheetを使う。
+
+### 枠線に重ねるラベル
+
+`Input`・`Textarea`に加え、通常／検索付きの`Select.Root`と`InputGroup.Root`に`label`を指定できる。`placeholder`は入力のヒントとして独立し、ラベルには変換しない。SelectとInputGroupでは、選択値・アイコン・追加ボタンと重ならないようラベルを常に枠線上へ表示する。ラベルなしの表示は従来どおり。
+
+```svelte
+<Select.Root label="チーム" bind:value>
+  <Select.Trigger>{selectedLabel}</Select.Trigger>
+  <Select.Content><!-- Select.Item --> </Select.Content>
+</Select.Root>
+<Select.Root searchable label="チームを検索" {options} bind:value />
+<InputGroup.Root label="検索">
+  <InputGroup.Addon><!-- 検索アイコン --> </InputGroup.Addon>
+  <InputGroup.Input placeholder="名前を入力" />
+</InputGroup.Root>
+```
+
+通常Selectは`Select.Trigger`にも`label`を指定でき、Rootのラベルより優先する。InputGroup内のInput／TextareaのIDは自動生成し、ラベルのクリックでフォーカスできる。独自IDを指定する場合は`<InputGroup.Root label="検索" labelFor="search-input">`と`<InputGroup.Input id="search-input" />`のように関連付ける。1つのInputGroupに対し、ラベルの対象は1つの入力欄とする。Selectの`aria-invalid`・`aria-describedby`はRootから指定でき、通常SelectはTriggerからも指定できる。

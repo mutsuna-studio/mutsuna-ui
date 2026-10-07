@@ -2,7 +2,7 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const sidebarMenuButtonVariants = tv({
-  base: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground gap-2 rounded-md border border-transparent p-2 text-left text-sm transition-[width,height,padding,background-color,border-color] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:border-sidebar-ring focus-visible:bg-sidebar-accent data-active:font-medium peer/menu-button group/menu-button flex w-full items-center overflow-hidden outline-hidden disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
+  base: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground gap-2 rounded-md border border-transparent p-2 text-left text-sm transition-[width,height,padding,background-color,border-color] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-[7px]! focus-visible:border-sidebar-ring focus-visible:bg-sidebar-accent data-active:font-medium peer/menu-button group/menu-button flex w-full items-center overflow-hidden outline-hidden disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
   variants: {
     variant: {
       default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -12,7 +12,7 @@ export const sidebarMenuButtonVariants = tv({
     size: {
       default: "h-8 text-sm",
       sm: "h-7 text-xs",
-      lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!",
+      lg: "h-12 text-sm group-data-[collapsible=icon]:size-[34px]! group-data-[collapsible=icon]:-mx-px group-data-[collapsible=icon]:p-0!",
     },
   },
   defaultVariants: {
@@ -88,7 +88,7 @@ export type SidebarMenuButtonSize = VariantProps<typeof sidebarMenuButtonVariant
 		<Tooltip.Content
 			side="right"
 			align="center"
-			hidden={sidebar.state !== "collapsed" || sidebar.isMobile}
+			hidden={sidebar.state !== "collapsed" || sidebar.previewOpen || sidebar.isMobile}
 			{...tooltipContentProps}
 		>
 			{#if typeof tooltipContent === "string"}

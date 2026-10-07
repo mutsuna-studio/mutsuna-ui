@@ -1,4 +1,14 @@
 <script lang="ts">
+  import MarkdownLifecycle from "./MarkdownLifecycle.svelte";
+  import { SortableList } from "@mutsuna/ui/sortable-list";
+  let sortableItems = $state([{ id: "a" }, { id: "fixed", locked: true }, { id: "b" }]);
+  import { Select } from "@mutsuna/ui/select";
+  import { Calendar } from "@mutsuna/ui/calendar";
+  import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
+  let selection = $state("");
+  let freeSelection = $state("Original");
+  let selectionChanges = $state(0);
+  const options = [{ value: "a", label: "Alpha" }, { value: "b", label: "Blocked", disabled: true }, { value: "c", label: "Charlie" }];
   import { RangeCalendar } from "@mutsuna/ui/range-calendar";
   import { parseDate } from "@internationalized/date";
   import { FilterSelect } from "@mutsuna/ui/filter-select";
@@ -29,7 +39,7 @@
     <DialogTrigger>
       {#snippet child({ props })}<Button {...props}>Open dialog</Button>{/snippet}
     </DialogTrigger>
-    <DialogContent><DialogTitle>Astro dialog</DialogTitle><p>Hydrated Svelte island</p></DialogContent>
+    <DialogContent><DialogTitle>Astro dialog</DialogTitle><p>Hydrated Svelte island</p><Select searchable {options} ariaLabel="Dialog select" /></DialogContent>
   </Dialog>
 </div>
 
@@ -51,3 +61,18 @@
 <FilterSelect searchable label="担当者" ariaLabel="Astro multi filter" options={[{ value: "alpha", label: "Alpha" }, { value: "beta", label: "Beta" }]} />
 
 <RangeCalendar scrollable aria-label="Astro date range" placeholder={parseDate("2026-06-01")} />
+
+<div id="select-container" style="width:300px"><Select searchable {options} ariaLabel="Astro select" class="w-full" bind:value={selection} /></div>
+<Select searchable freeText {options} ariaLabel="Astro free text" bind:value={freeSelection} onValueChange={() => selectionChanges++} />
+<span id="selection">{selection}</span>
+<span id="free-selection">{freeSelection}</span>
+<span id="selection-changes">{selectionChanges}</span>
+<Calendar type="single" placeholder={parseDate("2026-06-01")} aria-label="Astro single calendar" />
+<MarkdownTextEditor id="astro-markdown" label="Astro Markdown" value="Hello" />
+
+<MarkdownLifecycle />
+<SortableList bind:items={sortableItems} getKey={item => item.id} isLocked={item => Boolean(item.locked)}>
+  {#snippet children(item, _index, controls)}
+    <button type="button" disabled={!controls.canMoveDown} onclick={controls.moveDown}>{item.id} down</button>
+  {/snippet}
+</SortableList>

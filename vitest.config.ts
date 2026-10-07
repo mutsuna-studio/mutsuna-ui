@@ -22,6 +22,8 @@ export default mergeConfig(
           ],
           test: {
             name: "storybook",
+            // Scrollable calendars render many months; keep all interaction/a11y checks on slower CI runners.
+            testTimeout: 30000,
             browser: {
               enabled: true,
               headless: true,

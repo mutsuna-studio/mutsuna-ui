@@ -1,9 +1,10 @@
 <script lang="ts" generics="T">
 import { flip } from "svelte/animate";
 import { cubicOut } from "svelte/easing";
-import { onDestroy, type Snippet } from "svelte";
+import { onDestroy, tick, type Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../utils.js";
+import { reorderItems } from "../internal/sortable-list/reorder.js";
 import type { SortableListControls } from "./types.js";
 
 type Props = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
@@ -110,12 +111,6 @@ function endDrag(): void {
   cleanupDragPreview();
 }
 
-function stabilizeLockedItems(candidateItems: T[]): T[] {
-  const movableItems = candidateItems.filter((item) => !isLocked(item));
-  let movableIndex = 0;
-  return items.map((item) => (isLocked(item) ? item : (movableItems[movableIndex++] ?? item)));
-}
-
 function moveDraggedItem(targetItem: T, pointerY: number, targetElement: HTMLElement): void {
   if (draggedKey === null) return;
   const sourceIndex = items.findIndex((item) => getKey(item) === draggedKey);
@@ -129,12 +124,8 @@ function moveDraggedItem(targetItem: T, pointerY: number, targetElement: HTMLEle
     : targetBounds.bottom - targetBounds.height * normalizedSwapThreshold;
   if ((movingDown && pointerY <= targetSwapThresholdY) || (!movingDown && pointerY >= targetSwapThresholdY)) return;
 
-  const reordered = [...items];
-  const [sourceItem] = reordered.splice(sourceIndex, 1);
-  if (sourceItem === undefined) return;
-  const insertIndex = reordered.findIndex((item) => getKey(item) === getKey(targetItem));
-  reordered.splice(movingDown ? insertIndex + 1 : insertIndex, 0, sourceItem);
-  commitItems(stabilizeLockedItems(reordered));
+  const reordered = reorderItems(items, draggedKey, getKey(targetItem), getKey, isLocked);
+  if (reordered) commitItems(reordered);
 }
 
 function moveItem(item: T, offset: -1 | 1): void {
@@ -145,9 +136,16 @@ function moveItem(item: T, offset: -1 | 1): void {
   if (sourceIndex < 0 || targetIndex < 0 || targetIndex >= movableItems.length) return;
 
   const targetItem = movableItems[targetIndex];
-  [movableItems[sourceIndex], movableItems[targetIndex]] = [movableItems[targetIndex], movableItems[sourceIndex]];
-  let movableIndex = 0;
-  commitItems(items.map((candidate) => (isLocked(candidate) ? candidate : (movableItems[movableIndex++] ?? candidate))));
+  const reordered = reorderItems(items, getKey(item), getKey(targetItem), getKey, isLocked);
+  if (!reordered) return;
+  const focused = document.activeElement;
+  commitItems(reordered);
+  void tick().then(() => {
+    // Moving a keyed DOM node can drop focus in browsers without state-preserving moves.
+    if (focused instanceof HTMLElement && focused.isConnected && !focused.matches(":disabled") && document.activeElement === document.body) {
+      focused.focus({ preventScroll: true });
+    }
+  });
   markMoved([getKey(item), getKey(targetItem)]);
   announcement = `「${getLabel(item)}」を${targetIndex + 1}番目に移動しました。`;
 }

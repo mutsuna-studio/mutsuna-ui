@@ -1,10 +1,12 @@
 <script module lang="ts">
 import { defineMeta } from "@storybook/addon-svelte-csf";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import SearchIcon from "@lucide/svelte/icons/search";
 import XIcon from "@lucide/svelte/icons/x";
 import Button from "@mutsuna/ui/button/button.svelte";
 import Input from "@mutsuna/ui/input/input.svelte";
+import * as Select from "@mutsuna/ui/select";
+import * as OutlineGroup from "@mutsuna/ui/input-group";
 import Loading from "@mutsuna/ui/loading/loading.svelte";
 import InputGroup from "@mutsuna/ui/input-group/input-group.svelte";
 import InputGroupAddon from "@mutsuna/ui/input-group/input-group-addon.svelte";
@@ -21,6 +23,11 @@ const { Story } = defineMeta({
 </script>
 
 <script lang="ts">
+let outlinedSelected = $state("");
+let outlinedQuery = $state("");
+let outlinedSearchRef = $state<HTMLInputElement | null>(null);
+const outlinedOptions = [{ value: "studio", label: "スタジオ" }, { value: "design", label: "デザイン" }];
+
 let searchValue = $state("サンプルプロジェクト");
 let searchInput = $state<HTMLInputElement | null>(null);
 let floatingSearchValue = $state("サンプルプロジェクト");
@@ -202,14 +209,14 @@ function toggleCompactSearch(event: MouseEvent): void {
 	await userEvent.unhover(compactToggle);
 
 	await userEvent.click(compactToggle);
-	await new Promise((resolve) => setTimeout(resolve, 250));
+
 	await expect(compactInput).toHaveFocus();
 	await expect(getComputedStyle(compactInput).cursor).toBe("text");
-	await expect(compactGroup.getBoundingClientRect().width).toBeGreaterThan(collapsedWidth);
+	await waitFor(() => expect(compactGroup.getBoundingClientRect().width).toBeGreaterThan(collapsedWidth + 1));
 	await userEvent.click(compactToggle);
-	await new Promise((resolve) => setTimeout(resolve, 250));
+
 	await expect(compactInput).not.toHaveFocus();
-	await expect(Math.abs(compactGroup.getBoundingClientRect().width - collapsedWidth)).toBeLessThan(1);
+	await waitFor(() => expect(Math.abs(compactGroup.getBoundingClientRect().width - collapsedWidth)).toBeLessThan(1));
 	const standardInput = standard.getByRole("textbox", { name: "プロジェクトを検索" });
 	const floatingInput = floating.getByRole("textbox", { name: "プロジェクトを検索" });
 
@@ -328,4 +335,28 @@ function toggleCompactSearch(event: MouseEvent): void {
 		</InputGroupAddon>
 		<InputGroupInput aria-label="通知する分数" aria-invalid="true" value="-10" inputmode="numeric" />
 	</InputGroup>
+</Story>
+
+<Story name="Outline Labels" parameters={{ controls: { disable: true } }} asChild>
+  <div class="grid w-full max-w-3xl gap-6 p-4 sm:grid-cols-2">
+    <Input label="表示名" placeholder="名前を入力" />
+    <Select.Root label="ワークスペース" bind:value={outlinedSelected}>
+      <Select.Trigger><span>{outlinedOptions.find(option => option.value === outlinedSelected)?.label ?? "選択してください"}</span></Select.Trigger>
+      <Select.Content>{#each outlinedOptions as option}<Select.Item value={option.value}>{option.label}</Select.Item>{/each}</Select.Content>
+    </Select.Root>
+    <Select.Root searchable label="検索して選択" options={outlinedOptions} class="w-full" />
+    <Select.Root searchable freeText label="候補または自由入力" options={outlinedOptions} value="自由な名前" class="w-full" />
+    <OutlineGroup.Root label="キーワード">
+      <OutlineGroup.Addon><SearchIcon aria-hidden="true" /></OutlineGroup.Addon>
+      <OutlineGroup.Input bind:ref={outlinedSearchRef} bind:value={outlinedQuery} placeholder="名前で検索" />
+      <OutlineGroup.Addon align="inline-end"><OutlineGroup.Button size="icon-xs" aria-label="キーワードをクリア" onclick={() => { outlinedQuery = ""; outlinedSearchRef?.focus(); }}><XIcon aria-hidden="true" /></OutlineGroup.Button></OutlineGroup.Addon>
+    </OutlineGroup.Root>
+    <OutlineGroup.Root label="金額"><OutlineGroup.Input type="number" value="1000" /><OutlineGroup.Addon align="inline-end"><OutlineGroup.Text>円</OutlineGroup.Text></OutlineGroup.Addon></OutlineGroup.Root>
+    <Select.Root searchable label="無効な選択" options={outlinedOptions} value="studio" disabled class="w-full" />
+    <OutlineGroup.Root label="無効な入力"><OutlineGroup.Input value="変更できません" disabled /></OutlineGroup.Root>
+    <div class="grid gap-2"><Select.Root searchable label="選択エラー" options={outlinedOptions} aria-invalid="true" aria-describedby="outlined-select-error" class="w-full" /><p id="outlined-select-error" class="text-xs text-destructive">候補を選択してください。</p></div>
+    <div class="grid gap-2"><OutlineGroup.Root label="入力エラー"><OutlineGroup.Input aria-invalid="true" aria-describedby="outlined-group-error" /></OutlineGroup.Root><p id="outlined-group-error" class="text-xs text-destructive">内容を入力してください。</p></div>
+    <OutlineGroup.Root label="備考"><OutlineGroup.Textarea placeholder="複数行の内容" /><OutlineGroup.Addon align="block-end"><OutlineGroup.Text>補足の説明</OutlineGroup.Text></OutlineGroup.Addon></OutlineGroup.Root>
+    <Select.Root value="design"><Select.Trigger label="長いラベルも狭い画面で枠の外へはみ出さない選択項目"><span>デザイン</span></Select.Trigger><Select.Content><Select.Item value="design">デザイン</Select.Item></Select.Content></Select.Root>
+  </div>
 </Story>

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { mergeProps } from "bits-ui";
 import * as Sheet from "@mutsuna/ui/sheet";
 import { cn, type WithElementRef } from "../utils.js";
 import type { HTMLAttributes } from "svelte/elements";
@@ -11,6 +12,7 @@ let {
   variant = "sidebar",
   collapsible = "offcanvas",
   hideHeaderSeam = false,
+  expandOnHover = true,
   class: className,
   children,
   ...restProps
@@ -19,9 +21,54 @@ let {
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
   hideHeaderSeam?: boolean;
+  /** Preview an icon-collapsed desktop sidebar without resizing the main content. */
+  expandOnHover?: boolean;
 } = $props();
 
 const sidebar = useSidebar();
+let hovered = $state(false);
+let focused = $state(false);
+let keyboardFocus = $state(false);
+let dismissed = $state(false);
+const previewOpen = $derived(expandOnHover && collapsible === "icon" && !sidebar.open && !sidebar.isMobile && !dismissed && (hovered || focused));
+
+$effect(() => {
+  if (sidebar.open || sidebar.isMobile) {
+    hovered = false;
+    focused = false;
+    dismissed = false;
+  }
+});
+
+$effect(() => {
+  sidebar.previewOpen = previewOpen;
+  return () => { sidebar.previewOpen = false; };
+});
+
+function isOwnedPortal(target: EventTarget | null): boolean {
+  return target instanceof Element && target.closest(
+    '[data-slot="dropdown-menu-content"], [data-slot="popover-content"], [data-slot="select-content"], [data-slot="dialog-content"]'
+  ) !== null && Boolean(ref?.querySelector('[aria-haspopup][aria-expanded="true"]'));
+}
+
+function handlePointerDown(event: PointerEvent): void {
+  keyboardFocus = false;
+  focused = isOwnedPortal(event.target);
+}
+
+function handleFocusIn(event: FocusEvent): void {
+  if (!(event.target instanceof Node)) return;
+  const inside = ref?.contains(event.target) ?? false;
+  // Pointer focus on a navigation button must not pin a hover preview.
+  // Portalled menus remain visible until focus returns to their trigger.
+  focused = (inside && keyboardFocus) || isOwnedPortal(event.target);
+  if (inside && !(event.relatedTarget instanceof Node && ref?.contains(event.relatedTarget))) dismissed = false;
+}
+
+function handleEscape(event: KeyboardEvent): void {
+  if (event.key === "Tab") keyboardFocus = true;
+  if (event.key === "Escape" && previewOpen && (!event.defaultPrevented || !ref?.querySelector('[aria-haspopup][aria-expanded="true"]'))) dismissed = true;
+}
 
 function closeMobileSidebarOnLinkClick(event: MouseEvent): void {
   if (!(event.target instanceof Element)) return;
@@ -30,6 +77,8 @@ function closeMobileSidebarOnLinkClick(event: MouseEvent): void {
   }
 }
 </script>
+
+<svelte:window onfocusin={handleFocusIn} onkeydown={handleEscape} onpointerdown={handlePointerDown} />
 
 {#if collapsible === "none"}
 	<div
@@ -74,7 +123,9 @@ function closeMobileSidebarOnLinkClick(event: MouseEvent): void {
 		bind:this={ref}
 		class="text-sidebar-foreground group peer hidden md:block"
 		data-state={sidebar.state}
-		data-collapsible={sidebar.state === "collapsed" ? collapsible : ""}
+		data-collapsible={sidebar.state === "collapsed" && !previewOpen ? collapsible : ""}
+		data-layout-collapsible={sidebar.state === "collapsed" ? collapsible : ""}
+		data-preview={previewOpen ? "open" : "closed"}
 		data-variant={variant}
 		data-side={side}
 		data-slot="sidebar"
@@ -84,11 +135,11 @@ function closeMobileSidebarOnLinkClick(event: MouseEvent): void {
 			data-slot="sidebar-gap"
 			class={cn(
 				"transition-[width] duration-200 ease-linear relative w-(--sidebar-width) bg-transparent",
-				"group-data-[collapsible=offcanvas]:w-0",
+				"group-data-[layout-collapsible=offcanvas]:w-0",
 				"group-data-[side=right]:rotate-180",
 				variant === "floating" || variant === "inset"
-					? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
-					: "group-data-[collapsible=icon]:w-(--sidebar-width-icon)"
+					? "group-data-[layout-collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
+					: "group-data-[layout-collapsible=icon]:w-(--sidebar-width-icon)"
 			)}
 		></div>
 		<div
@@ -104,9 +155,15 @@ function closeMobileSidebarOnLinkClick(event: MouseEvent): void {
 					: hideHeaderSeam
 						? "group-data-[collapsible=icon]:w-(--sidebar-width-icon)"
 						: "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-e group-data-[side=right]:border-s",
+				previewOpen && "z-30 shadow-xl",
 				className
 			)}
-			{...restProps}
+			{...mergeProps(restProps, {
+                onpointerenter: (event: PointerEvent) => {
+                    if (event.pointerType !== "touch") { hovered = true; dismissed = false; }
+                },
+                onpointerleave: () => { hovered = false; },
+            })}
 		>
 			<div
 				data-sidebar="sidebar"
