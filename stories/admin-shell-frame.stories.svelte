@@ -1,4 +1,5 @@
 <script module lang="ts">
+import { expect, userEvent, within } from "storybook/test";
 import { defineMeta } from "@storybook/addon-svelte-csf";
 import BadgeCheckIcon from "@lucide/svelte/icons/badge-check";
 import BellIcon from "@lucide/svelte/icons/bell";
@@ -54,8 +55,8 @@ const components = [
 ];
 </script>
 
-<Story name="Default" asChild parameters={{ layout: "fullscreen" }}>
-  <AdminShellFrame pageTitle="コンポーネント一覧" bind:sidebarOpen>
+{#snippet shell(withFooter = false)}
+  <AdminShellFrame pageTitle="コンポーネント一覧" bind:sidebarOpen footer={withFooter ? footerLinks : undefined}>
     {#snippet sidebar()}
       <Sidebar.Root collapsible="icon" hideHeaderSeam>
         <Sidebar.Header>
@@ -127,4 +128,43 @@ const components = [
       </div>
     </section>
   </AdminShellFrame>
+{/snippet}
+
+{#snippet footerLinks()}
+  <div class="flex flex-wrap items-center justify-end gap-x-3 text-xs text-muted-foreground">
+    <nav aria-label="補助リンク" class="flex items-center gap-3">
+      <a href="https://example.com/support" class="inline-flex min-h-6 items-center rounded-sm hover:underline focus-visible:outline-2 focus-visible:outline-ring">サポート</a>
+      <a href="https://example.com/terms" class="inline-flex min-h-6 items-center rounded-sm hover:underline focus-visible:outline-2 focus-visible:outline-ring">利用規約</a>
+    </nav>
+    <small class="text-xs">© 2026 Example</small>
+  </div>
+{/snippet}
+
+<Story name="Default" asChild parameters={{ layout: "fullscreen" }}>
+  {@render shell()}
+</Story>
+
+<Story name="With Footer" asChild parameters={{ layout: "fullscreen" }}>
+  {@render shell(true)}
+</Story>
+
+
+<Story name="Footer Interaction Test" tags={["!dev", "!autodocs"]} asChild parameters={{ layout: "fullscreen" }} play={async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const footer = canvas.getByRole("contentinfo");
+  const scrollArea = canvasElement.querySelector<HTMLElement>(".mutsuna-scrollbar")!;
+  await expect(scrollArea.contains(footer)).toBe(false);
+  const footerTop = footer.getBoundingClientRect().top;
+  scrollArea.scrollTop = scrollArea.scrollHeight;
+  await expect(scrollArea.scrollTop).toBeGreaterThan(0);
+  await expect(footer.getBoundingClientRect().top).toBe(footerTop);
+  await expect(scrollArea.getBoundingClientRect().bottom).toBeLessThanOrEqual(footerTop);
+  await userEvent.click(canvasElement.querySelector<HTMLElement>('[data-slot="sidebar-trigger"]')!);
+  await expect(footer).toBeVisible();
+  const support = canvas.getByRole("link", { name: "サポート" });
+  support.focus();
+  await userEvent.tab();
+  await expect(canvas.getByRole("link", { name: "利用規約" })).toHaveFocus();
+}}>
+  {@render shell(true)}
 </Story>

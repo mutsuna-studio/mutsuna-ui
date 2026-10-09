@@ -146,6 +146,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
         <SidebarUserMenu user={{ name: "External user", email: "user@example.com" }} />
       </Sidebar>
     {/snippet}
+    {#snippet footer()}<span>External footer</span>{/snippet}
     <AdminPage class="max-w-3xl">
       <AdminPageHeader description="Installed from the published tarball" />
       <AdminPanel title="Shared admin layout" description={actionToast?.message}>

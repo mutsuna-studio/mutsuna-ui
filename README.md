@@ -215,6 +215,8 @@ import { AdminPage, AdminPageHeader, AdminPanel } from "@mutsuna/ui/admin-layout
 
 `FormTemplateEditor`の表示条件と`TemplateInsertMenu`のpayload/categoryは利用側が型と選択肢を定義する。永続化、業務validation、API変換は利用側の責務。
 
+`AdminShellFrame`は任意の`footer` snippetを本文のスクロール領域の外側に表示する。フッターのリンク・文言・配置は利用側で定義する。未指定の場合は従来のレイアウトを維持する。
+
 SvelteKit form actionの通知、redirect、pending管理は専用subpathから利用する。
 
 ```ts

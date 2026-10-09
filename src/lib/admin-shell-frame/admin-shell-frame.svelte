@@ -11,6 +11,7 @@ interface Props {
   children?: Snippet;
   sidebar: Snippet;
   headerActions?: Snippet;
+  footer?: Snippet;
   breadcrumb?: Snippet;
   pageTitle: string;
   parentPageTitle?: string | null;
@@ -28,6 +29,7 @@ let {
   children,
   sidebar,
   headerActions,
+  footer,
   breadcrumb,
   pageTitle,
   parentPageTitle = null,
@@ -90,11 +92,17 @@ function handleSidebarOpenChange(open: boolean): void {
       gutter={contentGutter}
       class={cn(
         "bg-background border-sidebar-border mb-2 min-h-0 min-w-0 flex-1 overflow-auto rounded-[14px] border-y sm:me-2 sm:border",
+        footer && "mb-0",
         contentPadding === "default" && "px-2 sm:p-4 sm:pt-0",
         contentClass,
       )}
     >
       {@render children?.()}
     </ScrollbarArea>
+    {#if footer}
+      <footer data-slot="admin-shell-footer" class="min-w-0 shrink-0 px-2 py-1 sm:px-4">
+        {@render footer()}
+      </footer>
+    {/if}
   </Sidebar.Inset>
 </Sidebar.Provider>
