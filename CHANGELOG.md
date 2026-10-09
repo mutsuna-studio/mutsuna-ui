@@ -1,5 +1,11 @@
 # @mutsuna/ui
 
+## 0.17.0
+
+### Minor Changes
+
+- 702a7c3: Add an optional footer snippet to AdminShellFrame outside the scrolling content, preserving the existing layout when omitted.
+
 ## 0.16.0
 
 ### Minor Changes
