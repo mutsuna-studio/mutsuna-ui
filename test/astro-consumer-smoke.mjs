@@ -1,3 +1,4 @@
+import { verifyEventCalendar } from "./event-calendar-browser.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -97,6 +98,7 @@ import ImportProbe from "../components/ImportProbe.svelte";
         assert.equal(requests.some((url) => /\.(?:js|woff2?)(?:\?|$)/.test(url)), false, "Token-only page must not load JS or fonts");
       } else {
         await page.waitForFunction(() => !document.querySelector("astro-island[ssr]"));
+        await verifyEventCalendar(page);
         const preview = page.locator('#sidebar-preview');
         const sidebarRoot = preview.locator('[data-slot="sidebar"]');
         const panel = preview.locator('[data-slot="sidebar-container"]');
