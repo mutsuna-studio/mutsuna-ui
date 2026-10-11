@@ -945,7 +945,7 @@
   .calendar-headings { position: relative; z-index: 20; background: var(--background); }
   .day-headings { display: flex; border-bottom: 1px solid var(--border); }
   .day-headings > span { width: 56px; flex-shrink: 0; }
-  .day-scroll-lane { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+  .day-scroll-lane { position: relative; flex: 1; min-width: 0; }
   .day-heading-track { display: grid; grid-template-columns: repeat(var(--day-count), minmax(0, 1fr)); }
   .day-headings > span, .all-day-label, .time-axis { position: sticky; left: 0; z-index: 5; background: var(--background); box-shadow: 1px 0 var(--border); }
   .all-day-row { display: flex; border-bottom: 1px solid var(--border); }

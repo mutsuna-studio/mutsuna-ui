@@ -401,13 +401,6 @@ export async function verifyEventCalendar(page) {
   assert.ok(await firstDate() > initialDate, 'vertical input scrolls dates rather than replacing a week');
   assert.equal(await timeline.locator('.timeline-incoming').count(), 0);
   assert.equal(await timeline.locator(".timeline-heading").evaluate(element => element.getBoundingClientRect().y), timeHeaderY);
-  const afterWheel = await firstDate();
-  const touchLabel = timeline.locator(`[data-timeline-date="${afterWheel}"] > .timeline-label > span`);
-  await touchLabel.scrollIntoViewIfNeeded();
-  const beforeTouch = await firstDate();
-  await touchSwipe(touchLabel, -160);
-  await page.waitForTimeout(300);
-  assert.ok(await firstDate() > beforeTouch, 'touch uses native continuous vertical scrolling');
   await dateScroll.scrollIntoViewIfNeeded();
   const dateBodyBox = await dateScroll.boundingBox();
   const screenHeight = page.viewportSize().height;
@@ -428,6 +421,13 @@ export async function verifyEventCalendar(page) {
     await page.waitForTimeout(100);
   }
   assert.ok(await firstDate() < advanced, 'continuous scrolling also works toward earlier dates');
+  const afterWheel = await firstDate();
+  const touchLabel = timeline.locator(`[data-timeline-date="${afterWheel}"] > .timeline-label > span`);
+  await touchLabel.scrollIntoViewIfNeeded();
+  const beforeTouch = await firstDate();
+  await touchSwipe(touchLabel, -160);
+  await page.waitForTimeout(300);
+  assert.ok(await firstDate() > beforeTouch, 'touch uses native continuous vertical scrolling');
   await calendar.getByRole('button', { name: '表示範囲を戻す', exact: true }).click();
   async function selectView(name) {
     await calendar.getByRole("button", { name: "カレンダーの表示", exact: true }).click();
@@ -538,6 +538,7 @@ export async function verifyEventCalendar(page) {
   await calendar.evaluate(element => { element.style.width = '500px'; element.style.maxWidth = '500px'; });
   await page.waitForTimeout(100);
   const narrowScroller = calendar.locator('[data-slot="event-calendar-day-scroll"]');
+  assert.equal(await narrowScroller.evaluate(element => getComputedStyle(element).overflowX), "auto", "day lanes retain native horizontal scrolling");
   await narrowScroller.scrollIntoViewIfNeeded();
   const narrowBox = await narrowScroller.boundingBox();
   const narrowBody = await calendar.locator('.calendar-viewport').boundingBox();
