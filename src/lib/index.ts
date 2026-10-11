@@ -339,3 +339,5 @@ export { CodeEditor, type CodeEditorProps, type CodeEditorLanguage } from "./cod
 export { CodeDiff, type CodeDiffProps, type CodeDiffMode } from "./code-editor/index.js";
 
 export { RangeCalendar, type RangeCalendarProps } from "./range-calendar/index.js";
+
+export { EventCalendar, type EventCalendarBackgroundRange, type EventCalendarProps, type EventCalendarView, type EventCalendarVisibleRange, type EventCalendarPrefetchRange, type EventCalendarEvent, type EventCalendarRange, type EventCalendarChange, type EventCalendarCreate, type EventCalendarInteractionContext, type EventCalendarRow } from "./event-calendar/index.js";

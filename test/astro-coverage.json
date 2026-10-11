@@ -61,7 +61,8 @@
     "./cycle-select",
     "./date-picker",
     "./date-time-input",
-    "./code-editor"
+    "./code-editor",
+    "./event-calendar"
   ],
   "styles": [
     "./theme.css",
