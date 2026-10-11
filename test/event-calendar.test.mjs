@@ -148,4 +148,3 @@ test("background ranges clip across dates, hours and resource rows with exclusiv
   assert.throws(() => backgroundSegments([{ ...ranges[0], end: ranges[0].start }], "2026-10-05"), RangeError);
   assert.throws(() => backgroundSegments([{ ...ranges[0], start: "2026-02-30" }], "2026-10-05"), RangeError);
 });
-

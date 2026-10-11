@@ -743,7 +743,7 @@
           </div>
         {/each}
       </div>
-    
+
         </div></div></div>
       </div>
     </div>
@@ -757,7 +757,7 @@
         <!-- svelte-ignore a11y_no_noninteractive_tabindex: native keyboard scrolling of the date range -->
         <div class="day-scroll-lane day-heading-lane day-scroller" role="region" aria-label={`${ariaLabel}の日付の横スクロール`} tabindex="0" use:synchronizedDayScroll><div class="day-scroll-track"><div class="day-scroll-stage">
           <div class="day-heading-track">{#each days as day}<div class:today={day === todayDate} class={cn("day-heading", getCalendarDayColorClass(parseDate(day)))}>{dayLabel(day)}</div>{/each}</div>
-          
+
         </div></div></div>
       </div>
       <div class="all-day-row" data-slot="event-calendar-all-day">
@@ -783,7 +783,7 @@
             {/if}
           {/each}
         </div>
-        
+
         </div></div></div>
       </div>
       </div>
@@ -846,7 +846,7 @@
             </div>
           {/each}
         </div>
-        
+
         </div></div></div>
       </div>
     </div>
