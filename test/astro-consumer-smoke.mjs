@@ -1,4 +1,5 @@
 import { verifyEventCalendar } from "./event-calendar-browser.mjs";
+import { verifySelectPosition } from "./select-position-browser.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -86,6 +87,7 @@ import ImportProbe from "../components/ImportProbe.svelte";
           },
         } });
       });
+      if (mode === "svelte") await verifySelectPosition(page, url);
       await page.goto(url);
       const style = (selector, property) => page.locator(selector).evaluate((element, property) => getComputedStyle(element).getPropertyValue(property), property);
       if (mode === "tokens") {
@@ -377,17 +379,7 @@ import ImportProbe from "../components/ImportProbe.svelte";
         const select = page.getByRole("combobox", { name: "Astro select", exact: true });
         await select.click();
         const listId = await select.getAttribute("aria-controls");
-        await page.locator("#select-container").evaluate(element => { element.style.width = "420px"; });
-        await page.waitForFunction(id => { const list = document.getElementById(id); return list && Math.abs(list.getBoundingClientRect().width - 420) < 1; }, listId);
-        await page.setViewportSize({ width: 390, height: 500 });
-        // Viewport emulation can move focus when the other responsive islands remount.
-        // Keep this assertion about list positioning, independent of their focus restoration.
-        await select.focus();
-        if (await select.getAttribute("aria-expanded") !== "true") {
-          await page.locator("#select-container").getByRole("button", { name: "候補を表示", exact: true }).click();
-        }
-        await page.waitForFunction(id => { const list = document.getElementById(id); return list && list.getBoundingClientRect().width <= 374; }, listId);
-        await page.setViewportSize({ width: 1280, height: 720 });
+        await page.getByRole("listbox").waitFor({ state: "visible" });
         await select.press("ArrowDown");
         await select.press("ArrowDown");
         assert.equal(await page.locator(`[id="${await select.getAttribute("aria-activedescendant")}"]`).textContent().then(text => text.trim()), "Charlie");
