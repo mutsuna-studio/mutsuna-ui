@@ -96,6 +96,7 @@ export async function verifyEventCalendar(page) {
       gridRight: lastDay.right, sheetRight: sheet.getBoundingClientRect().right,
       scrollbarWidth: getComputedStyle(scroll).scrollbarWidth, gutter: getComputedStyle(scroll).scrollbarGutter };
   });
+  assert.equal(await calendar.locator('[data-slot="event-calendar-day-scroll"]').evaluate(element => getComputedStyle(element).scrollbarGutter), 'auto', 'horizontal scrolling reserves no unused vertical gutter');
   assert.equal(edges.sheetBorder, '0px', 'the sheet does not duplicate the outer calendar border');
   assert.ok(Math.abs(edges.sheetRight - edges.gridRight) < 1, `the final date column reaches the body sheet edge (${JSON.stringify(edges)})`);
   assert.equal(edges.scrollbarWidth, 'thin');

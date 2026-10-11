@@ -802,7 +802,7 @@
         {#if days.includes(todayDate) && nowMinute >= config.from && nowMinute < config.to && nowMarkerLeft >= 56 && nowMarkerLeft <= 56 + dayViewportWidth}
           <div class="now-marker" aria-hidden="true" style:left={`${nowMarkerLeft - 4}px`} style:top={`${(nowMinute - config.from) / 60 * hourHeight - 3}px`} style:z-index={events.length + 6}></div>
         {/if}
-        <div class="day-scroll-lane day-scroller mutsuna-scrollbar" role="region" aria-label={`${ariaLabel}の時間枠の横スクロール`} tabindex="0" use:synchronizedDayScroll use:scrollbarVisibility data-slot="event-calendar-day-scroll"><div class="day-scroll-track"><div class="day-scroll-stage">
+        <div class="day-scroll-lane day-scroller mutsuna-scrollbar mutsuna-scrollbar--auto" role="region" aria-label={`${ariaLabel}の時間枠の横スクロール`} tabindex="0" use:synchronizedDayScroll use:scrollbarVisibility data-slot="event-calendar-day-scroll"><div class="day-scroll-track"><div class="day-scroll-stage">
         <!-- The grid delegates pointer gestures from its focusable slot/event buttons. -->
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div bind:this={grid} class="week-grid" data-slot="event-calendar-grid" style:--event-top-layer={events.length + 2} style:height={`${config.height}px`}
