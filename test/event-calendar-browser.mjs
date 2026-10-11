@@ -408,13 +408,17 @@ export async function verifyEventCalendar(page) {
   await touchSwipe(touchLabel, -160);
   await page.waitForTimeout(300);
   assert.ok(await firstDate() > beforeTouch, 'touch uses native continuous vertical scrolling');
+  await dateScroll.scrollIntoViewIfNeeded();
   const dateBodyBox = await dateScroll.boundingBox();
-  await page.mouse.move(dateBodyBox.x + dateBodyBox.width * .6, dateBodyBox.y + dateBodyBox.height * .5);
+  const screenHeight = page.viewportSize().height;
+  const visibleBodyTop = Math.max(0, dateBodyBox.y);
+  const visibleBodyBottom = Math.min(screenHeight, dateBodyBox.y + dateBodyBox.height);
+  await page.mouse.move(dateBodyBox.x + dateBodyBox.width * .6, (visibleBodyTop + visibleBodyBottom) / 2);
   for (let i = 0; i < 4; i++) {
     const beforePacket = await firstDate();
     await page.mouse.wheel(0, 900);
     await page.waitForTimeout(100);
-    assert.ok(await firstDate() > beforePacket, 'each downward wheel packet still advances dates across buffer rebases');
+    assert.ok(await firstDate() > beforePacket, `downward wheel packet ${i} advances dates across buffer rebases (${beforePacket} -> ${await firstDate()})`);
   }
   const advanced = await firstDate();
   assert.ok(advanced > '2026-10-25', 'dates continue past the initial buffer');
@@ -534,9 +538,12 @@ export async function verifyEventCalendar(page) {
   await calendar.evaluate(element => { element.style.width = '500px'; element.style.maxWidth = '500px'; });
   await page.waitForTimeout(100);
   const narrowScroller = calendar.locator('[data-slot="event-calendar-day-scroll"]');
+  await narrowScroller.scrollIntoViewIfNeeded();
   const narrowBox = await narrowScroller.boundingBox();
   const narrowBody = await calendar.locator('.calendar-viewport').boundingBox();
-  await page.mouse.move(narrowBox.x + narrowBox.width / 2, Math.max(narrowBox.y, narrowBody.y) + 40);
+  const narrowTop = Math.max(0, narrowBox.y, narrowBody.y);
+  const narrowBottom = Math.min(page.viewportSize().height, narrowBox.y + narrowBox.height, narrowBody.y + narrowBody.height);
+  await page.mouse.move(narrowBox.x + narrowBox.width / 2, (narrowTop + narrowBottom) / 2);
   await page.mouse.wheel(3000, 0);
   await page.waitForTimeout(200);
   assert.ok(await narrowScroller.evaluate(element => element.scrollLeft > 0), 'narrow weeks keep within-range horizontal scrolling');
