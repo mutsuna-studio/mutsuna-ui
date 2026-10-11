@@ -88,7 +88,7 @@ export async function verifyEventCalendar(page) {
   assert.equal(await calendar.locator('[data-slot="event-calendar-details-panel"]').count(), 0);
   const edges = await calendar.evaluate(element => {
     const main = element.querySelector('.calendar-main').getBoundingClientRect();
-    const sheet = element.querySelector('.calendar-sheet');
+    const sheet = element.querySelector('.calendar-viewport .calendar-sheet');
     const lastDay = element.querySelector('.day-column:last-child').getBoundingClientRect();
     const scroll = element.querySelector('.calendar-viewport');
     return { mainHeight: main.height, mainBottom: main.bottom,
@@ -97,7 +97,7 @@ export async function verifyEventCalendar(page) {
       scrollbarWidth: getComputedStyle(scroll).scrollbarWidth, gutter: getComputedStyle(scroll).scrollbarGutter };
   });
   assert.equal(edges.sheetBorder, '0px', 'the sheet does not duplicate the outer calendar border');
-  assert.ok(Math.abs(edges.sheetRight - edges.gridRight) < 1, 'the final date column reaches the sheet edge');
+  assert.ok(Math.abs(edges.sheetRight - edges.gridRight) < 1, `the final date column reaches the body sheet edge (${JSON.stringify(edges)})`);
   assert.equal(edges.scrollbarWidth, 'thin');
   assert.equal(edges.gutter, 'stable');
   await calendar.locator('.calendar-viewport').evaluate(element => { element.style.height = '240px'; element.scrollTop += 2; });
