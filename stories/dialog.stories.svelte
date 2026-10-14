@@ -12,7 +12,8 @@ import DialogFooter from "@mutsuna/ui/dialog/dialog-footer.svelte";
 import DialogHeader from "@mutsuna/ui/dialog/dialog-header.svelte";
 import DialogTitle from "@mutsuna/ui/dialog/dialog-title.svelte";
 import DialogTrigger from "@mutsuna/ui/dialog/dialog-trigger.svelte";
-import { expect, userEvent, within } from "storybook/test";
+import SpacingDemo from "./dialog-body-spacing-demo.svelte";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 
 const { Story } = defineMeta({
   title: "Components/Overlays/Dialog",
@@ -121,3 +122,23 @@ const { Story } = defineMeta({
 		</DialogContent>
 	</Dialog>
 </Story>
+
+{#snippet demo()}<SpacingDemo/>{/snippet}
+<Story name="Body Spacing" asChild>{@render demo()}</Story>
+<Story name="Padding Contract" tags={["!dev","!autodocs"]} asChild play={async({canvasElement})=>{
+ const canvas=within(canvasElement);
+ for(const mode of ["通常","レスポンシブ・PC","レスポンシブ・モバイル"])for(const override of [false,true]){
+  const title=mode+"・"+(override?"下余白なし":"標準余白");
+  await userEvent.click(canvas.getByRole("button",{name:title}));
+  const dialog=await within(document.body).findByRole("dialog",{name:title});
+  const body=dialog.querySelector<HTMLElement>("[data-padding-case]")!;
+  const expected=override?0:16;
+  await waitFor(()=>expect(parseFloat(getComputedStyle(body).paddingBottom)).toBe(expected));
+  await waitFor(()=>expect(body.getBoundingClientRect().bottom-body.firstElementChild!.getBoundingClientRect().bottom).toBeCloseTo(expected,0));
+  await userEvent.click(within(dialog).getByRole("button",{name:"入力欄を切り替える"}));
+  await waitFor(()=>expect(body.getBoundingClientRect().bottom-body.firstElementChild!.getBoundingClientRect().bottom).toBeCloseTo(expected,0));
+  await userEvent.click(within(dialog).getByRole("button",{name:"閉じる"}));
+  await waitFor(()=>expect(within(document.body).queryByRole("dialog",{name:title})).not.toBeInTheDocument());
+  await waitFor(()=>expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"));
+ }
+}}>{@render demo()}</Story>
