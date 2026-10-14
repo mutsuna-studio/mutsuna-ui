@@ -695,9 +695,8 @@ export async function verifyEventCalendar(page) {
       const root = document.querySelector('#event-calendar-probe [data-slot="event-calendar"]');
       const container = root.closest('[data-calendar-container]');
       const body = root.querySelector('[data-slot="event-calendar-viewport"], [data-slot="event-calendar-month"], [data-slot="event-calendar-timeline-scroll"]');
-      const bar = root.querySelector('.timeline-horizontal-scroll');
       return body && Math.abs(root.getBoundingClientRect().bottom - container.getBoundingClientRect().bottom) < 2
-        && Math.abs(body.getBoundingClientRect().bottom + (bar?.getBoundingClientRect().height ?? 0) - (root.getBoundingClientRect().bottom - 1)) < 2;
+        && Math.abs(body.getBoundingClientRect().bottom - (root.getBoundingClientRect().bottom - 1)) < 2;
     });
     assert.ok(await fillRoot.evaluate(element => element.getBoundingClientRect().height > 890), `${mode} fills the bounded parent beyond the intrinsic 672px limit`);
     const horizontalEdges = await fillRoot.evaluate(root => {
@@ -725,7 +724,7 @@ export async function verifyEventCalendar(page) {
       assert.ok(await surface.evaluate(element => element.scrollHeight > element.clientHeight), 'time slots retain vertical scrolling');
       assert.equal(horizontalEdges.scrollbar, 0, 'vertical overlay does not consume the calendar body width');
       const initialTop = await surface.evaluate(element => element.scrollTop);
-      const thumb = fillRoot.locator('.calendar-overlay-thumb');
+      const thumb = fillRoot.locator('.calendar-overlay-scrollbar .calendar-overlay-thumb');
       await thumb.waitFor({ state: 'visible' });
       await fillRoot.hover();
       const thumbBox = await thumb.boundingBox();
@@ -774,6 +773,50 @@ export async function verifyEventCalendar(page) {
   assert.ok(await fillContainer.evaluate(element => element.scrollWidth <= element.clientWidth + 1), 'narrow fill layout keeps toolbar controls inside the parent');
   await calendar.getByRole('button', { name: '次の日', exact: true }).click();
   await fillRoot.getByRole('button', { name: /^前の日$/ }).click();
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+    await calendar.getByRole('combobox', { name: '独自の表示方法' }).selectOption('month');
+    await page.waitForFunction(() => {
+      const surface = document.querySelector('#event-calendar-probe [data-slot="event-calendar-month"]');
+      return surface && surface.scrollWidth === surface.clientWidth;
+    });
+    const month = fillRoot.locator('[data-slot="event-calendar-month"]');
+    const geometry = await month.evaluate(el => {
+      const cells = [...el.querySelectorAll('.month-week:first-child .month-day')].map(day => day.getBoundingClientRect());
+      const box = el.getBoundingClientRect();
+      return { count: cells.length, left: cells[0].left, right: cells.at(-1).right, viewportLeft: box.left,
+        viewportRight: box.right, width: el.clientWidth, scrollWidth: el.scrollWidth, height: el.clientHeight,
+        sheetHeight: el.querySelector('.month-sheet').getBoundingClientRect().height };
+    });
+    assert.equal(geometry.count, 7);
+    assert.equal(geometry.scrollWidth, geometry.width);
+    assert.ok(Math.abs(geometry.left - geometry.viewportLeft) < 1 && Math.abs(geometry.right - geometry.viewportRight) < 1, 'all seven weekdays fit the narrow viewport');
+    assert.ok(Math.abs(geometry.sheetHeight - geometry.height) < 1, 'month leaves no horizontal scrollbar strip');
+    assert.equal(await fillRoot.locator('.calendar-horizontal-scrollbar').count(), 0);
+  }
+  await calendar.getByRole('combobox', { name: '独自の表示方法' }).selectOption('week');
+  const dayBody = fillRoot.locator('[data-slot="event-calendar-day-scroll"]');
+  const proxy = fillRoot.locator('.horizontal-scroll-proxy');
+  await proxy.waitFor();
+  assert.equal(await dayBody.evaluate(el => el.offsetHeight - el.clientHeight), 0, 'classic horizontal scrollbar reserves no time-grid height');
+  await proxy.scrollIntoViewIfNeeded();
+  await proxy.press('ArrowRight');
+  await page.waitForFunction(() => {
+    const body = document.querySelector('#event-calendar-probe [data-slot="event-calendar-day-scroll"]');
+    const proxy = document.querySelector('#event-calendar-probe .horizontal-scroll-proxy');
+    return body.scrollLeft > 0 && Math.abs(body.scrollLeft - proxy.scrollLeft) < 1;
+  });
+  const horizontalThumb = fillRoot.locator('.calendar-overlay-horizontal .calendar-overlay-thumb');
+  await fillRoot.hover();
+  const hBox = await horizontalThumb.boundingBox();
+  assert.ok(hBox);
+  const beforeDrag = await dayBody.evaluate(el => el.scrollLeft);
+  await page.mouse.move(hBox.x + hBox.width / 2, hBox.y + hBox.height / 2);
+  await page.mouse.down(); await page.mouse.move(hBox.x + hBox.width / 2 - 25, hBox.y + hBox.height / 2, { steps: 5 }); await page.mouse.up();
+  await page.waitForFunction(before => document.querySelector('#event-calendar-probe [data-slot="event-calendar-day-scroll"]').scrollLeft < before, beforeDrag);
+  const overlayBottom = await fillRoot.evaluate(root => ({ bar: root.querySelector('.calendar-horizontal-scrollbar').getBoundingClientRect().bottom,
+    body: root.querySelector('[data-slot="event-calendar-viewport"]').getBoundingClientRect().bottom }));
+  assert.ok(Math.abs(overlayBottom.bar - overlayBottom.body) < 1, 'horizontal proxy overlays the body bottom without adding space');
   await page.setViewportSize(savedViewport);
   await calendar.getByRole('button', { name: '内容の高さに戻す', exact: true }).click();
   await page.waitForFunction(() => document.querySelector('#event-calendar-probe [data-slot="event-calendar-viewport"]').getBoundingClientRect().height <= 672);
