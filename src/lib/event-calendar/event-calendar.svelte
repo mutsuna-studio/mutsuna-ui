@@ -965,7 +965,7 @@
   .calendar-viewport { max-height: 42rem; overflow: auto; overflow-anchor: none; overscroll-behavior-x: none; transition: transform 180ms ease-out; }
   @media (prefers-reduced-motion: reduce) { .calendar-viewport { transition: none; } }
   .calendar-viewport:not(.timeline-viewport) { touch-action: pan-x pan-y pinch-zoom; }
-  .calendar-viewport.month-viewport { max-height: none; overflow-y: hidden; touch-action: pan-x pan-y pinch-zoom; }
+  .calendar-viewport.month-viewport { max-height: none; overflow-y: hidden; scrollbar-gutter: auto; touch-action: pan-x pan-y pinch-zoom; }
   .month-pages { position: relative; flex: 1; min-height: 0; overflow: hidden; }
   .month-dates { height: 100%; display: flex; flex-direction: column; }
   .calendar-sheet { min-width: var(--calendar-min-width); }

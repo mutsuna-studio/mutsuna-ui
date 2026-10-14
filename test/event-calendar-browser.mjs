@@ -641,6 +641,24 @@ export async function verifyEventCalendar(page) {
         && Math.abs(body.getBoundingClientRect().bottom + (bar?.getBoundingClientRect().height ?? 0) - (root.getBoundingClientRect().bottom - 1)) < 2;
     });
     assert.ok(await fillRoot.evaluate(element => element.getBoundingClientRect().height > 890), `${mode} fills the bounded parent beyond the intrinsic 672px limit`);
+    const horizontalEdges = await fillRoot.evaluate(root => {
+      const surface = root.querySelector('[data-slot="event-calendar-viewport"], [data-slot="event-calendar-month"], [data-slot="event-calendar-timeline-scroll"]');
+      const sheet = surface.querySelector('.calendar-sheet, .month-sheet, .timeline-sheet');
+      const scrollbar = surface.offsetWidth - surface.clientWidth;
+      return { right: surface.getBoundingClientRect().left + surface.clientWidth, sheetRight: sheet.getBoundingClientRect().right,
+        sheetWidth: sheet.getBoundingClientRect().width, scrollWidth: surface.scrollWidth, clientWidth: surface.clientWidth,
+        scrollbar, overflow: surface.scrollHeight > surface.clientHeight,
+        headingRight: root.querySelector('.day-heading:last-child')?.getBoundingClientRect().right,
+        gutter: getComputedStyle(surface).scrollbarGutter };
+    });
+    if (mode === 'day' || mode === 'week' || mode === 'month') {
+      assert.ok(Math.abs(horizontalEdges.sheetRight - horizontalEdges.right) < 1, `${mode} uses the whole body width after only the real vertical scrollbar`);
+      if (mode !== 'month') assert.ok(Math.abs(horizontalEdges.headingRight - horizontalEdges.sheetRight) < 1, `${mode} headings and time columns reach the same right edge`);
+    }
+    if (mode === 'month') {
+      assert.equal(horizontalEdges.gutter, 'auto', 'month horizontal scrolling must not reserve an unused vertical scrollbar gutter');
+      assert.equal(horizontalEdges.scrollbar, 0, 'month has no vertical scrollbar or trailing reserved space');
+    }
     assert.equal(await fillRoot.locator('header').count(), 1);
     assert.equal(await fillRoot.getByRole('button', { name: '追加フィルター', exact: true }).count(), 1);
     if (mode === 'day' || mode === 'week') {
