@@ -94,13 +94,22 @@ export async function verifyEventCalendar(page) {
     return { mainHeight: main.height, mainBottom: main.bottom,
       sheetBorder: getComputedStyle(sheet).borderRightWidth,
       gridRight: lastDay.right, sheetRight: sheet.getBoundingClientRect().right,
-      scrollbarWidth: getComputedStyle(scroll).scrollbarWidth, gutter: getComputedStyle(scroll).scrollbarGutter };
+      scrollbarWidth: getComputedStyle(scroll).scrollbarWidth, gutter: getComputedStyle(scroll).scrollbarGutter, nativeGutter: scroll.offsetWidth - scroll.clientWidth };
   });
   assert.equal(await calendar.locator('[data-slot="event-calendar-day-scroll"]').evaluate(element => getComputedStyle(element).scrollbarGutter), 'auto', 'horizontal scrolling reserves no unused vertical gutter');
   assert.equal(edges.sheetBorder, '0px', 'the sheet does not duplicate the outer calendar border');
   assert.ok(Math.abs(edges.sheetRight - edges.gridRight) < 1, `the final date column reaches the body sheet edge (${JSON.stringify(edges)})`);
-  assert.equal(edges.scrollbarWidth, 'thin');
-  assert.equal(edges.gutter, 'stable');
+  assert.equal(edges.scrollbarWidth, 'none', 'the native vertical bar leaves no reserved body width');
+  assert.equal(edges.gutter, 'auto');
+  assert.equal(edges.nativeGutter, 0, 'the calendar scrollbar overlays the event body');
+  const nativeScrollbarWidth = await page.evaluate(() => {
+    const probe = document.createElement('div');
+    probe.style.cssText = 'position:fixed;width:64px;height:64px;overflow-y:scroll;scrollbar-gutter:stable;scrollbar-width:auto';
+    const content = document.createElement('div'); content.style.height = '128px'; probe.append(content); document.body.append(probe);
+    const width = probe.offsetWidth - probe.clientWidth; probe.remove(); return width;
+  });
+  if (process.platform === 'linux') assert.ok(nativeScrollbarWidth > 0, 'Linux tests a classic scrollbar environment without hiding native bars');
+  console.log(`EventCalendar: native scrollbar ${nativeScrollbarWidth}px, calendar reserved width ${edges.nativeGutter}px`);
   await calendar.locator('.calendar-viewport').evaluate(element => { element.style.height = '240px'; element.scrollTop += 2; });
   await page.waitForFunction(() => document.querySelector('#event-calendar-probe .calendar-viewport').dataset.scrollbarState === 'visible');
   await calendar.locator('.calendar-viewport').evaluate(element => { element.style.removeProperty('height'); });
@@ -641,10 +650,43 @@ export async function verifyEventCalendar(page) {
         && Math.abs(body.getBoundingClientRect().bottom + (bar?.getBoundingClientRect().height ?? 0) - (root.getBoundingClientRect().bottom - 1)) < 2;
     });
     assert.ok(await fillRoot.evaluate(element => element.getBoundingClientRect().height > 890), `${mode} fills the bounded parent beyond the intrinsic 672px limit`);
+    const horizontalEdges = await fillRoot.evaluate(root => {
+      const surface = root.querySelector('[data-slot="event-calendar-viewport"], [data-slot="event-calendar-month"], [data-slot="event-calendar-timeline-scroll"]');
+      const sheet = surface.querySelector('.calendar-sheet, .month-sheet, .timeline-sheet');
+      const scrollbar = surface.offsetWidth - surface.clientWidth;
+      return { right: surface.getBoundingClientRect().left + surface.clientWidth, sheetRight: sheet.getBoundingClientRect().right,
+        sheetWidth: sheet.getBoundingClientRect().width, scrollWidth: surface.scrollWidth, clientWidth: surface.clientWidth,
+        scrollbar, overflow: surface.scrollHeight > surface.clientHeight,
+        headingRight: root.querySelector('.day-heading:last-child')?.getBoundingClientRect().right,
+        gutter: getComputedStyle(surface).scrollbarGutter };
+    });
+    if (mode === 'day' || mode === 'week' || mode === 'month') {
+      assert.ok(Math.abs(horizontalEdges.sheetRight - horizontalEdges.right) < 1, `${mode} uses the whole body width after only the real vertical scrollbar`);
+      if (mode !== 'month') assert.ok(Math.abs(horizontalEdges.headingRight - horizontalEdges.sheetRight) < 1, `${mode} headings and time columns reach the same right edge`);
+    }
+    if (mode === 'month') {
+      assert.equal(horizontalEdges.gutter, 'auto', 'month horizontal scrolling must not reserve an unused vertical scrollbar gutter');
+      assert.equal(horizontalEdges.scrollbar, 0, 'month has no vertical scrollbar or trailing reserved space');
+    }
     assert.equal(await fillRoot.locator('header').count(), 1);
     assert.equal(await fillRoot.getByRole('button', { name: '追加フィルター', exact: true }).count(), 1);
     if (mode === 'day' || mode === 'week') {
-      assert.ok(await fillRoot.locator('[data-slot="event-calendar-viewport"]').evaluate(element => element.scrollHeight > element.clientHeight), 'time slots retain vertical scrolling');
+      const surface = fillRoot.locator('[data-slot="event-calendar-viewport"]');
+      assert.ok(await surface.evaluate(element => element.scrollHeight > element.clientHeight), 'time slots retain vertical scrolling');
+      assert.equal(horizontalEdges.scrollbar, 0, 'vertical overlay does not consume the calendar body width');
+      const initialTop = await surface.evaluate(element => element.scrollTop);
+      const thumb = fillRoot.locator('.calendar-overlay-thumb');
+      await thumb.waitFor({ state: 'visible' });
+      await fillRoot.hover();
+      const thumbBox = await thumb.boundingBox();
+      const bodyBox = await surface.boundingBox();
+      assert.ok(thumbBox.x + thumbBox.width <= bodyBox.x + bodyBox.width + 1, 'thumb stays on top of the body right edge');
+      assert.ok(thumbBox.y >= bodyBox.y - 1, 'the overlay starts below the fixed date and all-day header');
+      await page.mouse.move(thumbBox.x + thumbBox.width / 2, thumbBox.y + thumbBox.height / 2);
+      await page.mouse.down(); await page.mouse.move(thumbBox.x + thumbBox.width / 2, thumbBox.y + thumbBox.height / 2 + 50, { steps: 5 }); await page.mouse.up();
+      await page.waitForFunction(({ initialTop }) => document.querySelector('#event-calendar-probe [data-slot="event-calendar-viewport"]').scrollTop > initialTop + 10, { initialTop });
+      await surface.press('Home');
+      await page.waitForFunction(() => document.querySelector('#event-calendar-probe [data-slot="event-calendar-viewport"]').scrollTop < 1);
     }
   }
   await calendar.getByRole('button', { name: '高い領域で空の予定を表示', exact: true }).click();
