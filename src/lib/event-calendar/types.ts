@@ -74,7 +74,7 @@ export interface EventCalendarProps {
   endHour?: number;
   /** Minute increment (default 15), must divide 60. */
   step?: number;
-  /** Pixels per hour (default 48). */
+  /** Pixels per hour (default 48); fill layout treats this as a minimum and expands short time ranges. */
   hourHeight?: number;
   /** Minimum visual event height in pixels (default 24, at least 20). Does not change duration. */
   eventMinHeight?: number;
@@ -95,6 +95,14 @@ export interface EventCalendarProps {
   onPrefetchRange?: (ranges: EventCalendarPrefetchRange) => void;
   error?: string;
   class?: string;
+  /** Content keeps the intrinsic viewport limit (default). Fill uses a bounded parent flex/height area. */
+  layout?: "content" | "fill";
+  /** Extra filters beside date navigation, in the same toolbar. */
+  toolbarFilters?: Snippet;
+  /** Application actions before the view switcher. */
+  toolbarActions?: Snippet;
+  /** Replaces the built-in view selector; the application owns its binding/navigation. */
+  viewSwitcher?: Snippet;
   /** Notification after navigation updates date. Use bind:date to share display state. */
   onDateChange?: (date: string) => void;
   /** Selection request from a click or completed drag. Does not save an event or open UI. */

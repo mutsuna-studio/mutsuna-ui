@@ -9,7 +9,7 @@ let { ref = $bindable(null), class: className, children, ...restProps }: WithEle
 	bind:this={ref}
 	data-slot="sidebar-header"
 	data-sidebar="header"
-	class={cn("gap-2 p-2 flex flex-col", className)}
+	class={cn("flex min-h-14 shrink-0 flex-col justify-center gap-2 px-2 py-1", className)}
 	{...restProps}
 >
 	{@render children?.()}

@@ -623,5 +623,68 @@ export async function verifyEventCalendar(page) {
   assert.equal(await calendar.locator('[data-calendar-interaction]').textContent(), 'select one BUTTON');
   assert.equal(await page.getByRole('dialog').count(), 0, 'event selection opens no built-in UI');
   assert.equal(await calendar.locator('[data-slot="event-calendar-details-panel"]').count(), 0);
+
+  await calendar.getByRole('button', { name: '領域いっぱいに表示', exact: true }).click();
+  const fillRoot = calendar.locator('[data-slot="event-calendar"]');
+  const fillContainer = calendar.locator('[data-calendar-container]');
+  assert.equal(await calendar.getByRole('button', { name: 'カレンダーの表示', exact: true }).count(), 0, 'custom view switcher replaces the default control');
+  await calendar.getByRole('button', { name: '追加の更新', exact: true }).click();
+  assert.equal(await calendar.locator('[data-toolbar-updates]').textContent(), '1');
+  for (const mode of ['day', 'week', 'month', 'timeline', 'date-timeline']) {
+    await calendar.getByRole('combobox', { name: '独自の表示方法' }).selectOption(mode);
+    await page.waitForFunction(() => {
+      const root = document.querySelector('#event-calendar-probe [data-slot="event-calendar"]');
+      const container = root.closest('[data-calendar-container]');
+      const body = root.querySelector('[data-slot="event-calendar-viewport"], [data-slot="event-calendar-month"], [data-slot="event-calendar-timeline-scroll"]');
+      const bar = root.querySelector('.timeline-horizontal-scroll');
+      return body && Math.abs(root.getBoundingClientRect().bottom - container.getBoundingClientRect().bottom) < 2
+        && Math.abs(body.getBoundingClientRect().bottom + (bar?.getBoundingClientRect().height ?? 0) - (root.getBoundingClientRect().bottom - 1)) < 2;
+    });
+    assert.ok(await fillRoot.evaluate(element => element.getBoundingClientRect().height > 890), `${mode} fills the bounded parent beyond the intrinsic 672px limit`);
+    assert.equal(await fillRoot.locator('header').count(), 1);
+    assert.equal(await fillRoot.getByRole('button', { name: '追加フィルター', exact: true }).count(), 1);
+    if (mode === 'day' || mode === 'week') {
+      assert.ok(await fillRoot.locator('[data-slot="event-calendar-viewport"]').evaluate(element => element.scrollHeight > element.clientHeight), 'time slots retain vertical scrolling');
+    }
+  }
+  await calendar.getByRole('button', { name: '高い領域で空の予定を表示', exact: true }).click();
+  await page.waitForFunction(() => {
+    const root = document.querySelector('#event-calendar-probe [data-slot="event-calendar"]');
+    const viewport = root.querySelector('[data-slot="event-calendar-timeline-scroll"]');
+    const anchor = viewport?.querySelector('[data-timeline-date="2026-10-05"]');
+    return anchor && Math.abs(anchor.getBoundingClientRect().top - viewport.getBoundingClientRect().top) < 2
+      && viewport.scrollHeight > viewport.clientHeight + 600;
+  }).catch(async (error) => {
+    const evidence = await fillRoot.evaluate(root => {
+      const viewport = root.querySelector('[data-slot="event-calendar-timeline-scroll"]');
+      const anchor = viewport.querySelector('[data-timeline-date="2026-10-05"]');
+      return { rows: viewport.querySelectorAll('[data-timeline-date]').length, height: viewport.clientHeight,
+        scrollHeight: viewport.scrollHeight, scrollTop: viewport.scrollTop, anchorTop: anchor?.getBoundingClientRect().top,
+        viewportTop: viewport.getBoundingClientRect().top, range: root.closest('#event-calendar-probe').querySelector('[data-calendar-range]').textContent };
+    });
+    throw new Error(JSON.stringify(evidence), { cause: error });
+  });
+  assert.match(await calendar.locator('[data-calendar-range]').textContent(), /^date-timeline 2026-10-05 /, 'large empty fill viewport preserves the requested date');
+  await calendar.getByRole('combobox', { name: '独自の表示方法' }).selectOption('day');
+  await page.waitForFunction(() => {
+    const root = document.querySelector('#event-calendar-probe');
+    const viewport = root.querySelector('[data-slot="event-calendar-viewport"]');
+    const grid = root.querySelector('[data-slot="event-calendar-grid"]');
+    return grid && Math.abs(grid.getBoundingClientRect().height - viewport.clientHeight) < 2;
+  });
+  await calendar.getByRole('button', { name: '2026-10-05 17:00に予定を作成', exact: true }).press('Enter');
+  assert.equal(await calendar.locator('[data-calendar-interaction]').textContent(), 'create 2026-10-05T17:00 2026-10-05T17:15 BUTTON title=false', 'expanded hour scale keeps quarter-hour creation');
+  await calendar.getByRole('button', { name: '領域を縮める', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('#event-calendar-probe [data-slot="event-calendar"]').getBoundingClientRect().height < 361);
+  const savedViewport = page.viewportSize();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await calendar.getByRole('combobox', { name: '独自の表示方法' }).selectOption('day');
+  assert.ok(await fillContainer.evaluate(element => element.scrollWidth <= element.clientWidth + 1), 'narrow fill layout keeps toolbar controls inside the parent');
+  await calendar.getByRole('button', { name: '次の日', exact: true }).click();
+  await fillRoot.getByRole('button', { name: /^前の日$/ }).click();
+  await page.setViewportSize(savedViewport);
+  await calendar.getByRole('button', { name: '内容の高さに戻す', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('#event-calendar-probe [data-slot="event-calendar-viewport"]').getBoundingClientRect().height <= 672);
+  assert.equal(await calendar.getByRole('button', { name: 'カレンダーの表示', exact: true }).count(), 1, 'intrinsic layout and built-in toolbar remain available');
   console.log("Astro EventCalendar: five views, pointer/touch creation, date/resource moves, both resize edges, touch/wheel navigation, fixed axes, application-owned details, keyboard and cancellation passed");
 }

@@ -2,6 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { expect, userEvent, waitFor, within } from "storybook/test";
   import { EventCalendar } from "@mutsuna/ui/event-calendar";
+  import FillDemo from "./event-calendar-fill-demo.svelte";
   import Demo from "./event-calendar-demo.svelte";
   import RemoteDemo from "./event-calendar-remote-demo.svelte";
   const { Story } = defineMeta({ title: "Components/Data Display/Event Calendar", component: EventCalendar, tags: ["autodocs"], parameters: { docs: { description: { component: "表示範囲は前後ボタン・今日・日付選択で切り替えます。スワイプは範囲切り替えに使わず、週内の横スクロールと日付タイムラインの縦スクロールを利用できます。" } } } });
@@ -258,3 +259,5 @@
 <Story name="Application Details Test" tags={["!dev", "!autodocs"]} asChild play={applicationDetailsInteraction}><div style:width="1100px"><Demo /></div></Story>
 
 <Story name="Navigation Animation Test" tags={["!dev", "!autodocs"]} asChild play={navigationAnimationInteraction}><Demo /></Story>
+
+<Story name="Fill Layout" asChild><FillDemo /></Story>

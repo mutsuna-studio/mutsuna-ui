@@ -12,8 +12,11 @@
 
   let { date = $bindable(), view = $bindable("week"), onViewChange, dayCount, events = [], backgroundRanges = [], rows = [], timelineHourWidth = 64, weekStartsOn = 1, locale = "ja-JP", ariaLabel = "イベントカレンダー", startHour = 8, endHour = 20,
     step = 15, hourHeight = 48, eventMinHeight = 24, readonly = false, disabled = false, loading = false, error,
-    currentTime, eventsLoading = false, eventsError, onEventsRetry, onVisibleRangeChange, onPrefetchRange, class: className, onDateChange, onCreate, onEventChange, onEventClick, eventContent, draft = null
+    currentTime, eventsLoading = false, eventsError, onEventsRetry, onVisibleRangeChange, onPrefetchRange, class: className, onDateChange, onCreate, onEventChange, onEventClick, eventContent, draft = null, layout = "content", toolbarFilters, toolbarActions, viewSwitcher
   }: EventCalendarProps = $props();
+  let timeViewportHeight = $state(0);
+  const effectiveHourHeight = $derived(layout === "fill" && (view === "day" || view === "week")
+    ? Math.max(hourHeight, timeViewportHeight / (endHour - startHour)) : hourHeight);
   const config = $derived.by(() => {
     if (!Number.isInteger(startHour) || !Number.isInteger(endHour) || startHour < 0 || endHour > 24 || startHour >= endHour
       || !Number.isInteger(step) || step <= 0 || 60 % step !== 0 || !Number.isFinite(hourHeight) || hourHeight < 40 || !Number.isFinite(eventMinHeight) || eventMinHeight < 20)
@@ -21,17 +24,19 @@
     if (new Set(backgroundRanges.map(range => range.id)).size !== backgroundRanges.length) throw new RangeError("Background range ids must be unique");
     if (new Set(events.map(event => event.id)).size !== events.length) throw new RangeError("Event ids must be unique");
     if (new Set(rows.map(row => row.id)).size !== rows.length || !Number.isFinite(timelineHourWidth) || timelineHourWidth < 48) throw new RangeError("Invalid timeline rows or hour width");
-    return { from: startHour * 60, to: endHour * 60, height: (endHour - startHour) * hourHeight };
+    return { from: startHour * 60, to: endHour * 60, height: (endHour - startHour) * effectiveHourHeight };
   });
+  let timelineViewportHeight = $state(0);
+  const timelineBufferCount = $derived(Math.max(35, (dayCount ?? 7) + 28, layout === "fill" ? Math.ceil(timelineViewportHeight / 48) + 28 : 0));
   let dateTimelineRange = $state<EventCalendarVisibleRange>();
   let dateTimelineBufferStart = $state("");
   const dateTimelineCount = $derived(dateTimelineRange ? Math.round((civilTime(dateTimelineRange.end + "T00:00") - civilTime(dateTimelineRange.start + "T00:00")) / 1440) : dayCount ?? 7);
   const isTimeline = $derived(view === "timeline" || view === "date-timeline");
   const displayDayCount = $derived(view === "date-timeline" ? dateTimelineCount : view === "day" || view === "week" ? dayCount ?? (view === "day" ? 1 : 7) : 1);
-  const days = $derived(calendarDates(date, displayDayCount, view === "week" && dayCount === undefined ? weekStartsOn : undefined));
+  const days = $derived(calendarDates(date, view === "date-timeline" ? dayCount ?? 7 : displayDayCount, view === "week" && dayCount === undefined ? weekStartsOn : undefined));
   const navigationUnit = $derived(view === "month" ? "月" : view === "week" && dayCount === undefined ? "週" : displayDayCount === 1 ? "日" : `${displayDayCount}日`);
   const timelineRows = $derived.by(() => {
-    if (view === "date-timeline") return Array.from({ length: Math.max(35, (dayCount ?? 7) + 28) }, (_, i) => addDays(dateTimelineBufferStart || addDays(date, -14), i)).map(day => ({ id: undefined, label: dayLabel(day), date: day }));
+    if (view === "date-timeline") return Array.from({ length: timelineBufferCount }, (_, i) => addDays(dateTimelineBufferStart || addDays(date, -14), i)).map(day => ({ id: undefined, label: dayLabel(day), date: day }));
     const result: { id: string | undefined; label: string; date: string }[] = rows.map(row => ({ ...row, date }));
     if (!rows.length || events.some(event => !rows.some(row => row.id === event.rowId))) result.push({ id: undefined, label: rows.length ? "未指定" : "予定", date });
     return result;
@@ -106,7 +111,7 @@
   let dayViewportWidth = $state(0);
   let timelineNowIndicator = $state<{ left: number; top: number; height: number; marker: boolean } | null>(null);
   const visibleTimedEvents = $derived(events.filter(event => !(drag?.moved && drag.event?.id === event.id)));
-  const timedLayout = $derived(new Map(days.map(day => [day, daySegments(visibleTimedEvents, day, config.from, config.to, hourHeight, eventMinHeight)])));
+  const timedLayout = $derived(new Map(days.map(day => [day, daySegments(visibleTimedEvents, day, config.from, config.to, effectiveHourHeight, eventMinHeight)])));
   let navigationAnimations: Animation[] = [];
   function stopNavigationAnimation() {
     for (const animation of navigationAnimations) animation.cancel();
@@ -153,7 +158,14 @@
       disconnect() { observer.disconnect(); if (frame !== undefined) cancelAnimationFrame(frame); }
     };
   }
-  function preserveTimePosition(surface: HTMLDivElement) {
+  function measureTimeViewport(surface: HTMLDivElement) {
+    const measure = () => { timeViewportHeight = surface.clientHeight; };
+    measure();
+    const observer = frameResizeObserver(measure);
+    observer.observe(surface);
+    return { destroy() { observer.disconnect(); timeViewportHeight = 0; } };
+  }
+  function preserveTimePosition(surface: HTMLDivElement, mode: EventCalendarProps["layout"]) {
     const candidate = surface.closest('.calendar-frame')?.querySelector<HTMLElement>('.calendar-headings');
     if (!candidate) return;
     const element: HTMLElement = candidate;
@@ -163,7 +175,7 @@
       const headingHeight = element.querySelector(".day-headings")?.getBoundingClientRect().height ?? 0;
       // The fixed header uses its own space. Retain enough body scroll range
       // to keep time labels anchored when the all-day row count changes.
-      surface.style.maxHeight = `min(calc(42rem - ${height}px), ${config.height - Math.max(0, height - headingHeight - 33)}px)`;
+      surface.style.maxHeight = mode === "fill" ? "" : `min(calc(42rem - ${height}px), ${config.height - Math.max(0, height - headingHeight - 33)}px)`;
       if (previousHeight === undefined) {
         // Anchor the time grid to the minimum all-day row, including on first render.
         surface.scrollTop += Math.max(0, height - headingHeight - 33);
@@ -175,7 +187,7 @@
     const observer = frameResizeObserver(compensate);
     observer.observe(element);
     observer.observe(surface);
-    return { destroy() { observer.disconnect(); } };
+    return { update(value: EventCalendarProps["layout"]) { mode = value; compensate(); }, destroy() { observer.disconnect(); } };
   }
   function fixedHeaderScroll(surface: HTMLDivElement) {
     const header = surface.closest('.calendar-frame')?.querySelector<HTMLElement>('.fixed-calendar-header');
@@ -276,7 +288,7 @@
       return civilTime((rowAt(y)?.date ?? date) + "T00:00") + Math.max(config.from, Math.min(config.to - (boundary || continuous ? 0 : step), minutes));
     }
     const day = Math.max(0, Math.min(days.length - 1, Math.floor((x - rect.left) / (rect.width / days.length))));
-    const units = (y - rect.top) / hourHeight * 60 / step;
+    const units = (y - rect.top) / effectiveHourHeight * 60 / step;
     const minutes = (continuous ? units : boundary ? Math.round(units) : Math.floor(units)) * step + config.from;
     return civilTime(days[day] + "T00:00") + Math.max(config.from, Math.min(config.to - (boundary || continuous ? 0 : step), minutes));
   }
@@ -331,7 +343,7 @@
       const position = base + Math.max(config.from, Math.min(config.to - step, pointerMinutes));
       drag.start = Math.min(drag.anchor, position); drag.end = Math.max(drag.anchor, position) + step;
       const rect = grid.getBoundingClientRect();
-      const visualMinutes = config.from + (isTimeline ? (x - rect.left - 144) / effectiveTimelineHourWidth : (y - rect.top) / hourHeight) * 60;
+      const visualMinutes = config.from + (isTimeline ? (x - rect.left - 144) / effectiveTimelineHourWidth : (y - rect.top) / effectiveHourHeight) * 60;
       const visualPosition = base + Math.max(config.from, Math.min(config.to, visualMinutes));
       drag.visualStart = Math.min(drag.visualAnchor, visualPosition);
       drag.visualEnd = Math.max(drag.visualAnchor, visualPosition);
@@ -360,8 +372,8 @@
     const base = civilTime(day + "T00:00");
     const start = Math.max(config.from, times.start - base), end = Math.min(config.to, times.end - base);
     if (end < start || times.end <= base + config.from || times.start >= base + config.to) return null;
-    const height = Math.max(eventMinHeight, (end - start) / 60 * hourHeight);
-    return { top: (start - config.from) / 60 * hourHeight, height: Math.min(height, config.height - (start - config.from) / 60 * hourHeight) };
+    const height = Math.max(eventMinHeight, (end - start) / 60 * effectiveHourHeight);
+    return { top: (start - config.from) / 60 * effectiveHourHeight, height: Math.min(height, config.height - (start - config.from) / 60 * effectiveHourHeight) };
   }
   function cancel() {
     const previous = drag;
@@ -421,17 +433,18 @@
     const timed = monthEvents(day).slice(0, slots.length).map((event, i) => ({ event, row: slots[i] }));
     return { timed, hidden: Math.max(0, eventsOnDay(day).length - visibleAllDay.filter(segment => segment.event !== preview).length - timed.length) };
   }
-  function fitMonthViewport(element: HTMLDivElement) {
+  function fitMonthViewport(element: HTMLDivElement, mode: EventCalendarProps["layout"]) {
     function resize() {
       // Size the whole month from its actual screen position, including headers
       // and surrounding app content, rather than fixing the height of each week.
-      monthHeight = Math.max(0, Math.floor(window.innerHeight - element.getBoundingClientRect().top - 16));
+      monthHeight = mode === "fill" ? element.clientHeight : Math.max(0, Math.floor(window.innerHeight - element.getBoundingClientRect().top - 16));
     }
     resize();
     const observer = frameResizeObserver(resize);
     observer.observe(element.parentElement!);
+    observer.observe(element);
     window.addEventListener("resize", resize);
-    return { destroy() { observer.disconnect(); window.removeEventListener("resize", resize); } };
+    return { update(value: EventCalendarProps["layout"]) { mode = value; resize(); }, destroy() { observer.disconnect(); window.removeEventListener("resize", resize); } };
   }
   function openMore(day: string, target: HTMLElement) {
     pendingMoreEvent = undefined;
@@ -481,14 +494,21 @@
     return { destroy() { body.removeEventListener("scroll", fromBody); element.removeEventListener("scroll", fromBar); } };
   }
   function continuousDateTimeline(element: HTMLElement) {
+    timelineViewportHeight = element.clientHeight;
     let frame: number | undefined;
     let generation = 0;
     let aligning = true;
     let scrollDate = "";
     let lastEvents: readonly EventCalendarEvent[] | undefined;
     let lastCount: number | undefined;
+    let lastBufferCount: number | undefined;
     function measure() {
       if (view !== "date-timeline" || aligning || drag?.moved || navigationAnimations.length) return;
+      if (layout === "fill" && timelineViewportHeight !== element.clientHeight) {
+        timelineViewportHeight = element.clientHeight;
+        schedule();
+        return;
+      }
       const bounds = element.getBoundingClientRect();
       const visible = Array.from(element.querySelectorAll<HTMLElement>("[data-timeline-date]")).filter(row => {
         const rect = row.getBoundingClientRect();
@@ -519,13 +539,13 @@
     // Preserve the first visible date and its pixel offset when the bounded
     // date window is rebased or fetched events change row heights.
     $effect.pre(() => {
-      const value = date, mode = view, currentEvents = events, currentCount = dayCount;
+      const value = date, mode = view, currentEvents = events, currentCount = dayCount, currentBufferCount = timelineBufferCount;
       if (mode !== "date-timeline") { scrollDate = ""; return; }
       untrack(() => {
-        if (value === scrollDate && currentEvents === lastEvents && currentCount === lastCount) return;
+        if (value === scrollDate && currentEvents === lastEvents && currentCount === lastCount && currentBufferCount === lastBufferCount) return;
         const before = element.querySelector<HTMLElement>(`[data-timeline-date="${value}"]`);
-        const offset = value === scrollDate && before ? before.getBoundingClientRect().top - element.getBoundingClientRect().top : 0;
-        lastEvents = currentEvents; lastCount = currentCount;
+        const offset = value === scrollDate && before && currentBufferCount === lastBufferCount ? before.getBoundingClientRect().top - element.getBoundingClientRect().top : 0;
+        lastEvents = currentEvents; lastCount = currentCount; lastBufferCount = currentBufferCount;
         dateTimelineBufferStart = addDays(value, -14);
         const id = ++generation;
         aligning = true;
@@ -595,8 +615,8 @@
   {#each backgroundSegments(backgroundRanges, day, axis === "day" ? 0 : config.from, axis === "day" ? 1440 : config.to, rowId) as segment (segment.id)}
     <div class="range-background" data-slot="event-calendar-background-range" data-background-id={segment.id} aria-hidden="true"
       style:background-color={segment.color}
-      style:top={axis === "y" ? `${(segment.start - config.from) / 60 * hourHeight}px` : "0"}
-      style:height={axis === "y" ? `${(segment.end - segment.start) / 60 * hourHeight}px` : "100%"}
+      style:top={axis === "y" ? `${(segment.start - config.from) / 60 * effectiveHourHeight}px` : "0"}
+      style:height={axis === "y" ? `${(segment.end - segment.start) / 60 * effectiveHourHeight}px` : "100%"}
       style:left={axis === "x" ? `${(segment.start - config.from) / 60 * effectiveTimelineHourWidth}px` : "0"}
       style:width={axis === "x" ? `${(segment.end - segment.start) / 60 * effectiveTimelineHourWidth}px` : "100%"}></div>
   {/each}
@@ -651,9 +671,9 @@
           {/each}
 {/snippet}
 
-<section data-slot="event-calendar" class={cn("overflow-hidden rounded-xl border bg-background text-foreground", className)} aria-label={ariaLabel} aria-busy={loading || eventsLoading}>
+<section data-slot="event-calendar" class:fill-layout={layout === "fill"} class={cn("overflow-hidden rounded-xl border bg-background text-foreground", className)} aria-label={ariaLabel} aria-busy={loading || eventsLoading}>
   <EventCalendarToolbar {date} {view} label={weekLabel} {navigationUnit} {dayCount} {displayDayCount}
-    {locale} {weekStartsOn} {disabled} {loading} {readonly}
+    {locale} {weekStartsOn} {disabled} {loading} {readonly} {toolbarFilters} {toolbarActions} {viewSwitcher}
     onNavigate={navigate} onToday={goToToday} onDateChange={selectDate} onViewChange={changeView} />
   {#if error}<p role="alert" class="p-3 text-destructive">{error}</p>{/if}
   <div class="calendar-content">
@@ -679,7 +699,7 @@
         </div></div>
       </div>
       <!-- svelte-ignore a11y_no_noninteractive_tabindex: keyboard scrolling remains available without event controls -->
-      <div bind:this={viewport} class:date-timeline={view === "date-timeline"} use:continuousDateTimeline use:fixedHeaderScroll use:observeTimelineScrollbar use:scrollbarVisibility role="region" aria-label={`${ariaLabel}のタイムラインの時間枠`} tabindex="0" class="calendar-viewport timeline-viewport mutsuna-scrollbar" data-slot="event-calendar-timeline-scroll">
+      <div bind:this={viewport} class:mutsuna-scrollbar--auto={layout === "fill"} class:date-timeline={view === "date-timeline"} use:continuousDateTimeline use:fixedHeaderScroll use:observeTimelineScrollbar use:scrollbarVisibility role="region" aria-label={`${ariaLabel}のタイムラインの時間枠`} tabindex="0" class="calendar-viewport timeline-viewport mutsuna-scrollbar" data-slot="event-calendar-timeline-scroll">
       <div class="timeline-sheet" style:width={`${144 + timelineWidth}px`}>
         <div class="timeline-pages">
         <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -698,7 +718,7 @@
     {/if}
   {:else if view === "month"}
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-    <div bind:this={viewport} use:fitMonthViewport use:scrollbarVisibility style:height={`${monthHeight}px`} role="region" aria-label={`${ariaLabel}の月表示`} tabindex="0" class="calendar-viewport month-viewport mutsuna-scrollbar" data-slot="event-calendar-month">
+    <div bind:this={viewport} use:fitMonthViewport={layout} use:scrollbarVisibility style:height={layout === "fill" ? undefined : `${monthHeight}px`} role="region" aria-label={`${ariaLabel}の月表示`} tabindex="0" class="calendar-viewport month-viewport mutsuna-scrollbar" data-slot="event-calendar-month">
       <div class="month-sheet">
         <div class="month-weekdays">{#each weeks[0] as day}
           <span class={getCalendarDayColorClass(parseDate(day))}>{weekdayShortFormatter.format(new Date(day + "T12:00:00Z"))}</span>
@@ -791,16 +811,16 @@
   </div>
   <!-- Keyboard focus lets users scroll even when every control is disabled. -->
   <!-- svelte-ignore a11y_no_noninteractive_tabindex: keyboard scrolling remains available without event controls -->
-  <div bind:this={viewport} use:fixedHeaderScroll use:preserveTimePosition use:scrollbarVisibility role="region" aria-label={`${ariaLabel}の時間枠`} tabindex="0" class="calendar-viewport mutsuna-scrollbar" data-slot="event-calendar-viewport">
+  <div bind:this={viewport} class:mutsuna-scrollbar--auto={layout === "fill"} use:fixedHeaderScroll use:preserveTimePosition={layout} use:measureTimeViewport use:scrollbarVisibility role="region" aria-label={`${ariaLabel}の時間枠`} tabindex="0" class="calendar-viewport mutsuna-scrollbar" data-slot="event-calendar-viewport">
     <div class="calendar-sheet" style:--day-count={days.length} style:--calendar-min-width={`${Math.max(280, 56 + days.length * 100)}px`}>
       <div class="time-body">
         <div class="time-axis" style:height={`${config.height}px`} aria-hidden="true">
           {#each Array.from({ length: endHour - startHour }, (_, i) => startHour + i) as hour}
-            <span style:top={`${(hour - startHour) * hourHeight}px`}>{String(hour).padStart(2, "0")}</span>
+            <span style:top={`${(hour - startHour) * effectiveHourHeight}px`}>{String(hour).padStart(2, "0")}</span>
           {/each}
         </div>
         {#if days.includes(todayDate) && nowMinute >= config.from && nowMinute < config.to && nowMarkerLeft >= 56 && nowMarkerLeft <= 56 + dayViewportWidth}
-          <div class="now-marker" aria-hidden="true" style:left={`${nowMarkerLeft - 4}px`} style:top={`${(nowMinute - config.from) / 60 * hourHeight - 3}px`} style:z-index={events.length + 6}></div>
+          <div class="now-marker" aria-hidden="true" style:left={`${nowMarkerLeft - 4}px`} style:top={`${(nowMinute - config.from) / 60 * effectiveHourHeight - 3}px`} style:z-index={events.length + 6}></div>
         {/if}
         <div class="day-scroll-lane day-scroller mutsuna-scrollbar mutsuna-scrollbar--auto" role="region" aria-label={`${ariaLabel}の時間枠の横スクロール`} tabindex="0" use:synchronizedDayScroll use:scrollbarVisibility data-slot="event-calendar-day-scroll"><div class="day-scroll-track"><div class="day-scroll-stage">
         <!-- The grid delegates pointer gestures from its focusable slot/event buttons. -->
@@ -812,11 +832,11 @@
               {@render rangeBackground(day, "y")}
               {#each slots as minutes}
                 <button type="button" class="time-slot" class:hour-line={minutes % 60 === 0 && minutes !== config.from}
-                  style:top={`${(minutes - config.from) / 60 * hourHeight}px`} style:height={`${step / 60 * hourHeight}px`}
+                  style:top={`${(minutes - config.from) / 60 * effectiveHourHeight}px`} style:height={`${step / 60 * effectiveHourHeight}px`}
                   disabled={!canEdit || !onCreate} aria-label={`${day} ${timeLabel(minutes)}に予定を作成`} onclick={(event) => { if (event.detail === 0) suppressClick = false; create(day, minutes, event.currentTarget); }}></button>
               {/each}
               {#each timedLayout.get(day) ?? [] as segment (segment.event.id)}
-                <div class="calendar-event" data-event-id={segment.event.id} style:top={`${(segment.start - config.from) / 60 * hourHeight}px`}
+                <div class="calendar-event" data-event-id={segment.event.id} style:top={`${(segment.start - config.from) / 60 * effectiveHourHeight}px`}
                   style:height={`${segment.height}px`} style:left={`calc(${segment.left * 100}% + 2px)`}
                   style:width={`calc(${segment.width * 100}% - 4px)`} style:z-index={segment.zIndex} style:--event-color={segment.event.color ?? "var(--primary)"}>
                   <button type="button" class="event-main" class:compact={segment.height < 40} class:multiline={segment.height >= 56} disabled={disabled || loading}
@@ -842,7 +862,7 @@
                   </div>
                 {/if}
               {/if}
-              {#if day === todayDate && nowMinute >= config.from && nowMinute < config.to}<div class="now-line" style:top={`${(nowMinute - config.from) / 60 * hourHeight}px`} aria-hidden="true"></div>{/if}
+              {#if day === todayDate && nowMinute >= config.from && nowMinute < config.to}<div class="now-line" style:top={`${(nowMinute - config.from) / 60 * effectiveHourHeight}px`} aria-hidden="true"></div>{/if}
             </div>
           {/each}
         </div>
@@ -874,6 +894,13 @@
 </Dialog>
 
 <style>
+  .fill-layout { display: flex; flex-direction: column; min-height: 0; }
+  .fill-layout > .calendar-content, .fill-layout .calendar-main { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .fill-layout .calendar-frame { flex: 1; max-height: none; }
+  .fill-layout .calendar-viewport { flex: 1; max-height: none; }
+  .fill-layout .date-timeline { height: auto; min-height: 0; }
+  .fill-layout .month-viewport { min-height: 0; }
+
   .calendar-frame:not(:has(.timeline-viewport)) .calendar-sheet { min-width: 0; }
   .day-scroller { overflow-x: auto; overflow-y: hidden; overflow-anchor: none; overscroll-behavior-x: contain; }
   .day-scroller:not(.mutsuna-scrollbar) { scrollbar-width: none; }

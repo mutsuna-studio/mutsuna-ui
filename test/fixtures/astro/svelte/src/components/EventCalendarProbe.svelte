@@ -2,6 +2,10 @@
   import AppDialogs from "./event-calendar-app-dialogs.svelte";
   let dialogs: AppDialogs;
   let draft = $state<EventCalendarEvent | null>(null);
+  let fill = $state(false);
+  let fillEmpty = $state(false);
+  let fillHeight = $state(900);
+  let toolbarUpdates = $state(0);
   let useDialogs = $state(true);
   let notification = $state("");
   import { EventCalendar, type EventCalendarEvent, type EventCalendarView, type EventCalendarPrefetchRange } from "@mutsuna/ui/event-calendar";
@@ -38,7 +42,14 @@
     <button onclick={() => { dayCount = undefined; date = "2026-10-05"; }}>表示範囲を戻す</button>
     <button onclick={() => { if (adjacent) prefetchedEvents = [{ id: "prefetched-next", title: "先読みした予定", start: `${adjacent.next.start}T09:00`, end: `${adjacent.next.start}T10:00` }]; }}>先読みイベントを渡す</button>
   </div>
-  <EventCalendar currentTime="2026-10-05T10:15" bind:date bind:view events={[...events, ...prefetchedEvents, ...(view === "timeline" || view === "date-timeline" ? timelineAllDay : [])]} rows={[{ id: "a", label: "会議室A" }, { id: "b", label: "会議室B" }]}
+  <button onclick={() => { fill = true; date = "2026-10-05"; dayCount = undefined; }}>領域いっぱいに表示</button>
+  <button onclick={() => { fill = true; fillHeight = 1900; fillEmpty = true; events = []; prefetchedEvents = []; date = "2026-10-05"; view = "date-timeline"; }}>高い領域で空の予定を表示</button>
+  <button onclick={() => fillHeight = 360}>領域を縮める</button>
+  <button onclick={() => fill = false}>内容の高さに戻す</button>
+  <div data-calendar-container class={fill ? "flex min-h-0 flex-col" : undefined} style:height={fill ? `${fillHeight}px` : undefined}>
+  <EventCalendar startHour={fill ? 0 : 8} endHour={fill ? 24 : 20} layout={fill ? "fill" : "content"} class={fill ? "min-h-0 flex-1" : undefined}
+    toolbarFilters={fill ? filters : undefined} toolbarActions={fill ? actions : undefined} viewSwitcher={fill ? customView : undefined}
+    currentTime="2026-10-05T10:15" bind:date bind:view events={[...events, ...prefetchedEvents, ...(!fillEmpty && (view === "timeline" || view === "date-timeline") ? timelineAllDay : [])]} rows={[{ id: "a", label: "会議室A" }, { id: "b", label: "会議室B" }]}
     backgroundRanges={[
       { id: "global-bg", start: "2026-10-05T12:00", end: "2026-10-05T13:00", color: "rgb(230, 235, 240)" },
       { id: "date-bg", start: "2026-10-06", end: "2026-10-07", color: "rgb(240, 235, 230)" },
@@ -50,6 +61,16 @@
     onEventsRetry={() => { eventsLoading = true; eventsError = undefined; }}
     {draft} onCreate={(range, context) => { notification = `create ${range.start} ${range.end} ${context.trigger.tagName} title=${"title" in range}`; if (useDialogs) dialogs.create(range, context); }} onEventClick={(event, context) => { notification = `select ${event.id} ${context.trigger.tagName}`; if (useDialogs) dialogs.select(event, context); }}
     onEventChange={(change) => { events = events.map(event => event.id === change.event.id ? { ...event, start: change.start, end: change.end, ...("rowId" in change ? { rowId: change.rowId } : {}) } : event); action = `${change.kind} ${change.start} ${change.end}`; }} />
+  </div>
 </section>
 
 <AppDialogs bind:this={dialogs} bind:draft onSave={(range) => { count++; events = [...events, { id: `created-${count}`, color: "#8b5cf6", ...range }]; action = `create ${range.start} ${range.end}`; }} />
+
+{#snippet filters()}<button>追加フィルター</button>{/snippet}
+{#snippet actions()}<button onclick={() => toolbarUpdates++}>追加の更新</button><span data-toolbar-updates>{toolbarUpdates}</span>{/snippet}
+{#snippet customView()}
+  <select aria-label="独自の表示方法" bind:value={view}>
+    <option value="day">日表示</option><option value="week">週表示</option><option value="month">月表示</option>
+    <option value="timeline">タイムライン</option><option value="date-timeline">日付タイムライン</option>
+  </select>
+{/snippet}

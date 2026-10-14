@@ -36,7 +36,7 @@ const navigation = [
 <Story name="Navigation" asChild>
 	<Sidebar.Provider bind:open class="relative min-h-[32rem] overflow-hidden rounded-lg border">
 		<Sidebar.Root collapsible="icon" class="absolute h-full">
-            <Sidebar.Header class="h-14 shrink-0 justify-center border-b py-1">
+            <Sidebar.Header class="border-b py-0">
                 <SidebarWorkspaceSwitcher
                     {workspaces}
                     {activeWorkspaceId}

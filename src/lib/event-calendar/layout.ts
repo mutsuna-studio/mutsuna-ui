@@ -39,6 +39,11 @@ export function addMonths(date: string, amount: number): string {
 }
 
 export function visibleCalendarRange(date: string, view: EventCalendarView, dayCount?: number, weekStartsOn = 1): EventCalendarVisibleRange {
+  if (view === "date-timeline") {
+    const count = dayCount ?? 7;
+    if (!Number.isInteger(count) || count < 1) throw new RangeError("Visible date timeline count must be positive");
+    return { start: date, end: addDays(date, count), view };
+  }
   const dates = view === "month" ? monthWeeks(date, weekStartsOn).flat()
     : calendarDates(date, view === "timeline" ? 1 : dayCount ?? (view === "day" ? 1 : 7),
       view === "week" && dayCount === undefined ? weekStartsOn : undefined);
