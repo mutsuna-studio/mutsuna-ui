@@ -17,6 +17,7 @@
     currentTime, eventsLoading = false, eventsError, onEventsRetry, onVisibleRangeChange, onPrefetchRange, class: className, onDateChange, onCreate, onEventChange, onEventClick, eventContent, draft = null, layout = "content", toolbarFilters, toolbarActions, viewSwitcher
   }: EventCalendarProps = $props();
   let fixedHeaderHeight = $state(0);
+  const horizontalViewportAttachments = { [createAttachmentKey()]: fromAction(horizontalScroll) };
   const dayViewportAttachments = {
     [createAttachmentKey()]: fromAction(fixedHeaderScroll),
     [createAttachmentKey()]: fromAction(preserveTimePosition, () => layout),
@@ -530,9 +531,9 @@
     observer.observe(element);
     return { destroy() { observer.disconnect(); timelineAvailableWidth = 0; } };
   }
-  function timelineHorizontalScroll(element: HTMLElement) {
+  function horizontalScroll(element: HTMLElement) {
     $effect(() => {
-      const body = viewport;
+      const body = isTimeline ? viewport : viewport?.querySelector<HTMLElement>('[data-slot="event-calendar-day-scroll"]');
       if (!body) return;
       const fromBody = () => { if (Math.abs(element.scrollLeft - body.scrollLeft) > .5) element.scrollLeft = body.scrollLeft; };
       const fromBar = () => { if (Math.abs(body.scrollLeft - element.scrollLeft) > .5) body.scrollLeft = element.scrollLeft; };
@@ -764,12 +765,6 @@
     </div>
     {/snippet}
     </ScrollArea.Root>
-    {#if timelineAvailableWidth > 0 && 144 + timelineWidth > timelineAvailableWidth + 1}
-      <!-- svelte-ignore a11y_no_noninteractive_tabindex: native keyboard scrolling of the horizontal time axis -->
-      <div class="timeline-horizontal-scroll mutsuna-scrollbar" use:timelineHorizontalScroll use:scrollbarVisibility role="region" aria-label="時間軸の横スクロール" tabindex="0">
-        <div style:width={`${timelineWidth}px`} style:height="1px"></div>
-      </div>
-    {/if}
   {:else if view === "month"}
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <div bind:this={() => viewport, (value) => viewport = value ?? null} use:fitMonthViewport={layout} use:scrollbarVisibility style:height={layout === "fill" ? undefined : `${monthHeight}px`} role="region" aria-label={`${ariaLabel}の月表示`} tabindex="0" class="calendar-viewport month-viewport mutsuna-scrollbar" data-slot="event-calendar-month">
@@ -932,6 +927,26 @@
   {/snippet}
   </ScrollArea.Root>
   {/if}
+  {#if view !== "month" && (isTimeline ? timelineAvailableWidth > 0 && 144 + timelineWidth > timelineAvailableWidth + 1 : dayScrollWidth > dayViewportWidth + 1)}
+    <ScrollArea.Root type="auto">
+      {#snippet child({ props })}
+        <div {...props} class="calendar-horizontal-scrollbar" style:left={`${isTimeline ? 144 : 56}px`}>
+          <!-- svelte-ignore a11y_no_noninteractive_tabindex: keyboard scrolling remains available without event controls -->
+          <ScrollArea.Viewport {...horizontalViewportAttachments} role="region" aria-label={isTimeline ? "時間軸の横スクロール" : `${ariaLabel}の横スクロール`} tabindex={0}
+            class={cn("horizontal-scroll-proxy", isTimeline && "timeline-horizontal-scroll")}>
+            <div style:width={`${isTimeline ? timelineWidth : dayScrollWidth}px`} style:height="1px"></div>
+          </ScrollArea.Viewport>
+          <ScrollArea.Scrollbar orientation="horizontal">
+            {#snippet child({ props })}
+              <div {...props} class="calendar-overlay-horizontal">
+                <ScrollArea.Thumb>{#snippet child({ props })}<div {...props} class="calendar-overlay-thumb"></div>{/snippet}</ScrollArea.Thumb>
+              </div>
+            {/snippet}
+          </ScrollArea.Scrollbar>
+        </div>
+      {/snippet}
+    </ScrollArea.Root>
+  {/if}
   </div>
   </div>
   <p class="sr-only" role="status" aria-live="polite">{announcement}</p>
@@ -979,8 +994,8 @@
 
   .calendar-frame:not(:has(.timeline-viewport)) .calendar-sheet { min-width: 0; }
   .day-scroller { overflow-x: auto; overflow-y: hidden; overflow-anchor: none; overscroll-behavior-x: contain; }
-  .day-scroller:not(.mutsuna-scrollbar) { scrollbar-width: none; }
-  .day-scroller:not(.mutsuna-scrollbar)::-webkit-scrollbar { display: none; }
+  .day-scroller { scrollbar-width: none; scrollbar-gutter: auto; }
+  .day-scroller::-webkit-scrollbar { display: none; }
   .day-scroll-track, .day-scroll-stage { position: relative; width: var(--day-scroll-width, 100%); }
   .month-pages > .day-scroll-track, .month-pages .day-scroll-stage { height: 100%; }
   .range-background { position: absolute; z-index: -1; pointer-events: none; }
@@ -998,7 +1013,12 @@
   .calendar-frame :global(.date-timeline) { height: min(636px, calc(100dvh - 180px)); min-height: 144px; touch-action: pan-x pan-y pinch-zoom; overscroll-behavior-y: contain; overflow-anchor: none; }
   .calendar-frame :global(.date-timeline) { scrollbar-width: none; scrollbar-gutter: auto; }
   .calendar-frame :global(.date-timeline::-webkit-scrollbar) { display: none; }
-  .timeline-horizontal-scroll { height: 12px; margin-inline-start: 144px; flex-shrink: 0; overflow-x: auto; overflow-y: hidden; scrollbar-gutter: auto; }
+  .calendar-horizontal-scrollbar { position: absolute !important; right: 0; bottom: 0; height: 10px; z-index: 100; opacity: 0; transition: opacity 180ms; }
+  .calendar-main:hover .calendar-horizontal-scrollbar, .calendar-main:focus-within .calendar-horizontal-scrollbar,
+  .calendar-main:has(:global([data-scrollbar-state])) .calendar-horizontal-scrollbar { opacity: 1; }
+  .calendar-horizontal-scrollbar :global(.horizontal-scroll-proxy) { overflow-x: auto !important; overflow-y: hidden !important; scrollbar-width: none; scrollbar-gutter: auto; }
+  .calendar-horizontal-scrollbar :global(.horizontal-scroll-proxy::-webkit-scrollbar) { display: none; }
+  .calendar-overlay-horizontal { height: 10px; padding: 2px; display: flex; }
   .calendar-frame :global(.date-timeline .timeline-rows) { touch-action: pan-x pan-y pinch-zoom; }
   .calendar-frame :global(.date-timeline [data-event-id]) { touch-action: pan-x pan-y pinch-zoom; }
   .timeline-rows { touch-action: pan-x pan-y pinch-zoom; user-select: none; }
@@ -1020,7 +1040,7 @@
   .fixed-calendar-header { overflow: hidden; flex-shrink: 0; }
   .calendar-frame > :global(.calendar-viewport) { min-height: 0; }
   .calendar-frame > :global(.timeline-viewport) { max-height: calc(42rem - 36px); }
-  .month-sheet { min-width: 760px; height: 100%; display: flex; flex-direction: column; font-variant-numeric: tabular-nums; }
+  .month-sheet { min-width: 0; width: 100%; height: 100%; display: flex; flex-direction: column; font-variant-numeric: tabular-nums; }
   .month-weekdays, .month-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
   .month-weekdays { height: 32px; flex-shrink: 0; align-items: center; background: var(--background); border-bottom: 1px solid var(--border); text-align: center; font-size: 12px; }
   .month-week { position: relative; flex: 1; min-height: 0; border-bottom: 1px solid var(--border); }
@@ -1032,7 +1052,7 @@
   .outside-month { background: color-mix(in srgb, var(--muted) 35%, var(--background)); }
   .outside-month .month-date { color: var(--muted-foreground); }
   .month-event { position: absolute; inset-inline: 2px; height: 20px; display: flex; align-items: center; gap: 4px; min-width: 0; overflow: hidden; padding: 2px 4px; border-radius: 4px; font-size: 11px; text-align: left; white-space: nowrap; background: color-mix(in srgb, var(--event-color) 16%, var(--background)); cursor: pointer; }
-  .month-more { position: absolute; bottom: 2px; left: 6px; font-size: 11px; line-height: 16px; font-weight: 600; cursor: pointer; }
+  .month-more { position: absolute; bottom: 2px; left: 2px; max-width: calc(100% - 4px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; line-height: 16px; font-weight: 600; cursor: pointer; }
   .month-list-event { display: flex; flex-direction: column; gap: 4px; padding: 8px; border-radius: 5px; text-align: left; overflow-wrap: anywhere; background: color-mix(in srgb, var(--event-color) 16%, var(--background)); cursor: pointer; }
   .month-event-time { flex-shrink: 0; }
   .month-event strong { overflow: hidden; text-overflow: clip; }
@@ -1041,7 +1061,7 @@
   .calendar-frame :global(.calendar-viewport), .month-viewport { max-height: 42rem; overflow: auto; overflow-anchor: none; overscroll-behavior-x: none; transition: transform 180ms ease-out; }
   @media (prefers-reduced-motion: reduce) { .calendar-frame :global(.calendar-viewport), .month-viewport { transition: none; } }
   .calendar-frame :global(.calendar-viewport:not(.timeline-viewport)), .month-viewport { touch-action: pan-x pan-y pinch-zoom; }
-  .calendar-viewport.month-viewport { max-height: none; overflow-y: hidden; scrollbar-gutter: auto; touch-action: pan-x pan-y pinch-zoom; }
+  .calendar-viewport.month-viewport { max-height: none; overflow: hidden; scrollbar-gutter: auto; touch-action: pan-x pan-y pinch-zoom; }
   .calendar-frame :global([data-scroll-area-viewport]) { overflow: auto !important; }
   .month-pages { position: relative; flex: 1; min-height: 0; overflow: hidden; }
   .month-dates { height: 100%; display: flex; flex-direction: column; }
