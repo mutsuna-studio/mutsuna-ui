@@ -428,6 +428,12 @@ export async function verifyEventCalendar(page) {
     const bar = document.querySelector('.timeline-horizontal-scroll');
     return body.scrollLeft === body.scrollWidth - body.clientWidth && bar.scrollLeft === body.scrollLeft;
   });
+  const timelineThumbBounds = await calendar.locator('.calendar-overlay-horizontal').evaluate(track => {
+    const thumb = track.querySelector('.calendar-overlay-thumb').getBoundingClientRect();
+    const bounds = track.getBoundingClientRect();
+    return { right: thumb.right, trackRight: bounds.right };
+  });
+  assert.ok(timelineThumbBounds.right <= timelineThumbBounds.trackRight + 1, 'timeline thumb remains inside its track at the right end');
   await dateScroll.evaluate(element => { element.scrollLeft = 0; });
   await calendar.evaluate((element, style) => { if (style === null) element.removeAttribute('style'); else element.setAttribute('style', style); }, horizontalBarStyle);
   await horizontalBar.waitFor({ state: 'hidden' });
@@ -810,6 +816,8 @@ export async function verifyEventCalendar(page) {
   await fillRoot.hover();
   const hBox = await horizontalThumb.boundingBox();
   assert.ok(hBox);
+  const expectedThumbWidth = await horizontalThumb.evaluate(el => parseFloat(getComputedStyle(el).getPropertyValue('--bits-scroll-area-thumb-width')));
+  assert.ok(Math.abs(hBox.width - expectedThumbWidth) < 1, 'horizontal thumb reflects the visible fraction instead of stretching to the track width');
   const beforeDrag = await dayBody.evaluate(el => el.scrollLeft);
   await page.mouse.move(hBox.x + hBox.width / 2, hBox.y + hBox.height / 2);
   await page.mouse.down(); await page.mouse.move(hBox.x + hBox.width / 2 - 25, hBox.y + hBox.height / 2, { steps: 5 }); await page.mouse.up();

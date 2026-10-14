@@ -1019,6 +1019,7 @@
   .calendar-horizontal-scrollbar :global(.horizontal-scroll-proxy) { overflow-x: auto !important; overflow-y: hidden !important; scrollbar-width: none; scrollbar-gutter: auto; }
   .calendar-horizontal-scrollbar :global(.horizontal-scroll-proxy::-webkit-scrollbar) { display: none; }
   .calendar-overlay-horizontal { height: 10px; padding: 2px; display: flex; }
+  .calendar-overlay-horizontal .calendar-overlay-thumb { flex: none; }
   .calendar-frame :global(.date-timeline .timeline-rows) { touch-action: pan-x pan-y pinch-zoom; }
   .calendar-frame :global(.date-timeline [data-event-id]) { touch-action: pan-x pan-y pinch-zoom; }
   .timeline-rows { touch-action: pan-x pan-y pinch-zoom; user-select: none; }
