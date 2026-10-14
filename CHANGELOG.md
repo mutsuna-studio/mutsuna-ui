@@ -1,5 +1,15 @@
 # @mutsuna/ui
 
+## 0.19.0
+
+### Minor Changes
+
+- aa7740e: EventCalendar に親領域へ追従する fill レイアウトと、日付操作・利用側フィルター・アクション・表示方法を同じツールバーに配置する snippets を追加しました。
+
+### Patch Changes
+
+- aa7740e: Align the sidebar header content with the admin shell header in expanded and collapsed states, while allowing taller custom header content.
+
 ## 0.18.0
 
 ### Minor Changes
