@@ -1,5 +1,11 @@
 # @mutsuna/ui
 
+## 0.19.5
+
+### Patch Changes
+
+- d2107b6: Dialog.Body と ResponsiveDialog.Body の標準下余白を 16px にし、本文末尾の操作がフッターに接触するのを防ぐ。class による余白の上書きは維持する。
+
 ## 0.19.4
 
 ### Patch Changes
