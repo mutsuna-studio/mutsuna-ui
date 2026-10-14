@@ -24,7 +24,9 @@ export class ResponsiveOverlayState {
     this.#mode = mode;
     this.#mobileQuery = $derived(new MediaQuery(mobileQuery(), ssrMode() === "mobile"));
     const initialMode = mode();
-    this.#renderedMode = initialMode === "auto" ? ssrMode() : initialMode;
+    // Select the client primitive before its first mount, especially when open.
+    // MediaQuery supplies ssrMode as the fallback during server rendering.
+    this.#renderedMode = initialMode === "auto" ? this.preferred : initialMode;
   }
 
   get preferred(): ResolvedResponsiveOverlayMode {

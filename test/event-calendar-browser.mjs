@@ -176,14 +176,42 @@ export async function verifyEventCalendar(page) {
   await creationSlot.scrollIntoViewIfNeeded();
   let slotBox = await creationSlot.boundingBox();
   assert.ok(slotBox);
+  const nativeScroll = calendar.locator('.calendar-viewport');
+  const scrollHeightStyle = await nativeScroll.evaluate(el => { const height = el.style.height; el.style.height = '240px'; return height; });
+  const scrollBefore = await nativeScroll.evaluate(el => el.scrollTop);
+  await touchSwipe(creationSlot, -100);
+  await page.waitForFunction(before => document.querySelector('#event-calendar-probe .calendar-viewport').scrollTop > before, scrollBefore);
+  assert.equal(await page.getByRole('dialog').count(), 0, 'ordinary vertical touch scroll never opens creation');
+  assert.equal(await calendar.locator('.drag-preview').count(), 0);
+  await creationSlot.scrollIntoViewIfNeeded();
+  slotBox = await creationSlot.boundingBox();
   const touchSession = await page.context().newCDPSession(page);
   try {
     await touchSession.send("Emulation.setTouchEmulationEnabled", { enabled: true });
+    await creationSlot.scrollIntoViewIfNeeded();
+    slotBox = await creationSlot.boundingBox();
+    const multiX = slotBox.x + slotBox.width / 2, multiY = slotBox.y + slotBox.height / 2;
+    await touchSession.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: multiX, y: multiY, id: 1 }] });
+    await touchSession.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: multiX, y: multiY, id: 1 }, { x: 5, y: 5, id: 2 }] });
+    await page.waitForTimeout(500);
+    assert.equal(await calendar.locator('.drag-preview').count(), 0, 'second finger outside the grid cancels the hold timer');
+    await touchSession.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    assert.equal(await page.getByRole('dialog').count(), 0, 'multitouch does not create an event');
+    const tapX = slotBox.x + slotBox.width / 2, tapY = slotBox.y + slotBox.height - 2;
+    await touchSession.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: tapX, y: tapY }] });
+    await touchSession.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: tapX, y: tapY + 4 }] });
+    await touchSession.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await page.getByRole('dialog').waitFor();
+    assert.match(await page.getByRole('dialog').textContent(), /9:00～9:15/, 'short touch across a slot boundary creates the original 15-minute slot');
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('[role="dialog"]') && getComputedStyle(document.body).pointerEvents !== 'none');
     for (const moves of [1, 8]) {
       await creationSlot.scrollIntoViewIfNeeded();
       slotBox = await creationSlot.boundingBox();
       const x = slotBox.x + slotBox.width / 2, y = slotBox.y + slotBox.height / 2;
       await touchSession.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+      await page.waitForTimeout(500);
+      assert.equal(await calendar.locator(".drag-preview").count(), 1, "long press arms touch selection");
       for (let i = 1; i <= moves; i++) {
         await touchSession.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y + i * 48 / moves }] });
       }
@@ -202,6 +230,9 @@ export async function verifyEventCalendar(page) {
     await touchSession.send("Emulation.setTouchEmulationEnabled", { enabled: false });
     await touchSession.detach();
   }
+  await nativeScroll.evaluate((el, height) => { el.style.height = height; }, scrollHeightStyle);
+  await creationSlot.scrollIntoViewIfNeeded();
+  slotBox = await creationSlot.boundingBox();
   // Keep a moving selection through capture loss until the real release arrives.
   const releaseX = slotBox.x + slotBox.width / 2, releaseY = slotBox.y + slotBox.height / 2 + 48;
   await page.mouse.move(releaseX, releaseY - 48);
@@ -533,7 +564,21 @@ export async function verifyEventCalendar(page) {
   assert.equal(await calendar.getByRole('button', { name: '2026-10-05 12:00に予定を作成', exact: true }).isEnabled(), true);
   await selectView('月表示');
   await calendar.getByRole('button', { name: '次の月', exact: true }).click();
-  assert.match(await calendar.locator('[data-slot="event-calendar-events-state"]').textContent(), /この期間に予定はありません/);
+  const emptyState = calendar.locator('[data-slot="event-calendar-events-state"]');
+  assert.match(await emptyState.textContent(), /この期間に予定はありません/);
+  await emptyState.scrollIntoViewIfNeeded();
+  // Open without scrolling the background away, so paint order is tested at the empty message.
+  await page.locator('#open-dynamic-dialog').evaluate(el => el.click());
+  const stackedDialog = page.getByRole('dialog', { name: '動的な予約作成', exact: true });
+  await stackedDialog.waitFor();
+  const paintOrder = await emptyState.evaluate(el => {
+    const rect = el.getBoundingClientRect();
+    const layers = document.elementsFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    return { empty: layers.indexOf(el), overlay: layers.findIndex(layer => layer.matches('[data-slot="dialog-overlay"], [data-slot="drawer-overlay"]')) };
+  });
+  assert.ok(paintOrder.overlay >= 0 && (paintOrder.empty < 0 || paintOrder.overlay < paintOrder.empty), `dialog backdrop covers the empty message: ${JSON.stringify(paintOrder)}`);
+  await stackedDialog.getByRole('button', { name: '閉じる', exact: true }).click();
+  await page.waitForFunction(() => !document.querySelector('[role="dialog"]') && getComputedStyle(document.body).pointerEvents !== 'none');
   assert.equal(await calendar.locator('[data-slot="event-calendar"]').getAttribute('aria-busy'), 'false');
   await probe.getByRole('button', { name: '表示範囲を戻す', exact: true }).click();
   await selectView('週表示');

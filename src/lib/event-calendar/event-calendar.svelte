@@ -117,9 +117,20 @@
   type Drag = { pointer: number; pointerType: string; kind: "create" | EventCalendarChange["kind"]; event?: EventCalendarEvent;
     anchor: number; originalStart: number; originalEnd: number; start: number; end: number;
     visualAnchor: number; visualStart: number; visualEnd: number;
-    x: number; y: number; moved: boolean; origin: HTMLElement; rowId?: string; originalRowId?: string };
+    x: number; y: number; moved: boolean; armed: boolean; origin: HTMLElement; rowId?: string; originalRowId?: string };
   let drag = $state<Drag | null>(null);
   let suppressClick = false;
+  let touchHoldTimer: ReturnType<typeof setTimeout> | undefined;
+  const touchSelectionAttachments = { [createAttachmentKey()]: fromAction(touchSelection) };
+  function touchSelection(element: HTMLElement) {
+    // Native scrolling wins until a stationary long press arms selection.
+    const move = (event: TouchEvent) => {
+      if (event.touches.length !== 1) { cancel(); return; }
+      if (drag?.pointerType === "touch" && drag.armed) event.preventDefault();
+    };
+    element.addEventListener("touchmove", move, { passive: false });
+    return { destroy() { element.removeEventListener("touchmove", move); cancel(); } };
+  }
   const dayScrollers = new Set<HTMLElement>();
   let dayScrollWidth = $state(0);
   let dayScrollOffset = $state(0);
@@ -132,7 +143,7 @@
     for (const animation of navigationAnimations) animation.cancel();
     navigationAnimations = [];
   }
-  onDestroy(stopNavigationAnimation);
+  onDestroy(() => { stopNavigationAnimation(); cancel(); });
   function animateNavigation(direction: -1 | 1) {
     const root = viewport?.closest('[data-slot="event-calendar"]');
     if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -310,9 +321,9 @@
   }
   function begin(event: PointerEvent) {
     if (!viewport) return;
-    if (event.button !== 0 || !event.isPrimary) return;
-    // Blank date rows use native touch scrolling; tapping still opens creation.
-    if (view === "date-timeline" && event.pointerType === "touch" && !(event.target as HTMLElement).closest("[data-event-id]")) return;
+    if (!event.isPrimary) { if (event.pointerType === "touch") cancel(); return; }
+    if (event.button !== 0) return;
+    cancel();
     suppressClick = false;
     if (!canEdit) return;
     const target = event.target as HTMLElement;
@@ -328,13 +339,27 @@
     const kind = item ? (edge === "start" ? "resize-start" : edge === "end" ? "resize-end" : "move") : "create";
     drag = { pointer: event.pointerId, pointerType: event.pointerType, kind, event: item, anchor, originalStart: start, originalEnd: end,
       visualAnchor: point(event.clientX, event.clientY, false, true), visualStart: start, visualEnd: end,
-      start, end, x: event.clientX, y: event.clientY, moved: false, origin: target.closest<HTMLElement>("button") ?? viewport,
+      start, end, x: event.clientX, y: event.clientY, moved: false, armed: event.pointerType !== "touch", origin: target.closest<HTMLElement>("button") ?? viewport,
       rowId: view === "timeline" ? rowAt(event.clientY)?.id : item?.rowId, originalRowId: item?.rowId };
+    if (event.pointerType === "touch") {
+      touchHoldTimer = setTimeout(() => {
+        touchHoldTimer = undefined;
+        if (!drag || drag.pointer !== event.pointerId || !canEdit) { cancel(); return; }
+        drag.armed = true;
+        drag.moved = true;
+        grid.setPointerCapture(event.pointerId);
+        announcement = "範囲を選択できます。指を動かして終了時刻を選んでください。";
+      }, 450);
+    }
   }
   function move(event: PointerEvent) {
     if (!viewport) return;
     if (!drag || drag.pointer !== event.pointerId) return;
     if (!canEdit) { cancel(); return; }
+    if (!drag.armed) {
+      if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) >= 8) { cancel(); suppressClick = true; }
+      return;
+    }
     if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 4 && !drag.moved) return;
     if (!drag.moved) grid.setPointerCapture(event.pointerId);
     drag.moved = true;
@@ -394,13 +419,16 @@
     return { top: (start - config.from) / 60 * effectiveHourHeight, height: Math.min(height, config.height - (start - config.from) / 60 * effectiveHourHeight) };
   }
   function cancel() {
+    clearTimeout(touchHoldTimer);
+    touchHoldTimer = undefined;
     const previous = drag;
     suppressClick = Boolean(previous?.moved); drag = null;
     if (previous && grid.hasPointerCapture(previous.pointer)) grid.releasePointerCapture(previous.pointer);
   }
   function finish(event: PointerEvent) {
     if (!drag || drag.pointer !== event.pointerId) return;
-    if (drag.moved || Math.hypot(event.clientX - drag.x, event.clientY - drag.y) >= 4) {
+    const armed = drag.armed;
+    if (armed && (drag.moved || Math.hypot(event.clientX - drag.x, event.clientY - drag.y) >= 4)) {
       drag.moved = true;
       updateDragRange(event.clientX, event.clientY);
     }
@@ -411,7 +439,7 @@
     // A small motion can cross two slot buttons without reaching the drag
     // threshold. The browser then emits no slot click, so complete creation here.
     if (result.kind === "create") { suppressClick = true; openCreation(range, result.origin); return; }
-    if (!result.moved) return;
+    if (!armed || !result.moved) return;
     else if (result.event && (result.start !== result.originalStart || result.end !== result.originalEnd || result.rowId !== result.originalRowId))
       onEventChange?.({ event: result.event, kind: result.kind, ...range });
     announcement = `予定を変更: ${rangeLabel(range.start, range.end)}`;
@@ -630,7 +658,7 @@
 </script>
 
 <!-- Capture loss alone does not cancel: window listeners still receive the release. -->
-<svelte:window onpointermove={move} onpointerupcapture={finish} onpointercancelcapture={cancel} onkeydown={(event) => { if (event.key === "Escape" && !(event.target as HTMLElement)?.closest?.('[role="dialog"], [role="listbox"]') && drag) { event.preventDefault(); resetNavigation(); cancel(); announcement = "操作をキャンセルしました"; } }} onblur={() => { resetNavigation(); cancel(); }} />
+<svelte:window onpointerdowncapture={(event) => { if (event.pointerType === "touch" && !event.isPrimary && drag?.pointerType === "touch") cancel(); }} onpointermove={move} onpointerupcapture={finish} onpointercancelcapture={cancel} onkeydown={(event) => { if (event.key === "Escape" && !(event.target as HTMLElement)?.closest?.('[role="dialog"], [role="listbox"]') && drag) { event.preventDefault(); resetNavigation(); cancel(); announcement = "操作をキャンセルしました"; } }} onblur={() => { resetNavigation(); cancel(); }} />
 
 {#snippet rangeBackground(day: string, axis: "x" | "y" | "day", rowId: string | undefined = undefined)}
   {#each backgroundSegments(backgroundRanges, day, axis === "day" ? 0 : config.from, axis === "day" ? 1440 : config.to, rowId) as segment (segment.id)}
@@ -726,7 +754,7 @@
       <div class="timeline-sheet" style:width={`${144 + timelineWidth}px`}>
         <div class="timeline-pages">
         <!-- svelte-ignore a11y_no_static_element_interactions -->
-        <div bind:this={grid} class="timeline-rows" style:--event-top-layer={events.length + 2} onpointerdown={begin}>
+        <div bind:this={grid} class="timeline-rows" style:--event-top-layer={events.length + 2} onpointerdown={begin} {...touchSelectionAttachments} oncontextmenu={(event) => { if (drag?.pointerType === "touch") event.preventDefault(); }}>
           {@render timelinePage(timelineRows)}
         </div>
         </div>
@@ -854,7 +882,7 @@
         <!-- The grid delegates pointer gestures from its focusable slot/event buttons. -->
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div bind:this={grid} class="week-grid" data-slot="event-calendar-grid" style:--event-top-layer={events.length + 2} style:height={`${config.height}px`}
-          onpointerdown={begin}>
+          onpointerdown={begin} {...touchSelectionAttachments} oncontextmenu={(event) => { if (drag?.pointerType === "touch") event.preventDefault(); }}>
           {#each days as day}
             <div class="day-column" data-day={day}>
               {@render rangeBackground(day, "y")}
@@ -972,8 +1000,8 @@
   .calendar-frame :global(.date-timeline::-webkit-scrollbar) { display: none; }
   .timeline-horizontal-scroll { height: 12px; margin-inline-start: 144px; flex-shrink: 0; overflow-x: auto; overflow-y: hidden; scrollbar-gutter: auto; }
   .calendar-frame :global(.date-timeline .timeline-rows) { touch-action: pan-x pan-y pinch-zoom; }
-  .calendar-frame :global(.date-timeline [data-event-id]) { touch-action: none; }
-  .timeline-rows { touch-action: none; user-select: none; }
+  .calendar-frame :global(.date-timeline [data-event-id]) { touch-action: pan-x pan-y pinch-zoom; }
+  .timeline-rows { touch-action: pan-x pan-y pinch-zoom; user-select: none; }
   .timeline-row:not(:last-child) { border-bottom: 1px solid var(--border); }
   .timeline-track { position: relative; flex-shrink: 0; isolation: isolate; }
   .timeline-slot { position: absolute; top: 0; height: 100%; cursor: default; }
@@ -987,7 +1015,7 @@
   .timeline-preview span { font-size: 10px; line-height: 14px; white-space: nowrap; }
   .timeline-now { position: absolute; width: 2px; transform: translateX(-1px); background: var(--destructive); pointer-events: none; z-index: 40; }
   .timeline-now.has-marker::before { content: ""; position: absolute; top: -4px; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--destructive); }
-  .calendar-main { position: relative; min-width: 0; overflow: hidden; }
+  .calendar-main { isolation: isolate; position: relative; min-width: 0; overflow: hidden; }
   .calendar-frame { position: relative; display: flex; flex-direction: column; max-height: 42rem; min-height: 0; }
   .fixed-calendar-header { overflow: hidden; flex-shrink: 0; }
   .calendar-frame > :global(.calendar-viewport) { min-height: 0; }
@@ -1036,11 +1064,11 @@
   .time-body { position: relative; display: flex; }
   .time-axis { width: 56px; flex-shrink: 0; }
   .time-axis span { position: absolute; right: 8px; font-size: 11px; color: var(--muted-foreground); }
-  .week-grid { flex: 1; display: grid; grid-template-columns: repeat(var(--day-count), minmax(0, 1fr)); touch-action: pan-x pinch-zoom; user-select: none; }
+  .week-grid { flex: 1; display: grid; grid-template-columns: repeat(var(--day-count), minmax(0, 1fr)); touch-action: pan-x pan-y pinch-zoom; user-select: none; }
   .day-column { isolation: isolate; position: relative; border-left: 1px solid var(--border); }
   .time-slot { position: absolute; width: 100%; cursor: default; }
   .time-slot.hour-line { border-top: 1px solid var(--border); }
-  .calendar-event { touch-action: none; position: absolute; z-index: 2; border-radius: 5px; background: color-mix(in srgb, var(--event-color) 16%, var(--background)); box-shadow: 0 0 0 1px var(--background); color: var(--foreground); }
+  .calendar-event { touch-action: pan-x pan-y pinch-zoom; position: absolute; z-index: 2; border-radius: 5px; background: color-mix(in srgb, var(--event-color) 16%, var(--background)); box-shadow: 0 0 0 1px var(--background); color: var(--foreground); }
   .event-main { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: stretch; text-align: left; overflow: hidden; padding: 6px; font-size: 12px; cursor: grab; border-radius: 3px; }
   .event-main.compact { padding: 0 6px; justify-content: center; }
   .event-main.compact strong { text-overflow: clip; }

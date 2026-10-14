@@ -5,7 +5,7 @@
   import FillDemo from "./event-calendar-fill-demo.svelte";
   import Demo from "./event-calendar-demo.svelte";
   import RemoteDemo from "./event-calendar-remote-demo.svelte";
-  const { Story } = defineMeta({ title: "Components/Data Display/Event Calendar", component: EventCalendar, tags: ["autodocs"], parameters: { docs: { description: { component: "表示範囲は前後ボタン・今日・日付選択で切り替えます。スワイプは範囲切り替えに使わず、週内の横スクロールと日付タイムラインの縦スクロールを利用できます。" } } } });
+  const { Story } = defineMeta({ title: "Components/Data Display/Event Calendar", component: EventCalendar, tags: ["autodocs"], parameters: { docs: { description: { component: "表示範囲は前後ボタン・今日・日付選択で切り替えます。タッチでは通常のスワイプで縦・横にスクロールし、長押ししてから指を動かすと予約の範囲を選択できます。スワイプは日付範囲の切り替えには使いません。" } } } });
   async function remoteInteraction({ canvasElement }: { canvasElement: HTMLElement }) {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
