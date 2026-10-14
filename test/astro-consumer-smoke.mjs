@@ -100,6 +100,22 @@ import ImportProbe from "../components/ImportProbe.svelte";
         assert.equal(requests.some((url) => /\.(?:js|woff2?)(?:\?|$)/.test(url)), false, "Token-only page must not load JS or fonts");
       } else {
         await page.waitForFunction(() => !document.querySelector("astro-island[ssr]"));
+        const savedViewport = page.viewportSize();
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.getByRole("button", { name: "動的ダイアログを開く", exact: true }).click();
+        let dynamicDialog = page.getByRole("dialog", { name: "動的な予約作成", exact: true });
+        await dynamicDialog.waitFor();
+        assert.equal(await dynamicDialog.getAttribute("data-slot"), "drawer-content");
+        await dynamicDialog.getByRole("button", { name: "閉じる", exact: true }).click();
+        await page.waitForFunction(() => !document.querySelector('[role="dialog"]') && getComputedStyle(document.body).pointerEvents !== "none");
+        await page.waitForTimeout(650); // Vaul's delayed style restoration must also leave the page interactive.
+        assert.notEqual(await page.locator('body').evaluate(el => getComputedStyle(el).pointerEvents), 'none');
+        await page.getByRole("button", { name: "動的ダイアログを開く", exact: true }).click();
+        await dynamicDialog.waitFor();
+        await dynamicDialog.getByRole("button", { name: "閉じる", exact: true }).click();
+        await page.waitForFunction(() => !document.querySelector('[role="dialog"]') && getComputedStyle(document.body).pointerEvents !== "none");
+        if (savedViewport) await page.setViewportSize(savedViewport);
+        console.log("Astro responsive dialog: initially-open mobile mount closes and reopens without blocking the page");
         await verifyEventCalendar(page);
         const preview = page.locator('#sidebar-preview');
         const sidebarRoot = preview.locator('[data-slot="sidebar"]');

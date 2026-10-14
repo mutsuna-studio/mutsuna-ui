@@ -30,7 +30,7 @@ test("responsive overlay state is primitive-independent for future compositions"
 
   assert.match(context, /ResponsiveOverlayMode = "auto" \| "desktop" \| "mobile"/);
   assert.match(context, /new MediaQuery\(mobileQuery\(\), ssrMode\(\) === "mobile"\)/);
-  assert.match(context, /initialMode === "auto" \? ssrMode\(\) : initialMode/);
+  assert.match(context, /initialMode === "auto" \? this\.preferred : initialMode/);
   assert.match(context, /get preferred\(\)/);
   assert.match(context, /sync\(open: boolean\)/);
   assert.match(context, /if \(!this\.#clientSynchronized \|\| !open\)/);

@@ -26,6 +26,9 @@
   let code = $state("initial");
   let edits = $state(0);
   let locked = $state(false);
+  import * as ResponsiveDialog from "@mutsuna/ui/responsive-dialog";
+  let dynamicDialogMounted = $state(false);
+  let dynamicDialogOpen = $state(false);
   let count = $state(0);
   let name = $state("");
 </script>
@@ -76,3 +79,14 @@
     <button type="button" disabled={!controls.canMoveDown} onclick={controls.moveDown}>{item.id} down</button>
   {/snippet}
 </SortableList>
+
+<Button id="open-dynamic-dialog" onclick={() => { dynamicDialogMounted = true; dynamicDialogOpen = true; }}>動的ダイアログを開く</Button>
+{#if dynamicDialogMounted}
+  <ResponsiveDialog.Root bind:open={dynamicDialogOpen}>
+    <ResponsiveDialog.Content>
+      <ResponsiveDialog.Header><ResponsiveDialog.Title>動的な予約作成</ResponsiveDialog.Title></ResponsiveDialog.Header>
+      <ResponsiveDialog.Body><p>最初の表示から開いた状態でマウントします。</p></ResponsiveDialog.Body>
+      <ResponsiveDialog.Footer><ResponsiveDialog.Close>閉じる</ResponsiveDialog.Close></ResponsiveDialog.Footer>
+    </ResponsiveDialog.Content>
+  </ResponsiveDialog.Root>
+{/if}
