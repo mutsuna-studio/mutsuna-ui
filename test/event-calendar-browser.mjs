@@ -573,7 +573,12 @@ export async function verifyEventCalendar(page) {
   await stackedDialog.waitFor();
   const paintOrder = await emptyState.evaluate(el => {
     const rect = el.getBoundingClientRect();
+    // Modal background locking excludes the message from hit testing even when
+    // it paints above the dialog. Opt this fixture into hit testing for this read.
+    const previous = el.style.pointerEvents;
+    el.style.pointerEvents = 'auto';
     const layers = document.elementsFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    el.style.pointerEvents = previous;
     return { empty: layers.indexOf(el), overlay: layers.findIndex(layer => layer.matches('[data-slot="dialog-overlay"], [data-slot="drawer-overlay"]')) };
   });
   assert.ok(paintOrder.overlay >= 0 && (paintOrder.empty < 0 || paintOrder.overlay < paintOrder.empty), `dialog backdrop covers the empty message: ${JSON.stringify(paintOrder)}`);
