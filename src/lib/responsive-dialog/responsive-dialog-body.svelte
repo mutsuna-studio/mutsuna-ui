@@ -24,7 +24,7 @@ const responsive = useResponsiveOverlayState();
   bind:ref
   data-slot="responsive-dialog-body"
   class={cn(
-    "min-h-0 flex-1 overflow-y-auto",
+    "min-h-0 flex-1 overflow-y-auto pb-4",
     responsive.current === "mobile" ? "px-4" : "-mx-4 px-4",
     className,
   )}

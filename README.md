@@ -719,3 +719,7 @@ CodeEditor and CodeDiff include a language label and copy button in their header
 Storybookの`Components / Data Display / Event Calendar / Week`で作成・移動・時間変更・詳細表示を試せます。デモの変更はメモリ内だけで、リセットで初期状態に戻ります。
 
 EventCalendarの`layout="fill"`は高さが決まった親flex領域に時間枠/月/タイムラインを広げます。親とcomponentの双方に`min-height: 0`を設定し、componentを`flex: 1`で配置してください。fillの日・週表示では、時間帯が短い場合は`hourHeight`を最小値として時間枠を拡大し、未割り当ての下部余白を残しません。既定の`layout="content"`は従来の内容高さを維持します。`toolbarFilters`と`toolbarActions`のsnippetsは日付操作と同じツールバーへ追加され、`viewSwitcher`は内蔵の表示方法選択を置き換えます。狭い画面では操作群を折り返します。
+
+### Dialog.Body の下余白
+
+`Dialog.Body` と `ResponsiveDialog.Body` は、本文末尾に標準で `pb-4`（16px）の余白を設けます。フッターとの間隔のために利用側で下余白を指定する必要はありません。上余白は利用側で指定し、必要に応じて `class="pb-0"` などで下余白を上書きできます。既存の `py-4`・`pb-4` 指定も加算されません。
