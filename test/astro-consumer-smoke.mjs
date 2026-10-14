@@ -61,7 +61,7 @@ import ImportProbe from "../components/ImportProbe.svelte";
     run("npm", ["run", `build:${mode}`]);
   }
 
-  browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true, ignoreDefaultArgs: ["--hide-scrollbars"] });
   for (const mode of ["tokens", "svelte"]) {
     const directory = join(consumer, mode, "dist");
     const html = await readFile(join(directory, "index.html"), "utf8");

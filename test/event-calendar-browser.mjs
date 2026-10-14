@@ -94,13 +94,15 @@ export async function verifyEventCalendar(page) {
     return { mainHeight: main.height, mainBottom: main.bottom,
       sheetBorder: getComputedStyle(sheet).borderRightWidth,
       gridRight: lastDay.right, sheetRight: sheet.getBoundingClientRect().right,
-      scrollbarWidth: getComputedStyle(scroll).scrollbarWidth, gutter: getComputedStyle(scroll).scrollbarGutter };
+      scrollbarWidth: getComputedStyle(scroll).scrollbarWidth, gutter: getComputedStyle(scroll).scrollbarGutter, nativeGutter: scroll.offsetWidth - scroll.clientWidth };
   });
   assert.equal(await calendar.locator('[data-slot="event-calendar-day-scroll"]').evaluate(element => getComputedStyle(element).scrollbarGutter), 'auto', 'horizontal scrolling reserves no unused vertical gutter');
   assert.equal(edges.sheetBorder, '0px', 'the sheet does not duplicate the outer calendar border');
   assert.ok(Math.abs(edges.sheetRight - edges.gridRight) < 1, `the final date column reaches the body sheet edge (${JSON.stringify(edges)})`);
   assert.equal(edges.scrollbarWidth, 'thin');
   assert.equal(edges.gutter, 'stable');
+  if (process.platform === 'linux') assert.ok(edges.nativeGutter > 0, 'Linux verifies the real classic scrollbar gutter instead of hiding scrollbars');
+  console.log(`EventCalendar native scrollbar width: ${edges.nativeGutter}px`);
   await calendar.locator('.calendar-viewport').evaluate(element => { element.style.height = '240px'; element.scrollTop += 2; });
   await page.waitForFunction(() => document.querySelector('#event-calendar-probe .calendar-viewport').dataset.scrollbarState === 'visible');
   await calendar.locator('.calendar-viewport').evaluate(element => { element.style.removeProperty('height'); });
