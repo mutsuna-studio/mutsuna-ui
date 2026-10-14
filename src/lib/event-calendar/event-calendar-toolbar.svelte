@@ -8,8 +8,8 @@
   import type { EventCalendarProps, EventCalendarView } from "./types.js";
 
   let { date, view, label, navigationUnit, dayCount, displayDayCount, locale, weekStartsOn,
-    disabled, loading, readonly, onNavigate, onToday, onDateChange, onViewChange
-  }: Pick<EventCalendarProps, "date" | "dayCount" | "locale" | "weekStartsOn" | "disabled" | "loading" | "readonly"> & {
+    disabled, loading, readonly, toolbarFilters, toolbarActions, viewSwitcher, onNavigate, onToday, onDateChange, onViewChange
+  }: Pick<EventCalendarProps, "date" | "dayCount" | "locale" | "weekStartsOn" | "disabled" | "loading" | "readonly" | "toolbarFilters" | "toolbarActions" | "viewSwitcher"> & {
     view: EventCalendarView;
     label: string;
     navigationUnit: string;
@@ -51,12 +51,18 @@
           </PopoverContent>
         </Popover>
       </h2>
+      {@render toolbarFilters?.()}
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       {#if loading || readonly}<span class="text-sm text-muted-foreground">{loading ? "読み込み中…" : "閲覧のみ"}</span>{/if}
+      {@render toolbarActions?.()}
+      {#if viewSwitcher}
+        {@render viewSwitcher()}
+      {:else}
       <Select type="single" value={view} onValueChange={onViewChange} disabled={disabled || loading}>
         <SelectTrigger aria-label="カレンダーの表示" class={view === "date-timeline" ? "w-44" : "w-36"}>{view === "date-timeline" ? "日付タイムライン" : view === "timeline" ? "タイムライン" : view === "month" ? "月表示" : dayCount !== undefined ? `${displayDayCount}日表示` : view === "day" ? "日表示" : "週表示"}</SelectTrigger>
         <SelectContent><SelectItem value="day">日表示</SelectItem><SelectItem value="week">週表示</SelectItem><SelectItem value="month">月表示</SelectItem><SelectItem value="timeline">タイムライン</SelectItem><SelectItem value="date-timeline">日付タイムライン</SelectItem></SelectContent>
       </Select>
+      {/if}
     </div>
   </header>

@@ -148,3 +148,13 @@ test("background ranges clip across dates, hours and resource rows with exclusiv
   assert.throws(() => backgroundSegments([{ ...ranges[0], end: ranges[0].start }], "2026-10-05"), RangeError);
   assert.throws(() => backgroundSegments([{ ...ranges[0], start: "2026-02-30" }], "2026-10-05"), RangeError);
 });
+
+test("viewport-fit date timeline ranges may exceed the explicit day/week count limit", () => {
+  const range = visibleCalendarRange("2026-10-05", "date-timeline", 40);
+  assert.deepEqual(range, { start: "2026-10-05", end: "2026-11-14", view: "date-timeline" });
+  const adjacent = adjacentCalendarRanges(range.start, range.view, 40);
+  assert.equal(adjacent.previous.end, range.start);
+  assert.equal(adjacent.next.start, range.end);
+  for (const view of ["day", "week"]) assert.throws(() => visibleCalendarRange(range.start, view, 40), RangeError);
+  for (const count of [0, -1, 1.5, NaN]) assert.throws(() => visibleCalendarRange(range.start, range.view, count), RangeError);
+});
