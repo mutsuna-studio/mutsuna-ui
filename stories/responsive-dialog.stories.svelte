@@ -5,6 +5,7 @@ import { Input } from "@mutsuna/ui/input";
 import { Label } from "@mutsuna/ui/label";
 import * as ResponsiveDialog from "@mutsuna/ui/responsive-dialog";
 import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
+import DialogSizeDemo from "./dialog-size-demo.svelte";
 
 const { Story } = defineMeta({
   title: "Components/Overlays/Responsive Dialog",
@@ -17,6 +18,10 @@ const { Story } = defineMeta({
 let transitionMode: "desktop" | "mobile" = $state("desktop");
 let transitionValue = $state("初期値");
 </script>
+
+<Story name="Content Height" asChild>
+  <DialogSizeDemo />
+</Story>
 
 <Story
   name="Automatic"

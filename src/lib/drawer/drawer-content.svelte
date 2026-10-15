@@ -5,6 +5,7 @@ import { cn, type WithoutChildrenOrChild } from "../utils.js";
 import DrawerHandle from "./drawer-handle.svelte";
 import DrawerOverlay from "./drawer-overlay.svelte";
 import DrawerPortal from "./drawer-portal.svelte";
+import { animateContentHeight } from "../internal/animate-content-height.js";
 
 let {
   ref = $bindable(null),
@@ -19,6 +20,10 @@ let {
   showHandle?: boolean;
   handleProps?: WithoutChildrenOrChild<ComponentProps<typeof DrawerHandle>>;
 } = $props();
+
+$effect(() => {
+  if (ref) return animateContentHeight(ref);
+});
 </script>
 
 <DrawerPortal {...portalProps}>
