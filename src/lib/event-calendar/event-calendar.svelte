@@ -103,12 +103,9 @@
     const today = new Date();
     selectDate(todayDate || `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`);
   }
-  const monthEventLimit = 3;
   let monthHeight = $state(480);
   const monthRowHeight = $derived((monthHeight - 32 - (weeks.length - 1)) / weeks.length);
-  // Cards start at 24px and are 20px tall with a 24px pitch. Keep
-  // 18px for “more” plus a 2px gap; the last card has no trailing 4px gap.
-  const monthVisibleLimit = $derived(Math.min(monthEventLimit, Math.max(0, Math.floor((monthRowHeight - 40) / 24))));
+  let monthWeekHeights = $state<Record<string, number>>({});
   let moreOpen = $state(false);
   let moreDay = $state("");
   let moreReturnFocus: HTMLElement | undefined;
@@ -474,11 +471,52 @@
     return [...events.filter(event => event.allDay && event.start <= day && event.end > day)
       .sort((a, b) => a.start.localeCompare(b.start) || a.title.localeCompare(b.title)), ...monthEvents(day)];
   }
-  function monthDayLayout(day: string, segments: ReturnType<typeof allDaySegments>["segments"], index: number) {
-    const visibleAllDay = segments.filter(segment => segment.row < monthVisibleLimit && segment.start <= index && segment.end > index);
-    const slots = Array.from({ length: monthVisibleLimit }, (_, row) => row).filter(row => !visibleAllDay.some(segment => segment.row === row));
-    const timed = monthEvents(day).slice(0, slots.length).map((event, i) => ({ event, row: slots[i] }));
-    return { timed, hidden: Math.max(0, eventsOnDay(day).length - visibleAllDay.filter(segment => segment.event !== preview).length - timed.length) };
+  function monthDayLayout(day: string, segments: ReturnType<typeof allDaySegments>["segments"], index: number, fullLimit: number, overflowLimit: number) {
+    const allDay = segments.filter(segment => segment.start <= index && segment.end > index);
+    const timedEvents = monthEvents(day);
+    const fitsAll = allDay.every(segment => segment.row < fullLimit) && allDay.length + timedEvents.length <= fullLimit;
+    const limit = fitsAll ? fullLimit : overflowLimit;
+    const visibleAllDay = allDay.filter(segment => segment.row < limit);
+    const slots = Array.from({ length: limit }, (_, row) => row).filter(row => !visibleAllDay.some(segment => segment.row === row));
+    const timed = timedEvents.slice(0, slots.length).map((event, i) => ({ event, row: slots[i] }));
+    const hidden = allDay.filter(segment => segment.event !== preview && segment.row >= limit).length + timedEvents.length - timed.length;
+    return { timed, hidden, limit };
+  }
+  function monthWeekLayout(week: string[]) {
+    // 描画後は実際の日付セルを測る。均等割りの推定値はSSRの初期表示だけに使う。
+    const height = monthWeekHeights[week[0]] ?? monthRowHeight;
+    // 日付見出しの下に20pxの予定を24px間隔で配置し、下端に2pxを残す。
+    // 全件が収まらない日だけ「他」の16pxと予定との2px間隔を確保する。
+    const fullLimit = Math.max(0, Math.floor((height - 22) / 24));
+    const overflowLimit = Math.max(0, Math.floor((height - 40) / 24));
+    const allDay = allDaySegments(preview?.allDay ? [...events, preview] : events, week);
+    const days = week.map((day, index) => monthDayLayout(day, allDay.segments, index, fullLimit, overflowLimit));
+    const segments: typeof allDay.segments = [];
+    for (const segment of allDay.segments) {
+      if (segment.event === preview) { segments.push(segment); continue; }
+      // 日ごとに表示行数が異なるため、終日予定は表示できる連続区間だけ描画する。
+      let start: number | null = null;
+      for (let index = segment.start; index <= segment.end; index++) {
+        const visible = index < segment.end && segment.row < days[index].limit;
+        if (visible && start === null) start = index;
+        if (!visible && start !== null) {
+          segments.push({ ...segment, start, end: index });
+          start = null;
+        }
+      }
+    }
+    return { days, segments, overflowLimit };
+  }
+  function measureMonthWeek(element: HTMLDivElement, key: string) {
+    const cell = element.querySelector<HTMLElement>(".month-day");
+    function measure() {
+      const height = (cell ?? element).clientHeight;
+      if (monthWeekHeights[key] !== height) monthWeekHeights[key] = height;
+    }
+    measure();
+    const observer = frameResizeObserver(measure);
+    observer.observe(cell ?? element);
+    return { destroy() { observer.disconnect(); delete monthWeekHeights[key]; } };
   }
   function fitMonthViewport(element: HTMLDivElement, mode: EventCalendarProps["layout"]) {
     function resize() {
@@ -774,11 +812,11 @@
         {/each}</div>
         <div class="month-pages"><div class="day-scroll-track"><div class="day-scroll-stage">
         <div class="month-dates">
-        {#each weeks as week}
-          {@const allDay = allDaySegments(preview?.allDay ? [...events, preview] : events, week)}
-          <div class="month-week">
+        {#each weeks as week (week[0])}
+          {@const weekLayout = monthWeekLayout(week)}
+          <div class="month-week" use:measureMonthWeek={week[0]}>
             {#each week as day, index}
-              {@const dayLayout = monthDayLayout(day, allDay.segments, index)}
+              {@const dayLayout = weekLayout.days[index]}
               <div class="month-day" style:grid-column={index + 1} class:outside-month={day.slice(0, 7) !== date.slice(0, 7)} data-month-day={day}>
                 {@render rangeBackground(day, "day")}
                 <button type="button" class="month-empty" aria-label={`${day}に終日予定を作成`} disabled={!canEdit || !onCreate}
@@ -797,11 +835,11 @@
                 {/if}
               </div>
             {/each}
-            {#each allDay.segments as segment (segment.event.id)}
+            {#each weekLayout.segments as segment (`${segment.event.id}:${segment.start}`)}
               {#if segment.event === preview}
                 <div class="all-day-event month-all-day all-day-preview" style:grid-column={`${segment.start + 1} / ${segment.end + 1}`}
-                  style:top={`${24 + Math.min(segment.row, Math.max(0, monthVisibleLimit - 1)) * 24}px`} style:--event-color="var(--primary)"><strong>{segment.event.title}</strong></div>
-              {:else if segment.row < monthVisibleLimit}
+                  style:top={`${24 + Math.min(segment.row, Math.max(0, weekLayout.overflowLimit - 1)) * 24}px`} style:--event-color="var(--primary)"><strong>{segment.event.title}</strong></div>
+              {:else}
                 <button type="button" class="all-day-event month-all-day" style:grid-column={`${segment.start + 1} / ${segment.end + 1}`}
                   style:top={`${24 + segment.row * 24}px`} style:--event-color={segment.event.color ?? "var(--primary)"} disabled={disabled || loading}
                   aria-label={`${segment.event.title} ${allDayLabel(segment.event)}`} onclick={(click) => { suppressClick = false; openDetails(segment.event, click.currentTarget); }}>

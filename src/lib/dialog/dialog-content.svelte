@@ -7,6 +7,7 @@ import { cn, type WithoutChildrenOrChild } from "../utils.js";
 import type { ComponentProps } from "svelte";
 import { Button } from "../button/index.js";
 import XIcon from "@lucide/svelte/icons/x";
+import { animateContentHeight } from "../internal/animate-content-height.js";
 
 let {
   ref = $bindable(null),
@@ -20,6 +21,10 @@ let {
   children: Snippet;
   showCloseButton?: boolean;
 } = $props();
+
+$effect(() => {
+  if (ref) return animateContentHeight(ref);
+});
 </script>
 
 <DialogPortal {...portalProps}>
