@@ -9,7 +9,7 @@ let { ref = $bindable(null), class: className, children, onscroll, ...restProps 
 <ScrollbarArea
   bind:ref
   data-slot="dialog-body"
-  class={cn("-mx-4 flex-1 min-h-0 overflow-y-auto px-4", className)}
+  class={cn("-mx-4 flex-1 min-h-0 overflow-y-auto px-4 pb-4", className)}
   gutter="both-edges"
   {onscroll}
   {...restProps}
