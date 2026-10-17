@@ -20,7 +20,7 @@ import type { ButtonVariant } from "@mutsuna/ui/button";
 import { Button } from "../button/index.js";
 import { today, getLocalTimeZone, isSameDay, isEqualMonth, type DateValue } from "@internationalized/date";
 import type { Snippet } from "svelte";
-import { getCalendarDayColorClass } from "./calendar-day-color.js";
+import { getCalendarDayColorClass } from "../internal/calendar/day-color.js";
 
 const calendarYearFloor = 2020;
 const calendarYearCeiling = new Date().getFullYear() + 10;

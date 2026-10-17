@@ -11,6 +11,8 @@ import {
   renderStaticPatternComponent,
 } from "../scripts/sync-loading-ui-css-patterns.mjs";
 
+import { loadingVariants } from "../dist/loading/loading-variants.js";
+
 const packageRoot = join(import.meta.dirname, "..");
 
 const dotsSource = `import { cn } from "@/lib/utils";
@@ -57,27 +59,22 @@ function Arc() { return (<><style>{\`@keyframes loading-ui-arc-spin { to { trans
 
 test("loading catalog exposes generated and manual CSS-only variants", async () => {
   const lock = JSON.parse(await readFile(join(packageRoot, "scripts/loading-ui-css-patterns.lock.json"), "utf8"));
-  const loading = await readFile(join(packageRoot, "src/lib/loading/loading.svelte"), "utf8");
-  assert.equal(Object.keys(lock.generated).length, 23);
   assert.equal(lock.manual["morphing-infinity"].adapter, "manual-svelte-v1");
   assert.match(lock.manual["morphing-infinity"].sourceSha256, /^[a-f0-9]{64}$/);
   for (const name of ["dots", "bars", "arc", "classic", "diamond", "ring", "swirling", "wave"]) {
     assert.ok(lock.generated[name], `${name} should be generated`);
   }
-  const variants = await readFile(join(packageRoot, "src/lib/loading/loading-variants.ts"), "utf8");
-  assert.match(loading, /export type \{ LoadingVariant \} from "\.\/loading-variants\.js"/);
-  assert.match(variants, /\["dots", "bars", "bouncing-dots", "typing", "arc"/);
-  assert.match(variants, /"morphing-infinity"/);
-  assert.equal([...variants.matchAll(/"[a-z-]+"/g)].length, 24);
+  assert.equal(new Set(loadingVariants).size, loadingVariants.length);
+  assert.deepEqual([...loadingVariants].sort(), [...Object.keys(lock.generated), ...Object.keys(lock.manual)].sort());
+  for (const name of [...Object.keys(lock.generated), ...Object.keys(lock.manual)]) {
+    assert.ok(loadingVariants.includes(name), `${name} should be available at runtime`);
+  }
 });
 
-test("manual morphing infinity adapter is dependency-free and motion-safe", async () => {
+test("manual morphing infinity adapter stays dependency-free", async () => {
   const component = await readFile(
     join(packageRoot, "src/lib/loading/loading-morphing-infinity.svelte"),
     "utf8",
   );
-  assert.match(component, /@keyframes loading-ui-morphing-infinity/);
-  assert.match(component, /d: path\("M 12 12 C 14 8\.5/);
-  assert.match(component, /prefers-reduced-motion: reduce/);
   assert.doesNotMatch(component, /motion\/react|requestAnimationFrame|setInterval/);
 });

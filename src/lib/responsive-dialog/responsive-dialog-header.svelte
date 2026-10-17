@@ -8,7 +8,7 @@ export type ResponsiveDialogHeaderProps = ComponentProps<typeof DialogHeader>;
 <script lang="ts">
 import DrawerHeader from "../drawer/drawer-header.svelte";
 import { cn } from "../utils.js";
-import { useResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { useResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let { ref = $bindable(null), class: className, children, ...restProps }: ResponsiveDialogHeaderProps = $props();
 const responsive = useResponsiveOverlayState();

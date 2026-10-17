@@ -6,3 +6,5 @@ coverage/
 .tmp/
 *.tgz
 .DS_Store
+test/browser/__screenshots__/
+.vitest-attachments/

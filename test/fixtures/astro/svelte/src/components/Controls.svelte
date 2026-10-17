@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { normalizeNumericInput } from "@mutsuna/ui/rolling-text/numeric-input.js";
+  import { getCalendarDayColorClass } from "@mutsuna/ui/calendar/calendar-day-color.js";
   import MarkdownLifecycle from "./MarkdownLifecycle.svelte";
   import { SortableList } from "@mutsuna/ui/sortable-list";
   let sortableItems = $state([{ id: "a" }, { id: "fixed", locked: true }, { id: "b" }]);
@@ -32,6 +34,7 @@
   let count = $state(0);
   let name = $state("");
 </script>
+<span hidden data-legacy-contract data-numeric={normalizeNumericInput("２０２９", 4)} data-accent={Boolean(getCalendarDayColorClass(parseDate("2026-10-04")))}></span>
 
 <div class="grid max-w-sm gap-4">
   <Button id="counter" onclick={() => count += 1}>Count: {count}</Button>

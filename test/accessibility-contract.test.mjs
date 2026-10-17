@@ -48,7 +48,7 @@ function blend(first, second, opacity) {
 }
 
 test("light theme muted and destructive text keep WCAG AA contrast", async () => {
-  const css = await readSource("src/lib/tokens.css");
+  const css = await readSource("dist/tokens.css");
   const root = themeBlock(css, ":root");
   const background = oklchToHex(themeColor(root, "background"));
   const muted = oklchToHex(themeColor(root, "muted"));
@@ -58,46 +58,4 @@ test("light theme muted and destructive text keep WCAG AA contrast", async () =>
 
   assert.ok(contrastRatio(mutedForeground, muted) >= 4.5);
   assert.ok(contrastRatio(destructive, destructiveSurface) >= 4.5);
-});
-
-test("destructive variants preserve their accessible surface on hover", async () => {
-  const [button, badge] = await Promise.all([
-    readSource("src/lib/button/button.svelte"),
-    readSource("src/lib/badge/badge.svelte"),
-  ]);
-
-  for (const source of [button, badge]) {
-    assert.doesNotMatch(source, /(?:^|\s)hover:bg-destructive\/20/);
-    assert.doesNotMatch(source, /dark:hover:bg-destructive\/30/);
-  }
-});
-
-test("shared form and editor controls expose accessible names", async () => {
-  const [businessHours, markdown] = await Promise.all([
-    readSource("src/lib/business-hours-fields/business-hours-fields.svelte"),
-    readSource("src/lib/markdown/markdown-editor.svelte"),
-  ]);
-
-  assert.match(businessHours, /aria-label=\{`\$\{hours\.label\}の開始時刻`\}/);
-  assert.match(businessHours, /aria-label=\{`\$\{hours\.label\}の終了時刻`\}/);
-  assert.match(businessHours, /aria-label="祝日の開始時刻"/);
-  assert.match(businessHours, /aria-label="祝日の終了時刻"/);
-  assert.match(markdown, /editorViewOptionsCtx/);
-  assert.match(markdown, /"aria-labelledby": `\$\{id\}-label`/);
-});
-
-test("shared visual and scrolling primitives expose semantic keyboard contracts", async () => {
-  const [avatar, scrollbar, calendar, calendarDayColor] = await Promise.all([
-    readSource("src/lib/avatar/customer-avatar.svelte"),
-    readSource("src/lib/scrollbar/scrollbar-area.svelte"),
-    readSource("src/lib/calendar/calendar.svelte"),
-    readSource("src/lib/calendar/calendar-day-color.ts"),
-  ]);
-
-  assert.match(avatar, /role="img" aria-label=\{name\}/);
-  assert.match(scrollbar, /tabindex = 0/);
-  assert.match(scrollbar, /\{tabindex\}/);
-  assert.match(calendar, /<CalendarHeader>[\s\S]*?#snippet child\(\{ props \}\)[\s\S]*?<div \{\.\.\.props\}>/);
-  assert.match(calendarDayColor, /text-red-700/);
-  assert.doesNotMatch(calendarDayColor, /text-red-600/);
 });

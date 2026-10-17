@@ -7,7 +7,7 @@ export type ResponsiveDialogDescriptionProps = ComponentProps<typeof DialogDescr
 
 <script lang="ts">
 import DrawerDescription from "../drawer/drawer-description.svelte";
-import { useResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { useResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let { ref = $bindable(null), ...restProps }: ResponsiveDialogDescriptionProps = $props();
 const responsive = useResponsiveOverlayState();

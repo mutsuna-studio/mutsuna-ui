@@ -11,14 +11,25 @@ Reusable Svelte 5 UI components and design tokens for Mutsuna products.
 
 - [Storybook component catalog](https://mutsuna-studio.github.io/mutsuna-ui/)
 - [npm package](https://www.npmjs.com/package/@mutsuna/ui)
-- [Changelog](./CHANGELOG.md)
-- [Contributing](./CONTRIBUTING.md)
-- [Support](./SUPPORT.md)
-- [Security](./SECURITY.md)
+- [Changelog](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CHANGELOG.md)
+- [Contributing](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CONTRIBUTING.md)
+- [Support](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/SUPPORT.md)
+- [Security](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/SECURITY.md)
 
 ## Project status
 
-このpackageはpublicに利用できるが、現在は`1.0.0`未満。後方互換なfixはpatch、新しい公開APIと破壊的変更はminor releaseとして公開する。更新前に[CHANGELOG](./CHANGELOG.md)を確認する。非推奨化と削除猶予は[Support policy](./SUPPORT.md#deprecation-policy)に従う。
+このpackageはpublicに利用できるが、現在は`1.0.0`未満。後方互換なfixはpatch、新しい公開APIと破壊的変更はminor releaseとして公開する。更新前に[CHANGELOG](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CHANGELOG.md)を確認する。非推奨化と削除猶予は[Support policy](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/SUPPORT.md#deprecation-policy)に従う。
+
+## Requirements
+
+- Node.js 22.14以降
+- Svelte 5.55.2以降
+- Tailwind CSS 4
+- 開発時はpnpm 11.3
+
+packageには`@sveltejs/package`で生成したJavaScript、Svelte component、型定義を収録する。
+
+`@sveltejs/kit`は`@mutsuna/ui/sveltekit-form`を利用する場合だけ必要。
 
 ## Install
 
@@ -62,183 +73,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 </Card>
 ```
 
-画面幅に応じてデスクトップではDialog、モバイルでは下方向のDrawerを使う場合は`ResponsiveDialog`を利用する。既存の`Dialog`と`Drawer`は自動変換されない。
-
-```svelte
-<script lang="ts">
-import { Button } from "@mutsuna/ui/button";
-import * as ResponsiveDialog from "@mutsuna/ui/responsive-dialog";
-</script>
-
-<ResponsiveDialog.Root>
-  <ResponsiveDialog.Trigger>
-    {#snippet child({ props })}
-      <Button {...props}>編集</Button>
-    {/snippet}
-  </ResponsiveDialog.Trigger>
-  <ResponsiveDialog.Content>
-    <ResponsiveDialog.Header>
-      <ResponsiveDialog.Title>プロフィールを編集</ResponsiveDialog.Title>
-      <ResponsiveDialog.Description>内容を変更して保存します。</ResponsiveDialog.Description>
-    </ResponsiveDialog.Header>
-    <ResponsiveDialog.Body>フォーム内容</ResponsiveDialog.Body>
-    <ResponsiveDialog.Footer>
-      <ResponsiveDialog.Close>
-        {#snippet child({ props })}
-          <Button {...props} variant="outline">閉じる</Button>
-        {/snippet}
-      </ResponsiveDialog.Close>
-    </ResponsiveDialog.Footer>
-  </ResponsiveDialog.Content>
-</ResponsiveDialog.Root>
-```
-
-既定のbreakpointは`768px`。`mode="desktop"`または`mode="mobile"`で表示方式を固定できる。SSRでは既定でDialogをfallbackとして描画し、必要に応じて`ssrMode="mobile"`を指定する。表示モード判定の内部基盤はprimitiveに依存せず、将来のAlert Dialogや用途別Popoverとの組み合わせでも再利用できる。
-
-theme colorは`ThemeProvider`でCSS変数へ反映する。永続化先は利用側が管理する。
-
-プリセットはオレンジ（標準）、ブルー、グリーン、ローズ、ニュートラル、アンバー、ライム、ティール、シアン、インディゴ、バイオレット、フューシャ、スレート、Svelte、Claude-inspired、GitHub-inspired、Linear-inspired、Notion-inspiredの18種類。`@mutsuna/ui/theme`の`themeTemplates`から一覧を取得し、`findThemeTemplate("teal")`の戻り値を`ThemeProvider`へ渡せる。`Foundations/Theme`の`All Presets`で全色を比較できる。各プリセットはprimaryとsidebarの背景色・文字色、ringを切り替え、light／darkモードと組み合わせて使う。
-
-```svelte
-<script lang="ts">
-import { Button } from "@mutsuna/ui/button";
-import { ThemeProvider, createTheme } from "@mutsuna/ui/theme";
-
-const theme = createTheme("custom", "oklch(0.546 0.175 252.58)");
-</script>
-
-<ThemeProvider {theme}>
-  <Button>保存</Button>
-</ThemeProvider>
-```
-
-Svelteプリセットは[公式サイト](https://svelte.dev/)の2026年9月時点の配色・フォントを参考に、背景、カード、ポップオーバー、文字、境界線、サイドバー、角丸も適用する。ボタンはロゴ色の`#ff3e00`ではなく、公式UI用アクセント（light: `#d43008`、dark: `#b32d00`）と白文字を使う。UIはFira Sans、見出しはDM Serif Display、本文の`p`はEB Garamond、`font-mono`はFira Monoを使用する。フォントはOFL-1.1のFontsource依存からローカル配信し、日本語など未収録の文字はfallback fontを使う。サイト固有のレイアウトや各コンポーネントの余白・サイズは本パッケージの設計を維持する。
-
-Claude-inspired（key: `claude`）はClaudeチャットアプリの公開CSS（2026年9月のv2トークン）と[公式Chat紹介](https://academy.claude.com/tutorials/navigating-the-claude-desktop-app)を参考にした非公式プリセット。チャット背景・入力面・サイドバーの階調を分け、primaryはクレイ色、サイドバーの選択はニュートラル色にする。UI・説明文はInter、見出しはGeorgia、日本語は「Hiragino Sans」「Yu Gothic」などのゴシック体へfallbackする。専用フォントとロゴは同梱しないため書体の完全一致は保証しない。`Foundations/Theme → Claude Chat`で余白と入力欄を含めて確認できる。チャット画面へのログイン検証は行っておらず、公開配信されるアプリ共通トークンと公式紹介画像を参照している。
-
-追加のアプリ風プリセットはいずれも非公式。GitHub-inspired（`github`）は[Primerの配色](https://primer.style/product/primitives/color/)を基に、緑のprimary、青の選択・focus、system fontを使う。Linear-inspired（`linear`）は[公式UI紹介](https://linear.app/changelog/2024-03-20-new-linear-ui)を参考にした青紫・ニュートラル背景・Interの近似。Notion-inspired（`notion`）は[公式の表示設定と画面例](https://www.notion.com/help/customize-and-style-your-content)を参考に、標準sans-serifの文書面、淡いサイドバー、小さい角丸を再現する。後二者の色値は公式トークンの完全移植ではなく、通常文字のコントラストを確保した近似であり、アプリ固有の操作やレイアウトは複製しない。
-
-`Theme.appearance`は任意の追加CSSトークン（`ThemeAppearance`）。省略した既存テーマも引き続き利用できる。`themeToCssVariables()`は追加トークンも返し、未指定値は`null`となるため、独自の適用処理でも`null`の変数を削除すること。`ThemeProvider`は切り替え時の削除とunmount時の復元を行う。ライト／ダークの配色はCSSの`light-dark()`で切り替わり、従来どおり`.dark`クラスでモードを制御する。
-
-theme colorに追従するscrollbarは`ScrollbarArea`を使う。
-
-```svelte
-<script lang="ts">
-import { ScrollbarArea } from "@mutsuna/ui/scrollbar";
-</script>
-
-<ScrollbarArea class="max-h-80 overflow-y-auto">
-  <!-- scrollable content -->
-</ScrollbarArea>
-```
-
-範囲Sliderでは、各つまみの読み上げ名と単位付きの読み上げ値を指定できる。
-
-```svelte
-<script lang="ts">
-import { Slider } from "@mutsuna/ui/slider";
-
-let priceRange = $state([20, 80]);
-</script>
-
-<Slider
-  type="multiple"
-  bind:value={priceRange}
-  min={0}
-  max={100}
-  step={5}
-  aria-label="価格帯"
-  thumbLabels={["最低価格", "最高価格"]}
-  getThumbValueText={(value) => `${value}万円`}
-/>
-```
-
-CSSだけで動くloading indicatorは`Loading`のvariantから選択する。色は`currentColor`でthemeへ追従し、OSの視差効果を減らす設定にも対応する。
-
-```svelte
-<script lang="ts">
-import { Loading } from "@mutsuna/ui/loading";
-</script>
-
-<Loading variant="dots" label="予約情報を読み込み中" />
-<Loading variant="bars" size="lg" />
-<Loading variant="morphing-infinity" label="回答を生成中" />
-```
-
-利用可能なvariant一覧は`loadingVariants`から取得できる。
-
-```ts
-import { loadingVariants } from "@mutsuna/ui/loading";
-```
-
-Loading UI由来のCSS-only patternは、対応可能な構文だけを同期する。
-
-```sh
-pnpm sync:loading-ui
-```
-
-同期処理は上流registryとsourceを検査し、Motion依存や未知の構文を自動生成対象から除外する。`morphing-infinity`は追加依存なしのCSSパス補間へ手動移植し、自動同期でも保持する。定期workflowは生成差分を直接releaseせず、review可能なpull requestとして作成する。
-
-### shadcn-svelte upstream review
-
-shadcn-svelte由来componentは、npmの最新安定版に対応する公式Git tagとcommit SHAを基準に差分を確認する。
-
-```sh
-pnpm sync:shadcn
-pnpm review:shadcn -- button
-```
-
-`sync:shadcn`は`nova` registryの純正版を`upstream/shadcn-svelte/candidate`へ取得し、前回review済みBASEとの差分、dependency変更、3-way merge previewの状態を生成する。`src/lib`は変更しない。
-
-review結果はcomponentごとに記録する。
-
-```sh
-pnpm review:shadcn -- button --decision applied --note "a11y修正を手動で反映"
-pnpm review:shadcn -- badge --decision reviewed-no-change --note "見た目だけの変更のため不採用"
-pnpm review:shadcn -- --finalize
-```
-
-`--apply`はreview済みBASEが存在する場合だけ利用でき、競合のない既存ファイルだけを適用する。追加、削除、競合、公開contract、dependency変更は手動で判断する。`--finalize`は全対象の判断が完了したときだけcandidateを次のBASEへ昇格する。週次workflowはcandidateとreview summaryを含むdraft pull requestまでを作成し、Mutsuna UI本体、release、npm publishは自動化しない。
-
-管理画面向けの複合componentもsubpath単位で利用可能。
-
-```svelte
-<script lang="ts">
-import { BusinessHoursFields } from "@mutsuna/ui/business-hours-fields";
-import { FormTemplateEditor } from "@mutsuna/ui/form-template-editor";
-import { MarkdownTextEditor } from "@mutsuna/ui/markdown";
-import { TemplateInsertMenu } from "@mutsuna/ui/template-insert-menu";
-import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
-import { AdminPage, AdminPageHeader, AdminPanel } from "@mutsuna/ui/admin-layout";
-</script>
-```
-
-`FormTemplateEditor`の表示条件と`TemplateInsertMenu`のpayload/categoryは利用側が型と選択肢を定義する。永続化、業務validation、API変換は利用側の責務。
-
-`AdminShellFrame`は任意の`footer` snippetを本文のスクロール領域の外側に表示する。フッターのリンク・文言・配置は利用側で定義する。未指定の場合は従来のレイアウトを維持する。
-
-SvelteKit form actionの通知、redirect、pending管理は専用subpathから利用する。
-
-```ts
-import { createFormActionToastEnhancer } from "@mutsuna/ui/sveltekit-form";
-```
-
-`@mutsuna/ui/sveltekit-form`を利用するprojectだけ`@sveltejs/kit`が必要。
-
-## Requirements
-
-- Node.js 22.14以降
-- Svelte 5.55.2以降
-- Tailwind CSS 4
-- 開発時はpnpm 11.3
-
-packageには`@sveltejs/package`で生成したJavaScript、Svelte component、型定義を収録する。
-
-`@sveltejs/kit`は`@mutsuna/ui/sveltekit-form`を利用する場合だけ必要。
-
 ## Public API
 
 公開APIは`package.json`の`exports`に宣言されたsubpath、公開型、component props、events、snippets、CSS変数、theme contract。未宣言のdeep importはサポートしない。
+
+新しいimportではcomponent単位の公開入口（例: `@mutsuna/ui/button`）を利用する。既存のwildcard subpathは互換性を維持する。`internal/`は実装用で、公開subpathを提供しない。部品を追加する手順は[公開入口と内部実装](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CONTRIBUTING.md#公開入口と内部実装)を参照。
 
 componentと代表状態は[公開Storybook](https://mutsuna-studio.github.io/mutsuna-ui/)を正本として確認できる。主な分類:
 
@@ -249,67 +88,41 @@ componentと代表状態は[公開Storybook](https://mutsuna-studio.github.io/mu
 - visual system: theme、theme CSS、scrollbar、color picker
 - integration: SvelteKit form action helper
 
+## 使い方ガイド
+
+[ガイド一覧](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/README.md)から用途別に探せる。componentの代表状態はStorybookを参照。
+
+| ガイド | 内容 |
+| --- | --- |
+| <a id="searchable-select"></a><a id="cycleselect"></a><a id="floating-input-labels"></a><a id="editable-text"></a><a id="連結コントロールの作成"></a><a id="枠線に重ねるラベル"></a>[入力と選択](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/inputs.md) | Select、CycleSelect、Input、EditableText、Slider、連結入力 |
+| <a id="date-picker"></a><a id="datepicker"></a><a id="current-date-shortcuts"></a><a id="日付範囲カレンダー"></a><a id="日時入力の共通解析"></a>[日付と時刻](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/date-time.md) | DatePicker、RangeCalendar、今日の操作、日時解析 |
+| <a id="buttonのアイコンとローディング"></a><a id="consumerでの自動検出"></a>[ButtonとLoading](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/button-and-loading.md) | アイコン、loading、consumer用lint CLI |
+| <a id="dialogbody-の下余白"></a><a id="折りたたみサイドバーの一時展開"></a>[ダイアログとレイアウト](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/dialogs-and-layout.md) | ResponsiveDialog、管理画面、Sidebar |
+| <a id="code-editor"></a><a id="code-diff"></a>[CodeEditorとCodeDiff](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/code-editor.md) | コード入力、比較、コピーとツールバー |
+| <a id="eventcalendar日週月タイムライン表示"></a>[EventCalendar](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/event-calendar.md) | 5種類の表示、操作通知、背景、取得状態、先読み |
+| [テーマとスクロールバー](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/theming.md) | ThemeProvider、プリセット、フォント、ScrollbarArea |
+| <a id="astroで使う"></a>[Astroで使う](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/astro.md) | 静的テーマ、Svelte連携、hydration |
+| [SvelteKit form action](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/sveltekit-form.md) | 通知、redirect、pending管理の専用入口 |
+
 ## Storybook
 
-共通UIのcatalogは[GitHub Pages](https://mutsuna-studio.github.io/mutsuna-ui/)で公開している。localではpackage単独で起動する。
+共通UIのcatalogは[GitHub Pages](https://mutsuna-studio.github.io/mutsuna-ui/)で公開している。ツールバーでテーマカラーとlight／darkを切り替え、`States` storyで代表状態を比較できる。
 
-```sh
-pnpm storybook
-```
-
-`http://localhost:6206`で確認可能。storyとStorybook設定はnpm packageへ含めない。
-
-ツールバーの「テーマカラー」と「表示モード」から、全storyのブランドカラーとlight／dark表示を切り替えられる。代表的なcomponentは`States` storyでvariant、size、disabled、loading、error、長文などを一画面で比較する。
-
-sidebarはcomponentの役割で分類し、storyの`title`を分類の正本にする。
-
-| 分類 | 役割 |
-| --- | --- |
-| `Foundations` | theme、scrollbar、client境界など横断基盤 |
-| `Components/Actions` | buttonなど操作の起点 |
-| `Components/Inputs` | 値の入力・選択・編集 |
-| `Components/Forms` | label、field、form構成と複合form |
-| `Components/Navigation` | breadcrumb、menu、sidebar、tabs |
-| `Components/Data Display` | avatar、badge、calendar、card、table |
-| `Components/Feedback` | alert、empty、loading、skeleton、toast |
-| `Components/Overlays` | dialog、drawer、popover、sheet、tooltip |
-| `Components/Layout` | collapsible、separatorなど配置・区切り |
-| `Patterns` | 複数componentを組み合わせた再利用可能なUIパターン |
-
-各componentのDocs、Controls、Accessibility panelを同じstoryから生成する。実ブラウザで全storyのrender、a11y、`play`による代表操作を検証するには次を実行する。
-
-```sh
-pnpm test:storybook
-```
-
-すべてのstoryのa11y違反はCIを失敗させる。`todo`の例外を追加せず、componentまたはstoryの責務に応じて違反を解消する。
+起動方法・分類・storyの追加方法は[Storybookガイド](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/storybook.md)を参照。storyとStorybook設定はnpm packageへ含めない。
 
 ## Development
 
-```sh
-corepack enable
-pnpm install --frozen-lockfile
-pnpm test
-pnpm build-storybook
-pnpm test:storybook
-pnpm test:consumer
-```
+部品の追加は[開発ガイドの公開入口と内部実装](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CONTRIBUTING.md#公開入口と内部実装)から始める。環境構築、テスト、changeset、PRの手順は[CONTRIBUTING.md](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CONTRIBUTING.md)を参照。
 
-変更のscope、changeset、pull request手順は[CONTRIBUTING.md](./CONTRIBUTING.md)を参照する。
+<a id="design-tokensの編集"></a>
+デザイン値の編集は[Design Tokens](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/tokens/README.md)へ。
+
+<a id="shadcn-svelte-upstream-review"></a>
+上流componentのreviewと同期は[保守ガイド](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/maintenance.md)へ。公開手順の正本は[RELEASING.md](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/RELEASING.md)。
 
 ## Local Git hooks
 
-開発用cloneでは、初回に次を実行してrepository管理のGit hooksを有効化する。
-
-```sh
-git config --local core.hooksPath .githooks
-```
-
-以後、`main`をpullしてPRのmergeを取り込むたびに、対応するlocal branchを自動削除する。削除対象は、GitHub上で`main`へmerge済みのPR headとlocal branchの現在のcommitが完全一致し、他のworktreeで使用されていないbranchだけ。手動確認は次で行える。
-
-```sh
-node scripts/cleanup-merged-branches.mjs --dry-run
-```
+設定と削除対象の条件は[ローカルGit hooks](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/maintenance.md#local-git-hooks)を参照。
 
 ## Scope
 
@@ -318,10 +131,10 @@ node scripts/cleanup-merged-branches.mjs --dry-run
 ## Community and support
 
 - bugと機能提案: [GitHub Issues](https://github.com/mutsuna-studio/mutsuna-ui/issues/new/choose)
-- 貢献方法: [CONTRIBUTING.md](./CONTRIBUTING.md)
-- 行動規範: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
-- サポート範囲: [SUPPORT.md](./SUPPORT.md)
-- 脆弱性報告: [SECURITY.md](./SECURITY.md)
+- 貢献方法: [CONTRIBUTING.md](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CONTRIBUTING.md)
+- 行動規範: [CODE_OF_CONDUCT.md](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CODE_OF_CONDUCT.md)
+- サポート範囲: [SUPPORT.md](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/SUPPORT.md)
+- 脆弱性報告: [SECURITY.md](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/SECURITY.md)
 
 ## License
 
@@ -342,384 +155,3 @@ CSS-only loading indicators are adapted from
 [Loading UI](https://loading-ui.com/), licensed under the MIT License.
 
 This project is not affiliated with or endorsed by Loading UI.
-
-### Searchable Select
-
-`Select searchable` は入力で候補を絞り込み、上下矢印で無効な候補を飛ばして移動し、Enterで確定します。確定後も入力欄のフォーカスを維持します。Escapeは候補を閉じ、未確定の入力を破棄します。Dialog内では最初のEscapeで候補だけを閉じます。
-
-`freeText` を併用すると、候補を矢印キーで選んでいない場合のEnter、またはコントロール外へのフォーカス移動で任意の文字列を確定します。IME変換中のEnterでは確定しません。候補選択時は通常モードで`option.value`、自由入力モードで`option.label`を保存します。
-
-### CycleSelect
-
-`@mutsuna/ui/cycle-select` exposes `CycleSelect`, `CycleSelectProps`, and `CycleSelectOption`.
-The label button advances to the next enabled option; the right button opens the standard Select list.
-
-```svelte
-<script lang="ts">
-  import { CycleSelect } from "@mutsuna/ui/cycle-select";
-  let value = $state("compact");
-  const options = [
-    { value: "compact", label: "Compact" },
-    { value: "detailed", label: "Detailed" },
-  ];
-</script>
-
-<CycleSelect bind:value {options} ariaLabel="Display" />
-```
-
-Options must have unique, nonempty values. Cycling follows array order, skips disabled options,
-and wraps to the start. An empty or unknown value advances to the first enabled option.
-If no different enabled option exists, only the advance button is disabled; an empty or entirely
-disabled list disables the list trigger too. Changing options does not automatically change the value.
-Both actions update `bind:value` and call `onValueChange`. `name` enables form submission.
-Use `disabled`, `size`, `class`, `placeholder`, `nextLabel`, `listLabel`, `aria-invalid`, and
-`aria-describedby` to configure state and accessible labels. Both buttons support keyboard operation;
-the list retains Select keyboard navigation and focus handling.
-
-### Floating Input labels
-
-Use `<Input label="Display name" />` for an accessible floating label. The label moves
-to a notch in the border on focus and remains there while a value is present. An omitted
-`id` is generated automatically. Existing inputs without `label` keep their usual appearance.
-Date/time inputs always raise the label to avoid overlapping native input UI. File, hidden,
-checkbox, radio, range, color, and button inputs do not support floating labels; use an external
-label for those types. `placeholder` is shown only while focused in floating mode.
-
-### DatePicker
-
-```svelte
-<script lang="ts">
-  import { DatePicker } from "@mutsuna/ui/date-picker";
-  let value = $state("2026-09");
-</script>
-<DatePicker precision="month" bind:value ariaLabel="対象年月" />
-```
-
-`showWeekday` (default false) appends the Japanese weekday in day mode, such as
-`2026年9月9日(水)`. It does not change the stored value and is ignored for year/month.
-
-`precision` is `year`, `month`, or `day` (default). Values and inclusive `min`/`max`
-bounds are `YYYY`, `YYYY-MM`, or `YYYY-MM-DD`, respectively. Direct input accepts only
-4, 6, or 8 ASCII digits. Enter commits; invalid dates (including nonexistent days),
-out-of-range values and `isDateUnavailable(value)` matches show an error. Escape or
-clicking outside discards edits. Selection commits immediately. Default bounds span
-1900–2100. Changing bounds or precision does not rewrite the value; the caller must
-supply a value and bounds matching the new precision. Invalid bounds disable opening.
-
-`showCurrent` (default true) shows 今年/今月/今日 according to precision; `currentLabel`
-customizes its label. It uses the device's local date and respects the same constraints.
-`name`, `disabled`, `size`, `class`, `id`, `placeholder`, `aria-invalid`, and
-`aria-describedby` are supported. `onValueChange` fires only for a changed committed value.
-
-Breaking migration: replace `MonthPicker` from `@mutsuna/ui/month-picker` with
-`DatePicker precision="month"` from `@mutsuna/ui/date-picker`. Rename `showCurrentMonth`
-to `showCurrent` and `currentMonthLabel` to `currentLabel`. No compatibility exports remain.
-
-### Current date shortcuts
-
-Calendar shows a `今日` action by default. It selects today's local date and moves the
-visible month to it, respecting `disabled`, `readonly`, `minValue`, `maxValue`,
-`isDateDisabled`, and `isDateUnavailable`. Multiple selection adds today without removing
-other dates. Use `showToday={false}` to hide it or `todayLabel` to change its text.
-
-### 日付範囲カレンダー
-
-`RangeCalendar` は `@mutsuna/ui/range-calendar` から利用できます。
-`bind:value` は `{ start: DateValue | undefined, end: DateValue | undefined }` を受け取り、
-開始日と終了日を順番に選択します。`placeholder` で表示月を指定でき、
-`minValue`、`maxValue`、`isDateDisabled`、`disabled`、`readonly` で選択を制限できます。
-`numberOfMonths={2}` で2か月を並べて表示できます。幅が足りない場合は縦に並びます。
-`scrollable` を指定すると月切り替えボタンを隠し、上下スクロールで月を順次追加します。
-既定は日本語・月曜始まりです。検索パネルへの組み込み例はStorybookの
-`Patterns/Data Table` を参照してください。
-
-## Buttonのアイコンとローディング
-
-アイコンは`icon`、処理状態は`loading`へ渡してください。`loading`中は通常のアイコンがスピナーに置き換わり、操作が無効になります。ラベルは維持されます。アイコンだけのボタンには`aria-label`を指定してください。
-
-```svelte
-<script lang="ts">
-  import { Button } from '@mutsuna/ui/button';
-  import SaveIcon from '@lucide/svelte/icons/save';
-  let saving = $state(false);
-</script>
-
-<Button icon={SaveIcon} loading={saving}>保存</Button>
-<Button icon={SaveIcon} loading={saving} size="icon" aria-label="保存" />
-```
-
-`<Button loading><SaveIcon />保存</Button>`のようなアイコンや独自スピナーの直書きは避けてください。子要素はローディング中も描画されるため、二重表示になります。`iconPosition="end"`の場合も`loading`で通常アイコンが置き換わります。
-
-### consumerでの自動検出
-
-このパッケージに同梱するCLIをconsumerのcheckやCIへ追加できます。ESLintの導入は不要です。
-
-```json
-{
-  "scripts": {
-    "lint:ui": "mutsuna-ui-lint src"
-  }
-}
-```
-
-`pnpm lint:ui`は、公開エントリ`@mutsuna/ui`・`@mutsuna/ui/button`からimportされたButton内のLucideアイコンとインラインSVGを検出し、ファイル・行・列と修正方法を出力して終了コード1を返します。別名import、namespace import、条件分岐やラッパー要素内も対象です。`loading`の有無にかかわらず同じ用法を要求します。自動修正はしません。
-
-引数はファイルまたはディレクトリを複数指定できます。依存・ビルド出力ディレクトリとシンボリックリンクは走査しません。独自ラッパーや再export経由のButton、独自アイコン、別のsnippetから動的に渡す内容は検出対象外です。CLIの導入は任意で、既存の描画やchildren APIは変更しません。
-
-
-## Design Tokensの編集
-
-テーマの色・角丸・フォントは [`tokens/`](./tokens/README.md) のJSONを正本にしています。新規色はOKLCH、外部由来の色は通常sRGBのDTCG Colorとして記述し、semantic tokenから参照します。変更後に `pnpm tokens:generate` を実行してください。check/buildで生成漏れを検出します。公開Theme APIとCSS変数の使い方は従来どおりです。
-
-## Astroで使う
-
-AstroネイティブのHTMLに配色だけを適用する場合は、layoutまたはpageのfrontmatterで読み込みます。`theme/core`はSvelteコンポーネントを読み込まないため、ビルド時にも使えます。
-
-```astro
----
-import "@mutsuna/ui/tokens.css";
-// フォントも使用する場合だけ追加:
-// import "@mutsuna/ui/fonts.css";
-import { findThemeTemplate, themeToCssVariables } from "@mutsuna/ui/theme/core";
-
-const themeStyle = themeToCssVariables(findThemeTemplate("github"))
-  .filter(([, value]) => value !== null)
-  .map(([name, value]) => `${name}: ${value}`)
-  .join(";");
----
-<html lang="ja" style={themeStyle}>
-  <head><meta charset="utf-8" /><title>My site</title></head>
-  <body><h1>Mutsuna theme</h1></body>
-</html>
-<style is:global>
-  body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: var(--theme-font-body, system-ui);
-  }
-</style>
-```
-
-`<html class="dark">`でdark modeになります。上記の`style`を省略すると標準light/darkの値を使います。この構成にはSvelte連携、Tailwind plugin、クライアントJavaScriptは必要ありません。`fonts.css`はfont faceの登録のみで、使用する`font-family`は自分のCSSで指定します。
-
-Button・Input・DialogなどのSvelte部品も使う場合は、[Astro公式Svelte連携](https://docs.astro.build/en/guides/integrations-guide/svelte/)とTailwind v4を設定します。
-
-```sh
-pnpm add @mutsuna/ui svelte
-pnpm add -D @astrojs/svelte @tailwindcss/vite tailwindcss
-```
-
-```js
-// astro.config.mjs
-import { defineConfig } from "astro/config";
-import svelte from "@astrojs/svelte";
-import tailwindcss from "@tailwindcss/vite";
-
-export default defineConfig({
-  integrations: [svelte()],
-  vite: { plugins: [tailwindcss()] },
-});
-```
-
-Astroのlayout/pageで `import "@mutsuna/ui/theme.css"` を読み込み、操作のある部分を `.svelte` にまとめて `<Controls client:load />` として配置します。イベントcallbackやSvelte snippetはその `.svelte` 内で扱います。静的なテーマ適用は前述の `theme/core` を使えば、hydration前から配色が反映されます。
-
-検証用の最小構成は `test/fixtures/astro/`、実行コマンドは `pnpm test:consumer:astro` です。Astro 7.3.3 / `@astrojs/svelte` 9.0.1を使い、一時ディレクトリで `pnpm pack` のtarballをインストールして、Astro/Svelteのcheck、本番build、Chromiumでlight/dark・入力・クリック・Dialogのキーボード操作を検証します。事前に `pnpm exec playwright install chromium` が必要です。consumerへローカルパス依存を残しません。
-
-継続的な互換性確認では `test/astro-coverage.json` と公開exportsを照合し、追加時の未登録・削除後の登録残り・重複を `pnpm test` で検出します。登録した全module入口とCSS入口から一時的なimport検証ページを生成し、SSR・clientのビルドとhydrationを確認します。SvelteKit専用の `sveltekit-form` は理由付きで除外します。wildcard subpathは登録済みの公開indexへ対応付け、新しい部品はそのindexからexportします。
-
-この全入口のimport確認は、各部品の表示・操作を網羅するものではありません。操作検証はButton・Input・Dialogが対象で、操作やfocusに関わる改善では対象のfixtureと検証を追加・更新します。開発時の必須手順は `AGENTS.md` の「Astro互換性」に定めています。
-
-## Editable Text
-
-`bind:value`で値を受け取り、保存処理が必要なときだけ`onCommit`を指定します。値が変わらない確定では通知しません。
-
-```svelte
-<script lang="ts">
-import { EditableText } from "@mutsuna/ui/editable-text";
-import { Button } from "@mutsuna/ui/button";
-
-let name = $state("表示名");
-</script>
-
-<EditableText bind:value={name} aria-label="表示名を編集" />
-
-<EditableText bind:value={name} editOn="doubleClick" aria-label="表示名を編集">
-  {#snippet trigger({ value, props })}
-    <Button {...props} variant="ghost">{value}</Button>
-  {/snippet}
-</EditableText>
-```
-
-- 通常はクリックで編集。`editOn="doubleClick"`ではダブルクリックまたはF2で編集し、Enter／Spaceはボタンのアクションに使えます。
-- Enterで確定、Escapeで取消し。`multiline`ではEnterで改行、Cmd/Ctrl+Enterで確定します。IME変換中のEnterでは確定しません。
-- キーで編集を終えるとtriggerへフォーカスが戻ります。blurでは既定で確定し、`commitOnBlur={false}`なら取り消します。blur先のフォーカスは移動させません。
-- 編集中に`disabled`になった場合は取り消します。
-- `onclick`・`ondblclick`・`onkeydown`は内部処理と連携し、編集開始を止めたい場合は`event.preventDefault()`を使えます。
-- カスタムtriggerは`props`をbuttonへそのままspreadしてください。`Button`も利用できます。独自componentの場合はイベント・属性・Svelte attachmentをDOMのbuttonへ転送します。これで`bind:ref`とフォーカス復帰も動きます。
-- ダブルクリックモードのマウス単クリックは250ms待ってから`onclick`を呼びます。OSのダブルクリック判定時間とは独立しているため、遅いダブルクリックでは先に単クリックが実行されることがあります。取消不能な操作には別ボタンを使ってください。遅延callback内の`event.currentTarget`は利用できません。
-
-公開型は`EditableTextProps`、`EditableTextTriggerProps`、`EditableTextCommit`、`EditableTextCancel`を提供します。
-
-### 日時入力の共通解析
-
-`@mutsuna/ui/date-time-input` の `parseDateTimeInput(input, precision, options)` は、年・年月・日付・時刻を正規化し、不正・曖昧な入力は `null` を返します。年から始まる `2026-9`、`2026/09`、`2026.9`、`2026年9月`、`202609`、日付の `2026/9/13`・`20260913`、時刻の `9:30`・`9時30分`・`9:30 PM` などと全角表記に対応します。2桁年や年を省略した日付、月日順序が曖昧な表記は推測しません。
-
-数値はExcelシリアル値として解釈します。文字列は通常の年月日・時刻表記を優先し、それに該当しない数字列をシリアル値として解釈します。`excel:1` のような接頭辞で明示もできます。既定は1900年方式で、`{ excelDateSystem: "1904" }` により1904年方式へ切り替えます。1900年方式の架空の2月29日（シリアル60）は日付へ変換しません。小数部は時刻で、秒は分未満を切り捨てます。タイムゾーン変換は行いません。
-
-DatePicker・TimePickerにも `excelDateSystem` を指定できます。年月は年ローラー、時刻は時ローラーへ入力し、Tab・Enterで解釈します。DatePickerの年・年月モードでは重複する上部入力を廃止し、日付モードでは日まで直接入力する欄を維持しています。
-
-### 連結コントロールの作成
-
-入力やボタンを連結する場合は `@mutsuna/ui/button-group` の `ButtonGroup` を使います。DatePickerやCycleSelectと同じ境界処理が適用され、通常時の二重線とフォーカス時の枠線欠けを防ぎます。独自の子コントロールには `data-slot="button"` などを指定し、四辺の1px枠線を保持してください。角丸、負のマージン、focus時のz-indexを個別に指定する必要はありません。非表示フォーム入力は間に挟んでも構いません。
-
-全体で一つの入力欄を構成する場合は、外枠をまとめて管理する `InputGroup` を使います。
-
-## Code editor
-
-```svelte
-<script lang="ts">
-  import { CodeEditor } from '@mutsuna/ui/code-editor';
-  let code = $state('console.log("Hello");');
-</script>
-
-<CodeEditor bind:value={code} language="javascript" aria-label="JavaScript code" />
-```
-
-CodeMirror 6 is loaded on mount; language support is loaded only when selected. Built-in languages: `text` (default), `javascript`, `typescript`, `json`. Use `extensions` for additional CodeMirror language support, completions, decorations, or diagnostics. External value updates preserve the editor instance and map the selection; they do not emit `onchange` or add an undo entry. `onchange` receives edits made in the editor.
-
-`readonly` preserves keyboard focus and selection; `disabled` prevents editing and removes the editor from the tab order. Tab retains normal focus navigation (no keyboard trap). Set `aria-label`, and optionally `aria-describedby` / `aria-invalid`. `height` accepts a CSS length; `lineWrapping` defaults to false and `lineNumbers` to true. The editor uses the shared theme tokens. SSR renders a static code fallback; hydrate the component in Astro with `client:load`.
-
-Code execution, persistence, validation logic, and grading belong to the consuming application. This component never executes input code.
-
-### Code diff
-
-```svelte
-<script lang="ts">
-  import { CodeDiff } from '@mutsuna/ui/code-editor';
-  let modified = $state('const count = 2;');
-</script>
-
-<CodeDiff original="const count = 1;" bind:value={modified} language="javascript" mode="split" />
-```
-
-`mode="split"` (default) compares two panes; `mode="unified"` displays removed code above the editable replacement. `original` is a fixed baseline, updated only through props. `value` is the editable result; `readonly` locks it while allowing selection. Merge/accept/reject controls are intentionally omitted so the baseline cannot be changed in the UI. `originalLabel` / `modifiedLabel` default to 変更前 / 変更後. The accessible editor names combine `aria-label` with these labels. Standard CodeEditor language, size, error, disabled, wrapping, and extension props also apply; custom extensions attach to the modified side. Switching modes preserves the modified document, selection, and undo history. Use unified mode on narrow screens; the component does not switch modes automatically. The diff runtime is loaded only on mount. In Astro, hydrate with `client:load`.
-
-CodeEditor and CodeDiff include a language label and copy button in their header. `toolbar={false}` hides the header; `copyable={false}` hides only copy. The `actions` snippet adds application buttons. CodeDiff includes split/unified controls; use `bind:mode` to observe changes. Copy uses the current (modified) value and remains available when readonly; disabled prevents built-in controls. Language labels are display-only. `height` applies to the editing area, excluding the header.
-
-### 折りたたみサイドバーの一時展開
-
-`Sidebar.Root collapsible="icon"` はデスクトップでホバー・キーボードフォーカスすると、メイン領域の幅を変えずに重ねて展開する。ポインターとフォーカスが外れると戻り、Escapeでも閉じられる。ドロップダウンの操作中は展開を維持する。一時展開は `Provider.open`、`onOpenChange`、保存cookieを変更せず、通常のTriggerによる開閉は従来どおりレイアウトへ反映する。
-
-`expandOnHover={false}` で一時展開を無効にできる。`useSidebar().previewOpen` は一時展開の表示状態を表す。モバイルでは従来のSheetを使う。
-
-### 枠線に重ねるラベル
-
-`Input`・`Textarea`に加え、通常／検索付きの`Select.Root`と`InputGroup.Root`に`label`を指定できる。`placeholder`は入力のヒントとして独立し、ラベルには変換しない。SelectとInputGroupでは、選択値・アイコン・追加ボタンと重ならないようラベルを常に枠線上へ表示する。ラベルなしの表示は従来どおり。
-
-```svelte
-<Select.Root label="チーム" bind:value>
-  <Select.Trigger>{selectedLabel}</Select.Trigger>
-  <Select.Content><!-- Select.Item --> </Select.Content>
-</Select.Root>
-<Select.Root searchable label="チームを検索" {options} bind:value />
-<InputGroup.Root label="検索">
-  <InputGroup.Addon><!-- 検索アイコン --> </InputGroup.Addon>
-  <InputGroup.Input placeholder="名前を入力" />
-</InputGroup.Root>
-```
-
-通常Selectは`Select.Trigger`にも`label`を指定でき、Rootのラベルより優先する。InputGroup内のInput／TextareaのIDは自動生成し、ラベルのクリックでフォーカスできる。独自IDを指定する場合は`<InputGroup.Root label="検索" labelFor="search-input">`と`<InputGroup.Input id="search-input" />`のように関連付ける。1つのInputGroupに対し、ラベルの対象は1つの入力欄とする。Selectの`aria-invalid`・`aria-describedby`はRootから指定でき、通常SelectはTriggerからも指定できる。
-
-### EventCalendar（日・週・月・タイムライン表示）
-
-`backgroundRanges` には `{ id, start, end, color, rowId? }`（公開型 `EventCalendarBackgroundRange`）を渡せます。`start`・`end` は表示タイムゾーンの `YYYY-MM-DDTHH:mm`、終日範囲は `YYYY-MM-DD` を使用し、終了は含みません。日・週表示では縦の時間範囲、タイムラインでは横の時間範囲に描画し、表示時間の外側は切り取ります。月表示では範囲が交差する日付セル全体を塗ります。`rowId` はリソースタイムラインの一致する行だけに適用し、他の表示モードでは描画しません。省略すると全行・全表示モードに適用します。色はCSS色・theme変数に対応し、重なる範囲は配列の後方を手前へ描画します。背景は装飾のみで、操作・focus・作成や移動の可否を変えません。日付ヘッダーの色は変更しません。範囲のidは一意にし、終了を開始より後にしてください。
-
-```svelte
-<EventCalendar date="2026-10-05" {events}
-  backgroundRanges={[
-    { id: "closed", start: "2026-10-05T08:00", end: "2026-10-05T09:30", color: "var(--muted)" },
-    { id: "holiday", start: "2026-10-10", end: "2026-10-12", color: "#fef3c7" },
-  ]} />
-```
-
-`@mutsuna/ui/event-calendar`から`EventCalendar`と公開型をimportできます。`date`は表示の基準日となる`YYYY-MM-DD`、`events`は一意な`id`、`title`、`start`、`end`を持つ配列です。日時は表示タイムゾーンの`YYYY-MM-DDTHH:mm`（offsetなし）で渡してください。UTC instantとの変換、DSTの重複・欠落時刻の解決、保存・権限・業務ルールはconsumerが扱います。
-
-```svelte
-<script lang="ts">
-  import { EventCalendar, type EventCalendarEvent, type EventCalendarView } from "@mutsuna/ui/event-calendar";
-  let date = $state("2026-10-05");
-  let view = $state<EventCalendarView>("week");
-  let events = $state<EventCalendarEvent[]>([]);
-  // アプリで実装する作成画面への接続例です。
-  function openApplicationCreateScreen(range: import("@mutsuna/ui/event-calendar").EventCalendarCreate) {
-    console.log("選択した作成範囲", range);
-  }
-</script>
-
-<EventCalendar
-  bind:date bind:view {events}
-  onCreate={(range) => {
-    // アプリ側の予約・予定作成画面を開き、保存後にeventsへ反映します。
-    openApplicationCreateScreen(range);
-  }}
-  onEventChange={(change) => {
-    events = events.map(event => event.id === change.event.id
-      ? { ...event, start: change.start, end: change.end, ...("rowId" in change ? { rowId: change.rowId } : {}) } : event);
-  }}
-/>
-```
-
-表示状態は`bind:date` / `bind:view`、予定データは`events`で渡します。予定の作成・変更はコールバックで受け取り、保存した結果をアプリから`events`へ反映してください。コンポーネントはIDの発行やAPIへの保存を行いません。
-
-| 用途 | 主な設定 |
-| --- | --- |
-| 日・週の時間グリッド | `view="day"` / `"week"`、必要なら`dayCount` |
-| 月の一覧 | `view="month"` |
-| 日付を連続してたどる時間軸 | `view="date-timeline"`、画面高に合わせて表示 |
-| 担当者・部屋ごとの時間軸 | `view="timeline"`、`rows`、予定の`rowId` |
-| 閲覧のみ | `readonly`。日付移動・詳細表示は利用可能 |
-| 作成範囲・変更の通知 | `onCreate` / `onEventChange` |
-| 独自の予定表示 | `eventContent` snippet |
-| アプリの詳細画面を開く | `onEventClick` |
-| 作成中の仮表示 | アプリが管理する `draft` |
-| 表示変更の通知 | `onDateChange` / `onViewChange`。bindingと併用可能 |
-
-- 空き枠クリック・範囲ドラッグ完了時に`onCreate(range, context)`を通知します。`range`は`{ start, end, rowId?, allDay? }`（`EventCalendarCreate`）でタイトルを含みません。ドラッグ中のEscape・pointercancelでは通知しません。クリックによる作成範囲は`step`分、範囲ドラッグは開始した日の中で行います。タッチでは通常のスワイプをスクロールに使い、空き枠を450ms長押しした後のドラッグで範囲を選択します。長押し前の移動・複数指・pointercancelは選択を中止します。表示はカーソルへ連続して追従し、通知する日時は`step`（標準15分）単位です。
-- `onEventChange`は`{ event, kind, start, end }`を返します。`kind`は`move` / `resize-start` / `resize-end`。コンポーネント自体は元の予定配列を書き換えません。consumerが結果を反映するまで変更は確定表示されません。
-- ドラッグは`step`分単位（初期値15、60の約数）にスナップします。`startHour` / `endHour`は初期値8 / 20、0〜24の範囲。1時間の高さは`hourHeight`（初期値48px）、予定カードの最小表示高は`eventMinHeight`（初期値24px）で指定できます。最小表示高は予定の実際の時間を変更しません。連続する短い予定は後のカードを右へずらして手前に重ねます。日またぎの予定は各日に分割表示します。繰り返し予定は含みません。
-- ヘッダーの月表示をクリックすると共通の`Calendar`が開き、任意の日付を選んで表示範囲を移動できます。日付は`bind:date`で共有でき、`onDateChange`は変更後の通知に使えます。ヘッダーのセレクトから日・週・月・タイムライン表示を切り替えます。`bind:view`（`"day" | "week" | "month" | "timeline" | "date-timeline"`、初期値`"week"`）と`onViewChange`で表示モードを扱えます。日・週表示は表示日数を変える共通の時間軸・終日行を使い、作成・移動・時間変更・詳細表示を利用できます。`dayCount`を省略すると日表示は`date`の1日分、週表示は`weekStartsOn`に合わせた7日分です。`dayCount={3}`のように1～31の整数を指定すると、日・週のどちらでも`date`から指定日数を表示します。明示した日数は表示モードの既定値より優先され、`weekStartsOn`による先頭合わせは行いません。前後ボタンも表示日数ずつ移動します。月・タイムライン表示は`dayCount`の影響を受けず、前後ボタンはそれぞれ1月・1日単位で移動します。月表示は月の前後の日を含む週単位のグリッドで、時間付き予定・複数日の終日予定・詳細表示に対応します。日付の空き枠から終日予定を作成できます。月表示は画面幅に7列を収め、横スクロールしません。狭いセルでも予定の全件表示・詳細選択は利用できます。月表示のドラッグ操作は未対応です。
-- 月表示は画面上の開始位置と画面の高さから残りの表示領域に収め、週の行を均等に配置します。各日は終日・時間付き予定を合わせて最大3件まで表示し、高さが足りない場合は件数を減らします。残りは「他N件」にまとめ、クリックでその日の全予定一覧を開きます。一覧から予定の詳細も開けます。
-- 表示範囲は前後ボタン・今日・日付選択で切り替えます。スワイプによる週・月の範囲切り替えは行いません。日・週表示では表示中の日付内の横スクロールを維持し、日付・終日予定・時間枠を同期して時間列を固定します。月表示は画面内で月全体を表示します。左右矢印のスライド・フェードと`prefers-reduced-motion`への対応は維持します。タイムラインの横操作は時間軸のスクロール、日付タイムラインの縦操作は日付の連続スクロールです。
-- `view="timeline"`は`date`の1日分を横方向の時間軸で表示します。`rows: { id, label }[]`で担当者・部屋などの行を渡し、各予定の`rowId`で所属を指定します。未指定・未知の所属は「未指定」行、行データがない場合は「予定」行に表示します。`timelineHourWidth`は1時間の最小幅（初期値64px）。余裕がある場合は時間軸を表示領域いっぱいに広げ、狭い場合はこの幅を維持して横スクロールします。作成結果には選んだ行の`rowId`、移動・変更結果には移動後の`rowId`が含まれるので、consumerは開始・終了時刻と一緒に反映してください。同じ行で重なる予定はタイトル・時刻の領域を残してずらして重ね、開始位置が近い場合は段を分けて表示します。終日予定は左端の固定列に表示し、ドラッグ変更はしません。Alt＋左右で時刻変更、Alt＋上下で行移動、両端のAlt＋左右で開始・終了時刻を変更できます。
-- `allDay: true`の予定はヘッダー直下の終日行に表示します。`start` / `end`は`YYYY-MM-DD`で指定し、終了日は範囲に含めません（10月5日の1日分なら`start: "2026-10-05", end: "2026-10-06"`）。複数日の予定は連続したカードとして表示し、重なる予定は別の行に配置します。クリック・Enterで詳細を表示できます。終日行の空き枠をクリック・Enter/Spaceで選ぶと`onCreate`へ`{ start, end, allDay: true }`を通知します。終日予定のドラッグ作成・移動・期間変更は未対応です。
-- 時間帯が重なる予定は一部を重ねて表示幅を広げ、後に開始する予定を右へずらして手前に表示します。タイトル・時刻の領域が重なる場合は横に並べ、開始時刻が離れた予定には広い幅を確保します。高さに余裕のあるカードはタイトルを2行まで表示します。
-- 空き枠のEnter/Spaceで作成。予定ボタンのAlt＋上下で時刻、Alt＋左右で日付を変更。上下端のボタンでAlt＋上下を押すと開始・終了時刻を変更。Escape、pointer cancel、ウィンドウのfocus喪失でドラッグを破棄します。
-- 作成・詳細の標準ダイアログや右パネルはありません。`onCreate(range, context)`と`onEventClick(event, context)`をアプリの画面へ接続します。`context.trigger`は操作元のHTMLElementで、アプリ側のダイアログを閉じた際のfocus復帰に使えます。月表示の「他N件」の一覧はカレンダー内に残り、一覧からの予定選択も`onEventClick`へ通知します。その場合のtriggerは一覧を開いたボタンです。`eventDetails`は廃止し、詳細の構成・保存・キャンセル・focus管理はアプリが担当します。
-- アプリの作成画面を開いている間は`draft`へ`{ id, title, start, end, rowId?, allDay?, color? }`を渡すと、選択範囲に仮の予定を表示できます。入力タイトルの変更も反映されます。保存・キャンセル時に`draft = null`へ戻してください。仮表示中は新しいドラッグを開始しません。draftはeventsの一部にはならず、変更・詳細選択の対象にもなりません。
-- `readonly`では作成・変更を止め、詳細を閲覧できます。`disabled` / `loading`は全操作を止めます。予定単位の`editable: false`は変更のみ止めます。`onCreate`がなければ作成、`onEventChange`がなければ移動・時間変更が無効です。日付・表示モードの変更はコールバックなしでも利用できます。`error`はconsumerが提供するエラー文を表示します。
-- `currentTime`に表示タイムゾーンの現在日時を渡すと、今日の強調と現在時刻線が表示されます。更新はconsumerが行います。省略時は時刻線なし、「今日」ボタンはブラウザのローカル日付を使用します。
-- 狭い画面は週の列幅を維持し、横スクロールで表示します。ドラッグ中は縦の端付近でスクロールします。
-
-`view="date-timeline"`は横軸を時刻、縦軸を日付として表示します。選択した `date` から始まり、上下の通常スクロールで前後の日付を連続してたどれます。週の区切りでは切り替えず、時刻ヘッダーと左の日付列を固定します。前後の行の補充で位置が変わる縦スクロールバーは表示せず、ホイール・タッチ・キーボードの縦スクロール操作は維持します。時間軸が収まらない場合は、固定の日付列の右側に横スクロールバーを本文へ重ねて表示し、バー用の余白を確保しません。画面の高さに収まる日付を表示し、前後の行を補充して描画数を一定に保ちます。`date` は画面上端の表示日と連動し、外部から変更するとその日へ移動します。前後ボタンは現在画面に見えている日数ずつ移動し、「今日」と日付ピッカーで任意の日へ移動できます。`onVisibleRangeChange` は実際に見えている日付範囲（部分表示の行を含む）、`onPrefetchRange` はその前後を通知します。初回は描画後に画面高に合わせて範囲を更新します。`dayCount` は日付タイムラインのバッファ日数を調整し、表示日数の固定には使いません。
-
-`rows` や予定の `rowId` によるグループ分けは使いません。空き枠のクリックで作成でき、マウスの範囲ドラッグと予定の移動・時間変更に対応します。タッチでは空き枠・日付列をスクロールでき、タップで作成、予定上の長押し後のドラッグで移動・時間変更ができます。Alt＋左右で時刻、Alt＋上下で日付を変更します。時間軸の横操作はスクロールとして扱います。
-
-両タイムラインの時間指定の予定と作成中の枠は、上下4pxの余白を残して行の高さを使います。重なる予定はタイトル部分だけを保護する上端の段差を付け、時刻部分は重ねて下端を揃えます。予定のない行は48pxを基準とし、終日予定や重なりに必要な分だけ高さを増やします。移動・時間変更中も同じ高さを保ちます。両タイムラインの終日予定は左端の固定列に表示し、時間軸には時間指定の予定だけを配置します。複数日にまたがる終日予定は対象の日付行に表示し、終了日は含みません。終日予定をクリックするとアプリへ選択を通知します。
-
-予定の取得には `onVisibleRangeChange` を使えます。初回のclient mount、表示範囲・ビューの変更時に `{ start, end, view }`（`EventCalendarVisibleRange`）を通知します。`start`・`end` は `YYYY-MM-DD` で、終了日は含みません。月表示では前後の月のセルも含み、`dayCount`・`weekStartsOn` や外部からのbinding変更も反映します。同じ範囲・ビューのまま予定や取得状態を更新しても再通知しません。SSRでは呼び出さないため、SSRで必要な初期取得はアプリで行ってください。
-
-取得中は `eventsLoading`、失敗時は `eventsError` を渡します。日付移動・ビュー切り替え・スクロールを止めず、取得済み予定の詳細表示を維持します。取得中と取得失敗時は作成・移動・時間変更を止め、取得済みで予定がない期間とは別の表示にします。`onEventsRetry` があれば「再取得」から現在の範囲を通知します。従来の `loading` はカレンダー全体の操作停止として維持しています。
-
-前後1範囲の先読みには `onPrefetchRange` を使えます。`{ previous, next }`（公開型 `EventCalendarPrefetchRange`）を初回のclient mountと隣接範囲・ビューの変更時に通知します。各値は `EventCalendarVisibleRange` で、終了日は含みません。表示日数・週の開始曜日・月表示の前後の月のセルも反映します。SSRでは呼び出しません。同じ隣接範囲・ビューのまま予定や取得状態を更新しても再通知しません。
-
-認証、API、キャンセル、キャッシュ、先読みの実行判断はアプリ側で管理してください。`onPrefetchRange` の前後を取得し、現在の範囲と合わせて `id` で重複を除いた予定を `events` に渡すと、ボタンで前後へ移動した際にも取得済みの予定を表示できます。月表示の取得範囲は互いに重なることがあります。背景の先読み失敗は現在の範囲の `eventsError` に反映せず、移動先の取得時に扱ってください。
-
-移動先にキャッシュがなければ現在の範囲の取得中として `eventsLoading` を渡し、キャッシュがあればその予定をすぐ表示できます。応答を反映する際は要求番号や `AbortController` で現在の表示範囲の要求かを確認し、古い応答で上書きしないようにしてください。Storybookの `Remote Events` では、1.5秒の取得待ち・失敗・再取得・連続移動と、「先読みを有効にする」から前後の取得・キャッシュ済み範囲への即時移動を試せます。
-
-Storybookの`Components / Data Display / Event Calendar / Week`で作成・移動・時間変更・詳細表示を試せます。デモの変更はメモリ内だけで、リセットで初期状態に戻ります。
-
-EventCalendarの`layout="fill"`は高さが決まった親flex領域に時間枠/月/タイムラインを広げます。親とcomponentの双方に`min-height: 0`を設定し、componentを`flex: 1`で配置してください。fillの日・週表示では、時間帯が短い場合は`hourHeight`を最小値として時間枠を拡大し、未割り当ての下部余白を残しません。既定の`layout="content"`は従来の内容高さを維持します。`toolbarFilters`と`toolbarActions`のsnippetsは日付操作と同じツールバーへ追加され、`viewSwitcher`は内蔵の表示方法選択を置き換えます。狭い画面では操作群を折り返します。
-
-### Dialog.Body の下余白
-
-`Dialog.Body` と `ResponsiveDialog.Body` は、本文末尾に標準で `pb-4`（16px）の余白を設けます。フッターとの間隔のために利用側で下余白を指定する必要はありません。上余白は利用側で指定し、必要に応じて `class="pb-0"` などで下余白を上書きできます。既存の `py-4`・`pb-4` 指定も加算されません。

@@ -1,4 +1,2 @@
-export function normalizeNumericInput(input: string, digits: number): string {
-  return input.replace(/[０-９]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) - 0xfee0))
-    .replace(/\D/g, "").slice(0, digits);
-}
+// Compatibility for the existing wildcard subpath; new implementation code lives in internal/.
+export { normalizeNumericInput } from "../internal/rolling-text/numeric-input.js";

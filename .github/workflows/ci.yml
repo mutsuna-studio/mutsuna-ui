@@ -41,6 +41,7 @@ jobs:
           fi
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:tokens:browser
+      - run: pnpm test:components
       - run: pnpm test:storybook
       - run: pnpm test:consumer
       - run: pnpm test:consumer:astro

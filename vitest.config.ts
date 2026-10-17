@@ -14,6 +14,28 @@ export default mergeConfig(
       projects: [
         {
           extends: true,
+          resolve: {
+            alias: [
+              { find: /^@mutsuna\/ui\/([^/]+)\/(.*)$/, replacement: path.join(projectRoot, "src/lib/$1/$2") },
+              { find: /^@mutsuna\/ui\/([^/]+)$/, replacement: path.join(projectRoot, "src/lib/$1/index.ts") },
+              { find: /^@mutsuna\/ui$/, replacement: path.join(projectRoot, "src/lib/index.ts") },
+            ],
+          },
+          optimizeDeps: { entries: ["test/browser/**/*.test.ts"] },
+          test: {
+            name: "components",
+            include: ["test/browser/**/*.test.ts"],
+            testTimeout: 15000,
+            browser: {
+              enabled: true,
+              headless: true,
+              provider: playwright({}),
+              instances: [{ browser: "chromium" }],
+            },
+          },
+        },
+        {
+          extends: true,
           plugins: [
             storybookTest({
               configDir: path.join(projectRoot, ".storybook"),
