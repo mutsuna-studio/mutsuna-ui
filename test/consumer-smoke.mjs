@@ -77,6 +77,9 @@ try {
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
 import { DatePicker } from "@mutsuna/ui/date-picker";
+import { normalizeNumericInput } from "@mutsuna/ui/rolling-text/numeric-input.js";
+import { getCalendarDayColorClass } from "@mutsuna/ui/calendar/calendar-day-color.js";
+import { parseDate } from "@internationalized/date";
 import { parseDateTimeInput, type ExcelDateSystem } from "@mutsuna/ui/date-time-input";
 import { EditableText, type EditableTextCommit, type EditableTextProps } from "@mutsuna/ui/editable-text";
 import { Input } from "@mutsuna/ui/input";
@@ -133,6 +136,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
 <CycleSelect ariaLabel="表示" options={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
 <span use:wheelNavigation={{ onNext: () => undefined }}><RollingText value="External rolling text" widthValues={["External rolling text", "A wider external rolling text"]} align="center" /></span>
 <ColorPicker value="#191A22" name="themeColor" />
+<span hidden data-legacy-numeric={normalizeNumericInput("２０２９", 4)} data-legacy-accent={Boolean(getCalendarDayColorClass(parseDate("2026-10-04")))}></span>
 <ThemeProvider theme={findThemeTemplate("github" satisfies ThemeTemplateKey)}>
   <AdminShellFrame pageTitle="External consumer" contentGutter="auto" contentPadding="none">
     {#snippet sidebar()}
@@ -215,6 +219,17 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
   );
 
   run("npm", ["install", "--no-audit", "--no-fund"], consumerDirectory);
+  run("node", ["--input-type=module", "--eval", `
+    import assert from "node:assert/strict";
+    import { normalizeNumericInput } from "@mutsuna/ui/rolling-text/numeric-input.js";
+    import { getCalendarDayColorClass } from "@mutsuna/ui/calendar/calendar-day-color.js";
+    import { parseDate } from "@internationalized/date";
+    assert.equal(normalizeNumericInput("２０２９", 4), "2029");
+    assert.ok(getCalendarDayColorClass(parseDate("2026-10-04")));
+    for (const path of ["internal/rolling-text/numeric-input.js", "internal/calendar/day-color.js", "internal/responsive-overlay/context.svelte.js"]) {
+      assert.throws(() => import.meta.resolve("@mutsuna/ui/" + path), { code: "ERR_PACKAGE_PATH_NOT_EXPORTED" });
+    }
+  `], consumerDirectory);
   run("npm", ["exec", "--", "mutsuna-ui-lint", "src"], consumerDirectory);
   await writeFile(join(consumerDirectory, "Bad.svelte"), `<script>import { Button } from '@mutsuna/ui/button';</script><Button loading><svg /></Button>`);
   const lintFailure = spawnSync("npm", ["exec", "--", "mutsuna-ui-lint", "Bad.svelte"], { cwd: consumerDirectory, encoding: "utf8" });

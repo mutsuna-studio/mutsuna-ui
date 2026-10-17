@@ -6,6 +6,22 @@
   import Demo from "./event-calendar-demo.svelte";
   import RemoteDemo from "./event-calendar-remote-demo.svelte";
   const { Story } = defineMeta({ title: "Components/Data Display/Event Calendar", component: EventCalendar, tags: ["autodocs"], parameters: { docs: { description: { component: "表示範囲は前後ボタン・今日・日付選択で切り替えます。タッチでは通常のスワイプで縦・横にスクロールし、長押ししてから指を動かすと予約の範囲を選択できます。スワイプは日付範囲の切り替えには使いません。月表示は狭い画面でも7列を幅に収め、日・週・タイムラインの横スクロールバーは本文に重ねます。" } } } });
+  async function instanceIsolationInteraction({ canvasElement }: { canvasElement: HTMLElement }) {
+    const canvas = within(canvasElement);
+    const sections = Array.from(canvasElement.querySelectorAll("section")).filter(section => section.querySelector(":scope > h3"));
+    const editable = within(sections[0]);
+    const readonly = within(sections[1]);
+    const disabled = within(sections[2]);
+    const readonlyDays = Array.from(sections[1].querySelectorAll("[data-day]"), element => element.getAttribute("data-day"));
+    await userEvent.click(editable.getByRole("button", { name: "次の3日" }));
+    await finishNavigation(sections[0]);
+    await expect(Array.from(sections[1].querySelectorAll("[data-day]"), element => element.getAttribute("data-day"))).toEqual(readonlyDays);
+    await expect(disabled.getByRole("button", { name: "次の週" })).toBeDisabled();
+    // Independent instances retain their own edit policy after another one navigates.
+    await expect(editable.getByRole("button", { name: "2026-10-08 09:00に予定を作成" })).toBeEnabled();
+    await expect(readonly.getByRole("button", { name: "2026-10-05 09:00に予定を作成" })).toBeDisabled();
+    await expect(canvas.getByRole("alert")).toHaveTextContent("予定を保存できませんでした");
+  }
   async function remoteInteraction({ canvasElement }: { canvasElement: HTMLElement }) {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
@@ -252,9 +268,11 @@
 <Story name="Date Timeline" asChild><Demo initialView="date-timeline" /></Story>
 <Story name="Remote Events" asChild><RemoteDemo /></Story>
 <Story name="Remote Events Test" tags={["!dev", "!autodocs"]} asChild play={remoteInteraction}><RemoteDemo /></Story>
-<Story name="States" asChild>
+{#snippet states()}
   <div class="grid gap-8"><section><h3 class="mb-2 font-semibold">選択日から3日間</h3><Demo dayCount={3} /></section><section><h3 class="mb-2 font-semibold">閲覧のみ</h3><Demo readonly /></section><section><h3 class="mb-2 font-semibold">読み込み中・操作無効</h3><Demo loading disabled /></section><section><h3 class="mb-2 font-semibold">エラー・狭い画面（横スクロール）</h3><Demo narrow error="予定を保存できませんでした。再度お試しください。" /></section></div>
-</Story>
+{/snippet}
+<Story name="States" asChild>{@render states()}</Story>
+<Story name="Instance Isolation Test" tags={["!dev", "!autodocs"]} asChild play={instanceIsolationInteraction}>{@render states()}</Story>
 <Story name="Interaction Test" tags={["!dev", "!autodocs"]} asChild play={interaction}><div style:max-width="1000px"><Demo /></div></Story>
 <Story name="Application Details Test" tags={["!dev", "!autodocs"]} asChild play={applicationDetailsInteraction}><div style:width="1100px"><Demo /></div></Story>
 

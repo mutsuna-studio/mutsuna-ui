@@ -1,63 +1,86 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readFile } from "node:fs/promises";
+import { wheelNavigation } from "../dist/rolling-text/wheel-navigation.js";
 
-const componentSource = await readFile(new URL("../src/lib/rolling-text/rolling-text.svelte", import.meta.url), "utf8");
-const indexSource = await readFile(new URL("../src/lib/rolling-text/index.ts", import.meta.url), "utf8");
-const wheelSource = await readFile(new URL("../src/lib/rolling-text/wheel-navigation.ts", import.meta.url), "utf8");
+// The action only needs EventTarget and WheelEvent's unit constants. Geometry,
+// rendering and focus are covered in test/browser/rolling-text.test.ts.
+function setup(t, options = {}) {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const previous = globalThis.WheelEvent;
+  globalThis.WheelEvent = { DOM_DELTA_PIXEL: 0, DOM_DELTA_LINE: 1, DOM_DELTA_PAGE: 2 };
+  const node = Object.assign(new EventTarget(), { clientHeight: 200 });
+  const calls = [];
+  const callbacks = { onPrevious: steps => calls.push([-1, steps]), onNext: steps => calls.push([1, steps]) };
+  const action = wheelNavigation(node, { ...callbacks, ...options });
+  t.after(() => { action.destroy(); if (previous === undefined) delete globalThis.WheelEvent; else globalThis.WheelEvent = previous; });
+  return { calls, action, callbacks, wheel(deltaY, deltaMode = 0) {
+    const event = Object.assign(new Event("wheel", { cancelable: true }), { deltaY, deltaMode });
+    node.dispatchEvent(event);
+    return event.defaultPrevented;
+  } };
+}
 
-test("rolling text exposes reusable direction and duration controls", () => {
-  assert.match(componentSource, /direction = "up"/);
-  assert.match(componentSource, /duration = 280/);
-  assert.match(indexSource, /RollingTextDirection/);
-  assert.match(indexSource, /RollingTextProps/);
+test("gesture navigation ignores noise and emits once until the gesture expires", t => {
+  const { calls, wheel } = setup(t);
+  assert.equal(wheel(3), false);
+  assert.equal(wheel(5), true);
+  wheel(12); wheel(-12);
+  assert.deepEqual(calls, [[1, 1]]);
+  t.mock.timers.tick(161);
+  wheel(-5);
+  assert.deepEqual(calls, [[1, 1], [-1, 1]]);
 });
 
-test("rolling text keeps outgoing and incoming values in one clipped viewport", () => {
-  assert.match(componentSource, /rolling-text-item-out/);
-  assert.match(componentSource, /rolling-text-item-in/);
-  assert.match(componentSource, /overflow: hidden/);
+test("continuous navigation accumulates sub-threshold deltas and retains the remainder", t => {
+  const { calls, wheel } = setup(t, { mode: "continuous", threshold: 4 });
+  wheel(2); wheel(7); wheel(3);
+  assert.deepEqual(calls, [[1, 2], [1, 1]]);
 });
 
-test("rolling text can reserve the widest candidate width without consumer layout CSS", () => {
-  assert.match(componentSource, /widthValues\?: readonly string\[\]/);
-  assert.match(componentSource, /widthValues\?\.length \? widthValues : \[current\]/);
-  assert.match(componentSource, /#each sizingValues as sizingValue/);
-  assert.match(componentSource, /\.rolling-text-size > span \{ grid-area: 1 \/ 1; \}/);
+test("continuous navigation resets accumulated motion on direction changes and timeout", t => {
+  const { calls, wheel } = setup(t, { mode: "continuous" });
+  wheel(3); wheel(-3); wheel(-1);
+  assert.deepEqual(calls, [[-1, 1]]);
+  wheel(3);
+  t.mock.timers.tick(161);
+  wheel(1);
+  assert.deepEqual(calls, [[-1, 1]]);
 });
 
-test("rolling text owns its alignment instead of inheriting an unstable parent alignment", () => {
-  assert.match(componentSource, /align = "start"/);
-  assert.match(componentSource, /data-align=\{align\}/);
-  assert.match(componentSource, /\.rolling-text\[data-align="start"\] \{ text-align: start; \}/);
-  assert.match(indexSource, /RollingTextAlign/);
+test("physical wheel notches, line units and page units each advance one semantic step", t => {
+  const { calls, wheel } = setup(t, { mode: "continuous" });
+  wheel(100); wheel(-120); wheel(3, 1); wheel(-1, 2);
+  assert.deepEqual(calls, [[1, 1], [-1, 1], [1, 1], [-1, 1]]);
 });
 
-test("rolling text respects reduced motion", () => {
-  assert.match(componentSource, /prefers-reduced-motion: reduce/);
-  assert.match(componentSource, /\.rolling-text-item \{ animation: none; \}/);
+test("gesture thresholds normalize line and page units", t => {
+  const { calls, wheel } = setup(t, { threshold: 100 });
+  assert.equal(wheel(1, 1), false);
+  assert.equal(wheel(1, 2), true);
+  assert.deepEqual(calls, [[1, 1]]);
 });
 
-test("rolling text shares gesture-safe wheel navigation with composite controls", () => {
-  assert.match(componentSource, /onPrevious: onPrevious \? handlePrevious : undefined/);
-  assert.match(componentSource, /activeDirection = "up";[\s\S]*?onPrevious\?\.\(steps\)/);
-  assert.match(componentSource, /activeDirection = "down";[\s\S]*?onNext\?\.\(steps\)/);
-  assert.match(wheelSource, /addEventListener\("wheel", handleWheel, \{ passive: false \}\)/);
-  assert.match(wheelSource, /delta > 0 \? options\.onNext : options\.onPrevious/);
-  assert.match(wheelSource, /if \(gestureActive\) return/);
-  assert.match(indexSource, /wheelNavigation/);
-  assert.match(indexSource, /WheelNavigationOptions/);
+test("disabled or unavailable directions preserve native scrolling", t => {
+  const { calls, wheel, action, callbacks } = setup(t, { disabled: true });
+  assert.equal(wheel(10), false);
+  action.update({ onNext: callbacks.onNext });
+  assert.equal(wheel(-10), false);
+  assert.equal(wheel(10), true);
+  assert.deepEqual(calls, [[1, 1]]);
 });
 
-test("wheel navigation supports accumulated multi-step continuous movement", () => {
-  assert.match(wheelSource, /mode\?: "gesture" \| "continuous"/);
-  assert.match(wheelSource, /accumulatedDelta \+= delta/);
-  assert.match(wheelSource, /navigate\(steps\)/);
-  assert.match(wheelSource, /normalizeWheelDelta/);
+test("updated callbacks and options are used without remounting", t => {
+  const { calls, wheel, action } = setup(t);
+  action.update({ mode: "continuous", threshold: 10, onNext: steps => calls.push([2, steps]) });
+  wheel(25);
+  assert.deepEqual(calls, [[2, 2]]);
 });
 
-test("continuous wheel navigation treats a physical mouse notch as one step", () => {
-  assert.match(wheelSource, /isDiscreteWheelInput\(event\)/);
-  assert.match(wheelSource, /Math\.abs\(event\.deltaY\) >= 80/);
-  assert.match(wheelSource, /if \(isDiscreteWheelInput\(event\)\) \{[\s\S]*?navigate\(1\);[\s\S]*?return;/);
+test("destroy removes wheel listeners and cancels pending gesture work", t => {
+  const { calls, wheel, action } = setup(t);
+  wheel(10);
+  action.destroy();
+  t.mock.timers.tick(1000);
+  assert.equal(wheel(10), false);
+  assert.deepEqual(calls, [[1, 1]]);
 });

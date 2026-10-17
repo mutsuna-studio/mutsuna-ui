@@ -16,7 +16,7 @@ export type ResponsiveDialogTriggerProps = {
 </script>
 
 <script lang="ts">
-import { useResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { useResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let { ref = $bindable(null), child, children, dialogProps, drawerProps }: ResponsiveDialogTriggerProps = $props();
 const responsive = useResponsiveOverlayState();

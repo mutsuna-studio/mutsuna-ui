@@ -10,7 +10,7 @@
   import ChevronRight from '@lucide/svelte/icons/chevron-right';
   import { Button } from '../button/index.js';
   import { cn } from '../utils.js';
-  import { getCalendarDayColorClass } from '../calendar/calendar-day-color.js';
+  import { getCalendarDayColorClass } from '../internal/calendar/day-color.js';
   let { value = $bindable(), placeholder = $bindable(), ref = $bindable(null), class: className,
     locale = 'ja-JP', weekStartsOn = 1, fixedWeeks = true, scrollable = false, numberOfMonths = 1, ...rest }: RangeCalendarProps = $props();
   let scroller: HTMLDivElement | undefined = $state();

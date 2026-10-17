@@ -6,7 +6,7 @@ import Drawer from "../drawer/drawer.svelte";
 import type {
   ResponsiveOverlayMode,
   ResolvedResponsiveOverlayMode,
-} from "../responsive-overlay/context.svelte.js";
+} from "../internal/responsive-overlay/context.svelte.js";
 
 type WithoutOpen<T> = T extends { open?: unknown } ? Omit<T, "open" | "defaultOpen"> : T;
 
@@ -25,7 +25,7 @@ export type ResponsiveDialogProps = {
 
 <script lang="ts">
 import { tick } from "svelte";
-import { setResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { setResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let {
   open = $bindable(false),

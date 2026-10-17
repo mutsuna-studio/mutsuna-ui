@@ -1,6 +1,8 @@
 <script lang="ts">
   import AppDialogs from "./event-calendar-app-dialogs.svelte";
   let dialogs: AppDialogs;
+  let showSecondary = $state(false);
+  let secondaryChange = $state("");
   let draft = $state<EventCalendarEvent | null>(null);
   let fill = $state(false);
   let fillEmpty = $state(false);
@@ -62,6 +64,15 @@
     {draft} onCreate={(range, context) => { notification = `create ${range.start} ${range.end} ${context.trigger.tagName} title=${"title" in range}`; if (useDialogs) dialogs.create(range, context); }} onEventClick={(event, context) => { notification = `select ${event.id} ${context.trigger.tagName}`; if (useDialogs) dialogs.select(event, context); }}
     onEventChange={(change) => { events = events.map(event => event.id === change.event.id ? { ...event, start: change.start, end: change.end, ...("rowId" in change ? { rowId: change.rowId } : {}) } : event); action = `${change.kind} ${change.start} ${change.end}`; }} />
   </div>
+  <button onclick={() => showSecondary = !showSecondary}>別のカレンダーを切り替える</button>
+  {#if showSecondary}
+    <div data-secondary-calendar>
+      <EventCalendar date="2026-11-02" view="day" ariaLabel="独立したカレンダー"
+        events={[{ id: "secondary", title: "別の予定", start: "2026-11-02T09:00", end: "2026-11-02T10:00" }]}
+        onEventChange={(change) => secondaryChange = change.start} />
+      <output data-secondary-change>{secondaryChange}</output>
+    </div>
+  {/if}
 </section>
 
 <AppDialogs bind:this={dialogs} bind:draft onSave={(range) => { count++; events = [...events, { id: `created-${count}`, color: "#8b5cf6", ...range }]; action = `create ${range.start} ${range.end}`; }} />

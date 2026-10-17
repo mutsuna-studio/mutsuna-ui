@@ -2,7 +2,7 @@
 import { tick } from "svelte";
 import RollingText, { type RollingTextDirection } from "./rolling-text.svelte";
 import { wheelNavigation } from "./wheel-navigation.js";
-import { normalizeNumericInput } from "./numeric-input.js";
+import { normalizeNumericInput } from "../internal/rolling-text/numeric-input.js";
 import { normalizeDateTimeInputText } from "../date-time-input/index.js";
 import { cn } from "../utils.js";
 

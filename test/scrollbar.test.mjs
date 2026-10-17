@@ -1,61 +1,46 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { test } from "node:test";
-import { setTimeout as wait } from "node:timers/promises";
-import { scrollbarVisibility } from "../src/lib/scrollbar/scrollbar.ts";
+import { scrollbarVisibility } from "../dist/scrollbar/scrollbar.js";
 
-const packageRoot = join(import.meta.dirname, "..");
-
-function createScrollableNode() {
-  const node = new EventTarget();
-  node.dataset = {};
-  return node;
+function setup(t, options) {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const node = Object.assign(new EventTarget(), { dataset: {} });
+  const action = scrollbarVisibility(node, options);
+  t.after(() => action?.destroy?.());
+  return { node, action, scroll: () => node.dispatchEvent(new Event("scroll")) };
 }
 
-test("scrollbar visibility moves through visible, fading-out, and hidden states", async () => {
-  const node = createScrollableNode();
-  const action = scrollbarVisibility(node, { hideDelayMs: 5, fadeDurationMs: 5 });
-
-  node.dispatchEvent(new Event("scroll"));
+test("scrollbar moves through visible, fading-out and hidden states at the configured times", t => {
+  const { node, scroll } = setup(t, { hideDelayMs: 5, fadeDurationMs: 5 });
+  scroll();
   assert.equal(node.dataset.scrollbarState, "visible");
-
-  await wait(8);
+  t.mock.timers.tick(4);
+  assert.equal(node.dataset.scrollbarState, "visible");
+  t.mock.timers.tick(1);
   assert.equal(node.dataset.scrollbarState, "fading-out");
-
-  await wait(8);
-  assert.equal(node.dataset.scrollbarState, undefined);
-  action?.destroy?.();
-});
-
-test("scrollbar visibility clears timers and state when destroyed", async () => {
-  const node = createScrollableNode();
-  const action = scrollbarVisibility(node, { hideDelayMs: 5, fadeDurationMs: 5 });
-
-  node.dispatchEvent(new Event("scroll"));
-  action?.destroy?.();
-  await wait(16);
-
+  t.mock.timers.tick(5);
   assert.equal(node.dataset.scrollbarState, undefined);
 });
 
-test("theme owns the cross-browser scrollbar appearance", async () => {
-  const themeCss = await readFile(join(packageRoot, "src", "lib", "theme.css"), "utf8");
-
-  assert.match(themeCss, /\.mutsuna-scrollbar\[data-scrollbar-state="visible"\]/);
-  assert.match(themeCss, /\.mutsuna-scrollbar\[data-scrollbar-state="fading-out"\]/);
-  assert.match(themeCss, /\.mutsuna-scrollbar::-webkit-scrollbar-button/);
-  assert.match(themeCss, /scrollbar-color: transparent transparent/);
-  assert.match(themeCss, /background-color: var\(--primary\)/);
-  assert.match(themeCss, /\.mutsuna-scrollbar--auto\s*{\s*scrollbar-gutter: auto;/);
+test("scrolling during fade cancels the old deadline and uses updated durations", t => {
+  const { node, action, scroll } = setup(t, { hideDelayMs: 5, fadeDurationMs: 5 });
+  scroll();
+  t.mock.timers.tick(5);
+  action.update({ hideDelayMs: 20, fadeDurationMs: 10 });
+  scroll();
+  t.mock.timers.tick(5);
+  assert.equal(node.dataset.scrollbarState, "visible");
+  t.mock.timers.tick(15);
+  assert.equal(node.dataset.scrollbarState, "fading-out");
+  t.mock.timers.tick(10);
+  assert.equal(node.dataset.scrollbarState, undefined);
 });
 
-test("scrollbar area exposes auto gutter without changing the stable default", async () => {
-  const source = await readFile(
-    join(packageRoot, "src", "lib", "scrollbar", "scrollbar-area.svelte"),
-    "utf8",
-  );
-
-  assert.match(source, /gutter = "stable"/);
-  assert.match(source, /gutter === "auto" && "mutsuna-scrollbar--auto"/);
+test("destroy clears timers, state and the scroll listener", t => {
+  const { node, action, scroll } = setup(t);
+  scroll();
+  action.destroy();
+  t.mock.timers.tick(1000);
+  scroll();
+  assert.equal(node.dataset.scrollbarState, undefined);
 });

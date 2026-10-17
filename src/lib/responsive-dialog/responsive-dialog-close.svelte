@@ -15,7 +15,7 @@ export type ResponsiveDialogCloseProps = {
 </script>
 
 <script lang="ts">
-import { useResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { useResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let { child, children, dialogProps, drawerProps }: ResponsiveDialogCloseProps = $props();
 const responsive = useResponsiveOverlayState();

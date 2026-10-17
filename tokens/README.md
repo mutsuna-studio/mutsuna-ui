@@ -51,7 +51,7 @@ Webでは `@mutsuna/ui/tokens.css` からフレームワーク・ビルドツー
 
 今回の移行範囲はテーマ色・light/dark・テーマの角丸とフォントです。標準CSSの既定色とThemeProviderのorange presetは従来どおり異なり、それぞれのsemantic参照で明示しています。公開subpath、Themeの型、CSS変数名、カスタムテーマの計算、コントラスト判定を維持します。
 
-coreの名前は既存値の移行元を表します。未設計の500/600/700階調を推測して追加しません。フォント名は移植可能なデータですが、`system-ui`などのWeb固有fallbackはネイティブ出力時にプラットフォーム用の対応付けが必要です。フォントファイルの追加・ライセンス変更はありません。外部テーマの出典・非公式の位置付けはルートREADMEを参照してください。
+coreの名前は既存値の移行元を表します。未設計の500/600/700階調を推測して追加しません。フォント名は移植可能なデータですが、`system-ui`などのWeb固有fallbackはネイティブ出力時にプラットフォーム用の対応付けが必要です。フォントファイルの追加・ライセンス変更はありません。外部テーマの出典・非公式の位置付けは[テーマガイド](../docs/theming.md)を参照してください。
 
 Control Size、Spacing、Icon Size、Border Width、Opacity、Shadow、Typographyのサイズ・行高、Motionは次の移行対象です。既存コンポーネントごとの意味と差を確認してから昇格させます。操作、ARIA、focus、wheel、floating labelの状態遷移はTypeScript/Svelteに残します。SwiftUI/Composeの生成とJSONのnpm公開APIは将来の別工程です。
 

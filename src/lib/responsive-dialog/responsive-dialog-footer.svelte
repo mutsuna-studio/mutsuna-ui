@@ -8,7 +8,7 @@ export type ResponsiveDialogFooterProps = WithElementRef<HTMLAttributes<HTMLDivE
 <script lang="ts">
 import DialogFooter from "../dialog/dialog-footer.svelte";
 import DrawerFooter from "../drawer/drawer-footer.svelte";
-import { useResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { useResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let { ref = $bindable(null), class: className, children, ...restProps }: ResponsiveDialogFooterProps = $props();
 const responsive = useResponsiveOverlayState();

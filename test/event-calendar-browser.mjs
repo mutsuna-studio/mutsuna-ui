@@ -829,5 +829,19 @@ export async function verifyEventCalendar(page) {
   await calendar.getByRole('button', { name: '内容の高さに戻す', exact: true }).click();
   await page.waitForFunction(() => document.querySelector('#event-calendar-probe [data-slot="event-calendar-viewport"]').getBoundingClientRect().height <= 672);
   assert.equal(await calendar.getByRole('button', { name: 'カレンダーの表示', exact: true }).count(), 1, 'intrinsic layout and built-in toolbar remain available');
+  // Mount and destroy a second instance without sharing controller state or listeners.
+  const primaryDays = await calendar.locator('[data-day]').evaluateAll(elements => elements.map(element => element.dataset.day));
+  await calendar.getByRole('button', { name: '別のカレンダーを切り替える', exact: true }).click();
+  const secondary = calendar.locator('[data-secondary-calendar]');
+  const secondaryEvent = secondary.getByRole('button', { name: /^別の予定 / });
+  await secondaryEvent.focus();
+  await secondaryEvent.press('Alt+ArrowDown');
+  assert.equal(await secondary.locator('[data-secondary-change]').textContent(), '2026-11-02T09:15');
+  await secondary.getByRole('button', { name: '次の日', exact: true }).click();
+  await secondary.getByRole('button', { name: '2026-11-03 09:00に予定を作成', exact: true }).waitFor();
+  assert.deepEqual(await calendar.locator('[data-slot="event-calendar"]').first().locator('[data-day]').evaluateAll(elements => elements.map(element => element.dataset.day)), primaryDays);
+  await calendar.getByRole('button', { name: '別のカレンダーを切り替える', exact: true }).click();
+  await secondary.waitFor({ state: 'detached' });
+  assert.equal(await calendar.locator('[data-slot="event-calendar"]').count(), 1);
   console.log("Astro EventCalendar: five views, pointer/touch creation, date/resource moves, both resize edges, touch/wheel navigation, fixed axes, application-owned details, keyboard and cancellation passed");
 }

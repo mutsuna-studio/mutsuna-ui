@@ -100,6 +100,9 @@ import ImportProbe from "../components/ImportProbe.svelte";
         assert.equal(requests.some((url) => /\.(?:js|woff2?)(?:\?|$)/.test(url)), false, "Token-only page must not load JS or fonts");
       } else {
         await page.waitForFunction(() => !document.querySelector("astro-island[ssr]"));
+        const legacy = page.locator("[data-legacy-contract]");
+        assert.equal(await legacy.getAttribute("data-numeric"), "2029");
+        assert.equal(await legacy.getAttribute("data-accent"), "true");
         const savedViewport = page.viewportSize();
         await page.setViewportSize({ width: 390, height: 844 });
         await page.getByRole("button", { name: "動的ダイアログを開く", exact: true }).click();

@@ -8,7 +8,7 @@ export type ResponsiveDialogBodyProps = WithElementRef<HTMLAttributes<HTMLDivEle
 <script lang="ts">
 import ScrollbarArea from "../scrollbar/scrollbar-area.svelte";
 import { cn } from "../utils.js";
-import { useResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { useResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let {
   ref = $bindable(null),

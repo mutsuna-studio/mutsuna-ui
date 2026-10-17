@@ -19,7 +19,7 @@ export type ResponsiveDialogContentProps = {
 
 <script lang="ts">
 import { cn } from "../utils.js";
-import { useResponsiveOverlayState } from "../responsive-overlay/context.svelte.js";
+import { useResponsiveOverlayState } from "../internal/responsive-overlay/context.svelte.js";
 
 let {
   ref = $bindable(null),
