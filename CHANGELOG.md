@@ -1,5 +1,12 @@
 # @mutsuna/ui
 
+## 0.19.7
+
+### Patch Changes
+
+- 37e8e2a: 共有する内部処理を internal へ集約し、既存の deep import パスを互換用の再 export で維持しました。公開入口と内部ファイルの境界検証を追加しました。
+- 37e8e2a: EventCalendar の操作と表示領域の制御を内部コントローラーへ分離し、公開 API と既存の表示・操作を維持したまま保守しやすくしました。
+
 ## 0.19.6
 
 ### Patch Changes
