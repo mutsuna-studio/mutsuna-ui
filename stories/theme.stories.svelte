@@ -1,13 +1,12 @@
 <script module lang="ts">
 import { defineMeta } from "@storybook/addon-svelte-csf";
-import ClaudeChatPreview from "./claude-chat-preview.svelte";
 import Button from "@mutsuna/ui/button/button.svelte";
 import Card from "@mutsuna/ui/card/card.svelte";
 import CardContent from "@mutsuna/ui/card/card-content.svelte";
 import CardDescription from "@mutsuna/ui/card/card-description.svelte";
 import CardHeader from "@mutsuna/ui/card/card-header.svelte";
 import CardTitle from "@mutsuna/ui/card/card-title.svelte";
-import { createTheme, findThemeTemplate, themeToCssVariables, ThemeProvider, themeTemplates, type Theme } from "@mutsuna/ui/theme";
+import { createTheme, themeToCssVariables, ThemeProvider, themeTemplates, type Theme } from "@mutsuna/ui/theme";
 
 const midToneCustomTheme = createTheme("custom", "oklch(0.7 0 0)");
 
@@ -48,34 +47,13 @@ const { Story } = defineMeta({
 	</ThemeProvider>
 {/snippet}
 
-<Story name="Orange" />
-<Story name="Blue" args={{ heading: "ブルーテーマ", theme: themeTemplates[1] }} />
-<Story name="Green" args={{ heading: "グリーンテーマ", theme: themeTemplates[2] }} />
-<Story name="Rose" args={{ heading: "ローズテーマ", theme: themeTemplates[3] }} />
-<Story name="Neutral" args={{ heading: "ニュートラルテーマ", theme: themeTemplates[4] }} />
-<Story name="Custom Mid Tone Contrast" args={{ heading: "中間明度のカスタムテーマ", theme: midToneCustomTheme }} />
-
-<Story name="Amber" args={{ heading: "アンバーテーマ", theme: findThemeTemplate("amber")! }} />
-<Story name="Lime" args={{ heading: "ライムテーマ", theme: findThemeTemplate("lime")! }} />
-<Story name="Teal" args={{ heading: "ティールテーマ", theme: findThemeTemplate("teal")! }} />
-<Story name="Cyan" args={{ heading: "シアンテーマ", theme: findThemeTemplate("cyan")! }} />
-<Story name="Indigo" args={{ heading: "インディゴテーマ", theme: findThemeTemplate("indigo")! }} />
-<Story name="Violet" args={{ heading: "バイオレットテーマ", theme: findThemeTemplate("violet")! }} />
-<Story name="Fuchsia" args={{ heading: "フューシャテーマ", theme: findThemeTemplate("fuchsia")! }} />
-<Story name="Slate" args={{ heading: "スレートテーマ", theme: findThemeTemplate("slate")! }} />
-
-<Story name="Svelte" args={{ heading: "Svelteテーマ", theme: findThemeTemplate("svelte")! }} />
-
-<Story name="Claude Inspired" args={{ heading: "Claude-inspired テーマ", theme: findThemeTemplate("claude")! }} />
-<Story name="Claude Chat" parameters={{ layout: "fullscreen", docs: { description: { story: "チャット画面の余白・入力欄・色面積を確認するローカルプレビュー。入力内容は外部送信されません。専用フォントとロゴは複製していません。" } } }}>
-  <ClaudeChatPreview theme={findThemeTemplate("claude")!} />
+<Story name="Preview" asChild parameters={{ controls: { disable: true } }}>
+  <div class="bg-background text-foreground grid max-w-md gap-4 rounded-xl border p-6"><h2 class="text-lg font-semibold">テーマの基本表示</h2><p>ツールバーのテーマカラーと表示モードで全体の配色を確認できます。</p><div class="flex gap-2"><Button>保存</Button><Button variant="outline">キャンセル</Button><Button disabled>無効</Button></div><div class="rounded-md bg-sidebar-primary p-3 text-sidebar-primary-foreground">選択中の項目</div></div>
 </Story>
 
-<Story name="GitHub inspired" args={{ heading: "GitHub-inspired テーマ", theme: findThemeTemplate("github")! }} />
-<Story name="Linear inspired" args={{ heading: "Linear-inspired テーマ", theme: findThemeTemplate("linear")! }} />
-<Story name="Notion inspired" args={{ heading: "Notion-inspired テーマ", theme: findThemeTemplate("notion")! }} />
+<Story name="Custom Mid Tone Contrast" args={{ heading: "中間明度のカスタムテーマ", theme: midToneCustomTheme }} />
 
-<Story name="All Presets">
+<Story name="All Presets" parameters={{ controls: { disable: true } }}>
   <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
     {#each themeTemplates as preset (preset.key)}
       <section

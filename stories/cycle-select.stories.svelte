@@ -8,10 +8,10 @@ const options = [
   { value: "b", label: "標準" },
   { value: "c", label: "詳細" },
 ];
-const { Story } = defineMeta({ title: "Components/Inputs/Select/CycleSelect", component: CycleSelect, tags: ["autodocs"] });
+const { Story } = defineMeta({ title: "Components/Inputs/Cycle Select", component: CycleSelect, tags: ["autodocs"] });
 </script>
 
-<Story name="操作" asChild>
+<Story name="Default" asChild>
   {@render control()}
 </Story>
 

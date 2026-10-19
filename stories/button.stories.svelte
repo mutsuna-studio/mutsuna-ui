@@ -167,7 +167,7 @@ const { Story } = defineMeta({
 </Story>
 
 
-<Story name="Icon Loading Contract" asChild play={async ({ canvasElement }) => {
+<Story tags={["!dev", "!autodocs"]} name="Icon Loading Contract" asChild play={async ({ canvasElement }) => {
   const buttons = canvasElement.querySelectorAll('[data-slot="button"]');
   await expect(buttons).toHaveLength(12);
   for (const button of buttons) {

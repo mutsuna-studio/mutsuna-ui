@@ -633,6 +633,76 @@
       "types": "./dist/event-calendar/index.d.ts",
       "svelte": "./dist/event-calendar/index.js",
       "default": "./dist/event-calendar/index.js"
+    },
+    "./chat": {
+      "types": "./dist/chat/index.d.ts",
+      "svelte": "./dist/chat/index.js",
+      "default": "./dist/chat/index.js"
+    },
+    "./chat-message": {
+      "types": "./dist/chat-message/index.d.ts",
+      "svelte": "./dist/chat-message/index.js",
+      "default": "./dist/chat-message/index.js"
+    },
+    "./message": {
+      "types": "./dist/message/index.d.ts",
+      "svelte": "./dist/message/index.js",
+      "default": "./dist/message/index.js"
+    },
+    "./bubble": {
+      "types": "./dist/bubble/index.d.ts",
+      "svelte": "./dist/bubble/index.js",
+      "default": "./dist/bubble/index.js"
+    },
+    "./message-scroller": {
+      "types": "./dist/message-scroller/index.d.ts",
+      "svelte": "./dist/message-scroller/index.js",
+      "default": "./dist/message-scroller/index.js"
+    },
+    "./chat-composer": {
+      "types": "./dist/chat-composer/index.d.ts",
+      "svelte": "./dist/chat-composer/index.js",
+      "default": "./dist/chat-composer/index.js"
+    },
+    "./outline-nav": {
+      "types": "./dist/outline-nav/index.d.ts",
+      "svelte": "./dist/outline-nav/index.js",
+      "default": "./dist/outline-nav/index.js"
+    },
+    "./chat-attachment": {
+      "types": "./dist/chat-attachment/index.d.ts",
+      "svelte": "./dist/chat-attachment/index.js",
+      "default": "./dist/chat-attachment/index.js"
+    },
+    "./image-preview": {
+      "types": "./dist/image-preview/index.d.ts",
+      "svelte": "./dist/image-preview/index.js",
+      "default": "./dist/image-preview/index.js"
+    },
+    "./chat-thread-list": {
+      "types": "./dist/chat-thread-list/index.d.ts",
+      "svelte": "./dist/chat-thread-list/index.js",
+      "default": "./dist/chat-thread-list/index.js"
+    },
+    "./chat-header": {
+      "types": "./dist/chat-header/index.d.ts",
+      "svelte": "./dist/chat-header/index.js",
+      "default": "./dist/chat-header/index.js"
+    },
+    "./chat-memo": {
+      "types": "./dist/chat-memo/index.d.ts",
+      "svelte": "./dist/chat-memo/index.js",
+      "default": "./dist/chat-memo/index.js"
+    },
+    "./sticky-note": {
+      "types": "./dist/sticky-note/index.d.ts",
+      "svelte": "./dist/sticky-note/index.js",
+      "default": "./dist/sticky-note/index.js"
+    },
+    "./floating-action-menu": {
+      "types": "./dist/floating-action-menu/index.d.ts",
+      "svelte": "./dist/floating-action-menu/index.js",
+      "default": "./dist/floating-action-menu/index.js"
     }
   },
   "scripts": {
@@ -673,6 +743,7 @@
     "@lezer/highlight": "^1.2.3",
     "@lucide/svelte": "^1.17.0",
     "@milkdown/kit": "^7.21.2",
+    "@shadcn-svelte/primitives": "0.0.1",
     "@tanstack/table-core": "^8.21.3",
     "bits-ui": "^2.18.1",
     "clsx": "^2.1.1",

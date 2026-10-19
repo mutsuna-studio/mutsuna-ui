@@ -9,7 +9,9 @@
 | Input、Select、編集、Slider、連結入力 | [入力と選択](./components/inputs.md) |
 | DatePicker、RangeCalendar、日時入力の解析 | [日付と時刻](./components/date-time.md) |
 | アイコン、loading、consumer用lint CLI | [ButtonとLoading](./components/button-and-loading.md) |
-| ResponsiveDialog、管理画面、Sidebar | [ダイアログとレイアウト](./components/dialogs-and-layout.md) |
+| ImagePreview、ResponsiveDialog、管理画面、Sidebar | [ダイアログとレイアウト](./components/dialogs-and-layout.md) |
+| チャットの導入・公開入口・状態管理・AppShell連携 | [チャットUI](./components/chat.md) |
+| 文書の目次・見出し階層・MessageScrollerとの連携 | [目次](./components/outline-nav.md) |
 | コード入力と差分表示 | [CodeEditorとCodeDiff](./components/code-editor.md) |
 | 予定表示、操作通知、背景、取得状態、先読み | [EventCalendar](./components/event-calendar.md) |
 | テーマ、フォント、スクロールバー | [テーマとスクロールバー](./theming.md) |

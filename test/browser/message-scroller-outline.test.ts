@@ -1,0 +1,90 @@
+import { page } from "vitest/browser";
+import { expect, test } from "vitest";
+import { userEvent } from "storybook/test";
+import Preview from "../../stories/message-scroller-outline-preview.svelte";
+import { render } from "./render.js";
+
+test("outline navigates and focuses nonnumeric message IDs and follows replies in document order", async () => {
+  const view = render(Preview, {});
+  const history = view.getByLabelText("目次付きの履歴");
+  const first = view.getByRole("button", { name: "1：伝えたいことを整理する" });
+  const second = view.getByRole("button", { name: "2：読み手にとっての変化を考える" });
+  await expect.poll(() => first.getAttribute("aria-current")).toBe("location");
+  await userEvent.click(second);
+  const target = view.target.querySelector<HTMLElement>('[data-message-id="topic-a"]')!;
+  await expect.poll(() => document.activeElement).toBe(target);
+  expect(target.getAttribute("tabindex")).toBe("-1");
+  const content = view.target.querySelector('[data-slot="message-scroller-content"]')!;
+  await expect.poll(() => target.getBoundingClientRect().top - history.getBoundingClientRect().top).toBeCloseTo(16 + parseFloat(getComputedStyle(content).paddingTop), 0);
+  await expect.poll(() => view.getByRole("status").textContent).toContain("topic-a");
+  const reply = view.target.querySelector<HTMLElement>('[data-message-id="reply-topic-a"]')!;
+  history.scrollTop += reply.getBoundingClientRect().top - history.getBoundingClientRect().top + 8;
+  await expect.poll(() => second.getAttribute("aria-current")).toBe("location");
+  await userEvent.click(first);
+  await expect.poll(() => target.hasAttribute("tabindex")).toBe(false);
+  await expect.poll(() => first.getAttribute("aria-current")).toBe("location");
+  history.scrollTop = history.scrollHeight;
+  await expect.poll(() => view.getByRole("button", { name: "3：具体的な使い方を添える" }).getAttribute("aria-current")).toBe("location");
+});
+
+test("new items and empty conversations update the outline", async () => {
+  const view = render(Preview, {});
+  await userEvent.click(view.getByRole("button", { name: "項目を追加" }));
+  const added = view.getByRole("button", { name: "4：次のアクションを考える" });
+  await userEvent.click(added);
+  await expect.poll(() => document.activeElement?.getAttribute("data-message-id")).toBe("added-0");
+  await userEvent.click(view.getByRole("button", { name: "新しい会話" }));
+  await expect.poll(() => view.getByRole("navigation", { name: "会話の目次" }).querySelectorAll("button").length).toBe(0);
+});
+
+test("independent scrollers can reuse the same IDs", async () => {
+  const first = render(Preview, {});
+  const second = render(Preview, {});
+  const other = first.getByLabelText("目次付きの履歴");
+  const before = other.scrollTop;
+  await userEvent.click(second.getByRole("button", { name: "3：具体的な使い方を添える" }));
+  const target = second.target.querySelector('[data-message-id="topic-k"]');
+  await expect.poll(() => document.activeElement).toBe(target);
+  expect(other.scrollTop).toBe(before);
+});
+
+test("insufficient space shows the rail only while scrolling or interacting without shrinking content", async () => {
+  const view = render(Preview, { reserveSpace: false });
+  const history = view.getByLabelText("目次付きの履歴");
+  const rail = view.target.querySelector<HTMLElement>('[data-slot="message-scroller-outline"]')!;
+  const content = view.target.querySelector<HTMLElement>('[data-slot="message-scroller-content"]')!;
+  await expect.poll(() => rail.dataset.mode).toBe("scroll");
+  await expect.poll(() => rail.dataset.visible).toBe("false");
+  const width = content.getBoundingClientRect().width;
+  history.scrollTop = 100;
+  await expect.poll(() => rail.dataset.visible).toBe("true");
+  await expect.poll(() => rail.dataset.visible, { timeout: 2000 }).toBe("false");
+  await expect.poll(() => getComputedStyle(rail).opacity).toBe("0");
+  expect(content.getBoundingClientRect().width).toBe(width);
+  const first = view.getByRole("button", { name: "1：伝えたいことを整理する" });
+  expect(getComputedStyle(first).pointerEvents).toBe("none");
+  history.scrollTop = 200;
+  await expect.poll(() => rail.dataset.visible).toBe("true");
+  await page.getByRole("button", { name: "1：伝えたいことを整理する" }).hover();
+  await expect.poll(() => first.getAttribute("aria-expanded")).toBe("true");
+  await page.getByRole("dialog", { name: "会話の目次" }).hover();
+  await new Promise(resolve => setTimeout(resolve, 1150));
+  expect(rail.dataset.visible).toBe("true");
+  await page.getByRole("button", { name: "項目を追加" }).hover();
+  await expect.poll(() => rail.dataset.visible, { timeout: 2000 }).toBe("false");
+  first.focus();
+  await expect.poll(() => rail.dataset.visible).toBe("true");
+  await new Promise(resolve => setTimeout(resolve, 1150));
+  expect(rail.dataset.visible).toBe("true");
+  await userEvent.keyboard("{Escape}");
+  view.getByRole("button", { name: "項目を追加" }).focus();
+  await expect.poll(() => rail.dataset.visible, { timeout: 2000 }).toBe("false");
+  content.style.paddingRight = "64px";
+  await expect.poll(() => rail.dataset.mode).toBe("always");
+  expect(rail.dataset.visible).toBe("true");
+  content.style.paddingRight = "28px";
+  await expect.poll(() => rail.dataset.mode).toBe("always");
+  content.style.paddingRight = "20px";
+  await expect.poll(() => rail.dataset.mode).toBe("scroll");
+  await expect.poll(() => rail.dataset.visible).toBe("false");
+});

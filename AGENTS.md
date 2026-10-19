@@ -48,6 +48,8 @@
 
 ## Storybook
 
+- 人物の表示にはMutsuna UIの特徴であるグラデーションの`CustomerAvatar`を優先する。同じ人物には安定した同じidを使う。画像・イニシャル・エラーなどの挙動を確認する専用例は必要に応じて維持する。
+
 - 共有componentのcatalogはこのrepositoryの`stories/*`を正本にする。
 - primitiveと複合componentの代表状態、disabled、loading、error、長文、狭いviewportを必要に応じて持たせる。
 - 同じcomponentの状態差だけでstoryを細分化しない。代表状態は比較できる1つのstoryへまとめ、独立storyは異なる操作フローや検証目的がある場合に限定する。
@@ -55,6 +57,12 @@
 - 視覚確認用storyには、表示直後の入力・click・状態変更など見た目を自動で変える`play`を付けない。操作検証が必要な場合は、同じrenderを使う`!dev`・`!autodocs`付きのtest専用storyへ`play`を分離する。
 - storyとStorybook設定はnpm packageへ含めない。
 - Storybookのsourceをconsumer repositoryへ複製しない。
+
+## リモートでのUI確認
+
+- ユーザーがリモートOrcaから見た目を確認する場合、利用可能なTailscale Serve経由のStorybook URLを優先する。接続・起動・停止の手順は`docs/storybook.md`の「リモートOrcaから見た目を確認する」を参照する。
+- サーバー側で作成したOrcaブラウザタブがユーザー側にも表示されるとは断定しない。案内するURLで実際のstoryの描画を確認し、手元からの到達性とは区別する。
+- 接続先固有のホスト名・IPは都度確認し、repository設定へ固定しない。既存のServe設定を保持し、プレビューにはFunnelを使わない。
 
 ## Verification
 

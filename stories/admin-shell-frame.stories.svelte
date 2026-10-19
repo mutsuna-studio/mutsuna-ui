@@ -109,7 +109,7 @@ const components = [
       <Button size="icon-sm" variant="ghost" aria-label="通知"><BellIcon aria-hidden="true" /></Button>
       <Button size="icon-sm" variant="ghost" aria-label="ヘルプ"><CircleHelpIcon aria-hidden="true" /></Button>
     {/snippet}
-    <section class="grid gap-6 pt-3">
+    <section data-slot="app-shell-workspace" class="grid h-full content-start gap-6 overflow-auto p-4">
       <p class="text-sm text-muted-foreground">@mutsuna/ui の再利用可能なコンポーネントとレイアウトパターンを確認できます。</p>
       <div class="grid gap-3">
         <div class="flex items-center justify-between gap-3">
@@ -151,8 +151,8 @@ const components = [
 
 <Story name="Footer Interaction Test" tags={["!dev", "!autodocs"]} asChild parameters={{ layout: "fullscreen" }} play={async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  const footer = canvas.getByRole("contentinfo");
-  const scrollArea = canvasElement.querySelector<HTMLElement>(".mutsuna-scrollbar")!;
+  const footer = canvasElement.querySelector<HTMLElement>('[data-slot="admin-shell-footer"]')!;
+  const scrollArea = canvasElement.querySelector<HTMLElement>('[data-slot="app-shell-workspace"]')!;
   await expect(scrollArea.contains(footer)).toBe(false);
   const footerTop = footer.getBoundingClientRect().top;
   scrollArea.scrollTop = scrollArea.scrollHeight;

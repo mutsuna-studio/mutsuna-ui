@@ -2,7 +2,7 @@
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import { CodeEditor, CodeDiff, type CodeDiffMode } from "@mutsuna/ui/code-editor";
   import { Button } from "@mutsuna/ui/button";
-  const { Story } = defineMeta({ title: "Components/Inputs/CodeEditor", component: CodeEditor, tags: ["autodocs"] });
+  const { Story } = defineMeta({ title: "Components/Inputs/Code Editor", component: CodeEditor, tags: ["autodocs"] });
 </script>
 <script lang="ts">let code = $state('const greeting = "Hello";\nconsole.log(greeting);');
 let diffMode = $state<CodeDiffMode>("split");

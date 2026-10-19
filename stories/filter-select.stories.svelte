@@ -42,23 +42,9 @@ let timelineResources = $state<string[]>([]);
 let disabledStatuses = $state<string[]>(["confirmed"]);
 </script>
 
-<Story name="Default" asChild>
-	<FilterSelect
-		bind:values={bookingStatuses}
-		ariaLabel="予約状態で絞り込み"
-		options={bookingStatusOptions}
-		placeholderLabel="予約状態"
-	/>
-</Story>
 
-<Story name="Single" asChild>
-	<FilterSelect
-		type="single"
-		bind:value={bookingStatus}
-		ariaLabel="予約状態で絞り込み"
-		options={bookingStatusSingleOptions}
-	/>
-</Story>
+
+
 
 <Story name="Toolbar" asChild>
 	<div class="flex w-full max-w-3xl flex-col gap-2 rounded-lg border bg-card p-3 sm:flex-row sm:items-center sm:justify-between">
@@ -86,29 +72,9 @@ let disabledStatuses = $state<string[]>(["confirmed"]);
 	</div>
 </Story>
 
-<Story name="Multiple" asChild>
-	<div class="grid max-w-sm gap-2">
-		<FilterSelect
-			bind:values={timelineResources}
-			ariaLabel="リソースで絞り込み"
-			options={resourceOptions}
-			placeholderLabel="リソース"
-		/>
-		<p class="text-sm text-muted-foreground">
-			{timelineResources.length === 0 ? "すべてのリソースを表示" : `${timelineResources.length}件を表示`}
-		</p>
-	</div>
-</Story>
 
-<Story name="Disabled" asChild>
-	<FilterSelect
-		bind:values={disabledStatuses}
-		ariaLabel="予約状態で絞り込み"
-		options={bookingStatusOptions}
-		placeholderLabel="予約状態"
-		disabled
-	/>
-</Story>
+
+
 
 <Story name="Searchable" asChild>
   <FilterSelect searchable label="担当者" ariaLabel="担当者" placeholderLabel="すべて" options={Array.from({ length: 40 }, (_, index) => ({ value: String(index), label: `担当者 ${index + 1}`, disabled: index === 39 }))} />
@@ -135,3 +101,44 @@ let disabledStatuses = $state<string[]>(["confirmed"]);
 }} asChild>
   <FilterSelect searchable ariaLabel="候補" options={[{ value: 'a', label: 'Alpha' }, { value: 'b', label: 'Beta', disabled: true }]} />
 </Story>
+
+<Story name="States" asChild parameters={{ controls: { disable: true } }}><div class="grid max-w-3xl gap-6 sm:grid-cols-2">
+<section class="grid content-start gap-2"><h2 class="text-sm font-medium">複数選択</h2>
+	<FilterSelect
+		bind:values={bookingStatuses}
+		ariaLabel="予約状態で絞り込み"
+		options={bookingStatusOptions}
+		placeholderLabel="予約状態"
+	/>
+</section>
+<section class="grid content-start gap-2"><h2 class="text-sm font-medium">単一選択</h2>
+	<FilterSelect
+		type="single"
+		bind:value={bookingStatus}
+		ariaLabel="予約状態で絞り込み"
+		options={bookingStatusSingleOptions}
+	/>
+</section>
+<section class="grid content-start gap-2"><h2 class="text-sm font-medium">選択数の表示</h2>
+	<div class="grid max-w-sm gap-2">
+		<FilterSelect
+			bind:values={timelineResources}
+			ariaLabel="リソースで絞り込み"
+			options={resourceOptions}
+			placeholderLabel="リソース"
+		/>
+		<p class="text-sm text-muted-foreground">
+			{timelineResources.length === 0 ? "すべてのリソースを表示" : `${timelineResources.length}件を表示`}
+		</p>
+	</div>
+</section>
+<section class="grid content-start gap-2"><h2 class="text-sm font-medium">操作不可</h2>
+	<FilterSelect
+		bind:values={disabledStatuses}
+		ariaLabel="予約状態で絞り込み"
+		options={bookingStatusOptions}
+		placeholderLabel="予約状態"
+		disabled
+	/>
+</section>
+</div></Story>

@@ -69,6 +69,7 @@ test("Storybook catalog groups every component by role", async () => {
   const categoryCounts = new Map();
   const titles = new Set();
   const allowedCategories = new Set([
+    "Guides",
     "Foundations",
     "Components/Actions",
     "Components/Inputs",
@@ -91,6 +92,7 @@ test("Storybook catalog groups every component by role", async () => {
     const category = [...allowedCategories].find((candidate) => title.startsWith(`${candidate}/`));
 
     assert.ok(category, `${title} should use the catalog taxonomy`);
+    assert.equal(title.split("/").length, category.startsWith("Components/") ? 3 : 2, `${title} should keep the navigation depth consistent`);
     assert.equal(titles.has(title), false, `${title} should be unique`);
     titles.add(title);
     categoryCounts.set(category, (categoryCounts.get(category) ?? 0) + 1);

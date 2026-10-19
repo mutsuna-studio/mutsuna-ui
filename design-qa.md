@@ -1,7 +1,7 @@
 # Color Picker Design QA
 
 - Source visual truth: `/var/folders/k3/z8l6jc55031_56lzbx3hdj1c0000gn/T/TemporaryItems/NSIRD_screencaptureui_GQvXfX/スクリーンショット 2026-09-10 10.01.34.png`
-- Implementation evidence: `http://127.0.0.1:6206/iframe.html?id=components-inputs-color-picker--hex&viewMode=story` (Codex in-app Browser capture)
+- Implementation evidence: `http://127.0.0.1:6206/iframe.html?id=components-inputs-color-picker--playground&viewMode=story` (Codex in-app Browser capture)
 - Viewport: 1117 x 837 CSS px, device scale factor 1
 - Source pixels: 802 x 572
 - Implementation capture pixels: 1117 x 837; component inspected at its intrinsic 288 px trigger width

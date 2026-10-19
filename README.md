@@ -77,7 +77,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 
 公開APIは`package.json`の`exports`に宣言されたsubpath、公開型、component props、events、snippets、CSS変数、theme contract。未宣言のdeep importはサポートしない。
 
-新しいimportではcomponent単位の公開入口（例: `@mutsuna/ui/button`）を利用する。既存のwildcard subpathは互換性を維持する。`internal/`は実装用で、公開subpathを提供しない。部品を追加する手順は[公開入口と内部実装](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CONTRIBUTING.md#公開入口と内部実装)を参照。
+新しいimportではcomponent単位の公開入口（例: `@mutsuna/ui/button`）を利用する。チャット画面は`@mutsuna/ui/chat`から関連部品と型をまとめてimportできる。既存のwildcard subpathは互換性を維持する。`internal/`は実装用で、公開subpathを提供しない。部品を追加する手順は[公開入口と内部実装](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/CONTRIBUTING.md#公開入口と内部実装)を参照。
 
 componentと代表状態は[公開Storybook](https://mutsuna-studio.github.io/mutsuna-ui/)を正本として確認できる。主な分類:
 
@@ -98,6 +98,8 @@ componentと代表状態は[公開Storybook](https://mutsuna-studio.github.io/mu
 | <a id="date-picker"></a><a id="datepicker"></a><a id="current-date-shortcuts"></a><a id="日付範囲カレンダー"></a><a id="日時入力の共通解析"></a>[日付と時刻](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/date-time.md) | DatePicker、RangeCalendar、今日の操作、日時解析 |
 | <a id="buttonのアイコンとローディング"></a><a id="consumerでの自動検出"></a>[ButtonとLoading](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/button-and-loading.md) | アイコン、loading、consumer用lint CLI |
 | <a id="dialogbody-の下余白"></a><a id="折りたたみサイドバーの一時展開"></a>[ダイアログとレイアウト](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/dialogs-and-layout.md) | ResponsiveDialog、管理画面、Sidebar |
+| [目次](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/outline-nav.md) | OutlineNav・見出し階層・MessageScrollerとの連携 |
+| [チャットUI](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/chat.md) | `@mutsuna/ui/chat`・導入例・状態管理・AppShell連携 |
 | <a id="code-editor"></a><a id="code-diff"></a>[CodeEditorとCodeDiff](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/code-editor.md) | コード入力、比較、コピーとツールバー |
 | <a id="eventcalendar日週月タイムライン表示"></a>[EventCalendar](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/components/event-calendar.md) | 5種類の表示、操作通知、背景、取得状態、先読み |
 | [テーマとスクロールバー](https://github.com/mutsuna-studio/mutsuna-ui/blob/main/docs/theming.md) | ThemeProvider、プリセット、フォント、ScrollbarArea |

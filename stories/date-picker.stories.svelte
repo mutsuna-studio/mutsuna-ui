@@ -9,7 +9,7 @@ import { Button } from "@mutsuna/ui/button";
 import { ButtonGroup } from "@mutsuna/ui/button-group";
 import { DatePicker } from "@mutsuna/ui/date-picker";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@mutsuna/ui/tooltip";
-const { Story } = defineMeta({ title: "Components/Inputs/DatePicker", component: DatePicker, tags: ["autodocs"] });
+const { Story } = defineMeta({ title: "Components/Inputs/Date Picker", component: DatePicker, tags: ["autodocs"] });
 
 const stepDateMin = "2026-01-01";
 const stepDateMax = "2027-12-31";
@@ -17,7 +17,6 @@ const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Tokyo" }).forma
 const currentMonth = today.slice(0, 7);
 
 async function checkDefault(canvasElement: HTMLElement) {
-  if (import.meta.env.MODE !== "test") return;
   const canvas = within(canvasElement);
   const body = within(canvasElement.ownerDocument.body);
   const trigger = canvas.getByRole("button", { name: "対象年月: 2026年9月" });
@@ -80,7 +79,6 @@ async function checkDirectInput(canvasElement: HTMLElement) {
 }
 
 async function checkCurrentMonth(canvasElement: HTMLElement) {
-  if (import.meta.env.MODE !== "test") return;
   const canvas = within(canvasElement);
   const body = within(canvasElement.ownerDocument.body);
   await userEvent.click(canvas.getByRole("button"));
@@ -92,7 +90,6 @@ async function checkCurrentMonth(canvasElement: HTMLElement) {
 }
 
 async function checkCurrentMonthOutOfRange(canvasElement: HTMLElement) {
-  if (import.meta.env.MODE !== "test") return;
   await userEvent.click(within(canvasElement).getByRole("button"));
   const body = within(canvasElement.ownerDocument.body);
   await expect(await body.findByRole("button", { name: "今月" })).toBeDisabled();
@@ -101,7 +98,6 @@ async function checkCurrentMonthOutOfRange(canvasElement: HTMLElement) {
 }
 
 async function checkYear(canvasElement: HTMLElement) {
-  if (import.meta.env.MODE !== "test") return;
   const canvas = within(canvasElement); const body = within(canvasElement.ownerDocument.body);
   await userEvent.click(canvas.getByRole("button"));
   const year = await body.findByRole("spinbutton", { name: "年" });
@@ -114,7 +110,6 @@ async function checkYear(canvasElement: HTMLElement) {
 }
 
 async function checkDay(canvasElement: HTMLElement) {
-  if (import.meta.env.MODE !== "test") return;
   const canvas = within(canvasElement); const body = within(canvasElement.ownerDocument.body);
   await userEvent.click(canvas.getByRole("button"));
   const input = await body.findByRole("textbox", { name: "日付を直接入力" });
@@ -128,7 +123,6 @@ async function checkDay(canvasElement: HTMLElement) {
 }
 
 async function checkWeekday(canvasElement: HTMLElement) {
-  if (import.meta.env.MODE !== "test") return;
   const canvas = within(canvasElement);
   await expect(canvas.getByRole("button", { name: "曜日付き: 2026年9月9日(水)" })).toBeInTheDocument();
   await expect(canvas.getByRole("button", { name: "年月: 2026年9月" })).toBeInTheDocument();
@@ -287,13 +281,7 @@ function moveMonth(value: string, offset: number): string {
   {@render monthStepControl()}
 </Story>
 
-<Story name="Default" asChild play={async ({ canvasElement }) => {
-  if (import.meta.env.MODE !== "test") return;
-  await checkYear(within(canvasElement).getByTestId("year"));
-  await checkDefault(within(canvasElement).getByTestId("default"));
-  await checkDay(within(canvasElement).getByTestId("day"));
-  await checkWeekday(within(canvasElement).getByTestId("weekday"));
-}}>
+{#snippet catalogExample1()}
   <section class="grid w-full max-w-3xl gap-6 p-2">
     <div class="space-y-1"><h2 class="text-sm font-medium">基本の使い方</h2><p class="text-xs text-muted-foreground">年・年月・日付と曜日表示を比較できます。</p></div>
     <div class="grid gap-6 sm:grid-cols-2">
@@ -319,12 +307,21 @@ function moveMonth(value: string, offset: number): string {
       </div>
     </div>
   </section>
-</Story>
+{/snippet}
 
-<Story name="States" asChild play={async ({ canvasElement }) => {
-  if (import.meta.env.MODE !== "test") return;
-  await checkCurrentMonthOutOfRange(within(canvasElement).getByTestId("current-month-out-of-range"));
-}}>
+<Story name="Default"
+  asChild>{@render catalogExample1()}</Story>
+<Story name="Default Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+  await checkYear(within(canvasElement).getByTestId("year"));
+  await checkDefault(within(canvasElement).getByTestId("default"));
+  await checkDay(within(canvasElement).getByTestId("day"));
+  await checkWeekday(within(canvasElement).getByTestId("weekday"));
+}}>{@render catalogExample1()}</Story>
+
+{#snippet catalogExample2()}
   <section class="grid w-full max-w-3xl gap-6 p-2">
     <div class="space-y-1"><h2 class="text-sm font-medium">状態と制約</h2><p class="text-xs text-muted-foreground">未選択・小サイズ・無効・エラー・選択範囲をまとめています。</p></div>
     <div class="grid gap-6 sm:grid-cols-2">
@@ -346,13 +343,18 @@ function moveMonth(value: string, offset: number): string {
       </div>
     </div>
   </section>
-</Story>
+{/snippet}
 
-<Story name="Direct Input" asChild play={async ({ canvasElement }) => {
-  if (import.meta.env.MODE !== "test") return;
-  await checkDirectInput(within(canvasElement).getByTestId("direct-input"));
-  await checkCurrentMonth(within(canvasElement).getByTestId("current-month"));
-}}>
+<Story name="States"
+  asChild>{@render catalogExample2()}</Story>
+<Story name="States Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+  await checkCurrentMonthOutOfRange(within(canvasElement).getByTestId("current-month-out-of-range"));
+}}>{@render catalogExample2()}</Story>
+
+{#snippet catalogExample3()}
   <section class="grid w-full max-w-3xl gap-6 p-2">
     <div class="space-y-1"><h2 class="text-sm font-medium">直接入力とショートカット</h2><p class="text-xs text-muted-foreground">半角数字で入力しEnterで確定します。今月もワンクリックで選択できます。</p></div>
     <div class="grid gap-6 sm:grid-cols-2">
@@ -366,7 +368,17 @@ function moveMonth(value: string, offset: number): string {
       </div>
     </div>
   </section>
-</Story>
+{/snippet}
+
+<Story name="Direct Input"
+  asChild>{@render catalogExample3()}</Story>
+<Story name="Direct Input Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+  await checkDirectInput(within(canvasElement).getByTestId("direct-input"));
+  await checkCurrentMonth(within(canvasElement).getByTestId("current-month"));
+}}>{@render catalogExample3()}</Story>
 
 <Story name="Roller Interaction Test" tags={["!dev", "!autodocs"]} asChild play={async ({ canvasElement }) => {
   const canvas = within(canvasElement);

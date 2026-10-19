@@ -10,9 +10,11 @@ const { Story } = defineMeta({
 });
 </script>
 
-<Story
-  name="HEX"
+<Story name="Playground"
+  args={{ value: "#191A22", name: "themeColor" }} />
+<Story name="HEX Interaction Test"
   args={{ value: "#191A22", name: "themeColor" }}
+  tags={["!dev", "!autodocs"]}
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByRole("textbox", { name: "色を選択" });
@@ -23,10 +25,20 @@ const { Story } = defineMeta({
     await waitFor(() => expect(input).toHaveValue("rgb(255, 255, 255)"));
     await userEvent.click(input);
     await expect(input).toHaveAttribute("data-state", "open");
-  }}
-/>
-<Story name="OKLCH" args={{ value: "oklch(62% 0.14 250)" }} />
-<Story name="RGB" args={{ value: "rgb(37, 99, 235)" }} />
-<Story name="HSL" args={{ value: "hsl(221 83% 53%)" }} />
-<Story name="Invalid Input" args={{ value: "not-a-color" }} />
-<Story name="Disabled And Required" args={{ value: "#D43008", disabled: true, required: true }} />
+  }} />
+
+
+
+
+
+
+<Story name="States" asChild parameters={{ controls: { disable: true } }}>
+  <div class="grid max-w-3xl gap-5 sm:grid-cols-2">
+    <div class="grid gap-2"><span class="text-sm">HEX</span><ColorPicker id="color-state-1" aria-label="HEX形式" value="#191A22" /></div>
+    <div class="grid gap-2"><span class="text-sm">OKLCH</span><ColorPicker id="color-state-2" aria-label="OKLCH形式" value="oklch(62% 0.14 250)" /></div>
+    <div class="grid gap-2"><span class="text-sm">RGB</span><ColorPicker id="color-state-3" aria-label="RGB形式" value="rgb(37, 99, 235)" /></div>
+    <div class="grid gap-2"><span class="text-sm">HSL</span><ColorPicker id="color-state-4" aria-label="HSL形式" value="hsl(221 83% 53%)" /></div>
+    <div class="grid gap-2"><span class="text-sm">不正な値</span><ColorPicker id="color-state-5" aria-label="不正な色" value="not-a-color" /></div>
+    <div class="grid gap-2"><span class="text-sm">必須・操作不可</span><ColorPicker id="color-state-6" aria-label="操作できない色" value="#D43008" disabled required /></div>
+  </div>
+</Story>

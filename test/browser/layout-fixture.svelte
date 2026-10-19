@@ -14,6 +14,6 @@
     </Sidebar.Root>
   {/snippet}
   {#snippet headerActions()}<Button aria-label="ヘルプ" size="icon">?</Button>{/snippet}
-  {#snippet children()}<div data-test-content style="height: 1400px; width: 100%">スクロールする本文</div>{/snippet}
+  {#snippet children()}<div data-test-content style="height:100%;width:100%;overflow:auto"><div style="height:1400px">スクロールする本文</div></div>{/snippet}
 </AdminShellFrame>
 {#snippet crumbs()}<nav aria-label="パンくず">カタログ</nav>{/snippet}

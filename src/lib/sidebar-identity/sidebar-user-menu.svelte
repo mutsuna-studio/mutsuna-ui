@@ -1,7 +1,6 @@
 <script lang="ts">
 import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
-import UserIcon from "@lucide/svelte/icons/user";
-import * as Avatar from "../avatar/index.js";
+import { CustomerAvatar } from "../avatar/index.js";
 import * as DropdownMenu from "../dropdown-menu/index.js";
 import * as Sidebar from "../sidebar/index.js";
 import type { SidebarUser, SidebarUserMenuItem } from "./types.js";
@@ -22,21 +21,14 @@ const sidebar = Sidebar.useSidebar();
       <DropdownMenu.Trigger>
         {#snippet child({ props })}
           <Sidebar.MenuButton
-            size="lg"
-            class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            size="default"
+            class="h-8 px-2 py-[3px] max-md:min-h-11 [@media(pointer:coarse)]:min-h-11 group-data-[collapsible=icon]:p-[3px]! data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            aria-label={user.name}
             {...props}
           >
-            <Avatar.Root class="size-8 rounded-lg after:rounded-lg">
-              {#if user.avatarUrl}
-                <Avatar.Image src={user.avatarUrl} alt={user.name} class="rounded-lg" />
-              {/if}
-              <Avatar.Fallback class="rounded-lg"><UserIcon aria-hidden="true" /></Avatar.Fallback>
-            </Avatar.Root>
-            <div class="grid flex-1 text-start text-sm leading-tight">
-              <span class="truncate font-medium">{user.name}</span>
-              <span class="truncate text-xs">{user.email}</span>
-            </div>
-            <ChevronsUpDownIcon class="ms-auto size-4" aria-hidden="true" />
+            <CustomerAvatar shape="rounded" id={user.email || user.name} name={user.name} imageUrl={user.avatarUrl} size="sm" />
+            <span class="min-w-0 flex-1 truncate text-start text-xs font-medium group-data-[collapsible=icon]:hidden">{user.name}</span>
+            <ChevronsUpDownIcon class="ms-auto size-3.5 group-data-[collapsible=icon]:hidden" aria-hidden="true" />
           </Sidebar.MenuButton>
         {/snippet}
       </DropdownMenu.Trigger>
@@ -48,12 +40,7 @@ const sidebar = Sidebar.useSidebar();
       >
         <DropdownMenu.Label class="p-0 font-normal">
           <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-            <Avatar.Root class="size-8 rounded-lg after:rounded-lg">
-              {#if user.avatarUrl}
-                <Avatar.Image src={user.avatarUrl} alt={user.name} class="rounded-lg" />
-              {/if}
-              <Avatar.Fallback class="rounded-lg"><UserIcon aria-hidden="true" /></Avatar.Fallback>
-            </Avatar.Root>
+            <CustomerAvatar shape="rounded" id={user.email || user.name} name={user.name} imageUrl={user.avatarUrl} />
             <div class="grid flex-1 text-start text-sm leading-tight">
               <span class="truncate font-medium">{user.name}</span>
               <span class="truncate text-xs">{user.email}</span>

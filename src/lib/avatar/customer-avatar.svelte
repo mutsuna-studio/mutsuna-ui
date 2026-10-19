@@ -3,6 +3,8 @@ export type CustomerAvatarProps = {
   readonly id: string;
   readonly name: string;
   readonly imageUrl?: string | null;
+  /** The gradient seed is independent of the silhouette. Defaults to circle. */
+  readonly shape?: "circle" | "rounded";
   readonly size?: "default" | "sm" | "lg";
   readonly class?: string;
 };
@@ -14,7 +16,7 @@ import Root from "./avatar.svelte";
 import Fallback from "./avatar-fallback.svelte";
 import Image from "./avatar-image.svelte";
 
-let { id, name, imageUrl = null, size = "default", class: className }: CustomerAvatarProps = $props();
+let { id, name, imageUrl = null, shape = "circle", size = "default", class: className }: CustomerAvatarProps = $props();
 
 function avatarGradientStyle(seed: string): string {
   const hash = hashString(seed);
@@ -37,9 +39,9 @@ function hashString(value: string): number {
 }
 </script>
 
-<Root {size} class={cn(className)} role="img" aria-label={name}>
+<Root {size} class={cn(shape === "rounded" && "rounded-md after:rounded-md", className)} role="img" aria-label={name}>
   {#if imageUrl !== null}
-    <Image src={imageUrl} alt={name} />
+    <Image src={imageUrl} alt={name} class={shape === "rounded" ? "rounded-md" : undefined} />
   {/if}
-  <Fallback style={avatarGradientStyle(id)} aria-hidden="true" />
+  <Fallback class={shape === "rounded" ? "rounded-md" : undefined} style={avatarGradientStyle(id)} aria-hidden="true" />
 </Root>

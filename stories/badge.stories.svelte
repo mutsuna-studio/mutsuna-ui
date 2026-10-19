@@ -36,16 +36,23 @@ const { Story } = defineMeta({
 	<Badge {...args}>{label}</Badge>
 {/snippet}
 
-<Story name="Default" />
 
-<Story name="Secondary" args={{ label: "下書き", variant: "secondary" }} />
 
-<Story name="Destructive" args={{ label: "要確認", variant: "destructive" }} />
 
-<Story name="Outline" args={{ label: "未設定", variant: "outline" }} />
 
-<Story name="Ghost" args={{ label: "任意", variant: "ghost" }} />
 
-<Story name="Link" args={{ label: "詳細", variant: "link", href: "#" }} />
 
-<Story name="Select Shape" args={{ label: "確定", shape: "select", variant: "secondary" }} />
+
+
+
+
+
+
+
+
+<Story name="Playground" />
+<Story name="States" asChild parameters={{ controls: { disable: true } }}>
+  <div class="flex flex-wrap items-center gap-3">
+    <Badge>公開中</Badge><Badge variant="secondary">下書き</Badge><Badge variant="destructive">要確認</Badge><Badge variant="outline">未設定</Badge><Badge variant="ghost">任意</Badge><Badge variant="link" href="#">詳細</Badge><Badge variant="secondary" shape="select">確定</Badge>
+  </div>
+</Story>

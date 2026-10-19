@@ -27,6 +27,7 @@ export type EditableTextTriggerProps = Pick<HTMLButtonAttributes, "class" | "typ
 export type EditableTextProps = WithoutChildren<WithElementRef<Omit<HTMLButtonAttributes, "type" | "value">, HTMLButtonElement>> & {
   value?: string;
   placeholder?: string;
+  /** Overrides editor styles; typography and spacing otherwise follow the trigger. */
   inputClass?: string;
   inputProps?: InputAttributes;
   multiline?: boolean;
@@ -74,6 +75,7 @@ let inputRef: HTMLInputElement | HTMLTextAreaElement | null = $state(null);
 let editing = $state(false);
 let draftValue = $state("");
 let editingRect = $state<DOMRect>();
+let editingStyles = $state<Record<string, string>>({});
 const triggerAttachment = createAttachmentKey();
 let clickTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -83,10 +85,15 @@ let displayValue = $derived(isEmpty ? placeholder : value);
 const editorProps = $derived({
   "data-slot": `${dataSlot}-${multiline ? "textarea" : "input"}`,
   class: cn(
-    "-mx-0.5 w-full min-w-0 border-0 bg-transparent px-0.5 py-0 text-sm leading-6 outline-none aria-invalid:text-destructive disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+    "w-full min-w-0 align-top border-0 bg-transparent outline-none aria-invalid:text-destructive disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+    "[font-family:var(--editable-font-family)] text-[length:var(--editable-font-size)] font-[number:var(--editable-font-weight)] [font-style:var(--editable-font-style)] leading-[var(--editable-line-height)] tracking-[var(--editable-letter-spacing)]",
+    "[text-align:var(--editable-text-align)] [overflow-wrap:var(--editable-overflow-wrap)] [word-break:var(--editable-word-break)]",
+    "pt-[var(--editable-padding-top)] pr-[var(--editable-padding-right)] pb-[var(--editable-padding-bottom)] pl-[var(--editable-padding-left)]",
+    "mt-[var(--editable-margin-top)] mr-[var(--editable-margin-right)] mb-[var(--editable-margin-bottom)] ml-[var(--editable-margin-left)]",
     multiline ? "min-h-6 resize-none overflow-hidden" : "h-6",
     inputClass
   ),
+  style: Object.entries(editingStyles).map(([name, value]) => `${name}:${value}`).join(";"),
   "aria-label": ariaLabel ?? placeholder,
   disabled,
   onkeydown: handleInputKeydown,
@@ -115,7 +122,16 @@ async function startEditing(event: MouseEvent | KeyboardEvent) {
   if (disabled || editing || event.defaultPrevented) return;
 
   clearTimeout(clickTimer);
-  editingRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  const node = event.currentTarget as HTMLElement;
+  editingRect = node.getBoundingClientRect();
+  const styles = getComputedStyle(node);
+  // CSS variables provide defaults that inputClass can still override.
+  editingStyles = Object.fromEntries([
+    "font-family", "font-size", "font-weight", "font-style", "line-height",
+    "letter-spacing", "text-align", "overflow-wrap", "word-break",
+    "padding-top", "padding-right", "padding-bottom", "padding-left",
+    "margin-top", "margin-right", "margin-bottom", "margin-left",
+  ].map((property) => [`--editable-${property}`, styles.getPropertyValue(property)]));
   draftValue = value;
   editing = true;
 
@@ -220,6 +236,7 @@ onDestroy(() => clearTimeout(clickTimer));
 			bind:this={inputRef}
 			{...textareaProps}
 			{...editorProps}
+			style={`${editorProps.style};${textareaProps?.style ?? ""}`}
 			style:width={editingRect && `${editingRect.width}px`}
 			style:height={editingRect && `${editingRect.height}px`}
 			rows={textareaProps?.rows ?? 1}
@@ -231,6 +248,7 @@ onDestroy(() => clearTimeout(clickTimer));
 			bind:this={inputRef}
 			{...inputProps}
 			{...editorProps}
+			style={`${editorProps.style};${inputProps?.style ?? ""}`}
 			style:width={editingRect && `${editingRect.width}px`}
 			style:height={editingRect && `${editingRect.height}px`}
 			type="text"
@@ -244,8 +262,8 @@ onDestroy(() => clearTimeout(clickTimer));
 		{...triggerProps}
 		data-slot={dataSlot}
 		class={cn(
-			"-mx-0.5 inline-flex w-fit! max-w-full rounded-sm border-0 px-0.5 py-0 text-left text-sm leading-6 text-foreground transition-colors outline-none hover:bg-muted focus-visible:bg-ring/[0.04] disabled:pointer-events-none disabled:opacity-50",
-			multiline ? "min-h-6 items-start" : "h-6 items-center truncate",
+			"-mx-0.5 inline-flex align-top w-fit! max-w-full rounded-sm border-0 px-0.5 py-0 text-left text-sm leading-6 text-foreground transition-colors outline-none hover:bg-muted focus-visible:bg-ring/[0.04] disabled:pointer-events-none disabled:opacity-50",
+			multiline ? "min-h-6 items-start break-words" : "min-h-6 items-center truncate",
 			isEmpty && "text-muted-foreground",
 			className
 		)}

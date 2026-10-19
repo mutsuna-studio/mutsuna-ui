@@ -1,4 +1,12 @@
 <script lang="ts">
+  import RoundedScrollbarProbe from "./RoundedScrollbarProbe.svelte";
+  import TopBarProbe from "./TopBarProbe.svelte";
+import FloatingToolsProbe from "./FloatingToolsProbe.svelte";
+  let stickyVisible = $state(true);
+  import { StickyNote } from "@mutsuna/ui/sticky-note";
+  import { EditableText } from "@mutsuna/ui/editable-text";
+  let editableNote = $state("一行目\n二行目");
+  import ChatMessageProbe from "./ChatMessageProbe.svelte";
   import { normalizeNumericInput } from "@mutsuna/ui/rolling-text/numeric-input.js";
   import { getCalendarDayColorClass } from "@mutsuna/ui/calendar/calendar-day-color.js";
   import MarkdownLifecycle from "./MarkdownLifecycle.svelte";
@@ -36,11 +44,19 @@
 </script>
 <span hidden data-legacy-contract data-numeric={normalizeNumericInput("２０２９", 4)} data-accent={Boolean(getCalendarDayColorClass(parseDate("2026-10-04")))}></span>
 
+{#if stickyVisible}<StickyNote title="汎用付箋" triggerLabel="汎用付箋を開く" value="Astroでも使える付箋" triggerPosition={{ x: 100, y: 300 }} />{/if}
+<Button onclick={() => stickyVisible = false}>Unmount generic note</Button>
+
+<TopBarProbe />
+<FloatingToolsProbe />
+
+<div id="editable-text-probe"><EditableText bind:value={editableNote} multiline class="text-xl leading-9 font-semibold px-3 py-2" aria-label="Editable note" /></div>
+
 <div class="grid max-w-sm gap-4">
   <Button id="counter" onclick={() => count += 1}>Count: {count}</Button>
   <Button disabled>Disabled</Button>
   <Input id="name" aria-label="Name" bind:value={name} />
-  <output aria-live="polite">Hello {name}</output>
+  <output id="name-preview" aria-live="polite">Hello {name}</output>
   <Dialog>
     <DialogTrigger>
       {#snippet child({ props })}<Button {...props}>Open dialog</Button>{/snippet}
@@ -93,3 +109,7 @@
     </ResponsiveDialog.Content>
   </ResponsiveDialog.Root>
 {/if}
+
+<ChatMessageProbe />
+
+<RoundedScrollbarProbe />

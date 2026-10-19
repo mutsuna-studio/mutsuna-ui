@@ -31,12 +31,6 @@ const billingLabels: Record<string, string> = {
   stripe_checkout: "オンライン決済で管理",
 };
 
-const statusLabels: Record<string, string> = {
-  available: "予約可能",
-  maintenance: "メンテナンス",
-  unavailable: "利用停止",
-};
-
 const resourceSuggestions: [SelectSearchableOption, ...SelectSearchableOption[]] = [
   { value: "meeting_room_a", label: "会議室 A", description: "6名まで / プロジェクターあり" },
   { value: "meeting_room_b", label: "会議室 B", description: "4名まで / 面談向け" },
@@ -57,7 +51,6 @@ const keyboardOptions = [{ value: "a", label: "Alpha" }, { value: "b", label: "D
 
 let resourceKind = $state("meeting_room");
 let billingMode = $state("manual");
-let status = $state("available");
 let selectedSearchableResourceId = $state(resourceSuggestions[0].value);
 let offeringText = $state("下見相談");
 
@@ -168,29 +161,9 @@ const selectedSearchableResource = $derived(resourceSuggestions.find((suggestion
 	</div>
 </Story>
 
-<Story name="Compact" asChild>
-	<Select type="single" bind:value={status}>
-		<SelectTrigger size="sm" class="w-40">
-			<span>{statusLabels[status]}</span>
-		</SelectTrigger>
-		<SelectContent>
-			<SelectItem value="available">予約可能</SelectItem>
-			<SelectItem value="maintenance">メンテナンス</SelectItem>
-			<SelectItem value="unavailable">利用停止</SelectItem>
-		</SelectContent>
-	</Select>
-</Story>
 
-<Story name="Disabled" asChild>
-	<Select type="single" value="fixed" disabled>
-		<SelectTrigger class="w-64">
-			<span>契約プランで固定されています</span>
-		</SelectTrigger>
-		<SelectContent>
-			<SelectItem value="fixed">契約プランで固定されています</SelectItem>
-		</SelectContent>
-	</Select>
-</Story>
+
+
 
 <Story name="Searchable" asChild>
 	<div class="grid w-full max-w-md min-w-0 gap-2 rounded-lg border bg-card p-4">

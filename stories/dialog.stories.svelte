@@ -22,18 +22,7 @@ const { Story } = defineMeta({
 });
 </script>
 
-<Story
-	name="Default"
-	play={async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await userEvent.click(canvas.getByRole("button", { name: "項目を作成" }));
-
-		const dialog = await within(document.body).findByRole("dialog", { name: "項目を作成" });
-		await expect(dialog).toHaveAttribute("data-state", "open");
-		await expect(within(dialog).getByDisplayValue("サンプル項目")).toBeInTheDocument();
-	}}
-	asChild
->
+{#snippet catalogExample1()}
 	<Dialog>
 		<DialogTrigger>
 			{#snippet child({ props })}
@@ -65,7 +54,21 @@ const { Story } = defineMeta({
 			</DialogFooter>
 		</DialogContent>
 	</Dialog>
-</Story>
+{/snippet}
+
+<Story name="Default"
+  asChild>{@render catalogExample1()}</Story>
+<Story name="Default Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		await userEvent.click(canvas.getByRole("button", { name: "項目を作成" }));
+
+		const dialog = await within(document.body).findByRole("dialog", { name: "項目を作成" });
+		await expect(dialog).toHaveAttribute("data-state", "open");
+		await expect(within(dialog).getByDisplayValue("サンプル項目")).toBeInTheDocument();
+	}}>{@render catalogExample1()}</Story>
 
 <Story name="Scrollable Body" asChild>
 	<Dialog>

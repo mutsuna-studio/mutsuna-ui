@@ -1,1 +1,1 @@
-export { default as AdminShellFrame } from "./admin-shell-frame.svelte";
+export { default as AdminShellFrame, type AdminShellFrameProps } from "./admin-shell-frame.svelte";

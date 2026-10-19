@@ -23,18 +23,7 @@ const { Story } = defineMeta({
 
 </script>
 
-<Story
-  name="Default"
-  play={async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole("button", { name: "詳細を開く" }));
-
-    const drawer = await within(document.body).findByRole("dialog", { name: "項目の詳細" });
-    await expect(drawer).toHaveAttribute("data-vaul-drawer-direction", "bottom");
-    await expect(within(drawer).getByText("下方向へスワイプして閉じられます。")).toBeInTheDocument();
-  }}
-  asChild
->
+{#snippet catalogExample1()}
   <Drawer>
     <DrawerTrigger>
       {#snippet child({ props })}
@@ -62,7 +51,21 @@ const { Story } = defineMeta({
       </div>
     </DrawerContent>
   </Drawer>
-</Story>
+{/snippet}
+
+<Story name="Default"
+  asChild>{@render catalogExample1()}</Story>
+<Story name="Default Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "詳細を開く" }));
+
+    const drawer = await within(document.body).findByRole("dialog", { name: "項目の詳細" });
+    await expect(drawer).toHaveAttribute("data-vaul-drawer-direction", "bottom");
+    await expect(within(drawer).getByText("下方向へスワイプして閉じられます。")).toBeInTheDocument();
+  }}>{@render catalogExample1()}</Story>
 
 <Story name="Sides" asChild>
   <div class="flex flex-wrap gap-2">
@@ -94,22 +97,7 @@ const { Story } = defineMeta({
   </div>
 </Story>
 
-<Story
-  name="Scrollable Content"
-  play={async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole("button", { name: "長い内容を開く" }));
-
-    const drawer = await within(document.body).findByRole("dialog", { name: "スクロール可能な内容" });
-    const scrollRegion = within(drawer).getByTestId("drawer-scroll-region");
-    scrollRegion.scrollTop = 160;
-    await fireEvent.scroll(scrollRegion);
-    await expect(drawer).toHaveAttribute("data-state", "open");
-    await expect(scrollRegion.scrollTop).toBe(160);
-    await expect(within(drawer).getByTestId("drawer-no-drag-region")).toHaveAttribute("data-vaul-no-drag");
-  }}
-  asChild
->
+{#snippet catalogExample2()}
   <Drawer scrollLockTimeout={0}>
     <DrawerTrigger>
       {#snippet child({ props })}
@@ -154,4 +142,22 @@ const { Story } = defineMeta({
       </div>
     </DrawerContent>
   </Drawer>
-</Story>
+{/snippet}
+
+<Story name="Scrollable Content"
+  asChild>{@render catalogExample2()}</Story>
+<Story name="Scrollable Content Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "長い内容を開く" }));
+
+    const drawer = await within(document.body).findByRole("dialog", { name: "スクロール可能な内容" });
+    const scrollRegion = within(drawer).getByTestId("drawer-scroll-region");
+    scrollRegion.scrollTop = 160;
+    await fireEvent.scroll(scrollRegion);
+    await expect(drawer).toHaveAttribute("data-state", "open");
+    await expect(scrollRegion.scrollTop).toBe(160);
+    await expect(within(drawer).getByTestId("drawer-no-drag-region")).toHaveAttribute("data-vaul-no-drag");
+  }}>{@render catalogExample2()}</Story>

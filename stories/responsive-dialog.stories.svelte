@@ -23,22 +23,7 @@ let transitionValue = $state("初期値");
   <DialogSizeDemo />
 </Story>
 
-<Story
-  name="Automatic"
-  play={async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole("button", { name: "プロフィールを編集" }));
-
-    const dialog = await within(document.body).findByRole("dialog", { name: "プロフィールを編集" });
-    const isMobile = canvasElement.ownerDocument.defaultView?.matchMedia("(max-width: 767px)").matches ?? false;
-    await expect(dialog).toHaveAttribute("data-slot", isMobile ? "drawer-content" : "dialog-content");
-    await expect(within(dialog).getByDisplayValue("山田 花子")).toBeInTheDocument();
-    await userEvent.click(within(dialog).getByRole("button", { name: "キャンセル" }));
-    await waitFor(() => expect(within(document.body).queryByRole("dialog", { name: "プロフィールを編集" })).not.toBeInTheDocument());
-    await waitFor(() => expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"));
-  }}
-  asChild
->
+{#snippet catalogExample1()}
   <ResponsiveDialog.Root>
     <ResponsiveDialog.Trigger>
       {#snippet child({ props })}
@@ -72,9 +57,27 @@ let transitionValue = $state("初期値");
       </ResponsiveDialog.Footer>
     </ResponsiveDialog.Content>
   </ResponsiveDialog.Root>
-</Story>
+{/snippet}
 
-<Story
+<Story name="Automatic"
+  asChild>{@render catalogExample1()}</Story>
+<Story name="Automatic Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "プロフィールを編集" }));
+
+    const dialog = await within(document.body).findByRole("dialog", { name: "プロフィールを編集" });
+    const isMobile = canvasElement.ownerDocument.defaultView?.matchMedia("(max-width: 767px)").matches ?? false;
+    await expect(dialog).toHaveAttribute("data-slot", isMobile ? "drawer-content" : "dialog-content");
+    await expect(within(dialog).getByDisplayValue("山田 花子")).toBeInTheDocument();
+    await userEvent.click(within(dialog).getByRole("button", { name: "キャンセル" }));
+    await waitFor(() => expect(within(document.body).queryByRole("dialog", { name: "プロフィールを編集" })).not.toBeInTheDocument());
+    await waitFor(() => expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"));
+  }}>{@render catalogExample1()}</Story>
+
+<Story tags={["!dev", "!autodocs"]}
   name="Mode Change While Open"
   play={async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -139,21 +142,7 @@ let transitionValue = $state("初期値");
   </ResponsiveDialog.Root>
 </Story>
 
-<Story
-  name="Mobile Drawer"
-  play={async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await waitFor(() => expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"));
-    await userEvent.click(canvas.getByRole("button", { name: "モバイル表示を開く" }));
-
-    const drawer = await within(document.body).findByRole("dialog", { name: "モバイル表示" });
-    await expect(drawer).toHaveAttribute("data-slot", "drawer-content");
-    await expect(drawer).toHaveAttribute("data-vaul-drawer-direction", "bottom");
-    await userEvent.click(within(drawer).getByRole("button", { name: "閉じる" }));
-    await waitFor(() => expect(within(document.body).queryByRole("dialog", { name: "モバイル表示" })).not.toBeInTheDocument());
-  }}
-  asChild
->
+{#snippet catalogExample2()}
   <ResponsiveDialog.Root mode="mobile">
     <ResponsiveDialog.Trigger>
       {#snippet child({ props })}
@@ -179,4 +168,21 @@ let transitionValue = $state("初期値");
       </ResponsiveDialog.Footer>
     </ResponsiveDialog.Content>
   </ResponsiveDialog.Root>
-</Story>
+{/snippet}
+
+<Story name="Mobile Drawer"
+  asChild>{@render catalogExample2()}</Story>
+<Story name="Mobile Drawer Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() => expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"));
+    await userEvent.click(canvas.getByRole("button", { name: "モバイル表示を開く" }));
+
+    const drawer = await within(document.body).findByRole("dialog", { name: "モバイル表示" });
+    await expect(drawer).toHaveAttribute("data-slot", "drawer-content");
+    await expect(drawer).toHaveAttribute("data-vaul-drawer-direction", "bottom");
+    await userEvent.click(within(drawer).getByRole("button", { name: "閉じる" }));
+    await waitFor(() => expect(within(document.body).queryByRole("dialog", { name: "モバイル表示" })).not.toBeInTheDocument());
+  }}>{@render catalogExample2()}</Story>

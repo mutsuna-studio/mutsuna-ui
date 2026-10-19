@@ -7,6 +7,7 @@
 - [Floating Input labels](#floating-input-labels)
 - [枠線に重ねるラベル](#枠線に重ねるラベル)
 - [Editable Text](#editable-text)
+- [Sticky Note](#sticky-note)
 - [Slider](#slider)
 - [連結コントロールの作成](#連結コントロールの作成)
 
@@ -94,6 +95,7 @@ let name = $state("表示名");
 - 通常はクリックで編集。`editOn="doubleClick"`ではダブルクリックまたはF2で編集し、Enter／Spaceはボタンのアクションに使えます。
 - Enterで確定、Escapeで取消し。`multiline`ではEnterで改行、Cmd/Ctrl+Enterで確定します。IME変換中のEnterでは確定しません。
 - キーで編集を終えるとtriggerへフォーカスが戻ります。blurでは既定で確定し、`commitOnBlur={false}`なら取り消します。blur先のフォーカスは移動させません。
+- `class`や通常時のCSSで指定した文字サイズ・行高・フォント・余白は、編集開始時に編集欄へ引き継ぎます。編集時だけ変えたい場合は`inputClass`で上書きできます。カスタムtriggerも同様です。
 - 編集中に`disabled`になった場合は取り消します。
 - `onclick`・`ondblclick`・`onkeydown`は内部処理と連携し、編集開始を止めたい場合は`event.preventDefault()`を使えます。
 - カスタムtriggerは`props`をbuttonへそのままspreadしてください。`Button`も利用できます。独自componentの場合はイベント・属性・Svelte attachmentをDOMのbuttonへ転送します。これで`bind:ref`とフォーカス復帰も動きます。
@@ -129,3 +131,27 @@ let priceRange = $state([20, 80]);
 入力やボタンを連結する場合は `@mutsuna/ui/button-group` の `ButtonGroup` を使います。DatePickerやCycleSelectと同じ境界処理が適用され、通常時の二重線とフォーカス時の枠線欠けを防ぎます。独自の子コントロールには `data-slot="button"` などを指定し、四辺の1px枠線を保持してください。角丸、負のマージン、focus時のz-indexを個別に指定する必要はありません。非表示フォーム入力は間に挟んでも構いません。
 
 全体で一つの入力欄を構成する場合は、外枠をまとめて管理する `InputGroup` を使います。
+
+## Sticky Note
+
+`@mutsuna/ui/sticky-note`（ルート入口からも公開）の汎用付箋です。チャットや保存先に依存しません。
+
+```svelte
+<script lang="ts">
+  import { StickyNote, type StickyNotePosition } from "@mutsuna/ui/sticky-note";
+  let value = $state("作業メモ");
+  let savedValue = $state("作業メモ");
+  let open = $state(false);
+  let position = $state<StickyNotePosition | null>(null);
+  let triggerPosition = $state<StickyNotePosition | null>({ x: 32, y: 240 });
+</script>
+
+<StickyNote bind:value bind:open bind:position bind:triggerPosition
+  {savedValue} onSave={value => savedValue = value} />
+```
+
+既定の`triggerMode="floating"`では最小化中だけ浮遊ボタンを表示し、開くと本文へ切り替えます。ボタンはドラッグ、矢印キー（Shiftで大きく移動）で配置でき、ドラッグ後の誤クリックでは開きません。`triggerPosition`はボタン、`position`は本文のviewport座標です。12pxの余白を保って画面内へ収め、最小化後も各位置を保持します。位置を外部へ保存するかどうかは利用側で決めます。
+
+`triggerMode="inline"`ではコンポーネントを置いた場所にボタンを表示します。`trigger` snippetへ渡す`props`をbuttonまたはButtonへspreadすれば独自のトリガーを使えます（Svelte attachmentも転送してください）。`triggerMode="none"`はトリガーを出さず、任意の外部ボタンから`bind:open`を操作できます。最小化時はトリガーまたは開いた際の要素へフォーカスを戻します。
+
+`value`・`savedValue`・`saving`・`error`・`onSave`による編集・保存状態、上部のドラッグ、読み取り専用、IME・Escape操作はChatMemoと共通です。`title`は読み上げ名のみで、タイトル行はありません。`StickyNoteProps`・`StickyNotePosition`・`StickyNoteTriggerProps`を公開します。
