@@ -96,16 +96,30 @@ let selectedDate = $state<DateValue | undefined>(parseDate("2026-08-02"));
   />
 </Story>
 
-<Story name="Today" asChild play={async ({ canvasElement }) => {
+{#snippet catalogExample1()}
+  <Calendar class="w-[15.625rem] max-w-full rounded-md border" type="single" bind:value={selectedDate} />
+  <p data-testid="today-value">{selectedDate?.toString()}</p>
+{/snippet}
+
+<Story name="Today"
+  asChild>{@render catalogExample1()}</Story>
+<Story name="Today Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(canvas.getByRole("button", { name: "今日" }));
   await expect(canvas.getByTestId("today-value")).toHaveTextContent(today(getLocalTimeZone()).toString());
-}}>
-  <Calendar class="w-[15.625rem] max-w-full rounded-md border" type="single" bind:value={selectedDate} />
-  <p data-testid="today-value">{selectedDate?.toString()}</p>
-</Story>
-<Story name="Today Unavailable" asChild play={async ({ canvasElement }) => {
-  await expect(within(canvasElement).getByRole("button", { name: "今日" })).toBeDisabled();
-}}>
+}}>{@render catalogExample1()}</Story>
+{#snippet catalogExample2()}
   <Calendar class="w-[15.625rem] max-w-full rounded-md border" type="single" isDateUnavailable={() => true} />
-</Story>
+{/snippet}
+
+<Story name="Today Unavailable"
+  asChild>{@render catalogExample2()}</Story>
+<Story name="Today Unavailable Interaction Test"
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+  await expect(within(canvasElement).getByRole("button", { name: "今日" })).toBeDisabled();
+}}>{@render catalogExample2()}</Story>

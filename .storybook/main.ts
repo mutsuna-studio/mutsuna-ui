@@ -48,6 +48,7 @@ const config: StorybookConfig = {
       `),
   viteFinal: async (config) =>
     mergeConfig(config, {
+      optimizeDeps: { include: ["@lucide/svelte/icons/plus", "@lucide/svelte/icons/paperclip", "@lucide/svelte/icons/file-text", "@lucide/svelte/icons/rotate-ccw", "@lucide/svelte/icons/square"] },
       resolve: {
         alias: [
           {

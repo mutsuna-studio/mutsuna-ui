@@ -18,7 +18,8 @@ for (const breadcrumb of [false, true]) {
     expect(content.getBoundingClientRect().width).toBeGreaterThan(400);
     expect(getComputedStyle(surface).display).not.toBe("flex");
     expect(getComputedStyle(surface).scrollbarGutter).toBe("stable");
-    expect(surface.scrollHeight).toBeGreaterThan(surface.clientHeight);
+    expect(content.scrollHeight).toBeGreaterThan(content.clientHeight);
+    expect(surface.scrollHeight).toBe(surface.clientHeight);
     const trigger = view.getByRole("button", { name: "Toggle Sidebar" });
     for (const control of [trigger, view.getByRole("button", { name: "ヘルプ" })]) {
       expect(control.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);

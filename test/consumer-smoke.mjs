@@ -73,9 +73,11 @@ try {
     join(consumerDirectory, "src/main.ts"),
     'import "@mutsuna/ui/theme.css";\nimport { mount } from "svelte";\nimport App from "./App.svelte";\n\nmount(App, { target: document.getElementById("app")! });\n',
   );
+  await writeFile(join(consumerDirectory, "src/ChatQuickStart.svelte"), await readFile(join(packageRoot, "docs/examples/chat-basic.svelte"), "utf8"));
   await writeFile(
     join(consumerDirectory, "src/App.svelte"),
     `<script lang="ts">
+import ChatQuickStart from "./ChatQuickStart.svelte";
 import { DatePicker } from "@mutsuna/ui/date-picker";
 import { normalizeNumericInput } from "@mutsuna/ui/rolling-text/numeric-input.js";
 import { getCalendarDayColorClass } from "@mutsuna/ui/calendar/calendar-day-color.js";
@@ -89,7 +91,8 @@ import { RollingText, wheelNavigation } from "@mutsuna/ui/rolling-text";
 import { ColorPicker } from "@mutsuna/ui/color-picker";
 import { Button } from "@mutsuna/ui/button";
 import { AdminPage, AdminPageHeader, AdminPanel } from "@mutsuna/ui/admin-layout";
-import { AdminShellFrame } from "@mutsuna/ui/admin-shell-frame";
+import { AdminShellFrame, type AdminShellFrameProps } from "@mutsuna/ui/admin-shell-frame";
+const shellProps = { pageTitle: "External consumer" } satisfies Pick<AdminShellFrameProps, "pageTitle">;
 import { CustomerAvatar } from "@mutsuna/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@mutsuna/ui/card";
 import { BusinessHoursFields, type BusinessHourDraft, weekdayLabels, weekdays } from "@mutsuna/ui/business-hours-fields";
@@ -130,6 +133,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
 <EditableText {...editableProps} value="Editable label">
   {#snippet trigger({ value, props })}<Button {...props}>{value}</Button>{/snippet}
 </EditableText>
+<div class="h-[32rem]"><ChatQuickStart /></div>
 <DatePicker precision="month" ariaLabel="対象年月" value="2026-09" />
 <Input label="表示名" name="displayName" />
 <Textarea label="説明" name="description" />
@@ -138,7 +142,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
 <ColorPicker value="#191A22" name="themeColor" />
 <span hidden data-legacy-numeric={normalizeNumericInput("２０２９", 4)} data-legacy-accent={Boolean(getCalendarDayColorClass(parseDate("2026-10-04")))}></span>
 <ThemeProvider theme={findThemeTemplate("github" satisfies ThemeTemplateKey)}>
-  <AdminShellFrame pageTitle="External consumer" contentGutter="auto" contentPadding="none">
+  <AdminShellFrame {...shellProps}>
     {#snippet sidebar()}
       <Sidebar>
         <SidebarWorkspaceSwitcher
@@ -151,6 +155,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
       </Sidebar>
     {/snippet}
     {#snippet footer()}<span>External footer</span>{/snippet}
+    <div class="h-full min-h-0 overflow-auto">
     <AdminPage class="max-w-3xl">
       <AdminPageHeader description="Installed from the published tarball" />
       <AdminPanel title="Shared admin layout" description={actionToast?.message}>
@@ -213,6 +218,7 @@ const actionToast = readFormActionToast({ status: "success", message: "Shared fo
       </Card>
       </AdminPanel>
     </AdminPage>
+    </div>
   </AdminShellFrame>
 </ThemeProvider>
 `,

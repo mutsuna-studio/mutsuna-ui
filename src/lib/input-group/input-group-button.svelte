@@ -41,6 +41,7 @@ export type InputGroupButtonSize = VariantProps<typeof inputGroupButtonVariants>
 	bind:ref
 	{type}
 	data-size={size}
+	size={size ?? "xs"}
 	{variant}
 	class={cn(inputGroupButtonVariants({ size }), className)}
 	{...restProps}

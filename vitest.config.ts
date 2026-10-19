@@ -21,7 +21,7 @@ export default mergeConfig(
               { find: /^@mutsuna\/ui$/, replacement: path.join(projectRoot, "src/lib/index.ts") },
             ],
           },
-          optimizeDeps: { entries: ["test/browser/**/*.test.ts"] },
+          optimizeDeps: { entries: ["test/browser/**/*.test.ts"], include: ["@lucide/svelte", "@lucide/svelte/icons/arrow-up", "@lucide/svelte/icons/plus", "@lucide/svelte/icons/paperclip", "@lucide/svelte/icons/file-text", "@lucide/svelte/icons/x", "@lucide/svelte/icons/loader-circle", "@lucide/svelte/icons/rotate-ccw", "@lucide/svelte/icons/square", "@shadcn-svelte/primitives/message-scroller"] },
           test: {
             name: "components",
             include: ["test/browser/**/*.test.ts"],

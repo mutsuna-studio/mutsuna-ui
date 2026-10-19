@@ -42,7 +42,7 @@ function selectWorkspace(workspaceId: string): void {
 }
 </script>
 
-<Story name="Workspace Switcher and User Footer" asChild>
+<Story name="Workspace Switcher And User Footer" asChild>
   <Sidebar.Provider class="min-h-[32rem] overflow-hidden rounded-lg border">
     <Sidebar.Root collapsible="icon" class="absolute">
       <Sidebar.Header>
@@ -81,7 +81,7 @@ function selectWorkspace(workspaceId: string): void {
   </Sidebar.Provider>
 </Story>
 
-<Story name="Loading and Empty" asChild>
+<Story name="Loading And Empty" asChild>
   <Sidebar.Provider class="min-h-64 overflow-hidden rounded-lg border">
     <Sidebar.Root class="absolute">
       <Sidebar.Header>

@@ -18,7 +18,7 @@ let {
 <div
   bind:this={ref}
   class={cn(
-    "mutsuna-scrollbar",
+    "mutsuna-scrollbar mutsuna-scrollbar-area",
     gutter === "auto" && "mutsuna-scrollbar--auto",
     gutter === "both-edges" && "mutsuna-scrollbar--both-edges",
     className,

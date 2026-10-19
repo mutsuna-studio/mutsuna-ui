@@ -62,7 +62,21 @@
     "./date-picker",
     "./date-time-input",
     "./code-editor",
-    "./event-calendar"
+    "./event-calendar",
+    "./chat",
+    "./chat-message",
+    "./message",
+    "./bubble",
+    "./message-scroller",
+    "./chat-composer",
+    "./outline-nav",
+    "./chat-attachment",
+    "./image-preview",
+    "./chat-thread-list",
+    "./chat-header",
+    "./chat-memo",
+    "./sticky-note",
+    "./floating-action-menu"
   ],
   "styles": [
     "./theme.css",

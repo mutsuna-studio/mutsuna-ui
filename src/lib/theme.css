@@ -107,6 +107,16 @@
     scrollbar-width: thin;
   }
 
+  /* Native scrollbars can paint over rounded corners even when content is clipped. */
+  .mutsuna-scrollbar-area {
+    clip-path: border-box;
+  }
+
+  .mutsuna-scrollbar-area:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -3px;
+  }
+
   .mutsuna-scrollbar--auto {
     scrollbar-gutter: auto;
   }

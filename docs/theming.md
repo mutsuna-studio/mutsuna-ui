@@ -23,13 +23,15 @@ const theme = createTheme("custom", "oklch(0.546 0.175 252.58)");
 
 Svelteプリセットは[公式サイト](https://svelte.dev/)の2026年9月時点の配色・フォントを参考に、背景、カード、ポップオーバー、文字、境界線、サイドバー、角丸も適用する。ボタンはロゴ色の`#ff3e00`ではなく、公式UI用アクセント（light: `#d43008`、dark: `#b32d00`）と白文字を使う。UIはFira Sans、見出しはDM Serif Display、本文の`p`はEB Garamond、`font-mono`はFira Monoを使用する。フォントはOFL-1.1のFontsource依存からローカル配信し、日本語など未収録の文字はfallback fontを使う。サイト固有のレイアウトや各コンポーネントの余白・サイズは本パッケージの設計を維持する。
 
-Claude-inspired（key: `claude`）はClaudeチャットアプリの公開CSS（2026年9月のv2トークン）と[公式Chat紹介](https://academy.claude.com/tutorials/navigating-the-claude-desktop-app)を参考にした非公式プリセット。チャット背景・入力面・サイドバーの階調を分け、primaryはクレイ色、サイドバーの選択はニュートラル色にする。UI・説明文はInter、見出しはGeorgia、日本語は「Hiragino Sans」「Yu Gothic」などのゴシック体へfallbackする。専用フォントとロゴは同梱しないため書体の完全一致は保証しない。`Foundations/Theme → Claude Chat`で余白と入力欄を含めて確認できる。チャット画面へのログイン検証は行っておらず、公開配信されるアプリ共通トークンと公式紹介画像を参照している。
+Claude-inspired（key: `claude`）はClaudeチャットアプリの公開CSS（2026年9月のv2トークン）と[公式Chat紹介](https://academy.claude.com/tutorials/navigating-the-claude-desktop-app)を参考にした非公式プリセット。チャット背景・入力面・サイドバーの階調を分け、primaryはクレイ色、サイドバーの選択はニュートラル色にする。UI・説明文はInter、見出しはGeorgia、日本語は「Hiragino Sans」「Yu Gothic」などのゴシック体へfallbackする。専用フォントとロゴは同梱しないため書体の完全一致は保証しない。`Patterns / Chat Screens`でツールバーのテーマカラーをClaude-inspiredへ切り替え、現在の共通チャット部品で確認できる。チャット画面へのログイン検証は行っておらず、公開配信されるアプリ共通トークンと公式紹介画像を参照している。
 
 追加のアプリ風プリセットはいずれも非公式。GitHub-inspired（`github`）は[Primerの配色](https://primer.style/product/primitives/color/)を基に、緑のprimary、青の選択・focus、system fontを使う。Linear-inspired（`linear`）は[公式UI紹介](https://linear.app/changelog/2024-03-20-new-linear-ui)を参考にした青紫・ニュートラル背景・Interの近似。Notion-inspired（`notion`）は[公式の表示設定と画面例](https://www.notion.com/help/customize-and-style-your-content)を参考に、標準sans-serifの文書面、淡いサイドバー、小さい角丸を再現する。後二者の色値は公式トークンの完全移植ではなく、通常文字のコントラストを確保した近似であり、アプリ固有の操作やレイアウトは複製しない。
 
 `Theme.appearance`は任意の追加CSSトークン（`ThemeAppearance`）。省略した既存テーマも引き続き利用できる。`themeToCssVariables()`は追加トークンも返し、未指定値は`null`となるため、独自の適用処理でも`null`の変数を削除すること。`ThemeProvider`は切り替え時の削除とunmount時の復元を行う。ライト／ダークの配色はCSSの`light-dark()`で切り替わり、従来どおり`.dark`クラスでモードを制御する。
 
 ## ScrollbarArea
+
+角丸を指定したScrollbarAreaは、ネイティブのスクロールバーも枠の輪郭に沿ってクリップする。キーボードfocusの輪郭は内側に表示する。ref・イベント・スクロール位置は従来どおり同じ要素で扱い、追加のwrapperは不要。外側の影や装飾を付ける場合は、クリップ領域の外にある親要素へ指定する。
 
 theme colorに追従するscrollbarは`ScrollbarArea`を使う。
 

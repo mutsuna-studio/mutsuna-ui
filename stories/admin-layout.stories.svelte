@@ -102,10 +102,3 @@ const rows = [
     </Dialog.Content>
   </Dialog.Root>
 </Story>
-
-<Story name="Chat Layout" asChild>
-  <AdminPage class="h-[34rem] grid-cols-[15rem_minmax(0,1fr)] overflow-hidden rounded-lg border p-0 pt-0">
-    <aside class="border-e p-3"><p class="mb-3 font-medium">メッセージ</p><div class="rounded-md bg-muted p-3 text-sm"><p class="font-medium">山田 太郎</p><p class="truncate text-muted-foreground">仕様についての質問</p></div></aside>
-    <section class="flex min-w-0 flex-col"><div class="border-b p-4 font-medium">仕様についての質問</div><div class="flex-1 space-y-3 overflow-auto p-4"><p class="max-w-md rounded-lg bg-muted p-3 text-sm">この項目の表示条件を確認したいです。</p><p class="ms-auto max-w-md rounded-lg bg-primary p-3 text-sm text-primary-foreground">設定画面から変更できます。</p></div><div class="border-t p-3"><Textarea placeholder="返信を入力" /></div></section>
-  </AdminPage>
-</Story>

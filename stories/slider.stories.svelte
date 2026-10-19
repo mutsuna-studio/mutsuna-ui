@@ -16,21 +16,7 @@ let priceRange = $state([20, 80]);
 let verticalValue = $state(65);
 </script>
 
-<Story
-  name="States"
-  parameters={{ controls: { disable: true }, options: { showPanel: false } }}
-  play={async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const volumeSlider = canvas.getByRole("slider", { name: "音量" });
-
-    await userEvent.tab();
-    await expect(volumeSlider).toHaveFocus();
-    await userEvent.keyboard("{ArrowRight}");
-    await expect(volumeSlider).toHaveAttribute("aria-valuenow", "51");
-    await expect(canvas.getByText("51%")).toBeVisible();
-  }}
-  asChild
->
+{#snippet catalogExample1()}
   <div class="grid max-w-md gap-8">
     <label class="grid gap-2 text-sm">
       <span class="flex justify-between"><span>音量</span><output>{volume}%</output></span>
@@ -58,4 +44,22 @@ let verticalValue = $state(65);
       <output>{verticalValue}%</output>
     </div>
   </div>
-</Story>
+{/snippet}
+
+<Story name="States"
+  parameters={{ controls: { disable: true }, options: { showPanel: false } }}
+  asChild>{@render catalogExample1()}</Story>
+<Story name="States Interaction Test"
+  parameters={{ controls: { disable: true }, options: { showPanel: false } }}
+  asChild
+  tags={["!dev", "!autodocs"]}
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const volumeSlider = canvas.getByRole("slider", { name: "音量" });
+
+    await userEvent.tab();
+    await expect(volumeSlider).toHaveFocus();
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(volumeSlider).toHaveAttribute("aria-valuenow", "51");
+    await expect(canvas.getByText("51%")).toBeVisible();
+  }}>{@render catalogExample1()}</Story>

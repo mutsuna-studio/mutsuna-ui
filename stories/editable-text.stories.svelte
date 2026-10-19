@@ -46,6 +46,11 @@ let customRef = $state<HTMLButtonElement | null>(null);
 			<EditableText multiline value={'複数行の説明文です。\nクリックすると、その場で編集できます。'} aria-label="説明を編集" />
 			<FieldDescription>Enterで改行、Cmd/Ctrl+Enterで確定します。</FieldDescription>
 		</Field>
+        <Field>
+          <FieldLabel>文字サイズと行高のカスタマイズ</FieldLabel>
+          <EditableText multiline value={'大きな文字のメモです。\n編集時も同じ行高です。'} class="text-xl leading-9 font-semibold" aria-label="大きな文字を編集" />
+          <FieldDescription>classで指定した文字組みを編集欄にも引き継ぎます。</FieldDescription>
+        </Field>
 	</FieldGroup>
 </Story>
 
