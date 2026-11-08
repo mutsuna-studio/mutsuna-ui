@@ -5,7 +5,7 @@ import { checkButtonIcons } from './button-icons.mjs';
 
 const paths = process.argv.slice(2);
 if (!paths.length || paths.includes('--help')) {
-  console.log('Usage: mutsuna-ui-lint <file-or-directory> [...]\nChecks Svelte Button children for duplicate-icon risks.');
+  console.log('Usage: mutsuna-ui-lint <file-or-directory> [...]\nChecks shared Button child icons and native-button spinner overlap.');
   process.exit(paths.includes('--help') ? 0 : 2);
 }
 const ignored = new Set(['node_modules', '.git', '.svelte-kit', 'dist', 'build', 'storybook-static']);

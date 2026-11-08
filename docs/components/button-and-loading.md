@@ -31,7 +31,9 @@
 }
 ```
 
-`pnpm lint:ui`は、公開エントリ`@mutsuna/ui`・`@mutsuna/ui/button`からimportされたButton内のLucideアイコンとインラインSVGを検出し、ファイル・行・列と修正方法を出力して終了コード1を返します。別名import、namespace import、条件分岐やラッパー要素内も対象です。`loading`の有無にかかわらず同じ用法を要求します。自動修正はしません。
+`pnpm lint:ui`は、公開エントリ`@mutsuna/ui`・`@mutsuna/ui/button`と、`@mutsuna/ui/button/button.svelte`のdefault importから読み込まれたButton内のLucideアイコンとインラインSVGを検出し、ファイル・行・列と修正方法を出力して終了コード1を返します。別名import、namespace import、条件分岐やラッパー要素内も対象です。`loading`の有無にかかわらず同じ用法を要求します。自動修正はしません。
+
+通常の`<button>`でも、静的な`loading-spinner`・`animate-spin`クラスや共有`Loading`と、別のアイコンが同時に描画される構造を検出します。同じ`if/else`、`await`の各分岐、`each`の要素あり/なしや、`busy`・`!busy`のような同一条件の肯定/否定による排他表示は許可します。1つのアイコン自身を回転させる表示も対象外です。任意のJavaScript条件の同値性や、動的に組み立てたCSSクラスまでは判定しません。
 
 引数はファイルまたはディレクトリを複数指定できます。依存・ビルド出力ディレクトリとシンボリックリンクは走査しません。独自ラッパーや再export経由のButton、独自アイコン、別のsnippetから動的に渡す内容は検出対象外です。CLIの導入は任意で、既存の描画やchildren APIは変更しません。
 
